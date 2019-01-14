@@ -6,4 +6,7 @@
 
     <!--Main activity screen strings-->
     <string name="latest_movies">Latest Movies</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="search">Search</string>
 </resources>

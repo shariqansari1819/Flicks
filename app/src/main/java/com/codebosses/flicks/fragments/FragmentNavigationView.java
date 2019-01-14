@@ -16,6 +16,7 @@ import com.codebosses.flicks.R;
  */
 public class FragmentNavigationView extends Fragment {
 
+    
 
     public FragmentNavigationView() {
         // Required empty public constructor
