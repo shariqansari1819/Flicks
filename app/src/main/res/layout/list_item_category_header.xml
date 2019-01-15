@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
+
+    <ImageView
+        android:id="@+id/list_item_genre_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:contentDescription="@null"
+        tools:src="@drawable/ic_banjo" />
+
+    <TextView
+        android:id="@+id/list_item_genre_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/list_item_left_margin"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="@dimen/_13ssp"
+        tools:text="Genre" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/list_item_genre_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        app:srcCompat="@drawable/ic_arrow_down" />
+
+</FrameLayout>
+
