@@ -5,8 +5,22 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--Main activity screen strings-->
-    <string name="latest_movies">Latest Movies</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="search">Search</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">Tv Shows</string>
+    <string name="celebrities">Celebrities</string>
+    <string name="genre">Genre</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
+    <string name="in_theater">In Theater</string>
+    <string name="latest_movies">Latest Movies</string>
+    <string name="top_rated_tv_shows">Top Rated Tv Shows</string>
+    <string name="latest_tv_shows">Latest Tv Shows</string>
+    <string name="top_rated_celebrities">Top Rated Celebrities</string>
+    <string name="action">Action</string>
+    <string name="animated">Animated</string>
+    <string name="drama">Drama</string>
+    <string name="sceince_fiction">Science Fiction</string>
 </resources>

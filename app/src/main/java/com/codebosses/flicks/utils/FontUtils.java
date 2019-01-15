@@ -16,7 +16,7 @@ public class FontUtils {
         if (fontUtils == null) {
             fontUtils = new FontUtils();
             typefaceBold = Typeface.createFromAsset(context.getAssets(), "fonts/quicksand_bold.otf");
-            typefaceRegular = Typeface.createFromAsset(context.getAssets(), "fonts/quicksa d_regular.otf");
+            typefaceRegular = Typeface.createFromAsset(context.getAssets(), "fonts/quicksand_regular.otf");
         }
         return fontUtils;
     }
