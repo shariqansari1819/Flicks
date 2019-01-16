@@ -11,6 +11,7 @@
         android:id="@+id/textViewErrorMessageUpcomingMovies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/_17ssp"
         android:visibility="gone"
@@ -29,12 +30,12 @@
         app:foregroundStrokeColor="@color/colorAccent"
         app:foregroundStrokeWidth="@dimen/_3sdp"
         app:indeterminate="true"
-        app:progressAnimationDuration="200"
-        app:startAngle="45"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:progressAnimationDuration="200"
+        app:startAngle="45" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUpcomingMovies"

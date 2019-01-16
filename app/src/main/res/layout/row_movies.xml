@@ -41,7 +41,7 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_toEndOf="@+id/cardViewThumbnailContainerMoviesRow"
             android:text="Zootopia"
-            android:textColor="@color/colorDarkGrey"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="2016"
-            android:textColor="@color/colorLightGrey"
+            android:textColor="@color/colorSecondaryLightText"
             android:textSize="13sp" />
 
         <View
@@ -66,27 +66,30 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@color/colodDivider" />
+            android:background="@drawable/bottom_shadow" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewRatingIconMoviesRow"
-            android:layout_width="@dimen/_18sdp"
-            android:layout_height="@dimen/_18sdp"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
             android:layout_below="@+id/dividerMoviesRow"
             android:layout_alignStart="@+id/dividerMoviesRow"
             android:contentDescription="@string/rating_pop_corn_icon"
-            app:srcCompat="@drawable/popcorn_icon" />
+            app:srcCompat="@drawable/ic_action_star"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/textViewRatingMoviesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dividerMoviesRow"
+            android:layout_alignTop="@+id/imageViewRatingIconMoviesRow"
             android:layout_alignEnd="@+id/textViewAudienceMainRow"
+            android:layout_alignBottom="@+id/imageViewRatingIconMoviesRow"
+            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_toEndOf="@+id/imageViewRatingIconMoviesRow"
             android:text="90%"
-            android:textColor="@color/colorDarkGrey"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
 
@@ -98,18 +101,34 @@
             android:layout_alignStart="@+id/imageViewRatingIconMoviesRow"
             android:layout_marginTop="@dimen/_2sdp"
             android:text="@string/movie_rating"
-            android:textColor="@color/colorLightGrey"
+            android:textColor="@color/colorSecondaryLightText"
             android:textSize="@dimen/_11ssp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewVoteCountIconMoviesRow"
+            android:layout_width="@dimen/_17sdp"
+            android:layout_height="@dimen/_17sdp"
+            android:layout_below="@+id/dividerMoviesRow"
+            android:layout_alignTop="@+id/imageViewRatingIconMoviesRow"
+            android:layout_alignBottom="@+id/imageViewRatingIconMoviesRow"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_toEndOf="@+id/textViewRatingMoviesRow"
+            android:contentDescription="@string/rating_pop_corn_icon"
+            app:srcCompat="@drawable/popcorn_icon" />
+
 
         <TextView
             android:id="@+id/textViewVotesMoviesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dividerMoviesRow"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_toEndOf="@+id/textViewRatingMoviesRow"
+            android:layout_alignTop="@+id/imageViewVoteCountIconMoviesRow"
+            android:layout_alignEnd="@+id/textViewVotesCountMoviesRow"
+            android:layout_alignBottom="@+id/imageViewVoteCountIconMoviesRow"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_toEndOf="@+id/imageViewVoteCountIconMoviesRow"
             android:text="2000"
-            android:textColor="@color/colorDarkGrey"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
 
@@ -118,10 +137,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewVotesMoviesRow"
-            android:layout_alignStart="@+id/textViewVotesMoviesRow"
-            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_alignStart="@+id/imageViewVoteCountIconMoviesRow"
+            android:layout_alignTop="@+id/textViewAudienceMainRow"
+            android:layout_alignBottom="@+id/textViewAudienceMainRow"
             android:text="@string/vote_count"
-            android:textColor="@color/colorLightGrey"
+            android:textColor="@color/colorSecondaryLightText"
             android:textSize="@dimen/_11ssp" />
 
     </RelativeLayout>

@@ -50,9 +50,17 @@ public interface Api {
             .client(client)
             .build().create(Api.class);
 
-
     @GET("movie/upcoming")
     Call<MoviesMainObject> getUpcomingMovies(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.REGION) String region);
+
+    @GET("movie/top_rated")
+    Call<MoviesMainObject> getTopRatedMovies(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.REGION) String region);
+
+    @GET("movie/popular")
+    Call<MoviesMainObject> getLatestMovies(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.REGION) String region);
+
+    @GET("movie/now_playing")
+    Call<MoviesMainObject> getInTheaterMovies(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.REGION) String region);
 
 
 }

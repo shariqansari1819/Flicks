@@ -52,7 +52,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
                     .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                     .into(holder.imageViewThumbnail);
-            holder.textViewMovieTitle.setText(moviesResult.getTitle());
+            String title = moviesResult.getTitle();
+            if (title.length() > 19)
+                title = title.substring(0, 20);
+            holder.textViewMovieTitle.setText(title);
             holder.textViewMovieYear.setText(moviesResult.getRelease_date());
             holder.textViewRatingCount.setText(String.valueOf(moviesResult.getVote_average()));
             holder.textViewVoteCount.setText(String.valueOf(moviesResult.getVote_count()));

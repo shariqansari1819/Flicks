@@ -103,7 +103,8 @@ public class FragmentUpcomingMovies extends BaseFragment {
                 boolean isBottomReached = !recyclerView.canScrollVertically(1);
                 if (isBottomReached) {
                     pageNumber++;
-                    getUpcomingMovies("en-US", "", pageNumber);
+                    if (pageNumber <= totalPages)
+                        getUpcomingMovies("en-US", "", pageNumber);
                 }
             }
         });
