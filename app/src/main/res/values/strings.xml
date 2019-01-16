@@ -23,4 +23,13 @@
     <string name="animated">Animated</string>
     <string name="drama">Drama</string>
     <string name="sceince_fiction">Science Fiction</string>
+
+
+    <!--Upcoming movies fragment strings-->
+    <string name="could_not_get_upcoming_movies">Sorry, Could not get upcoming movies list.</string>
+    <string name="internet_problem">There is some problem with internet connection.</string>
+    <string name="poster_thumbnail">Poster Image Thumbnail</string>
+    <string name="rating_pop_corn_icon">Rating pop corn icon image</string>
+    <string name="movie_rating">Movie Rating</string>
+    <string name="vote_count">Votes Count</string>
 </resources>

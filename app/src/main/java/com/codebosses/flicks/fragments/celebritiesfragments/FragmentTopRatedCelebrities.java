@@ -1,4 +1,4 @@
-package com.codebosses.flicks.fragments.tvfragments;
+package com.codebosses.flicks.fragments.celebritiesfragments;
 
 
 import android.os.Bundle;
