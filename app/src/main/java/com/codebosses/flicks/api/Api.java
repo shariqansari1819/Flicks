@@ -2,7 +2,9 @@ package com.codebosses.flicks.api;
 
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
+import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
+import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -61,6 +63,15 @@ public interface Api {
 
     @GET("movie/now_playing")
     Call<MoviesMainObject> getInTheaterMovies(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.REGION) String region);
+
+    @GET("person/popular")
+    Call<CelebritiesMainObject> getTopRatedCelebrities(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("tv/top_rated")
+    Call<TvMainObject> getTopRatedTvShows(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("tv/popular")
+    Call<TvMainObject> getLatestTvShows(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
 
 
 }

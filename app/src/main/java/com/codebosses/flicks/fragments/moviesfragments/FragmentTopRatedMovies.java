@@ -25,10 +25,15 @@ import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
+import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +82,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_top_rated_movies, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -85,7 +91,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
 
-                moviesAdapter = new MoviesAdapter(getActivity(), topRatedMoviesList);
+                moviesAdapter = new MoviesAdapter(getActivity(), topRatedMoviesList, EndpointKeys.TOP_RATED_MOVIES);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewTopRatedMovies.setLayoutManager(linearLayoutManager);
                 recyclerViewTopRatedMovies.setItemAnimator(new DefaultItemAnimator());
@@ -121,6 +127,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
         if (topRatedMoviesCall != null && topRatedMoviesCall.isExecuted()) {
             topRatedMoviesCall.cancel();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     private void getTopRatedMovies(String language, String region, int pageNumber) {
@@ -164,6 +171,13 @@ public class FragmentTopRatedMovies extends BaseFragment {
                 }
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusTopRatedMovieClick(EventBusMovieClick eventBusMovieClick) {
+        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.TOP_RATED_MOVIES)) {
+
+        }
     }
 
 }

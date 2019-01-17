@@ -7,14 +7,14 @@
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/list_item_genre_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_width="@dimen/_17sdp"
+        android:layout_height="@dimen/_17sdp"
+        android:layout_gravity="start|center_vertical"
         android:layout_marginStart="@dimen/horizontal_margin"
         android:contentDescription="@null"
-        tools:src="@drawable/ic_banjo" />
+        app:tint="@color/colorAccent" />
 
     <TextView
         android:id="@+id/list_item_genre_name"

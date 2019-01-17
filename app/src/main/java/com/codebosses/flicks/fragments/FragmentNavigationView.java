@@ -105,7 +105,7 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private CategoryHeader makeMovieHeader() {
-        return new CategoryHeader(movies, makeMovieItems(), R.drawable.ic_electric_guitar);
+        return new CategoryHeader(movies, makeMovieItems(), R.drawable.ic_action_movie);
     }
 
     private List<CategoryItem> makeMovieItems() {
@@ -118,7 +118,7 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private CategoryHeader makeTvHeader() {
-        return new CategoryHeader(tvShows, makeTvItems(), R.drawable.ic_saxaphone);
+        return new CategoryHeader(tvShows, makeTvItems(), R.drawable.ic_action_tv);
     }
 
 
@@ -130,7 +130,7 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private CategoryHeader makeCelebriyHeader() {
-        return new CategoryHeader(celebrities, makeCelebrityItems(), R.drawable.ic_violin);
+        return new CategoryHeader(celebrities, makeCelebrityItems(), R.drawable.ic_action_celebrity);
     }
 
     private List<CategoryItem> makeCelebrityItems() {

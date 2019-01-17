@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardViewMainCelebritiesRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_3sdp"
+    android:layout_marginBottom="@dimen/_3sdp"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="1dp">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutChildCelebritiesRow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_5sdp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewThumbnailContainerCelebritiesRow"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_100sdp"
+            app:cardCornerRadius="4dp">
+
+            <ImageView
+                android:id="@+id/imageViewThumbnailCelebritiesRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/poster_thumbnail"
+                android:scaleType="centerCrop"
+                android:src="@drawable/zootopia_thumbnail" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textViewTitleCelebritiesRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_toEndOf="@+id/cardViewThumbnailContainerCelebritiesRow"
+            android:text="Zootopia"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewYearMoviesRow"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/textViewTitleMoviesRow"-->
+            <!--android:layout_alignStart="@+id/textViewTitleMoviesRow"-->
+            <!--android:layout_marginTop="@dimen/_2sdp"-->
+            <!--android:layout_marginEnd="@dimen/_10sdp"-->
+            <!--android:text="2016"-->
+            <!--android:textColor="@color/colorSecondaryLightText"-->
+            <!--android:textSize="13sp" />-->
+
+        <View
+            android:id="@+id/dividerCelebritiesRow"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textViewTitleCelebritiesRow"
+            android:layout_alignStart="@+id/textViewTitleCelebritiesRow"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/bottom_shadow" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewRatingIconCelebritiesRow"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_below="@+id/dividerCelebritiesRow"
+            android:layout_alignStart="@+id/dividerCelebritiesRow"
+            android:contentDescription="@string/rating_pop_corn_icon"
+            app:srcCompat="@drawable/ic_action_star"
+            app:tint="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/textViewRatingCelebritiesRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageViewRatingIconCelebritiesRow"
+            android:layout_alignBottom="@+id/imageViewRatingIconCelebritiesRow"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_toEndOf="@+id/imageViewRatingIconCelebritiesRow"
+            android:text="90%"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewAudienceCelebritiesRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewRatingIconCelebritiesRow"
+            android:layout_alignStart="@+id/imageViewRatingIconCelebritiesRow"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@string/popularity"
+            android:textColor="@color/colorSecondaryLightText"
+            android:textSize="@dimen/_11ssp" />
+
+        <!--<androidx.appcompat.widget.AppCompatImageView-->
+            <!--android:id="@+id/imageViewVoteCountIconMoviesRow"-->
+            <!--android:layout_width="@dimen/_17sdp"-->
+            <!--android:layout_height="@dimen/_17sdp"-->
+            <!--android:layout_below="@+id/dividerMoviesRow"-->
+            <!--android:layout_alignTop="@+id/imageViewRatingIconMoviesRow"-->
+            <!--android:layout_alignBottom="@+id/imageViewRatingIconMoviesRow"-->
+            <!--android:layout_marginStart="@dimen/_20sdp"-->
+            <!--android:layout_toEndOf="@+id/textViewRatingMoviesRow"-->
+            <!--android:contentDescription="@string/rating_pop_corn_icon"-->
+            <!--app:srcCompat="@drawable/popcorn_icon" />-->
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewVotesMoviesRow"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignTop="@+id/imageViewVoteCountIconMoviesRow"-->
+            <!--android:layout_alignEnd="@+id/textViewVotesCountMoviesRow"-->
+            <!--android:layout_alignBottom="@+id/imageViewVoteCountIconMoviesRow"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginStart="@dimen/_5sdp"-->
+            <!--android:layout_toEndOf="@+id/imageViewVoteCountIconMoviesRow"-->
+            <!--android:text="2000"-->
+            <!--android:textColor="@color/colorSecondaryText"-->
+            <!--android:textSize="@dimen/_12ssp"-->
+            <!--android:textStyle="bold" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewVotesCountMoviesRow"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/textViewVotesMoviesRow"-->
+            <!--android:layout_alignStart="@+id/imageViewVoteCountIconMoviesRow"-->
+            <!--android:layout_alignTop="@+id/textViewAudienceMainRow"-->
+            <!--android:layout_alignBottom="@+id/textViewAudienceMainRow"-->
+            <!--android:text="@string/vote_count"-->
+            <!--android:textColor="@color/colorSecondaryLightText"-->
+            <!--android:textSize="@dimen/_11ssp" />-->
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

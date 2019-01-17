@@ -25,10 +25,15 @@ import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
+import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +81,7 @@ public class FragmentLatestMovies extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_latest_movies, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -84,7 +90,7 @@ public class FragmentLatestMovies extends BaseFragment {
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
 
-                moviesAdapter = new MoviesAdapter(getActivity(), latestMoviesList);
+                moviesAdapter = new MoviesAdapter(getActivity(), latestMoviesList, EndpointKeys.LATEST_MOVIES);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewLatestMovies.setLayoutManager(linearLayoutManager);
                 recyclerViewLatestMovies.setItemAnimator(new DefaultItemAnimator());
@@ -119,6 +125,7 @@ public class FragmentLatestMovies extends BaseFragment {
         if (latestMoviesCall != null && latestMoviesCall.isExecuted()) {
             latestMoviesCall.cancel();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     private void getLatestMovies(String language, String region, int pageNumber) {
@@ -162,6 +169,13 @@ public class FragmentLatestMovies extends BaseFragment {
                 }
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusLatestMovieClick(EventBusMovieClick eventBusMovieClick) {
+        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.LATEST_MOVIES)) {
+
+        }
     }
 
 }

@@ -33,7 +33,7 @@ public class CategoryHeaderHolder extends GroupViewHolder {
     public void setGenreTitle(ExpandableGroup genre) {
         if (genre instanceof CategoryHeader) {
             genreName.setText(genre.getTitle());
-            icon.setBackgroundResource(((CategoryHeader) genre).getIconResId());
+            icon.setImageResource(((CategoryHeader) genre).getIconResId());
         }
     }
 
