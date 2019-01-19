@@ -39,8 +39,43 @@
     <string name="could_not_get_celebrities">Sorry, Could not get celebrities list.</string>
 
     <!--Top rated tv shows fragment strings-->
-    <string name="could_not_get__top_rated_tv_shows">Sorry, Could not get top rated tv shows list.</string>
+    <string name="could_not_get_top_rated_tv_shows">Sorry, Could not get top rated tv shows list.</string>
 
     <!--Latest tv shows fragment strings-->
     <string name="could_not_get__latest_tv_shows">Sorry, Could not get latest tv shows list.</string>
+
+
+    <!--Movies detail activity strings-->
+    <string-array name="movies_detail_array">
+        <item>DETAIL</item>
+        <item>GENRE</item>
+        <item>SIMILAR</item>
+        <item>SUGGESTED</item>
+    </string-array>
+
+    <!--Movie detail fragment strings-->
+    <string name="original_title">Original Title</string>
+    <string name="overview">Overview</string>
+    <string name="homepage">Homepage</string>
+    <string name="budget_of_movie">Budget of Movie</string>
+    <string name="release_date">Release Date</string>
+    <string name="movie_revenue">Movie Revenue</string>
+    <string name="tag_line">Tag Line</string>
+    <string name="movie_status">Movie Status</string>
+
+    <!--Similar movies fragment strings-->
+    <string name="could_not_get_similar_movies">Sorry, Could not get similar movies list.</string>
+
+    <!--Suggested movies fragment strings-->
+    <string name="could_not_get_suggested_movies">Sorry, Could not get suggested movies list.</string>
+
+    <!--Celebrity movies activity strings-->
+    <string name="could_not_get_movies">Sorry, Could not get movies list.</string>
+
+    <!--Similar tv shows fragments strings-->
+    <string name="could_not_get_similar_tv_shows">Sorry, Could not get similar tv shows list.</string>
+
+    <!--Suggested tv shows fragment strings-->
+    <string name="could_not_get_suggested_tv_shows">Sorry, Could not get suggested tv shows list.</string>
+
 </resources>

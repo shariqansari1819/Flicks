@@ -1,4 +1,4 @@
-package com.codebosses.flicks.fragments.moviesfragments;
+package com.codebosses.flicks.fragments.moviesfragments.moviesdetail;
 
 
 import android.content.Intent;
@@ -26,8 +26,8 @@ import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.endpoints.EndpointKeys;
-import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusMovieDetailId;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
@@ -40,23 +40,20 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class FragmentTopRatedMovies extends BaseFragment {
+public class SimilarMoviesFragment extends Fragment {
 
     //    Android fields....
-    @BindView(R.id.textViewErrorMessageTopRatedMovies)
+    @BindView(R.id.textViewErrorMessageSimilarMovies)
     TextView textViewError;
-    @BindView(R.id.circularProgressBarTopRatedMovies)
+    @BindView(R.id.circularProgressBarSimilarMovies)
     CircularProgressBar circularProgressBar;
-    @BindView(R.id.recyclerViewTopRatedMovies)
-    RecyclerView recyclerViewTopRatedMovies;
+    @BindView(R.id.recyclerViewSimilarMovies)
+    RecyclerView recyclerViewSimilarMovies;
     private LinearLayoutManager linearLayoutManager;
 
 
     //    Resource fields....
-    @BindString(R.string.could_not_get_upcoming_movies)
+    @BindString(R.string.could_not_get_similar_movies)
     String couldNotGetMovies;
     @BindString(R.string.internet_problem)
     String internetProblem;
@@ -65,15 +62,15 @@ public class FragmentTopRatedMovies extends BaseFragment {
     private FontUtils fontUtils;
 
     //    Retrofit fields....
-    private Call<MoviesMainObject> topRatedMoviesCall;
+    private Call<MoviesMainObject> similarMoviesCall;
 
     //    Adapter fields....
-    private List<MoviesResult> topRatedMoviesList = new ArrayList<>();
+    private List<MoviesResult> similarMoviesList = new ArrayList<>();
     private MoviesAdapter moviesAdapter;
     private int pageNumber = 1, totalPages = 0;
+    private String pageId = "";
 
-
-    public FragmentTopRatedMovies() {
+    public SimilarMoviesFragment() {
 
     }
 
@@ -82,7 +79,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_top_rated_movies, container, false);
+        View view = inflater.inflate(R.layout.fragment_similar_movies, container, false);
         ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
 
@@ -93,21 +90,18 @@ public class FragmentTopRatedMovies extends BaseFragment {
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
 
-                moviesAdapter = new MoviesAdapter(getActivity(), topRatedMoviesList, EndpointKeys.TOP_RATED_MOVIES);
+                moviesAdapter = new MoviesAdapter(getActivity(), similarMoviesList, EndpointKeys.SIMILAR_MOVIES);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerViewTopRatedMovies.setLayoutManager(linearLayoutManager);
-                recyclerViewTopRatedMovies.setItemAnimator(new DefaultItemAnimator());
-                recyclerViewTopRatedMovies.setAdapter(moviesAdapter);
-
-                circularProgressBar.setVisibility(View.VISIBLE);
-                getTopRatedMovies("en-US", "", pageNumber);
+                recyclerViewSimilarMovies.setLayoutManager(linearLayoutManager);
+                recyclerViewSimilarMovies.setItemAnimator(new DefaultItemAnimator());
+                recyclerViewSimilarMovies.setAdapter(moviesAdapter);
 
             } else {
                 textViewError.setVisibility(View.VISIBLE);
                 textViewError.setText(internetProblem);
             }
         }
-        recyclerViewTopRatedMovies.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerViewSimilarMovies.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -115,7 +109,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
                 if (isBottomReached) {
                     pageNumber++;
                     if (pageNumber <= totalPages)
-                        getTopRatedMovies("en-US", "", pageNumber);
+                        getSimilarMovies(pageId, "en-US", pageNumber);
                 }
             }
         });
@@ -123,18 +117,25 @@ public class FragmentTopRatedMovies extends BaseFragment {
         return view;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusGetMovieDetail(EventBusMovieDetailId eventBusMovieDetailId) {
+        circularProgressBar.setVisibility(View.VISIBLE);
+        pageId = String.valueOf(eventBusMovieDetailId.getMovieId());
+        getSimilarMovies(pageId, "en-US", pageNumber);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (topRatedMoviesCall != null && topRatedMoviesCall.isExecuted()) {
-            topRatedMoviesCall.cancel();
+        if (similarMoviesCall != null && similarMoviesCall.isExecuted()) {
+            similarMoviesCall.cancel();
         }
         EventBus.getDefault().unregister(this);
     }
 
-    private void getTopRatedMovies(String language, String region, int pageNumber) {
-        topRatedMoviesCall = Api.WEB_SERVICE.getTopRatedMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
-        topRatedMoviesCall.enqueue(new Callback<MoviesMainObject>() {
+    private void getSimilarMovies(String movieId, String language, int pageNumber) {
+        similarMoviesCall = Api.WEB_SERVICE.getSimilarMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        similarMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
                 circularProgressBar.setVisibility(View.INVISIBLE);
@@ -144,8 +145,8 @@ public class FragmentTopRatedMovies extends BaseFragment {
                         totalPages = moviesMainObject.getTotal_pages();
                         if (moviesMainObject.getTotal_results() > 0) {
                             for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                topRatedMoviesList.add(moviesMainObject.getResults().get(i));
-                                moviesAdapter.notifyItemInserted(topRatedMoviesList.size() - 1);
+                                similarMoviesList.add(moviesMainObject.getResults().get(i));
+                                moviesAdapter.notifyItemInserted(similarMoviesList.size() - 1);
                             }
                         }
                     }
@@ -176,12 +177,12 @@ public class FragmentTopRatedMovies extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void eventBusTopRatedMovieClick(EventBusMovieClick eventBusMovieClick) {
-        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.TOP_RATED_MOVIES)) {
+    public void eventBusSimilarMovieClick(EventBusMovieClick eventBusMovieClick) {
+        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.SIMILAR_MOVIES)) {
             Intent intent = new Intent(getActivity(), MoviesDetailActivity.class);
-            intent.putExtra(EndpointKeys.MOVIE_ID, topRatedMoviesList.get(eventBusMovieClick.getPosition()).getId());
-            intent.putExtra(EndpointKeys.MOVIE_TITLE, topRatedMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title());
-            intent.putExtra(EndpointKeys.RATING, topRatedMoviesList.get(eventBusMovieClick.getPosition()).getVote_average());
+            intent.putExtra(EndpointKeys.MOVIE_ID, similarMoviesList.get(eventBusMovieClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.MOVIE_TITLE, similarMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title());
+            intent.putExtra(EndpointKeys.RATING, similarMoviesList.get(eventBusMovieClick.getPosition()).getVote_average());
             startActivity(intent);
         }
     }

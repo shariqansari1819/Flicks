@@ -4,7 +4,10 @@ import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
+import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
+import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
+import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.TvShowsDetailMainObject;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +29,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface Api {
@@ -72,6 +76,30 @@ public interface Api {
 
     @GET("tv/popular")
     Call<TvMainObject> getLatestTvShows(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("movie/{movie_id}/videos")
+    Call<MoviesTrailerMainObject> getMovieTrailer(@Path(EndpointKeys.MOVIE_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("movie/{movie_id}")
+    Call<MovieDetailMainObject> getMovieDetail(@Path(EndpointKeys.MOVIE_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("movie/{movie_id}/similar")
+    Call<MoviesMainObject> getSimilarMovies(@Path(EndpointKeys.MOVIE_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("movie/{movie_id}/recommendations")
+    Call<MoviesMainObject> getSuggestedMovies(@Path(EndpointKeys.MOVIE_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("tv/{tv_id}/videos")
+    Call<MoviesTrailerMainObject> getTvTrailer(@Path(EndpointKeys.TV_ID) String tv_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("tv/{tv_id}")
+    Call<TvShowsDetailMainObject> getTvDetail(@Path(EndpointKeys.TV_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("tv/{tv_id}/similar")
+    Call<TvMainObject> getSimilarTvShows(@Path(EndpointKeys.TV_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("tv/{tv_id}/recommendations")
+    Call<TvMainObject> getSuggestedTvShows(@Path(EndpointKeys.TV_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
 
 
 }

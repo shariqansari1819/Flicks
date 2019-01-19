@@ -1,6 +1,7 @@
 package com.codebosses.flicks.fragments.moviesfragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
+import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.endpoints.EndpointKeys;
@@ -175,7 +177,11 @@ public class FragmentInTheater extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusInTheaterClick(EventBusMovieClick eventBusMovieClick) {
         if (eventBusMovieClick.getMovieType().equals(EndpointKeys.IN_THEATER)) {
-
+            Intent intent = new Intent(getActivity(), MoviesDetailActivity.class);
+            intent.putExtra(EndpointKeys.MOVIE_ID, inTheaterList.get(eventBusMovieClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.MOVIE_TITLE, inTheaterList.get(eventBusMovieClick.getPosition()).getOriginal_title());
+            intent.putExtra(EndpointKeys.RATING, inTheaterList.get(eventBusMovieClick.getPosition()).getVote_average());
+            startActivity(intent);
         }
     }
 

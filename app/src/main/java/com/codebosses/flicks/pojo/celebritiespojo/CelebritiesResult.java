@@ -1,6 +1,7 @@
 
 package com.codebosses.flicks.pojo.celebritiespojo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ public class CelebritiesResult {
     private Integer id;
     private String profile_path;
     private String name;
-    private List<KnownFor> known_for = null;
+    private ArrayList<KnownFor> known_for = null;
     private Boolean adult;
 
     public Double getPopularity() {
@@ -46,11 +47,11 @@ public class CelebritiesResult {
         this.name = name;
     }
 
-    public List<KnownFor> getKnown_for() {
+    public ArrayList<KnownFor> getKnown_for() {
         return known_for;
     }
 
-    public void setKnown_for(List<KnownFor> known_for) {
+    public void setKnown_for(ArrayList<KnownFor> known_for) {
         this.known_for = known_for;
     }
 

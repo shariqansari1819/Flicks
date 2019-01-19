@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollViewTvShowsDetailFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".fragments.tvfragments.tvshowsdetailfragment.TvShowsDetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_5sdp">
+
+        <com.budiyev.android.circularprogressbar.CircularProgressBar
+            android:id="@+id/circularProgressBarTvShowsDetailFragment"
+            android:layout_width="@dimen/_44sdp"
+            android:layout_height="@dimen/_44sdp"
+            android:visibility="gone"
+            app:animateProgress="true"
+            app:foregroundStrokeCap="round"
+            app:foregroundStrokeColor="@color/colorAccent"
+            app:foregroundStrokeWidth="@dimen/_3sdp"
+            app:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:progressAnimationDuration="200"
+            app:startAngle="45" />
+
+        <TextView
+            android:id="@+id/textViewOriginalTitleHeader"
+            style="@style/HeaderTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/original_title"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewOriginalTitleText"
+            style="@style/TextViewDetailStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOriginalTitleHeader" />
+
+        <TextView
+            android:id="@+id/textViewOverviewHeader"
+            style="@style/HeaderTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overview"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOriginalTitleText" />
+
+        <TextView
+            android:id="@+id/textViewOverviewText"
+            style="@style/TextViewDetailStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewHeader" />
+
+
+        <TextView
+            android:id="@+id/textViewHomepageHeader"
+            style="@style/HeaderTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/homepage"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewText" />
+
+        <TextView
+            android:id="@+id/textViewHomepageText"
+            style="@style/TextViewDetailStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHomepageHeader" />
+
+        <TextView
+            android:id="@+id/textViewBudgetHeader"
+            style="@style/HeaderTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/budget_of_movie"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHomepageText" />
+
+        <TextView
+            android:id="@+id/textViewBudgetText"
+            style="@style/TextViewDetailStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBudgetHeader" />
+
+        <TextView
+            android:id="@+id/textViewReleaseDateHeader"
+            style="@style/HeaderTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release_date"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBudgetText" />
+
+        <TextView
+            android:id="@+id/textViewReleaseDateText"
+            style="@style/TextViewDetailStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeader" />
+
+        <TextView
+            android:id="@+id/textViewRevenueHeader"
+            style="@style/HeaderTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_revenue"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateText" />
+
+        <TextView
+            android:id="@+id/textViewRevenueText"
+            style="@style/TextViewDetailStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRevenueHeader" />
+
+        <TextView
+            android:id="@+id/textViewTagLineHeader"
+            style="@style/HeaderTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_line"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRevenueText" />
+
+        <TextView
+            android:id="@+id/textViewTagLineText"
+            style="@style/TextViewDetailStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTagLineHeader" />
+
+        <TextView
+            android:id="@+id/textViewStatusHeader"
+            style="@style/HeaderTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_status"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTagLineText" />
+
+        <TextView
+            android:id="@+id/textViewStatusText"
+            style="@style/TextViewDetailStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStatusHeader" />
+
+        <View
+            android:id="@+id/dividerMoviesRow"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/bottom_shadow"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStatusText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

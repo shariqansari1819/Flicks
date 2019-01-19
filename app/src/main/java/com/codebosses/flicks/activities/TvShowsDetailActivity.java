@@ -11,18 +11,17 @@ import retrofit2.Callback;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.moviesdetail.MoviesDetailPagerAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.YoutubePlayerPagerAdapter;
+import com.codebosses.flicks.adapters.tvshowsdetail.TvShowsDetailPagerAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.endpoints.EndpointKeys;
-import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieDetailId;
-import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
+import com.codebosses.flicks.pojo.eventbus.EventBusTvShowDetailId;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
 import com.codebosses.flicks.utils.FontUtils;
@@ -37,59 +36,55 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoviesDetailActivity extends AppCompatActivity {
+public class TvShowsDetailActivity extends AppCompatActivity {
 
-    //    Android fields....
-//    @BindView(R.id.viewPagerYoutubePlayerMoviesDetail)
-//    ViewPager viewPagerYoutubePlayer;
-    @BindView(R.id.youtubePlayerViewMoviesDetail)
+    @BindView(R.id.youtubePlayerViewTvShowsDetail)
     YouTubePlayerView youTubePlayerView;
-    @BindView(R.id.textViewTitleMoviesDetail)
+    @BindView(R.id.textViewTitleTvShowsDetail)
     TextView textViewTitle;
-    @BindView(R.id.ratingBarMovieDetail)
+    @BindView(R.id.ratingBarTvShowsDetail)
     MaterialRatingBar ratingBar;
-    @BindView(R.id.tabLayoutMoviesDetail)
+    @BindView(R.id.tabLayoutTvShowsDetail)
     TabLayout tabLayout;
-    @BindView(R.id.viewPagerMoviesDetail)
-    ViewPager viewPagerMoviesDetail;
+    @BindView(R.id.viewPagerTvShowsDetail)
+    ViewPager viewPageTvShowsDetail;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
 
     //    Instance fields....
     private List<MoviesTrailerResult> moviesTrailerResultList = new ArrayList<>();
-    private YoutubePlayerPagerAdapter youtubePlayerPagerAdapter;
-    private String movieId, movieTitle;
+    private String tvShowId, tvShowTitle;
     private double rating;
-    private MoviesDetailPagerAdapter moviesDetailPagerAdapter;
+    private TvShowsDetailPagerAdapter tvShowsDetailPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movies_detail);
+        setContentView(R.layout.activity_tv_shows_detail);
         ButterKnife.bind(this);
 
         if (getIntent() != null) {
-            movieId = String.valueOf(getIntent().getIntExtra(EndpointKeys.MOVIE_ID, -1));
-            movieTitle = getIntent().getStringExtra(EndpointKeys.MOVIE_TITLE);
+            tvShowId = String.valueOf(getIntent().getIntExtra(EndpointKeys.TV_ID, -1));
+            tvShowTitle = getIntent().getStringExtra(EndpointKeys.TV_NAME);
             rating = getIntent().getDoubleExtra(EndpointKeys.RATING, 0.0);
-            textViewTitle.setText(movieTitle);
+            textViewTitle.setText(tvShowTitle);
             ratingBar.setRating((float) rating / 2);
-            getMovieTrailers("en-US", movieId);
+            getTvTrailers("en-US", tvShowId);
         }
         FontUtils.getFontUtils(this).setTextViewRegularFont(textViewTitle);
 
 //        Setting tab layout adapter....
-        moviesDetailPagerAdapter = new MoviesDetailPagerAdapter(getSupportFragmentManager(), this);
-        viewPagerMoviesDetail.setAdapter(moviesDetailPagerAdapter);
-        viewPagerMoviesDetail.setOffscreenPageLimit(3);
-        tabLayout.setupWithViewPager(viewPagerMoviesDetail);
+        tvShowsDetailPagerAdapter = new TvShowsDetailPagerAdapter(getSupportFragmentManager(), this);
+        viewPageTvShowsDetail.setAdapter(tvShowsDetailPagerAdapter);
+        viewPageTvShowsDetail.setOffscreenPageLimit(3);
+        tabLayout.setupWithViewPager(viewPageTvShowsDetail);
 
-        if (movieId != null) {
+        if (tvShowId != null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    EventBus.getDefault().post(new EventBusMovieDetailId(Integer.parseInt(movieId)));
+                    EventBus.getDefault().post(new EventBusTvShowDetailId(Integer.parseInt(tvShowId)));
                 }
             }, 500);
         }
@@ -105,8 +100,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
         youTubePlayerView.release();
     }
 
-    private void getMovieTrailers(String language, String movieId) {
-        moviesTrailerMainObjectCall = Api.WEB_SERVICE.getMovieTrailer(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+    private void getTvTrailers(String language, String tvId) {
+        moviesTrailerMainObjectCall = Api.WEB_SERVICE.getTvTrailer(tvId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
         moviesTrailerMainObjectCall.enqueue(new Callback<MoviesTrailerMainObject>() {
             @Override
             public void onResponse(Call<MoviesTrailerMainObject> call, retrofit2.Response<MoviesTrailerMainObject> response) {
@@ -127,11 +122,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     });
                                 }
                             }, true);
-//                            youtubePlayerPagerAdapter = new YoutubePlayerPagerAdapter(MoviesDetailActivity.this, moviesTrailerResultList);
-//                            viewPagerYoutubePlayer.setAdapter(youtubePlayerPagerAdapter);
-//                            viewPagerYoutubePlayer.setOffscreenPageLimit(moviesTrailerResultList.size() - 1);
                         } else {
-                            Toast.makeText(MoviesDetailActivity.this, "Could not found trailer of this movie.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TvShowsDetailActivity.this, "Could not found trailer of this movie.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -154,6 +146,5 @@ public class MoviesDetailActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

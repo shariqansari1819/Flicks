@@ -1,9 +1,12 @@
 
 package com.codebosses.flicks.pojo.celebritiespojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class KnownFor {
+public class KnownFor implements Parcelable {
 
     private Double vote_average;
     private Integer vote_count;
@@ -21,6 +24,54 @@ public class KnownFor {
     private String overview;
     private String releaseDate;
     private String release_date;
+
+    protected KnownFor(Parcel in) {
+        if (in.readByte() == 0) {
+            vote_average = null;
+        } else {
+            vote_average = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            vote_count = null;
+        } else {
+            vote_count = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        byte tmpVideo = in.readByte();
+        video = tmpVideo == 0 ? null : tmpVideo == 1;
+        media_type = in.readString();
+        title = in.readString();
+        if (in.readByte() == 0) {
+            popularity = null;
+        } else {
+            popularity = in.readDouble();
+        }
+        poster_path = in.readString();
+        original_language = in.readString();
+        original_title = in.readString();
+        backdrop_path = in.readString();
+        byte tmpAdult = in.readByte();
+        adult = tmpAdult == 0 ? null : tmpAdult == 1;
+        overview = in.readString();
+        releaseDate = in.readString();
+        release_date = in.readString();
+    }
+
+    public static final Creator<KnownFor> CREATOR = new Creator<KnownFor>() {
+        @Override
+        public KnownFor createFromParcel(Parcel in) {
+            return new KnownFor(in);
+        }
+
+        @Override
+        public KnownFor[] newArray(int size) {
+            return new KnownFor[size];
+        }
+    };
 
     public Double getVote_average() {
         return vote_average;
@@ -150,4 +201,47 @@ public class KnownFor {
         this.release_date = release_date;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (vote_average == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(vote_average);
+        }
+        if (vote_count == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(vote_count);
+        }
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeByte((byte) (video == null ? 0 : video ? 1 : 2));
+        dest.writeString(media_type);
+        dest.writeString(title);
+        if (popularity == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(popularity);
+        }
+        dest.writeString(poster_path);
+        dest.writeString(original_language);
+        dest.writeString(original_title);
+        dest.writeString(backdrop_path);
+        dest.writeByte((byte) (adult == null ? 0 : adult ? 1 : 2));
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
+        dest.writeString(release_date);
+    }
 }

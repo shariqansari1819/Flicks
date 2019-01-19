@@ -15,9 +15,24 @@ public interface EndpointKeys {
     String ANIMATED = "Animated";
     String DRAMA = "Drama";
     String SCIENCE_FICTION = "Science Fiction";
+    String SIMILAR_MOVIES = "Similar Movies";
+    String SUGGESTED_MOVIES = "Suggested Movies";
+    String KNOW_FOR_MOVIES = "Known For Movies";
+    String SIMILAR_TV_SHOWS = "Similar Tv Shows";
+    String SUGGESTED_TV_SHOWS = "Suggested Tv Shows";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";
     String PAGE = "page";
     String REGION = "region";
+    String MOVIE_ID = "movie_id";
+    String MOVIE_TITLE = "movie_title";
+    String RATING = "rating";
+    String CELEBRITY_ID = "celebrity_id";
+    String CELEB_MOVIES = "celeb_movies";
+    String CELEB_NAME = "celeb_name";
+    String CELEB_IMAGE = "celeb_image";
+    String TV_ID = "tv_id";
+    String TV_NAME = "tv_name";
 }
+

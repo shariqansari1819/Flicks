@@ -1,6 +1,7 @@
 package com.codebosses.flicks.fragments.tvfragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,11 +22,14 @@ import android.widget.TextView;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
+import com.codebosses.flicks.activities.MoviesDetailActivity;
+import com.codebosses.flicks.activities.TvShowsDetailActivity;
 import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.utils.FontUtils;
@@ -175,9 +179,13 @@ public class FragmentLatestTvShows extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void eventBusTopRatedCelebrities(EventBusCelebrityClick eventBusCelebrityClick) {
-        if (eventBusCelebrityClick.getCelebType().equals(EndpointKeys.LATEST_TV_SHOWS)) {
-
+    public void eventBusTvShowsClick(EventBusTvShowsClick eventBusTvShowsClick) {
+        if (eventBusTvShowsClick.getTvShowType().equals(EndpointKeys.LATEST_TV_SHOWS)) {
+            Intent intent = new Intent(getActivity(), TvShowsDetailActivity.class);
+            intent.putExtra(EndpointKeys.TV_ID, tvResultArrayList.get(eventBusTvShowsClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.TV_NAME, tvResultArrayList.get(eventBusTvShowsClick.getPosition()).getName());
+            intent.putExtra(EndpointKeys.RATING, tvResultArrayList.get(eventBusTvShowsClick.getPosition()).getVote_average());
+            startActivity(intent);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.codebosses.flicks.fragments.celebritiesfragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
+import com.codebosses.flicks.activities.CelebrityMoviesActivity;
 import com.codebosses.flicks.adapters.celebritiesadapter.CelebritiesAdapter;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
@@ -179,7 +181,12 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusTopRatedCelebrities(EventBusCelebrityClick eventBusCelebrityClick) {
         if (eventBusCelebrityClick.getCelebType().equals(EndpointKeys.TOP_RATED_CELEBRITIES)) {
-
+            Intent intent = new Intent(getActivity(), CelebrityMoviesActivity.class);
+            intent.putExtra(EndpointKeys.CELEBRITY_ID, celebritiesResultList.get(eventBusCelebrityClick.getPosition()).getId());
+            intent.putParcelableArrayListExtra(EndpointKeys.CELEB_MOVIES, celebritiesResultList.get(eventBusCelebrityClick.getPosition()).getKnown_for());
+            intent.putExtra(EndpointKeys.CELEB_NAME, celebritiesResultList.get(eventBusCelebrityClick.getPosition()).getName());
+            intent.putExtra(EndpointKeys.CELEB_IMAGE, celebritiesResultList.get(eventBusCelebrityClick.getPosition()).getProfile_path());
+            startActivity(intent);
         }
     }
 

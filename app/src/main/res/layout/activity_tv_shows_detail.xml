@@ -2,37 +2,31 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayoutMoviesDetail"
+    android:id="@+id/constraintLayoutTvShowsDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    tools:context=".activities.MoviesDetailActivity">
-
-    <!--<androidx.viewpager.widget.ViewPager-->
-    <!--android:id="@+id/viewPagerYoutubePlayerMoviesDetail"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/_200sdp" />-->
+    tools:context=".activities.TvShowsDetailActivity">
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
-        android:id="@+id/youtubePlayerViewMoviesDetail"
+        android:id="@+id/youtubePlayerViewTvShowsDetail"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_200sdp" />
 
     <TextView
-        android:id="@+id/textViewTitleMoviesDetail"
+        android:id="@+id/textViewTitleTvShowsDetail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_12sdp"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/_14ssp"
-        app:layout_constraintBottom_toBottomOf="@+id/ratingBarMovieDetail"
-        app:layout_constraintEnd_toStartOf="@+id/ratingBarMovieDetail"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingBarTvShowsDetail"
+        app:layout_constraintEnd_toStartOf="@+id/ratingBarTvShowsDetail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ratingBarMovieDetail" />
+        app:layout_constraintTop_toTopOf="@+id/ratingBarTvShowsDetail" />
 
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
-        android:id="@+id/ratingBarMovieDetail"
+        android:id="@+id/ratingBarTvShowsDetail"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_12sdp"
@@ -41,18 +35,18 @@
         android:rating="2"
         android:saveEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewMoviesDetail"
+        app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewTvShowsDetail"
         app:mrb_fillBackgroundStars="true"
         app:mrb_progressTint="@color/colorAccent" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutMoviesDetail"
+        android:id="@+id/tabLayoutTvShowsDetail"
         android:layout_width="0dp"
         android:layout_height="@dimen/_35sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@+id/ratingBarMovieDetail"
-        app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesDetail"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBarMovieDetail"
+        app:layout_constraintEnd_toEndOf="@+id/ratingBarTvShowsDetail"
+        app:layout_constraintStart_toStartOf="@+id/textViewTitleTvShowsDetail"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBarTvShowsDetail"
         app:tabBackground="@color/colorWhite"
         app:tabGravity="fill"
         app:tabMode="scrollable"
@@ -60,12 +54,12 @@
         app:tabTextColor="@color/colorPrimaryText" />
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPagerMoviesDetail"
+        android:id="@+id/viewPagerTvShowsDetail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/ratingBarMovieDetail"
-        app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesDetail"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayoutMoviesDetail" />
+        app:layout_constraintEnd_toEndOf="@+id/ratingBarTvShowsDetail"
+        app:layout_constraintStart_toStartOf="@+id/textViewTitleTvShowsDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutTvShowsDetail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
