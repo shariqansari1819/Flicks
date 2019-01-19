@@ -78,4 +78,15 @@
     <!--Suggested tv shows fragment strings-->
     <string name="could_not_get_suggested_tv_shows">Sorry, Could not get suggested tv shows list.</string>
 
+    <!--Search activity strings-->
+    <string name="_search">Search&#8230;</string>
+    <string-array name="search_tabs_array">
+        <item>MOVIES</item>
+        <item>TV SHOWS</item>
+        <item>CELEBRITIES</item>
+    </string-array>
+    <string name="could_not_search_movies">Sorry, Could not search movies.</string>
+    <string name="could_not_search_tv_shows">Sorry, Could not search tv shows.</string>
+    <string name="could_not_search_celebrities">Sorry, Could not search celebrities.</string>
+
 </resources>

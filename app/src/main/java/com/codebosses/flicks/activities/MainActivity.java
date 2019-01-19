@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -417,6 +418,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuSearch:
+                startActivity(new Intent(this, SearchActivity.class));
                 return true;
         }
         return false;

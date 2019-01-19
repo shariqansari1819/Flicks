@@ -20,6 +20,9 @@ public interface EndpointKeys {
     String KNOW_FOR_MOVIES = "Known For Movies";
     String SIMILAR_TV_SHOWS = "Similar Tv Shows";
     String SUGGESTED_TV_SHOWS = "Suggested Tv Shows";
+    String SEARCH_MOVIE = "Search Movie";
+    String SEARCH_TV_SHOW = "Search Tv Show";
+    String SEARCH_CELEBRITY = "Search Celebrity";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";
@@ -34,5 +37,7 @@ public interface EndpointKeys {
     String CELEB_IMAGE = "celeb_image";
     String TV_ID = "tv_id";
     String TV_NAME = "tv_name";
+    String QUERY = "query";
+    String INCLUDE_ADULT = "include_adult";
 }
 

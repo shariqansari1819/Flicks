@@ -101,5 +101,13 @@ public interface Api {
     @GET("tv/{tv_id}/recommendations")
     Call<TvMainObject> getSuggestedTvShows(@Path(EndpointKeys.TV_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
 
+    @GET("search/movie")
+    Call<MoviesMainObject> searchMovie(@Query(EndpointKeys.QUERY) String query, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.INCLUDE_ADULT) boolean include_adult);
+
+    @GET("search/tv")
+    Call<TvMainObject> searchTvShows(@Query(EndpointKeys.QUERY) String query, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("search/person")
+    Call<CelebritiesMainObject> searchCelebrity(@Query(EndpointKeys.QUERY) String query, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.INCLUDE_ADULT) boolean include_adult);
 
 }
