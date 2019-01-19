@@ -26,6 +26,9 @@ import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
 import com.codebosses.flicks.utils.FontUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.tabs.TabLayout;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
@@ -36,6 +39,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MoviesDetailActivity extends AppCompatActivity {
 
@@ -62,6 +66,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private String movieId, movieTitle;
     private double rating;
     private MoviesDetailPagerAdapter moviesDetailPagerAdapter;
+
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +100,42 @@ public class MoviesDetailActivity extends AppCompatActivity {
             }, 500);
         }
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
+
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showInterstitial();
     }
 
     @Override

@@ -17,6 +17,9 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.searchadapter.SearchPagerAdapter;
 import com.codebosses.flicks.pojo.eventbus.EventBusSearchText;
 import com.codebosses.flicks.utils.FontUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.tabs.TabLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,6 +43,8 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
     long last_text_edit = 0;
     Handler handler = new Handler();
 
+    private InterstitialAd mInterstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,41 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
         tabLayoutSearch.setupWithViewPager(viewPagerSearch);
         viewPagerSearch.setOffscreenPageLimit(2);
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showInterstitial();
     }
 
     @Override
@@ -96,7 +136,11 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
         public void run() {
             if (System.currentTimeMillis() > (last_text_edit + delay - 500)) {
                 if (editTextSearch.getText().toString().length() != 0) {
-                    EventBus.getDefault().post(new EventBusSearchText(editTextSearch.getText().toString()));
+                    String text = editTextSearch.getText().toString();
+//                    if (text.contains(" ")) {
+//                        text = text.replace(" ", "%20");
+//                    }
+                    EventBus.getDefault().post(new EventBusSearchText(text));
                 }
             }
         }

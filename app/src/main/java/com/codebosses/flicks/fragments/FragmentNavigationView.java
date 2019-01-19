@@ -23,6 +23,9 @@ import com.codebosses.flicks.pojo.eventbus.EventBusExpandItems;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
 import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryItem;
 import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryHeader;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,6 +41,8 @@ public class FragmentNavigationView extends Fragment {
 
     @BindView(R.id.recyclerViewNavigation)
     RecyclerView recyclerViewNavigation;
+    @BindView(R.id.adView)
+    AdView adView;
 
     //    Adapter fields....
     CategoryAdapter adapter;
@@ -79,6 +84,15 @@ public class FragmentNavigationView extends Fragment {
         }
 
         EventBus.getDefault().register(this);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
 
         return view;
     }

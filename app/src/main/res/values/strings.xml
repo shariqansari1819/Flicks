@@ -3,6 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="admob_id">ca-app-pub-2898731232039780~2784308181</string>
+    <string name="banner_admob_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <!--Main activity screen strings-->
     <string name="open">Open</string>

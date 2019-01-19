@@ -32,6 +32,10 @@ import com.codebosses.flicks.fragments.celebritiesfragments.FragmentTopRatedCele
 import com.codebosses.flicks.fragments.tvfragments.FragmentTopRatedTvShows;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
 import com.codebosses.flicks.utils.FontUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,6 +45,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Stack;
 
 import static com.codebosses.flicks.common.Constants.DATA_KEY_1;
@@ -63,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     Toolbar toolbarMain;
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewTitle;
+    @BindView(R.id.adView)
+    AdView adView;
 
     ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -94,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     private List<String> stackList;
     private List<String> menuStacks;
 
+    private InterstitialAd mInterstitialAd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,11 +130,55 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         fragmentManager = getSupportFragmentManager();
         initializeFragments();
 
-
         createStacks();
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
 
 //        Event listeners....
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showInterstitial();
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
     }
 
     private void initializeFragments() {
