@@ -4,7 +4,8 @@ Flicks is most beautiful and fastest source for movies, TV shows and celebrities
 
 # Home Page
 
-https://user-images.githubusercontent.com/36818105/51435966-3cfe6f80-1ca5-11e9-9dcd-e09040cf818b.png
+![screenshot_20190119-201813](https://user-images.githubusercontent.com/36818105/51435966-3cfe6f80-1ca5-11e9-9dcd-e09040cf818b.png)
+
 
 ## Getting Started
 
