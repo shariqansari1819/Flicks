@@ -6,8 +6,8 @@ Flicks is most beautiful and fastest source for movies, TV shows and celebrities
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/36818105/51435966-3cfe6f80-1ca5-11e9-9dcd-e09040cf818b.png" width="250" alt="Home Page">
-  <img src="https://user-images.githubusercontent.com/36818105/51435966-3cfe6f80-1ca5-11e9-9dcd-e09040cf818b.png" width="250" alt="Home Page">
-  <img src="https://user-images.githubusercontent.com/36818105/51435966-3cfe6f80-1ca5-11e9-9dcd-e09040cf818b.png" width="250" alt="Home Page">
+  <img src="https://user-images.githubusercontent.com/36818105/51436056-50123f00-1ca7-11e9-903a-0ccfffcf192b.png" width="250" alt="Movie Trailer">
+  <img src="https://user-images.githubusercontent.com/36818105/51436062-661fff80-1ca7-11e9-9255-6289b0a75451.png" width="250" alt="Home Page">
 </div>
 
 ## Getting Started
