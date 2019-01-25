@@ -68,7 +68,7 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
         viewPagerSearch.setOffscreenPageLimit(2);
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
         AdRequest adRequestInterstitial = new AdRequest.Builder().build();
         mInterstitialAd.loadAd(adRequestInterstitial);
         mInterstitialAd.setAdListener(new AdListener() {
