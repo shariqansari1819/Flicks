@@ -12,7 +12,7 @@ Flicks is most beautiful and fastest source for movies, TV shows and celebrities
 
 ## Getting Started
 
-You can down load this project and use it but don't forget to change yout tmdb API key.
+You can download or clone this project and use it but don't forget to change yout tmdb API key.
 
 ### Prerequisites
 
