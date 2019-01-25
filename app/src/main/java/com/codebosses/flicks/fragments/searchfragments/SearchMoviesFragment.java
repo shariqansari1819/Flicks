@@ -32,6 +32,9 @@ import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,6 +52,8 @@ public class SearchMoviesFragment extends Fragment {
     CircularProgressBar circularProgressBar;
     @BindView(R.id.recyclerViewSearchMovies)
     RecyclerView recyclerViewSearchMovies;
+    @BindView(R.id.adView)
+    AdView adView;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -79,6 +84,16 @@ public class SearchMoviesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search_movies, container, false);
         ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
