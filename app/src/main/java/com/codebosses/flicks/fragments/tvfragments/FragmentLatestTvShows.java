@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,6 +55,8 @@ public class FragmentLatestTvShows extends BaseFragment {
     CircularProgressBar circularProgressBar;
     @BindView(R.id.recyclerViewLatestTvShows)
     RecyclerView recyclerViewLatestTvShows;
+    @BindView(R.id.imageViewErrorLatestTvShows)
+    AppCompatImageView imageViewError;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -107,6 +110,7 @@ public class FragmentLatestTvShows extends BaseFragment {
 
             } else {
                 textViewError.setVisibility(View.VISIBLE);
+                imageViewError.setVisibility(View.VISIBLE);
                 textViewError.setText(internetProblem);
             }
         }
@@ -155,6 +159,7 @@ public class FragmentLatestTvShows extends BaseFragment {
                 } else {
                     textViewError.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetTvShows);
+                    imageViewError.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -164,6 +169,7 @@ public class FragmentLatestTvShows extends BaseFragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.INVISIBLE);
+                imageViewError.setVisibility(View.VISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {

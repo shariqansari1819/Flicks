@@ -45,6 +45,7 @@
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewOriginalTitleHeader" />
 
@@ -61,6 +62,7 @@
         <TextView
             android:id="@+id/textViewOverviewText"
             style="@style/TextViewDetailStyle"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="web"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewHomepageHeader" />
 
@@ -100,6 +103,7 @@
             android:id="@+id/textViewBudgetText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewBudgetHeader" />
@@ -118,6 +122,7 @@
             android:id="@+id/textViewReleaseDateText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeader" />
@@ -136,6 +141,7 @@
             android:id="@+id/textViewRevenueText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewRevenueHeader" />
@@ -153,6 +159,7 @@
         <TextView
             android:id="@+id/textViewTagLineText"
             style="@style/TextViewDetailStyle"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -172,6 +179,7 @@
             android:id="@+id/textViewStatusText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewStatusHeader" />

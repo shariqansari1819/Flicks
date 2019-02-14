@@ -7,19 +7,29 @@
     android:layout_height="match_parent"
     tools:context=".fragments.searchfragments.SearchCelebrityFragment">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewNotFoundSearchCelebrity"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_action_not_found" />
 
     <TextView
         android:id="@+id/textViewErrorMessageSearchCelebrity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
         android:gravity="center"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/_17ssp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewNotFoundSearchCelebrity" />
 
     <com.budiyev.android.circularprogressbar.CircularProgressBar
         android:id="@+id/circularProgressBarSearchCelebrity"

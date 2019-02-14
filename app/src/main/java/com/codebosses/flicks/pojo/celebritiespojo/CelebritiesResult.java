@@ -12,7 +12,7 @@ public class CelebritiesResult {
     private Integer id;
     private String profile_path;
     private String name;
-    private ArrayList<KnownFor> known_for = null;
+    private ArrayList<KnownFor> known_for = new ArrayList<>();
     private Boolean adult;
 
     public Double getPopularity() {

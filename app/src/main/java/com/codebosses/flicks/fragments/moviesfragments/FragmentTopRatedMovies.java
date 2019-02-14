@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +53,8 @@ public class FragmentTopRatedMovies extends BaseFragment {
     CircularProgressBar circularProgressBar;
     @BindView(R.id.recyclerViewTopRatedMovies)
     RecyclerView recyclerViewTopRatedMovies;
+    @BindView(R.id.imageViewErrorTopRatedMovies)
+    AppCompatImageView imageViewError;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -104,6 +107,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
 
             } else {
                 textViewError.setVisibility(View.VISIBLE);
+                imageViewError.setVisibility(View.VISIBLE);
                 textViewError.setText(internetProblem);
             }
         }
@@ -151,6 +155,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
                     }
                 } else {
                     textViewError.setVisibility(View.VISIBLE);
+                    imageViewError.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetMovies);
                 }
             }
@@ -162,6 +167,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
                 }
                 circularProgressBar.setVisibility(View.INVISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
+                imageViewError.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
                         textViewError.setText(internetProblem);

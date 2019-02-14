@@ -45,6 +45,7 @@
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewOriginalTitleHeader" />
 
@@ -62,6 +63,7 @@
             android:id="@+id/textViewOverviewText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewOverviewHeader" />
@@ -83,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="web"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewHomepageHeader" />
 
@@ -100,6 +103,7 @@
             android:id="@+id/textViewBudgetText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewBudgetHeader" />
@@ -118,6 +122,7 @@
             android:id="@+id/textViewReleaseDateText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeader" />
@@ -136,6 +141,7 @@
             android:id="@+id/textViewRevenueText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewRevenueHeader" />
@@ -154,6 +160,7 @@
             android:id="@+id/textViewTagLineText"
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewTagLineHeader" />
@@ -173,6 +180,7 @@
             style="@style/TextViewDetailStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewStatusHeader" />
 

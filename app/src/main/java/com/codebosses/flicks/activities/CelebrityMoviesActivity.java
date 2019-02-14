@@ -36,6 +36,10 @@ import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -56,6 +60,8 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     @BindView(R.id.circleImageCelebMoviesAppBar)
     CircleImageView circleImageView;
     private LinearLayoutManager linearLayoutManager;
+    @BindView(R.id.adView)
+    AdView adView;
 
 
     //    Resource fields....
@@ -72,6 +78,9 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     private MoviesAdapter moviesAdapter;
     private String celebId, celebName, celebImage;
     private List<MoviesResult> moviesResultArrayList = new ArrayList<>();
+
+    private InterstitialAd mInterstitialAd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +138,52 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
             textViewError.setVisibility(View.VISIBLE);
             textViewError.setText(internetProblem);
         }
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
+
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showInterstitial();
     }
 
     @Override

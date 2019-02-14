@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -56,6 +57,8 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
     CircularProgressBar circularProgressBar;
     @BindView(R.id.recyclerViewTopRatedCelebrities)
     RecyclerView recyclerViewTopRatedCelebrities;
+    @BindView(R.id.imageViewErrorTopRatedCelebrities)
+    AppCompatImageView imageViewError;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -108,6 +111,7 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
             } else {
                 textViewError.setVisibility(View.VISIBLE);
                 textViewError.setText(internetProblem);
+                imageViewError.setVisibility(View.VISIBLE);
             }
         }
         recyclerViewTopRatedCelebrities.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -155,6 +159,7 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
                 } else {
                     textViewError.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetCelebrities);
+                    imageViewError.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -165,6 +170,7 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
                 }
                 circularProgressBar.setVisibility(View.INVISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
+                imageViewError.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
                         textViewError.setText(internetProblem);

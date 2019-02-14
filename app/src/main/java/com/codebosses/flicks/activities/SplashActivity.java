@@ -37,4 +37,9 @@ public class SplashActivity extends AppCompatActivity {
             handler.removeCallbacks(null);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

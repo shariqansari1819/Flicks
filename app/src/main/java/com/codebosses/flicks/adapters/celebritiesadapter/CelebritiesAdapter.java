@@ -54,13 +54,14 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
     public void onBindViewHolder(@NonNull CelebritiesHolder holder, int position) {
         CelebritiesResult celebritiesResult = celebritiesResultArrayList.get(position);
         if (celebritiesResult != null) {
-            Glide.with(context)
-                    .load(EndpointUrl.POSTER_BASE_URL + "/" + celebritiesResult.getProfile_path())
-                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                    .into(holder.imageViewThumbnail);
+            if (celebritiesResult.getProfile_path() != null && !celebritiesResult.getProfile_path().equals(""))
+                Glide.with(context)
+                        .load(EndpointUrl.POSTER_BASE_URL + "/" + celebritiesResult.getProfile_path())
+                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .into(holder.imageViewThumbnail);
             String title = celebritiesResult.getName();
-            if (title.length() > 19)
-                title = title.substring(0, 20);
+            if (title.length() > 17)
+                title = title.substring(0, 17) + "...";
             holder.textViewMovieTitle.setText(title);
             holder.textViewRatingCount.setText(String.valueOf(celebritiesResult.getPopularity()));
         }

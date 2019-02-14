@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,6 +55,8 @@ public class SearchMoviesFragment extends Fragment {
     RecyclerView recyclerViewSearchMovies;
     @BindView(R.id.adView)
     AdView adView;
+    @BindView(R.id.imageViewNotFoundSearchMovies)
+    AppCompatImageView imageViewNotFound;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -141,6 +144,7 @@ public class SearchMoviesFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSearchMovie(EventBusSearchText eventBusSearchText) {
         if (!eventBusSearchText.getSearchText().isEmpty()) {
+            pageNumber = 1;
             searchText = eventBusSearchText.getSearchText();
             circularProgressBar.setVisibility(View.VISIBLE);
             moviesAdapter.notifyItemRangeRemoved(0, searchMoviesResultList.size());
@@ -151,6 +155,7 @@ public class SearchMoviesFragment extends Fragment {
 
     private void searchMovies(String query, String language, int pageNumber) {
         textViewError.setVisibility(View.GONE);
+        imageViewNotFound.setVisibility(View.GONE);
         searchMoviesCall = Api.WEB_SERVICE.searchMovie(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, true);
         searchMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
@@ -168,12 +173,14 @@ public class SearchMoviesFragment extends Fragment {
                             }
                         } else {
                             textViewError.setVisibility(View.VISIBLE);
-                            textViewError.setText("No movie found.");
+                            textViewError.setText(getResources().getString(R.string.no_movie_found));
+                            imageViewNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 } else {
                     textViewError.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetMovies);
+                    imageViewNotFound.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -184,6 +191,7 @@ public class SearchMoviesFragment extends Fragment {
                 }
                 circularProgressBar.setVisibility(View.INVISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
+                imageViewNotFound.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
                         textViewError.setText(internetProblem);

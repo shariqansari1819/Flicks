@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,7 @@ import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
+import com.codebosses.flicks.utils.CommonSorting;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 
@@ -51,6 +53,8 @@ public class FragmentUpcomingMovies extends BaseFragment {
     CircularProgressBar circularProgressBar;
     @BindView(R.id.recyclerViewUpcomingMovies)
     RecyclerView recyclerViewUpcomingMovies;
+    @BindView(R.id.imageViewErrorUpcomingMovies)
+    AppCompatImageView imageViewError;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -101,6 +105,7 @@ public class FragmentUpcomingMovies extends BaseFragment {
 
             } else {
                 textViewError.setVisibility(View.VISIBLE);
+                imageViewError.setVisibility(View.VISIBLE);
                 textViewError.setText(internetProblem);
             }
         }
@@ -139,14 +144,17 @@ public class FragmentUpcomingMovies extends BaseFragment {
                     if (moviesMainObject != null) {
                         totalPages = moviesMainObject.getTotal_pages();
                         if (moviesMainObject.getTotal_results() > 0) {
-                            for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                upcomingMoviesList.add(moviesMainObject.getResults().get(i));
+                            List<MoviesResult> moviesResults = moviesMainObject.getResults();
+                            CommonSorting.sortMovieByDate(moviesResults);
+                            for (int i = 0; i < moviesResults.size(); i++) {
+                                upcomingMoviesList.add(moviesResults.get(i));
                                 moviesAdapter.notifyItemInserted(upcomingMoviesList.size() - 1);
                             }
                         }
                     }
                 } else {
                     textViewError.setVisibility(View.VISIBLE);
+                    imageViewError.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetMovies);
                 }
             }
@@ -158,6 +166,7 @@ public class FragmentUpcomingMovies extends BaseFragment {
                 }
                 circularProgressBar.setVisibility(View.INVISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
+                imageViewError.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
                         textViewError.setText(internetProblem);

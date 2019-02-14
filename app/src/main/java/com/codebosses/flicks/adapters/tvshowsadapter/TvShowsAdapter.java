@@ -55,13 +55,14 @@ public class TvShowsAdapter extends RecyclerView.Adapter<TvShowsAdapter.TvShowsH
     public void onBindViewHolder(@NonNull TvShowsHolder holder, int position) {
         TvResult tvResult = tvResultArrayList.get(position);
         if (tvResult != null) {
-            Glide.with(context)
-                    .load(EndpointUrl.POSTER_BASE_URL + "/" + tvResult.getPoster_path())
-                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                    .into(holder.imageViewThumbnail);
+            if (tvResult.getPoster_path() != null && !tvResult.getPoster_path().equals(""))
+                Glide.with(context)
+                        .load(EndpointUrl.POSTER_BASE_URL + "/" + tvResult.getPoster_path())
+                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .into(holder.imageViewThumbnail);
             String title = tvResult.getOriginal_name();
-            if (title.length() > 19)
-                title = title.substring(0, 20);
+            if (title.length() > 17)
+                title = title.substring(0, 17) + "...";
             holder.textViewMovieTitle.setText(title);
             holder.textViewMovieYear.setText(tvResult.getFirst_air_date());
             holder.textViewRatingCount.setText(String.valueOf(tvResult.getVote_average()));

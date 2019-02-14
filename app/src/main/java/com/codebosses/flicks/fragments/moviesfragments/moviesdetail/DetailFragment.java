@@ -140,22 +140,42 @@ public class DetailFragment extends Fragment {
                 if (response != null && response.isSuccessful()) {
                     MovieDetailMainObject movieDetailMainObject = response.body();
                     if (movieDetailMainObject != null) {
-                        textViewOriginalTitleHeader.setVisibility(View.VISIBLE);
+
+                        String originalTitle = movieDetailMainObject.getOriginal_title();
+//                        int budget = movieDetailMainObject.getBudget();
+                        String homePage = movieDetailMainObject.getHomepage();
+                        String overview = movieDetailMainObject.getOverview();
+                        String releaseDate = movieDetailMainObject.getRelease_date();
+//                        int revenue = movieDetailMainObject.getRevenue();
+                        String movieStatus = movieDetailMainObject.getStatus();
+                        String tagLine = movieDetailMainObject.getTagline();
+
+                        if (!originalTitle.isEmpty()) {
+                            setDetailData(textViewOriginalTitleHeader, textViewOriginalTitle, originalTitle);
+                        }
+                        if (!homePage.isEmpty()) {
+                            setDetailData(textViewHomePageHeader, textViewHomePage, homePage);
+                        }
+                        if (!overview.isEmpty()) {
+                            setDetailData(textViewOverviewHeader, textViewOverview, overview);
+                        }
+                        if (!releaseDate.isEmpty()) {
+                            setDetailData(textViewReleaseDateHeader, textViewReleaseDate, releaseDate);
+                        }
+                        if (!movieStatus.isEmpty()) {
+                            setDetailData(textViewStatusHeader, textViewStatus, movieStatus);
+                        }
+                        if (!tagLine.isEmpty()) {
+                            setDetailData(textViewTagLineHeader, textViewTagLine, originalTitle);
+                        }
                         textViewBudgetHeader.setVisibility(View.VISIBLE);
-                        textViewHomePageHeader.setVisibility(View.VISIBLE);
-                        textViewOverviewHeader.setVisibility(View.VISIBLE);
-                        textViewReleaseDateHeader.setVisibility(View.VISIBLE);
                         textViewRevenueHeader.setVisibility(View.VISIBLE);
-                        textViewStatusHeader.setVisibility(View.VISIBLE);
-                        textViewTagLineHeader.setVisibility(View.VISIBLE);
-                        textViewOriginalTitle.setText(movieDetailMainObject.getOriginal_title());
+                        textViewBudget.setVisibility(View.VISIBLE);
+                        textViewRevenue.setVisibility(View.VISIBLE);
+
                         textViewBudget.setText(String.valueOf(movieDetailMainObject.getBudget()));
-                        textViewHomePage.setText(movieDetailMainObject.getHomepage());
-                        textViewOverview.setText(movieDetailMainObject.getOverview());
-                        textViewReleaseDate.setText(movieDetailMainObject.getRelease_date());
                         textViewRevenue.setText(String.valueOf(movieDetailMainObject.getRevenue()));
-                        textViewStatus.setText(movieDetailMainObject.getStatus());
-                        textViewTagLine.setText(movieDetailMainObject.getTagline());
+
                         if (movieDetailMainObject.getGenres().size() > 0) {
                             EventBus.getDefault().post(new EventBusMovieGenreList(movieDetailMainObject.getGenres()));
                         }
@@ -180,6 +200,12 @@ public class DetailFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void setDetailData(TextView textViewHeader, TextView textViewData, String text) {
+        textViewHeader.setVisibility(View.VISIBLE);
+        textViewData.setVisibility(View.VISIBLE);
+        textViewData.setText(text);
     }
 
 }

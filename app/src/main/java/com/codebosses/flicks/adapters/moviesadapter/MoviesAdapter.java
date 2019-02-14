@@ -53,14 +53,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
     public void onBindViewHolder(@NonNull MoviesHolder holder, int position) {
         MoviesResult moviesResult = moviesResultArrayList.get(position);
         if (moviesResult != null) {
-            Glide.with(context)
-                    .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
-                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                    .into(holder.imageViewThumbnail);
+            if (moviesResult.getPoster_path() != null && !moviesResult.getPoster_path().equals(""))
+                Glide.with(context)
+                        .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
+                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();
-            if (title.length() > 19)
-                title = title.substring(0, 20);
-            holder.textViewMovieTitle.setText(title);
+            if (title != null) {
+                if (title.length() > 17)
+                    title = title.substring(0, 17) + "...";
+                holder.textViewMovieTitle.setText(title);
+            }
             holder.textViewMovieYear.setText(moviesResult.getRelease_date());
             holder.textViewRatingCount.setText(String.valueOf(moviesResult.getVote_average()));
             holder.textViewVoteCount.setText(String.valueOf(moviesResult.getVote_count()));

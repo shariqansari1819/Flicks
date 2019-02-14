@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +31,7 @@ import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusSearchText;
+import com.codebosses.flicks.utils.CommonSorting;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.google.android.gms.ads.AdListener;
@@ -54,6 +56,8 @@ public class SearchCelebrityFragment extends Fragment {
     RecyclerView recyclerViewSearchCelebrity;
     @BindView(R.id.adView)
     AdView adView;
+    @BindView(R.id.imageViewNotFoundSearchCelebrity)
+    AppCompatImageView imageViewNotFound;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -141,6 +145,7 @@ public class SearchCelebrityFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSearchCelebrity(EventBusSearchText eventBusSearchText) {
         if (!eventBusSearchText.getSearchText().isEmpty()) {
+            pageNumber = 1;
             searchText = eventBusSearchText.getSearchText();
             celebritiesAdapter.notifyItemRangeRemoved(0, searchCelebritiesList.size());
             searchCelebritiesList.clear();
@@ -151,6 +156,7 @@ public class SearchCelebrityFragment extends Fragment {
 
     private void searchCelebrities(String query, String language, int pageNumber) {
         textViewError.setVisibility(View.GONE);
+        imageViewNotFound.setVisibility(View.GONE);
         searchCelebritiesCall = Api.WEB_SERVICE.searchCelebrity(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, true);
         searchCelebritiesCall.enqueue(new Callback<CelebritiesMainObject>() {
             @Override
@@ -162,17 +168,21 @@ public class SearchCelebrityFragment extends Fragment {
                         totalPages = celebritiesMainObject.getTotal_pages();
                         if (celebritiesMainObject.getTotal_results() > 0) {
                             textViewError.setVisibility(View.GONE);
-                            for (int i = 0; i < celebritiesMainObject.getResults().size(); i++) {
-                                searchCelebritiesList.add(celebritiesMainObject.getResults().get(i));
+                            List<CelebritiesResult> celebritiesResults = celebritiesMainObject.getResults();
+                            CommonSorting.sortCelebritiesByRating(celebritiesResults);
+                            for (int i = 0; i < celebritiesResults.size(); i++) {
+                                searchCelebritiesList.add(celebritiesResults.get(i));
                                 celebritiesAdapter.notifyItemInserted(searchCelebritiesList.size() - 1);
                             }
                         } else {
                             textViewError.setVisibility(View.VISIBLE);
-                            textViewError.setText("No celebrity found.");
+                            imageViewNotFound.setVisibility(View.VISIBLE);
+                            textViewError.setText(getResources().getString(R.string.no_celebrity_found));
                         }
                     }
                 } else {
                     textViewError.setVisibility(View.VISIBLE);
+                    imageViewNotFound.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetCelebrities);
                 }
             }
@@ -183,6 +193,7 @@ public class SearchCelebrityFragment extends Fragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.INVISIBLE);
+                imageViewNotFound.setVisibility(View.VISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {

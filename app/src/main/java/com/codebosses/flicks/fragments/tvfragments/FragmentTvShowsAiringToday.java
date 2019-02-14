@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,22 +41,23 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentTopRatedTvShows extends BaseFragment {
+
+public class FragmentTvShowsAiringToday extends BaseFragment {
 
     //    Android fields....
-    @BindView(R.id.textViewErrorMessageTopRatedTvShows)
+    @BindView(R.id.textViewErrorMessageTvShowsAiringToday)
     TextView textViewError;
-    @BindView(R.id.circularProgressBarTopRatedTvShows)
+    @BindView(R.id.circularProgressBarTvShowsAiringToday)
     CircularProgressBar circularProgressBar;
-    @BindView(R.id.recyclerViewTopRatedTvShows)
-    RecyclerView recyclerViewTopRatedTvShows;
-    @BindView(R.id.imageViewErrorTopRatedTvShows)
+    @BindView(R.id.recyclerViewTvShowsAiringToday)
+    RecyclerView recyclerViewTvShowsAiringToday;
+    @BindView(R.id.imageViewErrorTvShowsAiringToday)
     AppCompatImageView imageViewError;
     private LinearLayoutManager linearLayoutManager;
 
 
     //    Resource fields....
-    @BindString(R.string.could_not_get_top_rated_tv_shows)
+    @BindString(R.string.could_not_get_tv_shows_airing_today)
     String couldNotGetTvShows;
     @BindString(R.string.internet_problem)
     String internetProblem;
@@ -71,14 +73,19 @@ public class FragmentTopRatedTvShows extends BaseFragment {
     private TvShowsAdapter tvShowsAdapter;
     private int pageNumber = 1, totalPages = 0;
 
-    public FragmentTopRatedTvShows() {
+
+    public FragmentTvShowsAiringToday() {
+
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_top_rated_tv_shows, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_tv_shows_airing_today, container, false);
+        ButterKnife.bind(this, view);
+
         ButterKnife.bind(this, view);
 
         EventBus.getDefault().register(this);
@@ -90,14 +97,14 @@ public class FragmentTopRatedTvShows extends BaseFragment {
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
 
-                tvShowsAdapter = new TvShowsAdapter(getActivity(), tvResultArrayList, EndpointKeys.TOP_RATED_TV_SHOWS);
+                tvShowsAdapter = new TvShowsAdapter(getActivity(), tvResultArrayList, EndpointKeys.TV_SHOWS_AIRING_TODAY);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerViewTopRatedTvShows.setLayoutManager(linearLayoutManager);
-                recyclerViewTopRatedTvShows.setItemAnimator(new DefaultItemAnimator());
-                recyclerViewTopRatedTvShows.setAdapter(tvShowsAdapter);
+                recyclerViewTvShowsAiringToday.setLayoutManager(linearLayoutManager);
+                recyclerViewTvShowsAiringToday.setItemAnimator(new DefaultItemAnimator());
+                recyclerViewTvShowsAiringToday.setAdapter(tvShowsAdapter);
 
                 circularProgressBar.setVisibility(View.VISIBLE);
-                getTopRatedTvShows("en-US", pageNumber);
+                getTvShowsAiringToday("en-US", pageNumber);
 
             } else {
                 textViewError.setVisibility(View.VISIBLE);
@@ -105,7 +112,7 @@ public class FragmentTopRatedTvShows extends BaseFragment {
                 textViewError.setText(internetProblem);
             }
         }
-        recyclerViewTopRatedTvShows.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerViewTvShowsAiringToday.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -113,13 +120,14 @@ public class FragmentTopRatedTvShows extends BaseFragment {
                 if (isBottomReached) {
                     pageNumber++;
                     if (pageNumber <= totalPages)
-                        getTopRatedTvShows("en-US", pageNumber);
+                        getTvShowsAiringToday("en-US", pageNumber);
                 }
             }
         });
 
         return view;
     }
+
 
     @Override
     public void onDestroy() {
@@ -130,8 +138,8 @@ public class FragmentTopRatedTvShows extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
-    private void getTopRatedTvShows(String language, int pageNumber) {
-        tvMainObjectCall = Api.WEB_SERVICE.getTopRatedTvShows(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+    private void getTvShowsAiringToday(String language, int pageNumber) {
+        tvMainObjectCall = Api.WEB_SERVICE.getTvAiringToday(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         tvMainObjectCall.enqueue(new Callback<TvMainObject>() {
             @Override
             public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {
@@ -149,8 +157,8 @@ public class FragmentTopRatedTvShows extends BaseFragment {
                     }
                 } else {
                     textViewError.setVisibility(View.VISIBLE);
-                    imageViewError.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetTvShows);
+                    imageViewError.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -160,8 +168,8 @@ public class FragmentTopRatedTvShows extends BaseFragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.INVISIBLE);
-                textViewError.setVisibility(View.VISIBLE);
                 imageViewError.setVisibility(View.VISIBLE);
+                textViewError.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
                         textViewError.setText(internetProblem);
@@ -177,7 +185,7 @@ public class FragmentTopRatedTvShows extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusTvShowsClick(EventBusTvShowsClick eventBusTvShowsClick) {
-        if (eventBusTvShowsClick.getTvShowType().equals(EndpointKeys.TOP_RATED_TV_SHOWS)) {
+        if (eventBusTvShowsClick.getTvShowType().equals(EndpointKeys.TV_SHOWS_AIRING_TODAY)) {
             Intent intent = new Intent(getActivity(), TvShowsDetailActivity.class);
             intent.putExtra(EndpointKeys.TV_ID, tvResultArrayList.get(eventBusTvShowsClick.getPosition()).getId());
             intent.putExtra(EndpointKeys.TV_NAME, tvResultArrayList.get(eventBusTvShowsClick.getPosition()).getName());
@@ -185,5 +193,6 @@ public class FragmentTopRatedTvShows extends BaseFragment {
             startActivity(intent);
         }
     }
+
 
 }

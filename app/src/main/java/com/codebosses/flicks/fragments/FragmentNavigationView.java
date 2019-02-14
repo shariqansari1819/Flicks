@@ -139,8 +139,9 @@ public class FragmentNavigationView extends Fragment {
     private List<CategoryItem> makeTvItems() {
         CategoryItem topRatedTvShows = new CategoryItem(getResources().getString(R.string.top_rated_tv_shows), false);
         CategoryItem latestTvShows = new CategoryItem(getResources().getString(R.string.latest_tv_shows), false);
-
-        return Arrays.asList(topRatedTvShows, latestTvShows);
+        CategoryItem tvShowsOnTheAir = new CategoryItem(getResources().getString(R.string.tv_shows_on_the_air), false);
+        CategoryItem tvShowsAiringToday = new CategoryItem(getResources().getString(R.string.tv_shows_on_the_air_today), false);
+        return Arrays.asList(topRatedTvShows, latestTvShows, tvShowsOnTheAir, tvShowsAiringToday);
     }
 
     private CategoryHeader makeCelebriyHeader() {

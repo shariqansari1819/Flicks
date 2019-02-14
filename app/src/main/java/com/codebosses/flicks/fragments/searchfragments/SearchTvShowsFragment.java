@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,6 +55,8 @@ public class SearchTvShowsFragment extends Fragment {
     RecyclerView recyclerViewSearchTvShow;
     @BindView(R.id.adView)
     AdView adView;
+    @BindView(R.id.imageViewNotFoundSearchTvShow)
+    AppCompatImageView imageViewNotFound;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -141,6 +144,7 @@ public class SearchTvShowsFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSearchTvShows(EventBusSearchText eventBusSearchText) {
         if (!eventBusSearchText.getSearchText().isEmpty()) {
+            pageNumber = 1;
             circularProgressBar.setVisibility(View.VISIBLE);
             searchText = eventBusSearchText.getSearchText();
             tvShowsAdapter.notifyItemRangeRemoved(0, searchTvShowList.size());
@@ -151,6 +155,7 @@ public class SearchTvShowsFragment extends Fragment {
 
     private void getTopLatestTvShows(String query, String language, int pageNumber) {
         textViewError.setVisibility(View.GONE);
+        imageViewNotFound.setVisibility(View.GONE);
         searchTvShowCall = Api.WEB_SERVICE.searchTvShows(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         searchTvShowCall.enqueue(new Callback<TvMainObject>() {
             @Override
@@ -168,12 +173,14 @@ public class SearchTvShowsFragment extends Fragment {
                             }
                         } else {
                             textViewError.setVisibility(View.VISIBLE);
-                            textViewError.setText("No tv show found.");
+                            imageViewNotFound.setVisibility(View.VISIBLE);
+                            textViewError.setText(getResources().getString(R.string.no_tv_show_found));
                         }
                     }
                 } else {
                     textViewError.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetTvShows);
+                    imageViewNotFound.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -183,6 +190,7 @@ public class SearchTvShowsFragment extends Fragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.INVISIBLE);
+                imageViewNotFound.setVisibility(View.VISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {

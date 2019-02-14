@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayoutUpcomingMovies"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraintLayoutTvShowsOnAir"
     android:layout_height="match_parent"
-    tools:context=".fragments.moviesfragments.FragmentUpcomingMovies">
+    tools:context="com.codebosses.flicks.fragments.tvfragments.FragmentTvShowsOnAir">
+
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageViewErrorUpcomingMovies"
+        android:id="@+id/imageViewErrorTvShowsOnAir"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
         android:visibility="gone"
@@ -20,7 +20,7 @@
 
 
     <TextView
-        android:id="@+id/textViewErrorMessageUpcomingMovies"
+        android:id="@+id/textViewErrorMessageTvShowsOnAir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
@@ -30,10 +30,10 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewErrorUpcomingMovies" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewErrorTvShowsOnAir" />
 
     <com.budiyev.android.circularprogressbar.CircularProgressBar
-        android:id="@+id/circularProgressBarUpcomingMovies"
+        android:id="@+id/circularProgressBarTvShowsOnAir"
         android:layout_width="@dimen/_44sdp"
         android:layout_height="@dimen/_44sdp"
         android:visibility="gone"
@@ -50,11 +50,10 @@
         app:startAngle="45" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUpcomingMovies"
+        android:id="@+id/recyclerViewTvShowsOnAir"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

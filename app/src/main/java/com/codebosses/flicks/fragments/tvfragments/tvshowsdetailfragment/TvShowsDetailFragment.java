@@ -30,6 +30,7 @@ import com.codebosses.flicks.utils.FontUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.w3c.dom.Text;
 
 public class TvShowsDetailFragment extends Fragment {
 
@@ -137,16 +138,29 @@ public class TvShowsDetailFragment extends Fragment {
                 if (response != null && response.isSuccessful()) {
                     TvShowsDetailMainObject tvShowsDetailMainObject = response.body();
                     if (tvShowsDetailMainObject != null) {
-                        textViewOriginalTitleHeader.setVisibility(View.VISIBLE);
-                        textViewHomePageHeader.setVisibility(View.VISIBLE);
-                        textViewOverviewHeader.setVisibility(View.VISIBLE);
-                        textViewReleaseDateHeader.setVisibility(View.VISIBLE);
-                        textViewStatusHeader.setVisibility(View.VISIBLE);
-                        textViewOriginalTitle.setText(tvShowsDetailMainObject.getOriginal_name());
-                        textViewHomePage.setText(tvShowsDetailMainObject.getHomepage());
-                        textViewOverview.setText(tvShowsDetailMainObject.getOverview());
-                        textViewReleaseDate.setText(tvShowsDetailMainObject.getFirst_air_date());
-                        textViewStatus.setText(tvShowsDetailMainObject.getStatus());
+
+                        String originalName = tvShowsDetailMainObject.getOriginal_name();
+                        String homePage = tvShowsDetailMainObject.getHomepage();
+                        String overview = tvShowsDetailMainObject.getOverview();
+                        String firstAirDate = tvShowsDetailMainObject.getFirst_air_date();
+                        String movieStatus = tvShowsDetailMainObject.getStatus();
+
+                        if (!originalName.isEmpty()) {
+                            setDetailData(textViewOriginalTitleHeader, textViewOriginalTitle, originalName);
+                        }
+                        if (!homePage.isEmpty()) {
+                            setDetailData(textViewHomePageHeader, textViewHomePage, homePage);
+                        }
+                        if (!overview.isEmpty()) {
+                            setDetailData(textViewOverviewHeader, textViewOverview, overview);
+                        }
+                        if (!firstAirDate.isEmpty()) {
+                            setDetailData(textViewReleaseDateHeader, textViewReleaseDate, firstAirDate);
+                        }
+                        if (!movieStatus.isEmpty()) {
+                            setDetailData(textViewStatusHeader, textViewStatus, movieStatus);
+                        }
+
                         if (tvShowsDetailMainObject.getGenres().size() > 0) {
                             EventBus.getDefault().post(new EventBusTvGenreList(tvShowsDetailMainObject.getGenres()));
                         }
@@ -171,6 +185,12 @@ public class TvShowsDetailFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void setDetailData(TextView textViewHeader, TextView textViewData, String data) {
+        textViewHeader.setVisibility(View.VISIBLE);
+        textViewData.setVisibility(View.VISIBLE);
+        textViewData.setText(data);
     }
 
 }

@@ -100,37 +100,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
             }, 500);
         }
 
-//        mInterstitialAd = new InterstitialAd(this);
-//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
-//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-//        mInterstitialAd.loadAd(adRequestInterstitial);
-//        mInterstitialAd.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdClosed() {
-//                super.onAdClosed();
-//            }
-//
-//            @Override
-//            public void onAdLoaded() {
-//                super.onAdLoaded();
-//                showInterstitial();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int i) {
-//                super.onAdFailedToLoad(i);
-//            }
-//        });
-
     }
-
-//    private void showInterstitial() {
-//        if (mInterstitialAd.isLoaded()) {
-//            mInterstitialAd.show();
-//            AdRequest adRequest = new AdRequest.Builder().build();
-//            mInterstitialAd.loadAd(adRequest);
-//        }
-//    }
 
     @Override
     protected void onStart() {

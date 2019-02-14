@@ -22,17 +22,19 @@
         <activity
             android:name=".activities.MoviesDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:parentActivityName=".activities.MainActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.SearchActivity"
             android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.TvShowsDetailActivity" />
+        <activity
+            android:name=".activities.TvShowsDetailActivity"
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.CelebrityMoviesActivity"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.SplashActivity">
+        <activity android:name=".activities.SplashActivity"
+            android:theme="@style/AppThemeFullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -44,6 +46,7 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_id" />
+
     </application>
 
 </manifest>

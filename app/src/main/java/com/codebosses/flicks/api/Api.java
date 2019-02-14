@@ -110,4 +110,11 @@ public interface Api {
     @GET("search/person")
     Call<CelebritiesMainObject> searchCelebrity(@Query(EndpointKeys.QUERY) String query, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.INCLUDE_ADULT) boolean include_adult);
 
+    @GET("tv/on_the_air")
+    Call<TvMainObject> getTvOnAir(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("tv/airing_today")
+    Call<TvMainObject> getTvAiringToday(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+
 }

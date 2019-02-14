@@ -6,8 +6,8 @@ android {
         applicationId "com.codebosses.flicksapp"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 2   //  25 January 2019
-        versionName "1.1"
+        versionCode 6   //  14 February 2019
+        versionName "1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
