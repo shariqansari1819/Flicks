@@ -41,5 +41,7 @@ public interface EndpointKeys {
     String TV_NAME = "tv_name";
     String QUERY = "query";
     String INCLUDE_ADULT = "include_adult";
+    String CAST = "cast";
+    String CREW = "crew";
 }
 

@@ -155,7 +155,7 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private CategoryHeader makeGenreHeader() {
-        return new CategoryHeader(genre, makeGenreItems(), R.drawable.ic_maracas);
+        return new CategoryHeader(genre, makeGenreItems(), R.drawable.ic_action_genre);
     }
 
 

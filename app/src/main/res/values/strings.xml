@@ -75,6 +75,11 @@
     <string name="movie_revenue">Movie Revenue</string>
     <string name="tag_line">Tag Line</string>
     <string name="movie_status">Movie Status</string>
+    <string name="cast">Cast</string>
+    <string name="crew">Crew</string>
+    <string name="view_more">View more</string>
+    <string name="similar_movies">Similar Movies</string>
+    <string name="suggestion">Suggestion</string>
 
     <!--Similar movies fragment strings-->
     <string name="could_not_get_similar_movies">Sorry, Could not get similar movies list.</string>

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,63 +14,54 @@ import com.codebosses.flicks.utils.FontUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GenreListAdapter extends BaseAdapter {
+public class MoviesGenreAdapter extends RecyclerView.Adapter<MoviesGenreAdapter.MoviesGenreHolder> {
 
     private List<Genre> genreList = new ArrayList<>();
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public GenreListAdapter(Context context, List<Genre> genreList) {
+    public MoviesGenreAdapter(Context context, List<Genre> genreList) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         this.genreList = genreList;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public MoviesGenreAdapter.MoviesGenreHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MoviesGenreAdapter.MoviesGenreHolder(layoutInflater.inflate(R.layout.list_genre, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MoviesGenreAdapter.MoviesGenreHolder genreHolder, int position) {
+        genreHolder.textViewGenre.setText(genreList.get(position).getName());
+        genreHolder.imageViewGenre.setImageResource(R.drawable.ic_action_action);
+    }
+
+    @Override
+    public int getItemCount() {
         return genreList.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return genreList.get(position);
-    }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        GenreHolder genreHolder = null;
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_genre, parent, false);
-            genreHolder = new GenreHolder(convertView);
-            convertView.setTag(genreHolder);
-        } else {
-            genreHolder = (GenreHolder) convertView.getTag();
-        }
-        genreHolder.textViewGenre.setText(genreList.get(position).getName());
-        genreHolder.imageViewGenre.setVisibility(View.GONE);
-
-        return convertView;
-    }
-
-    class GenreHolder {
+    class MoviesGenreHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.textViewGenreList)
         TextView textViewGenre;
         @BindView(R.id.imageViewGenreList)
         ImageView imageViewGenre;
 
-        GenreHolder(View view) {
+        MoviesGenreHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
             FontUtils.getFontUtils(context).setTextViewRegularFont(textViewGenre);
         }
     }
+
 
 }

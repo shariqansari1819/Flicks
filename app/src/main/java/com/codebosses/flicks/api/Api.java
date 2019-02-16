@@ -2,6 +2,7 @@ package com.codebosses.flicks.api;
 
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
+import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
@@ -115,6 +116,9 @@ public interface Api {
 
     @GET("tv/airing_today")
     Call<TvMainObject> getTvAiringToday(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("/3/movie/{movie_id}/credits")
+    Call<CastAndCrewMainObject> getMovieCredits(@Path(EndpointKeys.MOVIE_ID) String movie_id,@Query(EndpointKeys.API_KEY) String api_key);
 
 
 }
