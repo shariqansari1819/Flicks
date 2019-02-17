@@ -86,7 +86,6 @@ public class FragmentInTheater extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_in_theater, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -132,7 +131,22 @@ public class FragmentInTheater extends BaseFragment {
         if (inTheaterCall != null && inTheaterCall.isExecuted()) {
             inTheaterCall.cancel();
         }
-        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void getInTheater(String language, String region, int pageNumber) {

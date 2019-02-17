@@ -16,8 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".activities.SuggestedMoviesActivity"></activity>
-        <activity android:name=".activities.SimilarMoviesActivity" />
+        <activity
+            android:name=".activities.SuggestedMoviesActivity"
+            android:parentActivityName=".activities.MoviesDetailActivity" />
+        <activity
+            android:name=".activities.SimilarMoviesActivity"
+            android:parentActivityName=".activities.MoviesDetailActivity" />
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />

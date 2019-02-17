@@ -87,7 +87,6 @@ public class FragmentTopRatedMovies extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_top_rated_movies, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -133,7 +132,22 @@ public class FragmentTopRatedMovies extends BaseFragment {
         if (topRatedMoviesCall != null && topRatedMoviesCall.isExecuted()) {
             topRatedMoviesCall.cancel();
         }
-        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void getTopRatedMovies(String language, String region, int pageNumber) {

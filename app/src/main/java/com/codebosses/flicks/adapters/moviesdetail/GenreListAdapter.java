@@ -57,7 +57,6 @@ public class GenreListAdapter extends BaseAdapter {
             genreHolder = (GenreHolder) convertView.getTag();
         }
         genreHolder.textViewGenre.setText(genreList.get(position).getName());
-        genreHolder.imageViewGenre.setVisibility(View.GONE);
 
         return convertView;
     }
@@ -66,8 +65,6 @@ public class GenreListAdapter extends BaseAdapter {
 
         @BindView(R.id.textViewGenreList)
         TextView textViewGenre;
-        @BindView(R.id.imageViewGenreList)
-        ImageView imageViewGenre;
 
         GenreHolder(View view) {
             ButterKnife.bind(this, view);

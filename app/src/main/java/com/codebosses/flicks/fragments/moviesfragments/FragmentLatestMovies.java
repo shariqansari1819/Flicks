@@ -86,7 +86,6 @@ public class FragmentLatestMovies extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_latest_movies, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -131,7 +130,22 @@ public class FragmentLatestMovies extends BaseFragment {
         if (latestMoviesCall != null && latestMoviesCall.isExecuted()) {
             latestMoviesCall.cancel();
         }
-        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void getLatestMovies(String language, String region, int pageNumber) {

@@ -87,8 +87,6 @@ public class SimilarTvShowsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_similar_tv_shows, container, false);
         ButterKnife.bind(this, view);
 
-        EventBus.getDefault().register(this);
-
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewBoldFont(textViewError);
@@ -136,7 +134,22 @@ public class SimilarTvShowsFragment extends Fragment {
         if (similarTvShowsCall != null && similarTvShowsCall.isExecuted()) {
             similarTvShowsCall.cancel();
         }
-        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void getSimilarTvShows(String tvId, String language, int pageNumber) {

@@ -85,7 +85,6 @@ public class FragmentUpcomingMovies extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_upcoming_movies, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -130,7 +129,22 @@ public class FragmentUpcomingMovies extends BaseFragment {
         if (upcomingMoviesCall != null && upcomingMoviesCall.isExecuted()) {
             upcomingMoviesCall.cancel();
         }
-        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void getUpcomingMovies(String language, String region, int pageNumber) {

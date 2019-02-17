@@ -34,13 +34,12 @@ public class MoviesGenreAdapter extends RecyclerView.Adapter<MoviesGenreAdapter.
     @NonNull
     @Override
     public MoviesGenreAdapter.MoviesGenreHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MoviesGenreAdapter.MoviesGenreHolder(layoutInflater.inflate(R.layout.list_genre, parent, false));
+        return new MoviesGenreAdapter.MoviesGenreHolder(layoutInflater.inflate(R.layout.row_genre_movies, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull MoviesGenreAdapter.MoviesGenreHolder genreHolder, int position) {
         genreHolder.textViewGenre.setText(genreList.get(position).getName());
-        genreHolder.imageViewGenre.setImageResource(R.drawable.ic_action_action);
     }
 
     @Override
@@ -51,10 +50,8 @@ public class MoviesGenreAdapter extends RecyclerView.Adapter<MoviesGenreAdapter.
 
     class MoviesGenreHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.textViewGenreList)
+        @BindView(R.id.textViewGenreMoviesRow)
         TextView textViewGenre;
-        @BindView(R.id.imageViewGenreList)
-        ImageView imageViewGenre;
 
         MoviesGenreHolder(View view) {
             super(view);

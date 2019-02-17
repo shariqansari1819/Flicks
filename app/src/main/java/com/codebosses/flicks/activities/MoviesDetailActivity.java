@@ -3,6 +3,7 @@ package com.codebosses.flicks.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import retrofit2.Callback;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +44,7 @@ import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
 import com.codebosses.flicks.utils.FontUtils;
+import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
@@ -99,6 +102,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
     TextView textViewViewMoreSuggestion;
     @BindView(R.id.recyclerViewSuggestionMoviesMoviesDetail)
     RecyclerView recyclerViewSuggestedMovies;
+    private YouTubePlayer youTubePlayer;
+    @BindView(R.id.nestedScrollViewMoviesDetail)
+    CustomNestedScrollView nestedScrollViewMoviesDetail;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -115,6 +121,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private List<MoviesResult> suggestedMoviesList = new ArrayList<>();
     private String movieId;
     private double rating;
+    private int scrollingCounter = 0;
 
     //    Adapter fields....
     private SimilarMoviesAdapter suggestedMoviesAdapter;
@@ -130,9 +137,6 @@ public class MoviesDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_detail);
         ButterKnife.bind(this);
-
-//        Registering event bus for triggers....
-        EventBus.getDefault().register(this);
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
@@ -156,8 +160,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
         recyclerViewSuggestedMovies.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
 
 //        Creating empty list adapter objects...
-        similarMoviesAdapter = new SimilarMoviesAdapter(this, similarMoviesList, EndpointKeys.SIMILAR_MOVIES);
-        suggestedMoviesAdapter = new SimilarMoviesAdapter(this, suggestedMoviesList, EndpointKeys.SUGGESTED_MOVIES);
+        similarMoviesAdapter = new SimilarMoviesAdapter(this, similarMoviesList, EndpointKeys.SIMILAR_MOVIES_DETAIL);
+        suggestedMoviesAdapter = new SimilarMoviesAdapter(this, suggestedMoviesList, EndpointKeys.SUGGESTED_MOVIES_DETAIL);
         castAdapter = new CastAdapter(this, castDataList);
         crewAdapter = new CrewAdapter(this, crewDataList);
 
@@ -184,6 +188,54 @@ public class MoviesDetailActivity extends AppCompatActivity {
             getSuggestedMovies(movieId, "en-US", 1);
         }
 
+        if (nestedScrollViewMoviesDetail != null) {
+
+            nestedScrollViewMoviesDetail.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+
+                if (scrollY > oldScrollY) {
+                    if (scrollingCounter == 0) {
+                        if (youTubePlayer != null)
+                            youTubePlayer.pause();
+                    }
+                    scrollingCounter++;
+                }
+                if (scrollY < oldScrollY) {
+                }
+
+                if (scrollY == 0) {
+                    if (youTubePlayer != null) {
+                        youTubePlayer.play();
+                    }
+                    scrollingCounter = 0;
+                }
+
+                if (scrollY == (v.getMeasuredHeight() - v.getChildAt(0).getMeasuredHeight())) {
+                }
+            });
+        }
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (youTubePlayer != null) {
+            youTubePlayer.pause();
+        }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (youTubePlayer != null) {
+            youTubePlayer.play();
+        }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -205,7 +257,6 @@ public class MoviesDetailActivity extends AppCompatActivity {
             suggestedMoviesCall.cancel();
         }
         youTubePlayerView.release();
-        EventBus.getDefault().unregister(this);
     }
 
     private void getMovieTrailers(String language, String movieId) {
@@ -225,6 +276,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                         @Override
                                         public void onReady() {
                                             super.onReady();
+                                            MoviesDetailActivity.this.youTubePlayer = youTubePlayer;
                                             youTubePlayer.loadVideo(moviesTrailerResultList.get(0).getKey(), 0);
                                         }
                                     });
@@ -316,19 +368,20 @@ public class MoviesDetailActivity extends AppCompatActivity {
                 if (response != null && response.isSuccessful()) {
                     CastAndCrewMainObject castAndCrewMainObject = response.body();
                     if (castAndCrewMainObject != null) {
-
-                        textViewCastHeader.setVisibility(View.VISIBLE);
-                        textViewCrewHeader.setVisibility(View.VISIBLE);
-
-                        for (int i = 0; i < castAndCrewMainObject.getCast().size(); i++) {
-                            castDataList.add(castAndCrewMainObject.getCast().get(i));
-                            castAdapter.notifyItemInserted(i);
+                        if (castAndCrewMainObject.getCast().size() > 0) {
+                            textViewCastHeader.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < castAndCrewMainObject.getCast().size(); i++) {
+                                castDataList.add(castAndCrewMainObject.getCast().get(i));
+                                castAdapter.notifyItemInserted(i);
+                            }
                         }
-                        for (int i = 0; i < castAndCrewMainObject.getCrew().size(); i++) {
-                            crewDataList.add(castAndCrewMainObject.getCrew().get(i));
-                            crewAdapter.notifyItemInserted(i);
+                        if (castAndCrewMainObject.getCrew().size() > 0) {
+                            textViewCrewHeader.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < castAndCrewMainObject.getCrew().size(); i++) {
+                                crewDataList.add(castAndCrewMainObject.getCrew().get(i));
+                                crewAdapter.notifyItemInserted(i);
+                            }
                         }
-
                     }
                 }
             }
@@ -440,13 +493,13 @@ public class MoviesDetailActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSimilarMovieClick(EventBusMovieClick eventBusMovieClick) {
         String movieTitle = "";
-        int movieId;
-        double rating;
-        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.SIMILAR_MOVIES)) {
+        int movieId = 0;
+        double rating = 0.0;
+        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.SIMILAR_MOVIES_DETAIL)) {
             movieId = similarMoviesList.get(eventBusMovieClick.getPosition()).getId();
             movieTitle = similarMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
             rating = similarMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
-        } else {
+        } else if (eventBusMovieClick.getMovieType().equals(EndpointKeys.SUGGESTED_MOVIES_DETAIL)) {
             movieId = suggestedMoviesList.get(eventBusMovieClick.getPosition()).getId();
             movieTitle = suggestedMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
             rating = suggestedMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
@@ -461,7 +514,11 @@ public class MoviesDetailActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusCastAndCrewClick(EventBusCastAndCrewClick eventBusCastAndCrewClick) {
         if (eventBusCastAndCrewClick.getClickType().equals(EndpointKeys.CAST)) {
-
+            Intent intent = new Intent(this, CelebrityMoviesActivity.class);
+            intent.putExtra(EndpointKeys.CELEBRITY_ID, castDataList.get(eventBusCastAndCrewClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.CELEB_NAME, castDataList.get(eventBusCastAndCrewClick.getPosition()).getName());
+            intent.putExtra(EndpointKeys.CELEB_IMAGE, castDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path());
+            startActivity(intent);
         } else {
 
         }

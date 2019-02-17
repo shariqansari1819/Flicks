@@ -88,7 +88,6 @@ public class SearchCelebrityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_celebrity, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
@@ -136,9 +135,24 @@ public class SearchCelebrityFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        EventBus.getDefault().unregister(this);
         if (searchCelebritiesCall != null && searchCelebritiesCall.isExecuted()) {
             searchCelebritiesCall.cancel();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 

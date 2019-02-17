@@ -89,7 +89,6 @@ public class TvShowsDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tv_shows_detail, container, false);
         ButterKnife.bind(this, view);
 
-        EventBus.getDefault().register(this);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 //        Font fields initialization....
@@ -120,7 +119,22 @@ public class TvShowsDetailFragment extends Fragment {
         if (tvShowsDetailMainObjectCall != null && tvShowsDetailMainObjectCall.isExecuted()) {
             tvShowsDetailMainObjectCall.cancel();
         }
-        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

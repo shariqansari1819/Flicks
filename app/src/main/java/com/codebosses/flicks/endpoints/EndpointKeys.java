@@ -18,6 +18,8 @@ public interface EndpointKeys {
     String DRAMA = "Drama";
     String SCIENCE_FICTION = "Science Fiction";
     String SIMILAR_MOVIES = "Similar Movies";
+    String SIMILAR_MOVIES_DETAIL = "Similar Movies Detail";
+    String SUGGESTED_MOVIES_DETAIL = "Suggested Movies Detail";
     String SUGGESTED_MOVIES = "Suggested Movies";
     String KNOW_FOR_MOVIES = "Known For Movies";
     String SIMILAR_TV_SHOWS = "Similar Tv Shows";
@@ -25,6 +27,7 @@ public interface EndpointKeys {
     String SEARCH_MOVIE = "Search Movie";
     String SEARCH_TV_SHOW = "Search Tv Show";
     String SEARCH_CELEBRITY = "Search Celebrity";
+    String CELEBRITY_MOVIES = "Celeb Movies";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";
@@ -43,5 +46,6 @@ public interface EndpointKeys {
     String INCLUDE_ADULT = "include_adult";
     String CAST = "cast";
     String CREW = "crew";
+    String PERSON_ID = "person_id";
 }
 

@@ -46,7 +46,6 @@ public class TvShowsGenreFragment extends Fragment implements AdapterView.OnItem
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tv_shows_genre, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -56,7 +55,22 @@ public class TvShowsGenreFragment extends Fragment implements AdapterView.OnItem
         genreListAdapter = new GenreListAdapter(getActivity(), genreList);
         listView.setAdapter(genreListAdapter);
         listView.setOnItemClickListener(this);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override

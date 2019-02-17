@@ -80,8 +80,6 @@ public class SuggestedTvShowsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_suggested_tv_shows, container, false);
         ButterKnife.bind(this, view);
 
-        EventBus.getDefault().register(this);
-
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewBoldFont(textViewError);
@@ -129,7 +127,22 @@ public class SuggestedTvShowsFragment extends Fragment {
         if (suggestedTvShowsCall != null && suggestedTvShowsCall.isExecuted()) {
             suggestedTvShowsCall.cancel();
         }
-        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void getSuggestedTvShows(String tvId, String language, int pageNumber) {

@@ -3,10 +3,6 @@ package com.codebosses.flicks.adapters.tvshowsdetail;
 import android.content.Context;
 
 import com.codebosses.flicks.R;
-import com.codebosses.flicks.fragments.moviesfragments.moviesdetail.DetailFragment;
-import com.codebosses.flicks.fragments.moviesfragments.moviesdetail.MoviesDetailGenreFragment;
-import com.codebosses.flicks.fragments.moviesfragments.moviesdetail.SimilarMoviesFragment;
-import com.codebosses.flicks.fragments.moviesfragments.moviesdetail.SuggestedMoviesFragment;
 import com.codebosses.flicks.fragments.tvfragments.tvshowsdetailfragment.SimilarTvShowsFragment;
 import com.codebosses.flicks.fragments.tvfragments.tvshowsdetailfragment.SuggestedTvShowsFragment;
 import com.codebosses.flicks.fragments.tvfragments.tvshowsdetailfragment.TvShowsDetailFragment;

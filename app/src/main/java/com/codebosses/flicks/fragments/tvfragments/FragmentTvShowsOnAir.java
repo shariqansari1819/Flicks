@@ -86,8 +86,6 @@ public class FragmentTvShowsOnAir extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_tv_shows_on_air, container, false);
         ButterKnife.bind(this, view);
 
-        EventBus.getDefault().register(this);
-
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewBoldFont(textViewError);
@@ -132,7 +130,22 @@ public class FragmentTvShowsOnAir extends BaseFragment {
         if (tvMainObjectCall != null && tvMainObjectCall.isExecuted()) {
             tvMainObjectCall.cancel();
         }
-        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void getOnAirTvShows(String language, int pageNumber) {
