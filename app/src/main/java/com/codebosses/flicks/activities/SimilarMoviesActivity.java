@@ -86,8 +86,8 @@ public class SimilarMoviesActivity extends AppCompatActivity {
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
-        fontUtils.setTextViewBoldFont(textViewError);
-        fontUtils.setTextViewBoldFont(textViewAppBarTitle);
+        fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewAppBarTitle);
 
         if (ValidUtils.isNetworkAvailable(this)) {
 

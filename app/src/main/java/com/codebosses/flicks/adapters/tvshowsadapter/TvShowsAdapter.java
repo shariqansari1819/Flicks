@@ -61,8 +61,8 @@ public class TvShowsAdapter extends RecyclerView.Adapter<TvShowsAdapter.TvShowsH
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .into(holder.imageViewThumbnail);
             String title = tvResult.getOriginal_name();
-            if (title.length() > 17)
-                title = title.substring(0, 17) + "...";
+            if (title.length() > 18)
+                title = title.substring(0, 18) + "...";
             holder.textViewMovieTitle.setText(title);
             holder.textViewMovieYear.setText(tvResult.getFirst_air_date());
             holder.textViewRatingCount.setText(String.valueOf(tvResult.getVote_average()));
@@ -96,12 +96,12 @@ public class TvShowsAdapter extends RecyclerView.Adapter<TvShowsAdapter.TvShowsH
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            fontUtils.setTextViewBoldFont(textViewMovieTitle);
-            fontUtils.setTextViewRegularFont(textViewMovieYear);
-            fontUtils.setTextViewRegularFont(textViewRatingText);
-            fontUtils.setTextViewRegularFont(textViewVoteCountText);
-            fontUtils.setTextViewBoldFont(textViewVoteCount);
-            fontUtils.setTextViewBoldFont(textViewRatingCount);
+            fontUtils.setTextViewRegularFont(textViewMovieTitle);
+            fontUtils.setTextViewLightFont(textViewMovieYear);
+            fontUtils.setTextViewLightFont(textViewRatingText);
+            fontUtils.setTextViewLightFont(textViewVoteCountText);
+            fontUtils.setTextViewRegularFont(textViewVoteCount);
+            fontUtils.setTextViewRegularFont(textViewRatingCount);
 
             itemView.setOnClickListener(this);
         }

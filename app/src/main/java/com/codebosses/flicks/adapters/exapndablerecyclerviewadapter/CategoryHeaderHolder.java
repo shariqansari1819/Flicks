@@ -27,7 +27,7 @@ public class CategoryHeaderHolder extends GroupViewHolder {
         arrow = (ImageView) itemView.findViewById(R.id.list_item_genre_arrow);
         icon = (ImageView) itemView.findViewById(R.id.list_item_genre_icon);
 
-        FontUtils.getFontUtils(context).setTextViewBoldFont(genreName);
+        FontUtils.getFontUtils(context).setTextViewRegularFont(genreName);
     }
 
     public void setGenreTitle(ExpandableGroup genre) {

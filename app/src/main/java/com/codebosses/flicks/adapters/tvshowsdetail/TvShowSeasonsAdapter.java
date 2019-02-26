@@ -1,4 +1,4 @@
-package com.codebosses.flicks.adapters.moviesdetail;
+package com.codebosses.flicks.adapters.tvshowsdetail;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,8 +11,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
-import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
+import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
+import com.codebosses.flicks.pojo.tvpojo.TvResult;
+import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.Season;
 import com.codebosses.flicks.utils.FontUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,55 +27,54 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdapter.SimilarMoviesHolder> {
+public class TvShowSeasonsAdapter extends RecyclerView.Adapter<TvShowSeasonsAdapter.TvShowSeasonsHolder> {
 
     private Context context;
     private FontUtils fontUtils;
     private LayoutInflater layoutInflater;
-    private List<MoviesResult> moviesResultArrayList = new ArrayList<>();
-    private String movieType;
+    private List<Season> seasonList = new ArrayList<>();
+    private String tvType;
 
-    public SimilarMoviesAdapter(Context context, List<MoviesResult> moviesResultArrayList, String movieType) {
+    public TvShowSeasonsAdapter(Context context, List<Season> seasonList, String tvType) {
         this.context = context;
         fontUtils = FontUtils.getFontUtils(context);
-        this.moviesResultArrayList = moviesResultArrayList;
+        this.seasonList = seasonList;
         layoutInflater = LayoutInflater.from(context);
-        this.movieType = movieType;
+        this.tvType = tvType;
     }
 
     @NonNull
     @Override
-    public SimilarMoviesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TvShowSeasonsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.row_similar_movie, parent, false);
-        return new SimilarMoviesHolder(view);
+        return new TvShowSeasonsHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SimilarMoviesHolder holder, int position) {
-        MoviesResult moviesResult = moviesResultArrayList.get(position);
-        if (moviesResult != null) {
-            if (moviesResult.getPoster_path() != null && !moviesResult.getPoster_path().equals(""))
+    public void onBindViewHolder(@NonNull TvShowSeasonsHolder holder, int position) {
+        Season season = seasonList.get(position);
+        if (season != null) {
+            if (season.getPoster_path() != null && !season.getPoster_path().equals(""))
                 Glide.with(context)
-                        .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
+                        .load(EndpointUrl.POSTER_BASE_URL + "/" + season.getPoster_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .into(holder.imageViewThumbnail);
-            String title = moviesResult.getTitle();
+            String title = season.getName();
             if (title != null) {
                 if (title.length() > 10)
                     title = title.substring(0, 10) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
-            double movieRating = moviesResult.getVote_average();
-            holder.materialRatingBar.setRating((float) movieRating / 2);
+            holder.materialRatingBar.setVisibility(View.GONE);
         }
     }
 
     @Override
     public int getItemCount() {
-        return moviesResultArrayList.size();
+        return seasonList.size();
     }
 
-    class SimilarMoviesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class TvShowSeasonsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.imageViewThumbnailSimilarMoviesRow)
         ImageView imageViewThumbnail;
@@ -83,7 +83,7 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdap
         @BindView(R.id.ratingBarSimilarMoviesRow)
         MaterialRatingBar materialRatingBar;
 
-        SimilarMoviesHolder(@NonNull View itemView) {
+        TvShowSeasonsHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -94,7 +94,7 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdap
 
         @Override
         public void onClick(View v) {
-            EventBus.getDefault().post(new EventBusMovieClick(getAdapterPosition(), movieType));
+            EventBus.getDefault().post(new EventBusTvShowsClick(getAdapterPosition(), tvType));
         }
 
     }

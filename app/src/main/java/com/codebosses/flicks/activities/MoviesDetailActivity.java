@@ -105,6 +105,12 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private YouTubePlayer youTubePlayer;
     @BindView(R.id.nestedScrollViewMoviesDetail)
     CustomNestedScrollView nestedScrollViewMoviesDetail;
+    @BindView(R.id.textViewStoryLineHeader)
+    TextView textViewOverViewHeader;
+    @BindView(R.id.textViewRatingMovieDetail)
+    TextView textViewMovieRating;
+    @BindView(R.id.textViewAudienceMovieDetail)
+    TextView textViewAudienceRating;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -140,17 +146,22 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
-        fontUtils.setTextViewBoldFont(textViewTitle);
-        fontUtils.setTextViewRegularFont(textViewVoteCount);
+        fontUtils.setTextViewRegularFont(textViewTitle);
+        fontUtils.setTextViewLightFont(textViewVoteCount);
         fontUtils.setTextViewRegularFont(textViewReleaseDateHeader);
-        fontUtils.setTextViewRegularFont(textViewReleaseDate);
-        fontUtils.setTextViewBoldFont(textViewGenreHeader);
-        fontUtils.setTextViewBoldFont(textViewCastHeader);
-        fontUtils.setTextViewBoldFont(textViewCrewHeader);
-        fontUtils.setTextViewBoldFont(textViewSimilarMoviesHeader);
+        fontUtils.setTextViewLightFont(textViewReleaseDate);
+        fontUtils.setTextViewRegularFont(textViewGenreHeader);
+        fontUtils.setTextViewRegularFont(textViewCastHeader);
+        fontUtils.setTextViewRegularFont(textViewCrewHeader);
+        fontUtils.setTextViewRegularFont(textViewSimilarMoviesHeader);
         fontUtils.setTextViewRegularFont(textViewViewMoreSimilarMovies);
-        fontUtils.setTextViewBoldFont(textViewSuggestionHeader);
+        fontUtils.setTextViewRegularFont(textViewSuggestionHeader);
         fontUtils.setTextViewRegularFont(textViewViewMoreSuggestion);
+        fontUtils.setTextViewRegularFont(textViewOverViewHeader);
+        fontUtils.setTextViewLightFont(textViewOverview);
+        fontUtils.setTextViewRegularFont(textViewMovieRating);
+        fontUtils.setTextViewLightFont(textViewAudienceRating);
+
 
 //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -317,19 +328,25 @@ public class MoviesDetailActivity extends AppCompatActivity {
                     if (movieDetailMainObject != null) {
 
                         String originalTitle = movieDetailMainObject.getOriginal_title();
+                        String title = movieDetailMainObject.getTitle();
                         String overview = movieDetailMainObject.getOverview();
                         String releaseDate = movieDetailMainObject.getRelease_date();
                         String moviePosterPath = movieDetailMainObject.getPoster_path();
-                        int voteCount = movieDetailMainObject.getVote_count();
+//                        int voteCount = movieDetailMainObject.getVote_count();
 
                         cardViewThumbnail.setVisibility(View.VISIBLE);
                         textViewReleaseDateHeader.setVisibility(View.VISIBLE);
                         ratingBar.setVisibility(View.VISIBLE);
                         textViewGenreHeader.setVisibility(View.VISIBLE);
+                        textViewAudienceRating.setVisibility(View.VISIBLE);
+                        textViewMovieRating.setVisibility(View.VISIBLE);
+                        textViewOverViewHeader.setVisibility(View.VISIBLE);
+                        textViewVoteCount.setVisibility(View.VISIBLE);
 
                         textViewTitle.setText(originalTitle);
                         textViewReleaseDate.setText(releaseDate);
-                        textViewVoteCount.setText(String.valueOf(voteCount));
+                        textViewMovieRating.setText(String.valueOf((float) rating / 2));
+//                        textViewVoteCount.setText(String.valueOf(voteCount));
                         textViewOverview.setText(overview);
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)

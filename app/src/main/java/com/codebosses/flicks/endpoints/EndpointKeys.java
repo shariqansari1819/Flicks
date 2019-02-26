@@ -28,6 +28,9 @@ public interface EndpointKeys {
     String SEARCH_TV_SHOW = "Search Tv Show";
     String SEARCH_CELEBRITY = "Search Celebrity";
     String CELEBRITY_MOVIES = "Celeb Movies";
+    String SIMILAR_TV_SHOWS_DETAIL = "Similar Tv Shows Detail";
+    String SUGGESTED_TV_SHOWS_DETAIL = "Suggested Tv Shows Detail";
+    String SEASON = "Season";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";

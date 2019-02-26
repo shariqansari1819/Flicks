@@ -19,6 +19,6 @@
         android:text="@string/latest_movies"
         android:textAllCaps="true"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_14ssp" />
+        android:textSize="@dimen/_13ssp" />
 
 </androidx.appcompat.widget.Toolbar>

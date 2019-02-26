@@ -6,14 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.FragmentNavigationView">
-
 
     <FrameLayout
         android:id="@+id/frameLayoutLogoNavigation"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_150sdp"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewLogoNavigation"
@@ -28,17 +31,40 @@
         android:id="@+id/recyclerViewNavigation"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/adView"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@+id/dividerBottomNavigation"
         app:layout_constraintTop_toBottomOf="@+id/frameLayoutLogoNavigation" />
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_admob_id"
-        ads:layout_constraintBottom_toBottomOf="parent"
-        ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintStart_toStartOf="parent" />
+    <View
+        android:id="@+id/dividerBottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/bottom_shadow"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewShareNavigation" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewShareNavigation"
+        android:layout_width="@dimen/_17sdp"
+        android:layout_height="@dimen/_17sdp"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginBottom="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_action_share"
+        app:tint="@color/colorAccent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewSettingNavigation"
+        android:layout_width="@dimen/_17sdp"
+        android:layout_height="@dimen/_17sdp"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:layout_marginBottom="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_action_bordered_setting"
+        app:tint="@color/colorAccent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

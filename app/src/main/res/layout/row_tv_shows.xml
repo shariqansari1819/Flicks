@@ -7,7 +7,7 @@
     android:layout_marginTop="@dimen/_3sdp"
     android:layout_marginBottom="@dimen/_3sdp"
     app:cardBackgroundColor="@color/colorWhite"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
 
     <RelativeLayout
@@ -20,7 +20,8 @@
             android:id="@+id/cardViewThumbnailContainerTvShowsRow"
             android:layout_width="@dimen/_85sdp"
             android:layout_height="@dimen/_100sdp"
-            app:cardCornerRadius="4dp">
+            app:cardElevation="2dp"
+            app:cardCornerRadius="8dp">
 
             <ImageView
                 android:id="@+id/imageViewThumbnailTvShowsRow"
@@ -41,7 +42,7 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_toEndOf="@+id/cardViewThumbnailContainerTvShowsRow"
             android:text="Zootopia"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
 
@@ -54,7 +55,7 @@
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="2016"
-            android:textColor="@color/colorSecondaryLightText"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="13sp" />
 
         <View
@@ -83,7 +84,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageViewRatingIconTvShowsRow"
-            android:layout_alignEnd="@+id/textViewAudienceTvShowsRow"
             android:layout_alignBottom="@+id/imageViewRatingIconTvShowsRow"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
@@ -100,8 +100,8 @@
             android:layout_below="@+id/imageViewRatingIconTvShowsRow"
             android:layout_alignStart="@+id/imageViewRatingIconTvShowsRow"
             android:layout_marginTop="@dimen/_2sdp"
-            android:text="@string/movie_rating"
-            android:textColor="@color/colorSecondaryLightText"
+            android:text="@string/ratings"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_11ssp" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -111,7 +111,7 @@
             android:layout_below="@+id/dividerTvShowsRow"
             android:layout_alignTop="@+id/imageViewRatingIconTvShowsRow"
             android:layout_alignBottom="@+id/imageViewRatingIconTvShowsRow"
-            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_30sdp"
             android:layout_toEndOf="@+id/textViewRatingTvShowsRow"
             android:contentDescription="@string/rating_pop_corn_icon"
             app:srcCompat="@drawable/popcorn_icon" />
@@ -122,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageViewVoteCountIconTvShowsRow"
-            android:layout_alignEnd="@+id/textViewVotesCountMoviesRow"
+            android:layout_alignEnd="@+id/textViewVotesCountTvShowsRow"
             android:layout_alignBottom="@+id/imageViewVoteCountIconTvShowsRow"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
@@ -141,7 +141,7 @@
             android:layout_alignTop="@+id/textViewAudienceTvShowsRow"
             android:layout_alignBottom="@+id/textViewAudienceTvShowsRow"
             android:text="@string/vote_count"
-            android:textColor="@color/colorSecondaryLightText"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_11ssp" />
 
     </RelativeLayout>

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -88,7 +89,7 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
-        fontUtils.setTextViewBoldFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewError);
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
@@ -96,8 +97,10 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
                 tvShowsAdapter = new TvShowsAdapter(getActivity(), tvResultArrayList, EndpointKeys.TV_SHOWS_AIRING_TODAY);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewTvShowsAiringToday.setLayoutManager(linearLayoutManager);
-                recyclerViewTvShowsAiringToday.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewTvShowsAiringToday.setAdapter(tvShowsAdapter);
+                recyclerViewTvShowsAiringToday.setItemAnimator(new FadeInDownAnimator());
+                if (recyclerViewTvShowsAiringToday.getItemAnimator() != null)
+                    recyclerViewTvShowsAiringToday.getItemAnimator().setAddDuration(500);
 
                 circularProgressBar.setVisibility(View.VISIBLE);
                 getTvShowsAiringToday("en-US", pageNumber);

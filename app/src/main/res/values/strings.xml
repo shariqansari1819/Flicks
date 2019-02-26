@@ -40,7 +40,7 @@
     <string name="rating_pop_corn_icon">Rating pop corn icon image</string>
     <string name="movie_rating">Movie Rating</string>
     <string name="vote_count">Votes Count</string>
-
+    <string name="ratings">Ratings</string>
 
     <!--Top rated celebrities strings-->
     <string name="popularity">Popularity</string>
@@ -65,6 +65,10 @@
         <item>SIMILAR</item>
         <item>SUGGESTED</item>
     </string-array>
+    <string name="first_air_date">First Air Date</string>
+    <string name="similar_tv_shows">Similar Tv Shows</string>
+    <string name="recommended_tv_shows">Recommended Tv Shows</string>
+    <string name="seasons">Seasons</string>
 
     <!--Movie detail fragment strings-->
     <string name="original_title">Original Title</string>
@@ -75,11 +79,14 @@
     <string name="movie_revenue">Movie Revenue</string>
     <string name="tag_line">Tag Line</string>
     <string name="movie_status">Movie Status</string>
-    <string name="cast">Cast</string>
-    <string name="crew">Crew</string>
+    <string name="cast">The Cast</string>
+    <string name="crew">The Crew</string>
     <string name="view_more">View more</string>
     <string name="similar_movies">Similar Movies</string>
     <string name="suggestion">Suggestion</string>
+    <string name="story_line">Story line</string>
+    <string name="grade_now">Grade Now</string>
+    <string name="recommended_movies">Recommended Movies</string>
 
     <!--Similar movies fragment strings-->
     <string name="could_not_get_similar_movies">Sorry, Could not get similar movies list.</string>

@@ -13,6 +13,9 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -88,7 +91,7 @@ public class FragmentUpcomingMovies extends BaseFragment {
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
-        fontUtils.setTextViewBoldFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewError);
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
@@ -96,8 +99,10 @@ public class FragmentUpcomingMovies extends BaseFragment {
                 moviesAdapter = new MoviesAdapter(getActivity(), upcomingMoviesList, EndpointKeys.UPCOMING_MOVIES);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewUpcomingMovies.setLayoutManager(linearLayoutManager);
-                recyclerViewUpcomingMovies.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewUpcomingMovies.setAdapter(moviesAdapter);
+                recyclerViewUpcomingMovies.setItemAnimator(new FadeInDownAnimator());
+                if (recyclerViewUpcomingMovies.getItemAnimator() != null)
+                    recyclerViewUpcomingMovies.getItemAnimator().setAddDuration(500);
 
                 circularProgressBar.setVisibility(View.VISIBLE);
                 getUpcomingMovies("en-US", "", pageNumber);

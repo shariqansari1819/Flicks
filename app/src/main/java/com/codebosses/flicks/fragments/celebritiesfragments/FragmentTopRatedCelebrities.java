@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -100,8 +101,10 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
                 celebritiesAdapter = new CelebritiesAdapter(getActivity(), celebritiesResultList, EndpointKeys.TOP_RATED_CELEBRITIES);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewTopRatedCelebrities.setLayoutManager(linearLayoutManager);
-                recyclerViewTopRatedCelebrities.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewTopRatedCelebrities.setAdapter(celebritiesAdapter);
+                recyclerViewTopRatedCelebrities.setItemAnimator(new FadeInDownAnimator());
+                if (recyclerViewTopRatedCelebrities.getItemAnimator() != null)
+                    recyclerViewTopRatedCelebrities.getItemAnimator().setAddDuration(500);
 
                 circularProgressBar.setVisibility(View.VISIBLE);
                 getTopRatedCelebrities("en-US", pageNumber);

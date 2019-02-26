@@ -24,12 +24,13 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewThumbnailContainerMoviesDetail"
-            android:layout_width="@dimen/_95sdp"
-            android:layout_height="@dimen/_120sdp"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_110sdp"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:elevation="2dp"
             android:visibility="gone"
-            app:cardCornerRadius="4dp"
+            app:cardCornerRadius="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewMoviesDetail">
 
@@ -51,23 +52,46 @@
             android:layout_marginEnd="@dimen/_12sdp"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerMoviesDetail"
             app:layout_constraintTop_toTopOf="@+id/cardViewThumbnailContainerMoviesDetail" />
 
+        <TextView
+            android:id="@+id/textViewRatingMovieDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleMoviesDetail" />
+
+        <TextView
+            android:id="@+id/textViewAudienceMovieDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ratings"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/textViewRatingMovieDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRatingMovieDetail" />
+
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
             android:id="@+id/ratingBarMovieDetail"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_12sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:isIndicator="true"
             android:rating="2"
             android:saveEnabled="false"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewVotesMoviesDetail"
-            app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesDetail"
-            app:layout_constraintTop_toTopOf="@+id/textViewVotesMoviesDetail"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewRatingMovieDetail"
+            app:layout_constraintStart_toEndOf="@+id/textViewRatingMovieDetail"
+            app:layout_constraintTop_toTopOf="@+id/textViewRatingMovieDetail"
             app:mrb_fillBackgroundStars="true"
             app:mrb_progressTint="@color/colorAccent" />
 
@@ -76,20 +100,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/grade_now"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/ratingBarMovieDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitleMoviesDetail" />
-
+            android:textStyle="normal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewAudienceMovieDetail"
+            app:layout_constraintStart_toStartOf="@+id/ratingBarMovieDetail"
+            app:layout_constraintTop_toTopOf="@+id/textViewAudienceMovieDetail" />
 
         <TextView
             android:id="@+id/textViewReleaseDateHeaderMoviesDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/release_date"
             android:textColor="@color/colorPrimaryText"
@@ -104,23 +129,35 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_12sdp"
-            android:textColor="@color/colorSecondaryLightText"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/textViewReleaseDateHeaderMoviesDetail"
             app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeaderMoviesDetail" />
 
         <TextView
+            android:id="@+id/textViewStoryLineHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/story_line"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="normal"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerMoviesDetail" />
+
+        <TextView
             android:id="@+id/textViewOverviewMoviesDetail"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_12sdp"
-            android:textColor="@color/colorSecondaryLightText"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardViewThumbnailContainerMoviesDetail"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewReleaseDateHeaderMoviesDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewYearMoviesDetail" />
+            app:layout_constraintStart_toStartOf="@+id/textViewStoryLineHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStoryLineHeader" />
 
         <TextView
             android:id="@+id/textViewGenreHeader"
@@ -129,11 +166,11 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/genre"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerMoviesDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewMoviesDetail" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewGenreMoviesDetail"
@@ -151,7 +188,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/cast"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
@@ -173,7 +210,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/crew"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
@@ -195,7 +232,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/similar_movies"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
@@ -207,7 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/_13ssp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/textViewSimilarMoviesHeader"
@@ -228,9 +265,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/suggestion"
+            android:text="@string/recommended_movies"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
@@ -242,7 +279,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/_13ssp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/textViewSuggestionMoviesHeader"

@@ -1,9 +1,11 @@
 package com.codebosses.flicks.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,8 +44,8 @@ public class FragmentNavigationView extends Fragment {
 
     @BindView(R.id.recyclerViewNavigation)
     RecyclerView recyclerViewNavigation;
-    @BindView(R.id.adView)
-    AdView adView;
+    @BindView(R.id.imageViewShareNavigation)
+    AppCompatImageView imageViewShare;
 
     //    Adapter fields....
     CategoryAdapter adapter;
@@ -85,15 +88,6 @@ public class FragmentNavigationView extends Fragment {
 
         EventBus.getDefault().register(this);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-
         return view;
     }
 
@@ -107,6 +101,15 @@ public class FragmentNavigationView extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         adapter.onSaveInstanceState(outState);
+    }
+
+    @OnClick(R.id.imageViewShareNavigation)
+    public void onShareClick(View view) {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "To watch any movie and TV show download this app https://play.google.com/store/apps/details?id=com.codebosses.flicksapp&hl=en";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
     private List<CategoryHeader> makeCategories() {

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -88,7 +89,7 @@ public class FragmentTvShowsOnAir extends BaseFragment {
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
-        fontUtils.setTextViewBoldFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewError);
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
@@ -96,8 +97,10 @@ public class FragmentTvShowsOnAir extends BaseFragment {
                 tvShowsAdapter = new TvShowsAdapter(getActivity(), tvResultArrayList, EndpointKeys.TV_SHOWS_ON_THE_AIR);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewTvShowsOnAir.setLayoutManager(linearLayoutManager);
-                recyclerViewTvShowsOnAir.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewTvShowsOnAir.setAdapter(tvShowsAdapter);
+                recyclerViewTvShowsOnAir.setItemAnimator(new FadeInDownAnimator());
+                if (recyclerViewTvShowsOnAir.getItemAnimator() != null)
+                    recyclerViewTvShowsOnAir.getItemAnimator().setAddDuration(500);
 
                 circularProgressBar.setVisibility(View.VISIBLE);
                 getOnAirTvShows("en-US", pageNumber);

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -89,7 +90,7 @@ public class FragmentLatestMovies extends BaseFragment {
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
-        fontUtils.setTextViewBoldFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewError);
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
@@ -97,8 +98,10 @@ public class FragmentLatestMovies extends BaseFragment {
                 moviesAdapter = new MoviesAdapter(getActivity(), latestMoviesList, EndpointKeys.LATEST_MOVIES);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewLatestMovies.setLayoutManager(linearLayoutManager);
-                recyclerViewLatestMovies.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewLatestMovies.setAdapter(moviesAdapter);
+                recyclerViewLatestMovies.setItemAnimator(new FadeInDownAnimator());
+                if (recyclerViewLatestMovies.getItemAnimator() != null)
+                    recyclerViewLatestMovies.getItemAnimator().setAddDuration(500);
 
                 circularProgressBar.setVisibility(View.VISIBLE);
                 getLatestMovies("en-US", "", pageNumber);

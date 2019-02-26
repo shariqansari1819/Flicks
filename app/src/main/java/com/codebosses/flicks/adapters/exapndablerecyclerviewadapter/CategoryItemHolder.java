@@ -20,7 +20,7 @@ public class CategoryItemHolder extends ChildViewHolder {
     public CategoryItemHolder(View itemView, Context context) {
         super(itemView);
         childTextView = (TextView) itemView.findViewById(R.id.list_item_artist_name);
-        FontUtils.getFontUtils(context).setTextViewBoldFont(childTextView);
+        FontUtils.getFontUtils(context).setTextViewRegularFont(childTextView);
     }
 
     public void setArtistName(String name) {

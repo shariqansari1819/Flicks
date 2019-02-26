@@ -124,4 +124,7 @@ public interface Api {
     @GET("/3/person/{person_id}/movie_credits")
     Call<CelebMoviesMainObject> getCelebMovies(@Path(EndpointKeys.PERSON_ID) String person_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
 
+    @GET("/3/tv/{tv_id}/credits")
+    Call<CastAndCrewMainObject> getTvCredits(@Path(EndpointKeys.TV_ID) String tv_id, @Query(EndpointKeys.API_KEY) String api_key);
+
 }

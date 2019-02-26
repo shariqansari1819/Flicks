@@ -35,7 +35,9 @@
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.TvShowsDetailActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppThemeFullScreen"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"/>
         <activity
             android:name=".activities.CelebrityMoviesActivity"
             android:parentActivityName=".activities.MainActivity"

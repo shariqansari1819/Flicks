@@ -81,13 +81,13 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            textViewAppBarTitle.setText(getResources().getString(R.string.suggestion));
+            textViewAppBarTitle.setText(getResources().getString(R.string.recommended_movies));
         }
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
-        fontUtils.setTextViewBoldFont(textViewError);
-        fontUtils.setTextViewBoldFont(textViewAppBarTitle);
+        fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewAppBarTitle);
 
         if (ValidUtils.isNetworkAvailable(this)) {
 

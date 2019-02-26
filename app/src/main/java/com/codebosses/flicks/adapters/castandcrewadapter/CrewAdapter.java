@@ -49,14 +49,23 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.CrewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CrewHolder holder, int position) {
         CrewData crewData = crewDataList.get(position);
+        String celebName = crewData.getName();
+        String characterName = crewData.getJob();
+
+        if (celebName.length() > 10) {
+            celebName = celebName.substring(0, 10) + "...";
+        }
+        if (characterName.length() > 11) {
+            characterName = characterName.substring(0, 11) + "...";
+        }
         Glide.with(context)
                 .load(EndpointUrl.POSTER_BASE_URL + crewData.getProfile_path())
                 .apply(new RequestOptions().centerCrop())
                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                 .apply(new RequestOptions().error(R.drawable.zootopia_thumbnail))
                 .into(holder.imageViewCelebs);
-        holder.textViewCelebName.setText(crewData.getName());
-        holder.textViewCharacter.setText(crewData.getJob());
+        holder.textViewCelebName.setText(celebName);
+        holder.textViewCharacter.setText(characterName);
     }
 
     @Override
@@ -77,7 +86,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.CrewHolder> {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            fontUtils.setTextViewBoldFont(textViewCelebName);
+            fontUtils.setTextViewRegularFont(textViewCelebName);
             fontUtils.setTextViewRegularFont(textViewCharacter);
 
             itemView.setOnClickListener(this);

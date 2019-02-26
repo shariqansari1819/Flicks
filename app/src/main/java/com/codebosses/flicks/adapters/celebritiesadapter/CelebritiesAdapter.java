@@ -60,8 +60,8 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .into(holder.imageViewThumbnail);
             String title = celebritiesResult.getName();
-            if (title.length() > 17)
-                title = title.substring(0, 17) + "...";
+            if (title.length() > 18)
+                title = title.substring(0, 18) + "...";
             holder.textViewMovieTitle.setText(title);
             holder.textViewRatingCount.setText(String.valueOf(celebritiesResult.getPopularity()));
         }
@@ -87,9 +87,9 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            fontUtils.setTextViewBoldFont(textViewMovieTitle);
-            fontUtils.setTextViewRegularFont(textViewRatingText);
-            fontUtils.setTextViewBoldFont(textViewRatingCount);
+            fontUtils.setTextViewRegularFont(textViewMovieTitle);
+            fontUtils.setTextViewLightFont(textViewRatingText);
+            fontUtils.setTextViewRegularFont(textViewRatingCount);
 
             itemView.setOnClickListener(this);
         }

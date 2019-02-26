@@ -486,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     private void setCustomFont() {
         fontUtils = FontUtils.getFontUtils(this);
-        fontUtils.setTextViewBoldFont(textViewTitle);
+        fontUtils.setTextViewRegularFont(textViewTitle);
     }
 
     @Override
@@ -500,13 +500,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         switch (item.getItemId()) {
             case R.id.menuSearch:
                 startActivity(new Intent(this, SearchActivity.class));
-                return true;
-            case R.id.menuShare:
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                String shareBody = "To watch any movie and TV show download this app https://play.google.com/store/apps/details?id=com.codebosses.flicksapp&hl=en";
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 return true;
         }
         return false;

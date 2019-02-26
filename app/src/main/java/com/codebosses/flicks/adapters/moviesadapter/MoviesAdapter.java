@@ -60,8 +60,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();
             if (title != null) {
-                if (title.length() > 17)
-                    title = title.substring(0, 17) + "...";
+                if (title.length() > 18)
+                    title = title.substring(0, 18) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
             holder.textViewMovieYear.setText(moviesResult.getRelease_date());
@@ -96,12 +96,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            fontUtils.setTextViewBoldFont(textViewMovieTitle);
-            fontUtils.setTextViewRegularFont(textViewMovieYear);
-            fontUtils.setTextViewRegularFont(textViewRatingText);
-            fontUtils.setTextViewRegularFont(textViewVoteCountText);
-            fontUtils.setTextViewBoldFont(textViewVoteCount);
-            fontUtils.setTextViewBoldFont(textViewRatingCount);
+            fontUtils.setTextViewRegularFont(textViewMovieTitle);
+            fontUtils.setTextViewLightFont(textViewMovieYear);
+            fontUtils.setTextViewLightFont(textViewRatingText);
+            fontUtils.setTextViewLightFont(textViewVoteCountText);
+            fontUtils.setTextViewRegularFont(textViewVoteCount);
+            fontUtils.setTextViewRegularFont(textViewRatingCount);
 
             itemView.setOnClickListener(this);
         }

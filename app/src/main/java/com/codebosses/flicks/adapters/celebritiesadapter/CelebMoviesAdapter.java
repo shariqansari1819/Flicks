@@ -97,12 +97,12 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            fontUtils.setTextViewBoldFont(textViewMovieTitle);
-            fontUtils.setTextViewRegularFont(textViewMovieYear);
-            fontUtils.setTextViewRegularFont(textViewRatingText);
-            fontUtils.setTextViewRegularFont(textViewVoteCountText);
-            fontUtils.setTextViewBoldFont(textViewVoteCount);
-            fontUtils.setTextViewBoldFont(textViewRatingCount);
+            fontUtils.setTextViewRegularFont(textViewMovieTitle);
+            fontUtils.setTextViewLightFont(textViewMovieYear);
+            fontUtils.setTextViewLightFont(textViewRatingText);
+            fontUtils.setTextViewLightFont(textViewVoteCountText);
+            fontUtils.setTextViewRegularFont(textViewVoteCount);
+            fontUtils.setTextViewRegularFont(textViewRatingCount);
 
             itemView.setOnClickListener(this);
         }

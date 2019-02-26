@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -89,7 +90,7 @@ public class FragmentInTheater extends BaseFragment {
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
-        fontUtils.setTextViewBoldFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewError);
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
@@ -97,8 +98,10 @@ public class FragmentInTheater extends BaseFragment {
                 moviesAdapter = new MoviesAdapter(getActivity(), inTheaterList, EndpointKeys.IN_THEATER);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewInTheater.setLayoutManager(linearLayoutManager);
-                recyclerViewInTheater.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewInTheater.setAdapter(moviesAdapter);
+                recyclerViewInTheater.setItemAnimator(new FadeInDownAnimator());
+                if (recyclerViewInTheater.getItemAnimator() != null)
+                    recyclerViewInTheater.getItemAnimator().setAddDuration(500);
 
                 circularProgressBar.setVisibility(View.VISIBLE);
                 getInTheater("en-US", "", pageNumber);
