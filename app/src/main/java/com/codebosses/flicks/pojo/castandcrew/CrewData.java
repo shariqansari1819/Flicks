@@ -9,7 +9,16 @@ public class CrewData {
     private Integer id;
     private String job;
     private String name;
-    private Object profile_path;
+    private String profile_path;
+    private String credit_id;
+
+    public String getCredit_id() {
+        return credit_id;
+    }
+
+    public void setCredit_id(String credit_id) {
+        this.credit_id = credit_id;
+    }
 
     public String getCast_id() {
         return cast_id;
@@ -59,11 +68,11 @@ public class CrewData {
         this.name = name;
     }
 
-    public Object getProfile_path() {
+    public String getProfile_path() {
         return profile_path;
     }
 
-    public void setProfile_path(Object profile_path) {
+    public void setProfile_path(String profile_path) {
         this.profile_path = profile_path;
     }
 

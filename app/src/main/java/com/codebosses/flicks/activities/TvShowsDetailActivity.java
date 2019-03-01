@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -244,6 +245,9 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        if (youTubePlayer != null) {
+            youTubePlayer.play();
+        }
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -252,6 +256,9 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if (youTubePlayer != null) {
+            youTubePlayer.pause();
+        }
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -276,6 +283,20 @@ public class TvShowsDetailActivity extends AppCompatActivity {
             castAndCrewMainObjectCall.cancel();
         }
         youTubePlayerView.release();
+    }
+
+    @OnClick(R.id.textViewViewMoreSimilarTvShows)
+    public void onViewMoreSimilarTvShowsClick(TextView textViewSimilar) {
+        Intent intent = new Intent(this, SimilarTvShowsActivity.class);
+        intent.putExtra(EndpointKeys.TV_ID, tvShowId);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.textViewViewMoreSuggestionTvShows)
+    public void onViewMoreSuggestedTvShowsClick(TextView textViewSuggestion) {
+        Intent intent = new Intent(this, SuggestedTvShowsActivity.class);
+        intent.putExtra(EndpointKeys.TV_ID, tvShowId);
+        startActivity(intent);
     }
 
     private void getTvTrailers(String language, String tvId) {
@@ -522,6 +543,10 @@ public class TvShowsDetailActivity extends AppCompatActivity {
             tvTitle = suggestedTvResultList.get(eventBusTvShowsClick.getPosition()).getName();
             rating = suggestedTvResultList.get(eventBusTvShowsClick.getPosition()).getVote_average();
         } else if (eventBusTvShowsClick.getTvShowType().equals(EndpointKeys.SEASON)) {
+            Intent intent = new Intent(this, TvSeasonDetailActivity.class);
+            intent.putExtra(EndpointKeys.TV_ID, tvShowId);
+            intent.putExtra(EndpointKeys.SEASON_NUMBER, seasonList.get(eventBusTvShowsClick.getPosition()).getSeason_number());
+            startActivity(intent);
             return;
         }
         Intent intent = new Intent(this, TvShowsDetailActivity.class);
@@ -533,15 +558,22 @@ public class TvShowsDetailActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusCastAndCrewClick(EventBusCastAndCrewClick eventBusCastAndCrewClick) {
+        int castId = -1;
+        String name = "", image = "";
         if (eventBusCastAndCrewClick.getClickType().equals(EndpointKeys.CAST)) {
-            Intent intent = new Intent(this, CelebrityMoviesActivity.class);
-            intent.putExtra(EndpointKeys.CELEBRITY_ID, castDataList.get(eventBusCastAndCrewClick.getPosition()).getId());
-            intent.putExtra(EndpointKeys.CELEB_NAME, castDataList.get(eventBusCastAndCrewClick.getPosition()).getName());
-            intent.putExtra(EndpointKeys.CELEB_IMAGE, castDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path());
-            startActivity(intent);
+            castId = castDataList.get(eventBusCastAndCrewClick.getPosition()).getId();
+            name = castDataList.get(eventBusCastAndCrewClick.getPosition()).getName();
+            image = castDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path();
         } else {
-
+            castId = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getId();
+            name = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getName();
+            image = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path();
         }
+        Intent intent = new Intent(this, CelebrityMoviesActivity.class);
+        intent.putExtra(EndpointKeys.CELEBRITY_ID, castId);
+        intent.putExtra(EndpointKeys.CELEB_NAME, name);
+        intent.putExtra(EndpointKeys.CELEB_IMAGE, image);
+        startActivity(intent);
     }
 
 

@@ -50,5 +50,7 @@ public interface EndpointKeys {
     String CAST = "cast";
     String CREW = "crew";
     String PERSON_ID = "person_id";
+    String SEASON_NUMBER = "season_number";
+    String EPISODE = "episode";
 }
 

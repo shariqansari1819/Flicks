@@ -10,6 +10,7 @@ import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.TvShowsDetailMainObject;
+import com.codebosses.flicks.pojo.tvseasons.TvSeasonsMainObject;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -126,5 +127,8 @@ public interface Api {
 
     @GET("/3/tv/{tv_id}/credits")
     Call<CastAndCrewMainObject> getTvCredits(@Path(EndpointKeys.TV_ID) String tv_id, @Query(EndpointKeys.API_KEY) String api_key);
+
+    @GET("/3/tv/{tv_id}/season/{season_number}")
+    Call<TvSeasonsMainObject> getTvSeasonDetail(@Path(EndpointKeys.TV_ID) String tv_id, @Path(EndpointKeys.SEASON_NUMBER) String season_number, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
 
 }

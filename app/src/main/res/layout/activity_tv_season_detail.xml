@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.codebosses.flicks.utils.customviews.CustomNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollViewTvSeasonDetail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context="com.codebosses.flicks.activities.TvSeasonDetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutTvSeasonDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
+            android:id="@+id/youtubePlayerViewTvSeasonDetail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewThumbnailContainerTvSeasonDetail"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:elevation="2dp"
+            android:visibility="gone"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewTvSeasonDetail">
+
+            <ImageView
+                android:id="@+id/imageViewThumbnailTvSeasonDetail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/poster_thumbnail"
+                android:scaleType="centerCrop"
+                android:src="@drawable/zootopia_thumbnail" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textViewTitleTvSeasonDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
+            app:layout_constraintTop_toTopOf="@+id/cardViewThumbnailContainerTvSeasonDetail" />
+
+        <TextView
+            android:id="@+id/textViewRatingTvSeasonDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleTvSeasonDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleTvSeasonDetail" />
+
+        <TextView
+            android:id="@+id/textViewAudienceTvSeasonDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ratings"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/textViewRatingTvSeasonDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRatingTvSeasonDetail" />
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/ratingBarTvSeasonDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:isIndicator="true"
+            android:rating="2"
+            android:saveEnabled="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewRatingTvSeasonDetail"
+            app:layout_constraintStart_toEndOf="@+id/textViewRatingTvSeasonDetail"
+            app:layout_constraintTop_toTopOf="@+id/textViewRatingTvSeasonDetail"
+            app:mrb_fillBackgroundStars="true"
+            app:mrb_progressTint="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/textViewVotesTvSeasonDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/grade_now"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="normal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewAudienceTvSeasonDetail"
+            app:layout_constraintStart_toStartOf="@+id/ratingBarTvSeasonDetail"
+            app:layout_constraintTop_toTopOf="@+id/textViewAudienceTvSeasonDetail" />
+
+        <TextView
+            android:id="@+id/textViewReleaseDateHeaderTvSeasonDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:text="@string/first_air_date"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVotesTvSeasonDetail" />
+
+        <TextView
+            android:id="@+id/textViewYearTvSeasonDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/textViewReleaseDateHeaderTvSeasonDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeaderTvSeasonDetail" />
+
+        <TextView
+            android:id="@+id/textViewStoryLineHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/story_line"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="normal"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerTvSeasonDetail" />
+
+        <TextView
+            android:id="@+id/textViewOverviewTvSeasonDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewStoryLineHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStoryLineHeader" />
+
+        <!--<TextView-->
+        <!--android:id="@+id/textViewCastHeader"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/_15sdp"-->
+        <!--android:text="@string/cast"-->
+        <!--android:textColor="@color/colorPrimaryText"-->
+        <!--android:textSize="@dimen/_14ssp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:visibility="gone"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvSeasonDetail"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/textViewOverviewTvSeasonDetail" />-->
+
+        <!--<androidx.recyclerview.widget.RecyclerView-->
+        <!--android:id="@+id/recyclerViewCastTvSeasonDetail"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/_12sdp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/textViewCastHeader"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/textViewCastHeader" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/textViewCrewHeader"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/_15sdp"-->
+        <!--android:text="@string/crew"-->
+        <!--android:textColor="@color/colorPrimaryText"-->
+        <!--android:textSize="@dimen/_14ssp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:visibility="gone"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvSeasonDetail"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/recyclerViewCastTvSeasonDetail" />-->
+
+        <!--<androidx.recyclerview.widget.RecyclerView-->
+        <!--android:id="@+id/recyclerViewCrewTvSeasonDetail"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/_12sdp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/textViewCrewHeader"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/textViewCrewHeader" />-->
+
+        <TextView
+            android:id="@+id/textViewEpisodesHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/episodes"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewTvSeasonDetail" />
+
+        <TextView
+            android:id="@+id/textViewEpisodesNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewEpisodesHeader"
+            app:layout_constraintStart_toEndOf="@+id/textViewEpisodesHeader"
+            app:layout_constraintTop_toTopOf="@+id/textViewEpisodesHeader" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewEpisodesTvSeasonDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="@+id/textViewOverviewTvSeasonDetail"
+            app:layout_constraintStart_toStartOf="@+id/textViewEpisodesHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEpisodesHeader" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.codebosses.flicks.utils.customviews.CustomNestedScrollView>

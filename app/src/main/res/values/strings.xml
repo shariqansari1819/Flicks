@@ -117,4 +117,7 @@
     <string name="no_celebrity_found">Sorry, No celebrity found.</string>
     <string name="no_tv_show_found">Sorry, No tv show found.</string>
 
+    <!--Tv seasons activity strings-->
+    <string name="episodes">Episodes</string>
+
 </resources>

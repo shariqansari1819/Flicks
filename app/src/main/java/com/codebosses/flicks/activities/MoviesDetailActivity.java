@@ -530,15 +530,22 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusCastAndCrewClick(EventBusCastAndCrewClick eventBusCastAndCrewClick) {
+        int castId = -1;
+        String name = "", image = "";
         if (eventBusCastAndCrewClick.getClickType().equals(EndpointKeys.CAST)) {
-            Intent intent = new Intent(this, CelebrityMoviesActivity.class);
-            intent.putExtra(EndpointKeys.CELEBRITY_ID, castDataList.get(eventBusCastAndCrewClick.getPosition()).getId());
-            intent.putExtra(EndpointKeys.CELEB_NAME, castDataList.get(eventBusCastAndCrewClick.getPosition()).getName());
-            intent.putExtra(EndpointKeys.CELEB_IMAGE, castDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path());
-            startActivity(intent);
+            castId = castDataList.get(eventBusCastAndCrewClick.getPosition()).getCast_id();
+            name = castDataList.get(eventBusCastAndCrewClick.getPosition()).getName();
+            image = castDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path();
         } else {
-
+            castId = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getId();
+            name = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getName();
+            image = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path();
         }
+        Intent intent = new Intent(this, CelebrityMoviesActivity.class);
+        intent.putExtra(EndpointKeys.CELEBRITY_ID, castId);
+        intent.putExtra(EndpointKeys.CELEB_NAME, name);
+        intent.putExtra(EndpointKeys.CELEB_IMAGE, image);
+        startActivity(intent);
     }
 
 }
