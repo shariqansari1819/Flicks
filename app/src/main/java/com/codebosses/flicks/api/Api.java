@@ -7,6 +7,7 @@ import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesMainObject;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
+import com.codebosses.flicks.pojo.moviespojo.latestmovies.LatestMoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.reviews.ReviewsMainObject;
@@ -156,6 +157,9 @@ public interface Api {
 
     @GET("/3/trending/{media_type}/{time_window}")
     Call<CelebritiesMainObject> getCelebTrending(@Path(EndpointKeys.MEDIA_TYPE) String media_type, @Path(EndpointKeys.TIME_WINDOW) String time_window, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("/3//movie/latest")
+    Call<LatestMoviesMainObject> getLatestMovie(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
 
 
 }

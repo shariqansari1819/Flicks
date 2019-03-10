@@ -60,5 +60,6 @@ public interface EndpointKeys {
     String EPISODE_DETAIL = "episode_detail";
     String MEDIA_TYPE = "media_type";
     String TIME_WINDOW = "time_window";
+    String NOTIFICATION_TYPE = "notification_type";
 }
 

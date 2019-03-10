@@ -18,4 +18,9 @@
         android:orderInCategory="300"
         android:title="@string/share_app" />
 
+    <item
+        android:id="@+id/menuPrivacy"
+        android:orderInCategory="400"
+        android:title="@string/privacy_policy" />
+
 </menu>

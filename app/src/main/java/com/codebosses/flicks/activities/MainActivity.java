@@ -7,11 +7,21 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -35,6 +45,7 @@ import com.codebosses.flicks.fragments.tvfragments.FragmentTopRatedTvShows;
 import com.codebosses.flicks.fragments.tvfragments.FragmentTvShowsAiringToday;
 import com.codebosses.flicks.fragments.tvfragments.FragmentTvShowsOnAir;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
+import com.codebosses.flicks.services.NotificationWorker;
 import com.codebosses.flicks.utils.FontUtils;
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.AppUpdaterUtils;
@@ -56,6 +67,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.TimeUnit;
 
 import static com.codebosses.flicks.common.Constants.DATA_KEY_1;
 import static com.codebosses.flicks.common.Constants.DATA_KEY_2;
@@ -120,6 +132,28 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+//        Data data = new Data.Builder()
+//                .putString(EndpointKeys.NOTIFICATION_TYPE, "Movies")
+//                .build();
+//        Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
+//        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class).setInputData(data).setConstraints(constraints).build();
+//        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+//
+//        WorkManager.getInstance().getWorkInfoByIdLiveData(oneTimeWorkRequest.getId())
+//                .observe(this, new Observer<WorkInfo>() {
+//                    @Override
+//                    public void onChanged(WorkInfo workInfo) {
+//                        Log.d("Worker", workInfo.getState().name() + "\n");
+//                    }
+//                });
+
+        Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
+
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class, 12, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance().enqueue(periodicWorkRequest);
 
         AppUpdaterUtils appUpdaterUtils = new AppUpdaterUtils(this);
         appUpdaterUtils.setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
@@ -551,6 +585,12 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 String shareBody = "To watch any movie and TV show download this app https://play.google.com/store/apps/details?id=com.codebosses.flicksapp&hl=en";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                return true;
+            case R.id.menuPrivacy:
+                String url = "https://codebosses.blogspot.com/p/privacy-policy.html";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(Intent.createChooser(i, "Open using"));
                 return true;
         }
         return false;
