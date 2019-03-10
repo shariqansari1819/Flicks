@@ -38,4 +38,17 @@
         app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodesRow"
         app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerEpisodesRow" />
 
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:id="@+id/ratingBarEpisodesRow"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:isIndicator="true"
+        android:rating="2"
+        android:saveEnabled="false"
+        app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodesRow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMoviesNameEpisodesRow"
+        app:mrb_fillBackgroundStars="true"
+        app:mrb_progressTint="@color/colorPrimary" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

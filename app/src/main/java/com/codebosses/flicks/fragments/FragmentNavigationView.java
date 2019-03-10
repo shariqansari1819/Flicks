@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,6 +60,8 @@ public class FragmentNavigationView extends Fragment {
     String celebrities;
     @BindString(R.string.genre)
     String genre;
+    @BindString(R.string.trending)
+    String trending;
 
     public FragmentNavigationView() {
         // Required empty public constructor
@@ -103,22 +106,18 @@ public class FragmentNavigationView extends Fragment {
         adapter.onSaveInstanceState(outState);
     }
 
-    @OnClick(R.id.imageViewShareNavigation)
-    public void onShareClick(View view) {
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        String shareBody = "To watch any movie and TV show download this app https://play.google.com/store/apps/details?id=com.codebosses.flicksapp&hl=en";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        startActivity(Intent.createChooser(sharingIntent, "Share via"));
-    }
-
     private List<CategoryHeader> makeCategories() {
         return Arrays.asList(
+                makeTrendingHeader(),
                 makeMovieHeader(),
                 makeTvHeader(),
                 makeCelebriyHeader(),
                 makeGenreHeader());
 //                makeBluegrassGenre());
+    }
+
+    private CategoryHeader makeTrendingHeader() {
+        return new CategoryHeader(trending, new ArrayList<CategoryItem>(), R.drawable.ic_action_trending);
     }
 
     private CategoryHeader makeMovieHeader() {

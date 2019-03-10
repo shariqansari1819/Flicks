@@ -17,10 +17,13 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
         <activity
+            android:name=".activities.EpisodeDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:parentActivityName=".activities.TvShowsDetailActivity" />
+        <activity
             android:name=".activities.TvSeasonDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:parentActivityName=".activities.TvShowsDetailActivity"
-            android:theme="@style/AppThemeFullScreen" />
+            android:parentActivityName=".activities.TvShowsDetailActivity" />
         <activity android:name=".activities.SuggestedTvShowsActivity" />
         <activity android:name=".activities.SimilarTvShowsActivity" />
         <activity
@@ -35,16 +38,14 @@
         <activity
             android:name=".activities.MoviesDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppThemeFullScreen" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.SearchActivity"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.TvShowsDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppThemeFullScreen" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.CelebrityMoviesActivity"
             android:parentActivityName=".activities.MainActivity"

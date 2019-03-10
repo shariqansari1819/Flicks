@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -14,10 +15,15 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +36,7 @@ import com.codebosses.flicks.adapters.castandcrewadapter.CrewAdapter;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.MoviesGenreAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
+import com.codebosses.flicks.adapters.reviewsadapter.ReviewsAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
@@ -43,8 +50,12 @@ import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
+import com.codebosses.flicks.pojo.reviews.ReviewsData;
+import com.codebosses.flicks.pojo.reviews.ReviewsMainObject;
 import com.codebosses.flicks.utils.FontUtils;
+import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
@@ -111,6 +122,12 @@ public class MoviesDetailActivity extends AppCompatActivity {
     TextView textViewMovieRating;
     @BindView(R.id.textViewAudienceMovieDetail)
     TextView textViewAudienceRating;
+    @BindView(R.id.toolbarMoviesDetail)
+    Toolbar toolbarMoviesDetail;
+    @BindView(R.id.textViewViewReviewsHeaderMoviesDetail)
+    TextView textViewReviewsHeader;
+    @BindView(R.id.recyclerViewReviewsMoviesDetail)
+    RecyclerView recyclerViewReviews;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -118,6 +135,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private Call<CastAndCrewMainObject> castAndCrewMainObjectCall;
     private Call<MoviesMainObject> similarMoviesCall;
     private Call<MoviesMainObject> suggestedMoviesCall;
+    private Call<ReviewsMainObject> reviewsMainObjectCall;
 
     //    Instance fields....
     private List<MoviesTrailerResult> moviesTrailerResultList = new ArrayList<>();
@@ -125,7 +143,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private List<CrewData> crewDataList = new ArrayList<>();
     private List<MoviesResult> similarMoviesList = new ArrayList<>();
     private List<MoviesResult> suggestedMoviesList = new ArrayList<>();
-    private String movieId;
+    private List<ReviewsData> reviewsDataList = new ArrayList<>();
+    private String movieId, movieTitle;
     private double rating;
     private int scrollingCounter = 0;
 
@@ -134,6 +153,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private SimilarMoviesAdapter similarMoviesAdapter;
     private CastAdapter castAdapter;
     private CrewAdapter crewAdapter;
+    private ReviewsAdapter reviewsAdapter;
 
     //    Font fields....
     private FontUtils fontUtils;
@@ -161,6 +181,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewLightFont(textViewOverview);
         fontUtils.setTextViewRegularFont(textViewMovieRating);
         fontUtils.setTextViewLightFont(textViewAudienceRating);
+        fontUtils.setTextViewRegularFont(textViewReviewsHeader);
 
 
 //        Setting layout managers for recycler view....
@@ -169,34 +190,41 @@ public class MoviesDetailActivity extends AppCompatActivity {
         recyclerViewGenre.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSimilarMovies.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSuggestedMovies.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewReviews.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this));
 
 //        Creating empty list adapter objects...
         similarMoviesAdapter = new SimilarMoviesAdapter(this, similarMoviesList, EndpointKeys.SIMILAR_MOVIES_DETAIL);
         suggestedMoviesAdapter = new SimilarMoviesAdapter(this, suggestedMoviesList, EndpointKeys.SUGGESTED_MOVIES_DETAIL);
         castAdapter = new CastAdapter(this, castDataList);
         crewAdapter = new CrewAdapter(this, crewDataList);
+        reviewsAdapter = new ReviewsAdapter(this, reviewsDataList);
+
 
 //        Setting item animator for recycler views....
         recyclerViewSimilarMovies.setItemAnimator(new DefaultItemAnimator());
         recyclerViewSuggestedMovies.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCrew.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCast.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewReviews.setItemAnimator(new DefaultItemAnimator());
 
 //        Setting emoty liste adapter to recycler views....
         recyclerViewSimilarMovies.setAdapter(similarMoviesAdapter);
         recyclerViewSuggestedMovies.setAdapter(suggestedMoviesAdapter);
         recyclerViewCast.setAdapter(castAdapter);
         recyclerViewCrew.setAdapter(crewAdapter);
+        recyclerViewReviews.setAdapter(reviewsAdapter);
 
         if (getIntent() != null) {
             movieId = String.valueOf(getIntent().getIntExtra(EndpointKeys.MOVIE_ID, -1));
             rating = getIntent().getDoubleExtra(EndpointKeys.RATING, 0.0);
+            movieTitle = getIntent().getStringExtra(EndpointKeys.MOVIE_TITLE);
             ratingBar.setRating((float) rating / 2);
             getMovieTrailers("en-US", movieId);
             getMovieDetail("en-US", movieId);
             getMovieCredits(movieId);
             getSimilarMovies(movieId, "en-US", 1);
             getSuggestedMovies(movieId, "en-US", 1);
+            getMovieReviews(movieId, "en-US", 1);
         }
 
         if (nestedScrollViewMoviesDetail != null) {
@@ -267,6 +295,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
         if (suggestedMoviesCall != null && suggestedMoviesCall.isExecuted()) {
             suggestedMoviesCall.cancel();
         }
+        if (reviewsMainObjectCall != null && reviewsMainObjectCall.isExecuted()) {
+            reviewsMainObjectCall.cancel();
+        }
         youTubePlayerView.release();
     }
 
@@ -280,6 +311,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                     if (moviesTrailerMainObject != null) {
                         moviesTrailerResultList = moviesTrailerMainObject.getResults();
                         if (moviesTrailerResultList.size() > 0) {
+                            toolbarMoviesDetail.setVisibility(View.GONE);
+                            MoviesDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                             youTubePlayerView.initialize(new YouTubePlayerInitListener() {
                                 @Override
                                 public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
@@ -289,11 +322,32 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                             super.onReady();
                                             MoviesDetailActivity.this.youTubePlayer = youTubePlayer;
                                             youTubePlayer.loadVideo(moviesTrailerResultList.get(0).getKey(), 0);
+//                                            for (int i = 0; i < moviesTrailerResultList.size(); i++) {
+//                                                youTubePlayer.cueVideo(moviesTrailerResultList.get(i).getKey(), 0);
+//                                            }
                                         }
+
+//                                        @Override
+//                                        public void onStateChange(@NonNull PlayerConstants.PlayerState state) {
+//                                            super.onStateChange(state);
+//                                            switch (state) {
+//                                                case ENDED:
+//                                                    Toast.makeText(MoviesDetailActivity.this, "Video Ended", Toast.LENGTH_SHORT).show();
+//                                                    break;
+//                                            }
+//                                        }
                                     });
                                 }
                             }, true);
                         } else {
+                            youTubePlayerView.setVisibility(View.GONE);
+                            toolbarMoviesDetail.setVisibility(View.VISIBLE);
+                            setSupportActionBar(toolbarMoviesDetail);
+                            if (getSupportActionBar() != null) {
+                                getSupportActionBar().setTitle(movieTitle);
+                                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                                ValidUtils.changeToolbarFont(toolbarMoviesDetail, MoviesDetailActivity.this);
+                            }
                             Toast.makeText(MoviesDetailActivity.this, "Could not found trailer of this movie.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -328,11 +382,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
                     if (movieDetailMainObject != null) {
 
                         String originalTitle = movieDetailMainObject.getOriginal_title();
-                        String title = movieDetailMainObject.getTitle();
                         String overview = movieDetailMainObject.getOverview();
                         String releaseDate = movieDetailMainObject.getRelease_date();
                         String moviePosterPath = movieDetailMainObject.getPoster_path();
-//                        int voteCount = movieDetailMainObject.getVote_count();
 
                         cardViewThumbnail.setVisibility(View.VISIBLE);
                         textViewReleaseDateHeader.setVisibility(View.VISIBLE);
@@ -346,7 +398,6 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         textViewTitle.setText(originalTitle);
                         textViewReleaseDate.setText(releaseDate);
                         textViewMovieRating.setText(String.valueOf((float) rating / 2));
-//                        textViewVoteCount.setText(String.valueOf(voteCount));
                         textViewOverview.setText(overview);
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
@@ -355,6 +406,13 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                 .into(imageViewThumbnail);
                         recyclerViewGenre.setAdapter(new MoviesGenreAdapter(MoviesDetailActivity.this, movieDetailMainObject.getGenres()));
 
+                        if (TextUtils.isEmpty(overview)) {
+                            textViewOverViewHeader.setVisibility(View.GONE);
+                            textViewOverview.setVisibility(View.GONE);
+                        }
+                        if (movieDetailMainObject.getGenres().size() == 0) {
+                            textViewGenreHeader.setVisibility(View.GONE);
+                        }
                     }
                 }
             }
@@ -391,6 +449,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                 castDataList.add(castAndCrewMainObject.getCast().get(i));
                                 castAdapter.notifyItemInserted(i);
                             }
+                        } else {
+                            textViewCastHeader.setVisibility(View.GONE);
                         }
                         if (castAndCrewMainObject.getCrew().size() > 0) {
                             textViewCrewHeader.setVisibility(View.VISIBLE);
@@ -398,6 +458,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                 crewDataList.add(castAndCrewMainObject.getCrew().get(i));
                                 crewAdapter.notifyItemInserted(i);
                             }
+                        } else {
+                            textViewCrewHeader.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -434,6 +496,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                 similarMoviesList.add(moviesMainObject.getResults().get(i));
                                 similarMoviesAdapter.notifyItemInserted(similarMoviesList.size() - 1);
                             }
+                        } else {
+                            textViewSimilarMoviesHeader.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -472,6 +536,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                 suggestedMoviesList.add(moviesMainObject.getResults().get(i));
                                 suggestedMoviesAdapter.notifyItemInserted(suggestedMoviesList.size() - 1);
                             }
+                        } else {
+                            textViewSuggestionHeader.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -493,6 +559,45 @@ public class MoviesDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void getMovieReviews(String movieId, String language, int pageNumber) {
+        reviewsMainObjectCall = Api.WEB_SERVICE.getMovieReviews(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        reviewsMainObjectCall.enqueue(new Callback<ReviewsMainObject>() {
+            @Override
+            public void onResponse(Call<ReviewsMainObject> call, retrofit2.Response<ReviewsMainObject> response) {
+                if (response != null && response.isSuccessful()) {
+                    ReviewsMainObject reviewsMainObject = response.body();
+                    if (reviewsMainObject != null) {
+                        if (reviewsMainObject.getTotal_results() > 0) {
+                            textViewReviewsHeader.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < reviewsMainObject.getResults().size(); i++) {
+                                reviewsDataList.add(reviewsMainObject.getResults().get(i));
+                                reviewsAdapter.notifyItemInserted(reviewsDataList.size() - 1);
+                            }
+                        } else {
+                            textViewReviewsHeader.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewsMainObject> call, Throwable error) {
+                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
+                    return;
+                }
+                if (error != null) {
+                    if (error.getMessage().contains("No address associated with hostname")) {
+
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+        });
+    }
+
     @OnClick(R.id.textViewViewMoreSimilarMovies)
     public void onViewMoreSimilarMoviesClick(View view) {
         Intent intent = new Intent(this, SimilarMoviesActivity.class);
@@ -505,6 +610,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SuggestedMoviesActivity.class);
         intent.putExtra(EndpointKeys.MOVIE_ID, movieId);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return false;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -533,7 +648,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         int castId = -1;
         String name = "", image = "";
         if (eventBusCastAndCrewClick.getClickType().equals(EndpointKeys.CAST)) {
-            castId = castDataList.get(eventBusCastAndCrewClick.getPosition()).getCast_id();
+            castId = castDataList.get(eventBusCastAndCrewClick.getPosition()).getId();
             name = castDataList.get(eventBusCastAndCrewClick.getPosition()).getName();
             image = castDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path();
         } else {

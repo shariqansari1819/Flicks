@@ -10,5 +10,8 @@ public interface Constants {
     public static final String TAB_MORE = "tab_more";
     public static final String TAB_CONVERSATION = "tab_conversation";
     public static final String TAB_ADD_USERS = "tab_add_users";
-
+    String MOVIE = "movie";
+    String TV = "tv";
+    String PERSON = "person";
+    String WEEK = "week";
 }

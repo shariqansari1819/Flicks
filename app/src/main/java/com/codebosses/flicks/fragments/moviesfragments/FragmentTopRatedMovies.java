@@ -95,7 +95,6 @@ public class FragmentTopRatedMovies extends BaseFragment {
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
-
                 moviesAdapter = new MoviesAdapter(getActivity(), topRatedMoviesList, EndpointKeys.TOP_RATED_MOVIES);
                 linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerViewTopRatedMovies.setLayoutManager(linearLayoutManager);
@@ -103,7 +102,6 @@ public class FragmentTopRatedMovies extends BaseFragment {
                 recyclerViewTopRatedMovies.setItemAnimator(new FadeInDownAnimator());
                 if (recyclerViewTopRatedMovies.getItemAnimator() != null)
                     recyclerViewTopRatedMovies.getItemAnimator().setAddDuration(500);
-
                 circularProgressBar.setVisibility(View.VISIBLE);
                 getTopRatedMovies("en-US", "", pageNumber);
 

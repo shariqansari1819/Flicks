@@ -31,6 +31,9 @@
     <string name="animated">Animated</string>
     <string name="drama">Drama</string>
     <string name="sceince_fiction">Science Fiction</string>
+    <string name="trending">Trending</string>
+    <string name="check_update">Check for update</string>
+    <string name="share_app">Share with friends</string>
 
 
     <!--Upcoming movies fragment strings-->
@@ -119,5 +122,12 @@
 
     <!--Tv seasons activity strings-->
     <string name="episodes">Episodes</string>
+    <string name="photos">Photos</string>
+
+    <string name="new_version">New Version Available</string>
+    <string name="update_app">New features are waiting for you!</string>
+    <string name="update">Update Now</string>
+    <string name="later">Later</string>
+    <string name="movie_reviews">Movie Reviews</string>
 
 </resources>

@@ -30,7 +30,11 @@ public interface EndpointKeys {
     String CELEBRITY_MOVIES = "Celeb Movies";
     String SIMILAR_TV_SHOWS_DETAIL = "Similar Tv Shows Detail";
     String SUGGESTED_TV_SHOWS_DETAIL = "Suggested Tv Shows Detail";
+    String TRENDING = "Trending";
     String SEASON = "Season";
+    String TRENDING_MOVIES = "Trending Movies";
+    String TRENDING_TV_SHOWS = "Trending Tv Shows";
+    String TRENDING_CELEBRITIES = "Trending Celebrities";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";
@@ -52,5 +56,9 @@ public interface EndpointKeys {
     String PERSON_ID = "person_id";
     String SEASON_NUMBER = "season_number";
     String EPISODE = "episode";
+    String EPISODE_NUMBER = "episode_number";
+    String EPISODE_DETAIL = "episode_detail";
+    String MEDIA_TYPE = "media_type";
+    String TIME_WINDOW = "time_window";
 }
 

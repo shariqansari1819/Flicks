@@ -42,6 +42,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/bottom_shadow"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/imageViewShareNavigation" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -50,6 +51,7 @@
         android:layout_height="@dimen/_17sdp"
         android:layout_marginStart="@dimen/horizontal_margin"
         android:layout_marginBottom="@dimen/_12sdp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_action_share"
@@ -61,6 +63,7 @@
         android:layout_height="@dimen/_17sdp"
         android:layout_marginEnd="@dimen/horizontal_margin"
         android:layout_marginBottom="@dimen/_12sdp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_action_bordered_setting"

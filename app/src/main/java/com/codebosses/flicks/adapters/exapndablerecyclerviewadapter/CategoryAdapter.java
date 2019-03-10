@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusExpandItems;
 import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryItem;
 import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryHeader;
@@ -50,6 +51,10 @@ public class CategoryAdapter extends ExpandableRecyclerViewAdapter<CategoryHeade
     public void onBindGroupViewHolder(CategoryHeaderHolder holder, int flatPosition,
                                       ExpandableGroup group) {
         holder.setGenreTitle(group);
+        if (group.getTitle().equals(EndpointKeys.TRENDING))
+            holder.genreName.setOnClickListener(v -> {
+                EventBus.getDefault().post(new EventBusExpandItems(flatPosition, EndpointKeys.TRENDING));
+            });
     }
 
 }

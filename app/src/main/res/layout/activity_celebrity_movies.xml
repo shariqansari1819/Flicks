@@ -24,6 +24,8 @@
         android:id="@+id/textViewErrorMessageCelebrityMovies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:gravity="center"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/_17ssp"

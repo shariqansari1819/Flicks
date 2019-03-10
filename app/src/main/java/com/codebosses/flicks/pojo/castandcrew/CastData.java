@@ -1,7 +1,10 @@
 
 package com.codebosses.flicks.pojo.castandcrew;
 
-public class CastData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class CastData implements Parcelable {
 
     private Integer cast_id;
     private String character;
@@ -11,6 +14,45 @@ public class CastData {
     private String name;
     private Integer order;
     private String profile_path;
+
+    protected CastData(Parcel in) {
+        if (in.readByte() == 0) {
+            cast_id = null;
+        } else {
+            cast_id = in.readInt();
+        }
+        character = in.readString();
+        credit_id = in.readString();
+        if (in.readByte() == 0) {
+            gender = null;
+        } else {
+            gender = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        name = in.readString();
+        if (in.readByte() == 0) {
+            order = null;
+        } else {
+            order = in.readInt();
+        }
+        profile_path = in.readString();
+    }
+
+    public static final Creator<CastData> CREATOR = new Creator<CastData>() {
+        @Override
+        public CastData createFromParcel(Parcel in) {
+            return new CastData(in);
+        }
+
+        @Override
+        public CastData[] newArray(int size) {
+            return new CastData[size];
+        }
+    };
 
     public Integer getCast_id() {
         return cast_id;
@@ -74,5 +116,42 @@ public class CastData {
 
     public void setProfile_path(String profile_path) {
         this.profile_path = profile_path;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (cast_id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(cast_id);
+        }
+        dest.writeString(character);
+        dest.writeString(credit_id);
+        if (gender == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(gender);
+        }
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(name);
+        if (order == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(order);
+        }
+        dest.writeString(profile_path);
     }
 }

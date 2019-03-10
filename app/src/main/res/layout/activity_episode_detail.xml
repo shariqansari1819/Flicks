@@ -2,38 +2,36 @@
 <com.codebosses.flicks.utils.customviews.CustomNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nestedScrollViewTvSeasonDetail"
+    android:id="@+id/nestedScrollViewEpisodeDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    tools:context="com.codebosses.flicks.activities.TvSeasonDetailActivity">
+    tools:context=".activities.EpisodeDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutTvSeasonDetail"
+        android:id="@+id/constraintLayoutEpisodeDetail"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarTvSeasonDetail"
+            android:id="@+id/toolbarTvEpisodeDetail"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
-            android:id="@+id/youtubePlayerViewTvSeasonDetail"
-            android:layout_width="match_parent"
+            android:id="@+id/youtubePlayerViewEpisodeDetail"
+            android:layout_width="0dp"
             android:layout_height="@dimen/_200sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarTvSeasonDetail" />
-
+            app:layout_constraintTop_toBottomOf="@+id/toolbarTvEpisodeDetail" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewThumbnailContainerTvSeasonDetail"
+            android:id="@+id/cardViewThumbnailContainerEpisodeDetail"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_110sdp"
             android:layout_marginStart="@dimen/_12sdp"
@@ -42,10 +40,10 @@
             android:visibility="gone"
             app:cardCornerRadius="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewTvSeasonDetail">
+            app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewEpisodeDetail">
 
             <ImageView
-                android:id="@+id/imageViewThumbnailTvSeasonDetail"
+                android:id="@+id/imageViewThumbnailEpisodeDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster_thumbnail"
@@ -55,7 +53,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/textViewTitleTvSeasonDetail"
+            android:id="@+id/textViewTitleTvEpisodeDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -64,33 +62,33 @@
             android:textSize="@dimen/_14ssp"
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
-            app:layout_constraintTop_toTopOf="@+id/cardViewThumbnailContainerTvSeasonDetail" />
+            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toTopOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
 
         <TextView
-            android:id="@+id/textViewRatingTvSeasonDetail"
+            android:id="@+id/textViewRatingTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_13ssp"
             android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="@+id/textViewTitleTvSeasonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitleTvSeasonDetail" />
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleTvEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleTvEpisodeDetail" />
 
         <TextView
-            android:id="@+id/textViewAudienceTvSeasonDetail"
+            android:id="@+id/textViewAudienceTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ratings"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/textViewRatingTvSeasonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewRatingTvSeasonDetail" />
+            app:layout_constraintStart_toStartOf="@+id/textViewRatingTvEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRatingTvEpisodeDetail" />
 
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
-            android:id="@+id/ratingBarTvSeasonDetail"
+            android:id="@+id/ratingBarTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_35sdp"
@@ -99,14 +97,14 @@
             android:rating="2"
             android:saveEnabled="false"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewRatingTvSeasonDetail"
-            app:layout_constraintStart_toEndOf="@+id/textViewRatingTvSeasonDetail"
-            app:layout_constraintTop_toTopOf="@+id/textViewRatingTvSeasonDetail"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewRatingTvEpisodeDetail"
+            app:layout_constraintStart_toEndOf="@+id/textViewRatingTvEpisodeDetail"
+            app:layout_constraintTop_toTopOf="@+id/textViewRatingTvEpisodeDetail"
             app:mrb_fillBackgroundStars="true"
             app:mrb_progressTint="@color/colorAccent" />
 
         <TextView
-            android:id="@+id/textViewVotesTvSeasonDetail"
+            android:id="@+id/textViewVotesTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -115,12 +113,12 @@
             android:textSize="@dimen/_12ssp"
             android:textStyle="normal"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewAudienceTvSeasonDetail"
-            app:layout_constraintStart_toStartOf="@+id/ratingBarTvSeasonDetail"
-            app:layout_constraintTop_toTopOf="@+id/textViewAudienceTvSeasonDetail" />
+            app:layout_constraintBottom_toBottomOf="@+id/textViewAudienceTvEpisodeDetail"
+            app:layout_constraintStart_toStartOf="@+id/ratingBarTvEpisodeDetail"
+            app:layout_constraintTop_toTopOf="@+id/textViewAudienceTvEpisodeDetail" />
 
         <TextView
-            android:id="@+id/textViewReleaseDateHeaderTvSeasonDetail"
+            android:id="@+id/textViewReleaseDateHeaderTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -130,19 +128,19 @@
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/_14ssp"
             android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewVotesTvSeasonDetail" />
+            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVotesTvEpisodeDetail" />
 
         <TextView
-            android:id="@+id/textViewYearTvSeasonDetail"
+            android:id="@+id/textViewYearTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:textColor="@color/colorSecondaryText"
             android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="@+id/textViewReleaseDateHeaderTvSeasonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeaderTvSeasonDetail" />
+            app:layout_constraintStart_toStartOf="@+id/textViewReleaseDateHeaderTvEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeaderTvEpisodeDetail" />
 
         <TextView
             android:id="@+id/textViewStoryLineHeader"
@@ -154,11 +152,11 @@
             android:textSize="@dimen/_14ssp"
             android:textStyle="normal"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerTvSeasonDetail" />
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
 
         <TextView
-            android:id="@+id/textViewOverviewTvSeasonDetail"
+            android:id="@+id/textViewOverviewTvEpisodeDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
@@ -170,6 +168,28 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewStoryLineHeader" />
 
         <TextView
+            android:id="@+id/textViewPhotosHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/photos"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewTvEpisodeDetail" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewPhotosEpisodeDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewPhotosHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPhotosHeader" />
+
+        <TextView
             android:id="@+id/textViewCastHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -179,11 +199,11 @@
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewTvSeasonDetail" />
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewPhotosEpisodeDetail" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewCastTvSeasonDetail"
+            android:id="@+id/recyclerViewCastTvEpisodeDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
@@ -201,53 +221,17 @@
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCastTvSeasonDetail" />
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCastTvEpisodeDetail" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewCrewTvSeasonDetail"
+            android:id="@+id/recyclerViewCrewTvEpisodeDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewCrewHeader"
             app:layout_constraintTop_toBottomOf="@+id/textViewCrewHeader" />
-
-        <TextView
-            android:id="@+id/textViewEpisodesHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/episodes"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvSeasonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCrewTvSeasonDetail" />
-
-        <TextView
-            android:id="@+id/textViewEpisodesNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewEpisodesHeader"
-            app:layout_constraintStart_toEndOf="@+id/textViewEpisodesHeader"
-            app:layout_constraintTop_toTopOf="@+id/textViewEpisodesHeader" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewEpisodesTvSeasonDetail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintEnd_toEndOf="@+id/textViewTitleTvSeasonDetail"
-            app:layout_constraintStart_toStartOf="@+id/textViewEpisodesHeader"
-            app:layout_constraintTop_toBottomOf="@+id/textViewEpisodesHeader" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

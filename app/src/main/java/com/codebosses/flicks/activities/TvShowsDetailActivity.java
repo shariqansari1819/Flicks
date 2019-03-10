@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -16,7 +17,10 @@ import retrofit2.Callback;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +48,7 @@ import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.Season;
 import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.TvShowsDetailMainObject;
 import com.codebosses.flicks.utils.FontUtils;
+import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
@@ -116,6 +121,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     TextView textViewSeasonsNumber;
     @BindView(R.id.recyclerViewSeasonsTvShowsDetail)
     RecyclerView recyclerViewSeasons;
+    @BindView(R.id.toolbarTvShowsDetail)
+    Toolbar toolbarTvShowsDetail;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -309,6 +316,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                     if (moviesTrailerMainObject != null) {
                         moviesTrailerResultList = moviesTrailerMainObject.getResults();
                         if (moviesTrailerResultList.size() > 0) {
+                            toolbarTvShowsDetail.setVisibility(View.GONE);
+                            TvShowsDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                             youTubePlayerView.initialize(new YouTubePlayerInitListener() {
                                 @Override
                                 public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
@@ -323,6 +332,14 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                 }
                             }, true);
                         } else {
+                            youTubePlayerView.setVisibility(View.GONE);
+                            toolbarTvShowsDetail.setVisibility(View.VISIBLE);
+                            setSupportActionBar(toolbarTvShowsDetail);
+                            if (getSupportActionBar() != null) {
+                                getSupportActionBar().setTitle(tvShowTitle);
+                                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                                ValidUtils.changeToolbarFont(toolbarTvShowsDetail, TvShowsDetailActivity.this);
+                            }
                             Toast.makeText(TvShowsDetailActivity.this, "Could not found trailer of this movie.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -389,6 +406,14 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                 tvShowSeasonsAdapter.notifyItemInserted(seasonList.size() - 1);
                             }
                         }
+
+                        if (TextUtils.isEmpty(overview)) {
+                            textViewOverview.setVisibility(View.GONE);
+                            textViewOverViewHeader.setVisibility(View.GONE);
+                        }
+                        if (tvShowsDetailMainObject.getGenres().size() == 0) {
+                            textViewGenreHeader.setVisibility(View.GONE);
+                        }
                     }
                 }
             }
@@ -426,6 +451,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                 similarTvResultList.add(tvMainObject.getResults().get(i));
                                 similarTvShowsAdapter.notifyItemInserted(similarTvResultList.size() - 1);
                             }
+                        } else {
+                            textViewSimilarTvShowsHeader.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -464,6 +491,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                 suggestedTvResultList.add(tvMainObject.getResults().get(i));
                                 suggestedTvShowsAdapter.notifyItemInserted(suggestedTvResultList.size() - 1);
                             }
+                        } else {
+                            textViewSuggestionHeader.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -502,6 +531,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                 castDataList.add(castAndCrewMainObject.getCast().get(i));
                                 castAdapter.notifyItemInserted(i);
                             }
+                        } else {
+                            textViewCastHeader.setVisibility(View.GONE);
                         }
                         if (castAndCrewMainObject.getCrew().size() > 0) {
                             textViewCrewHeader.setVisibility(View.VISIBLE);
@@ -509,6 +540,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                 crewDataList.add(castAndCrewMainObject.getCrew().get(i));
                                 crewAdapter.notifyItemInserted(i);
                             }
+                        } else {
+                            textViewCrewHeader.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -529,6 +562,16 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return false;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSimilarTvShowClick(EventBusTvShowsClick eventBusTvShowsClick) {
         String tvTitle = "";
@@ -546,6 +589,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
             Intent intent = new Intent(this, TvSeasonDetailActivity.class);
             intent.putExtra(EndpointKeys.TV_ID, tvShowId);
             intent.putExtra(EndpointKeys.SEASON_NUMBER, seasonList.get(eventBusTvShowsClick.getPosition()).getSeason_number());
+            intent.putExtra(EndpointKeys.TV_NAME, seasonList.get(eventBusTvShowsClick.getPosition()).getName());
             startActivity(intent);
             return;
         }

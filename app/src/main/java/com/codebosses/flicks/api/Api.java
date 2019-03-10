@@ -5,9 +5,11 @@ import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesMainObject;
+import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
+import com.codebosses.flicks.pojo.reviews.ReviewsMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.TvShowsDetailMainObject;
 import com.codebosses.flicks.pojo.tvseasons.TvSeasonsMainObject;
@@ -130,5 +132,30 @@ public interface Api {
 
     @GET("/3/tv/{tv_id}/season/{season_number}")
     Call<TvSeasonsMainObject> getTvSeasonDetail(@Path(EndpointKeys.TV_ID) String tv_id, @Path(EndpointKeys.SEASON_NUMBER) String season_number, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("/3/tv/{tv_id}/season/{season_number}/videos")
+    Call<MoviesTrailerMainObject> getTvSeasonTrailer(@Path(EndpointKeys.TV_ID) String tv_id, @Path(EndpointKeys.SEASON_NUMBER) String season_number, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("/3/tv/{tv_id}/season/{season_number}/credits")
+    Call<CastAndCrewMainObject> getTvSeasonCredits(@Path(EndpointKeys.TV_ID) String tv_id, @Path(EndpointKeys.SEASON_NUMBER) String season_number, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("/3/tv/{tv_id}/season/{season_number}/episode/{episode_number}/videos")
+    Call<MoviesTrailerMainObject> getTvEpisodeTrailer(@Path(EndpointKeys.TV_ID) String tv_id, @Path(EndpointKeys.SEASON_NUMBER) String season_number, @Path(EndpointKeys.EPISODE_NUMBER) String episode_number, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("/3/tv/{tv_id}/season/{season_number}/episode/{episode_number}/images")
+    Call<EpisodePhotosMainObject> getTvEpisodePhotos(@Path(EndpointKeys.TV_ID) String tv_id, @Path(EndpointKeys.SEASON_NUMBER) String season_number, @Path(EndpointKeys.EPISODE_NUMBER) String episode_number, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("/3/movie/{movie_id}/reviews")
+    Call<ReviewsMainObject> getMovieReviews(@Path(EndpointKeys.MOVIE_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("/3/trending/{media_type}/{time_window}")
+    Call<MoviesMainObject> getMoviesTrending(@Path(EndpointKeys.MEDIA_TYPE) String media_type, @Path(EndpointKeys.TIME_WINDOW) String time_window, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("/3/trending/{media_type}/{time_window}")
+    Call<TvMainObject> getTvShowsTrending(@Path(EndpointKeys.MEDIA_TYPE) String media_type, @Path(EndpointKeys.TIME_WINDOW) String time_window, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.PAGE) int page);
+
+    @GET("/3/trending/{media_type}/{time_window}")
+    Call<CelebritiesMainObject> getCelebTrending(@Path(EndpointKeys.MEDIA_TYPE) String media_type, @Path(EndpointKeys.TIME_WINDOW) String time_window, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.PAGE) int page);
+
 
 }

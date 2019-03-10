@@ -13,6 +13,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -69,7 +70,7 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     CircularProgressBar circularProgressBar;
 
     //    Resource fields....
-    @BindString(R.string.could_not_get_similar_movies)
+    @BindString(R.string.could_not_get_movies)
     String couldNotGetMovies;
     @BindString(R.string.internet_problem)
     String internetProblem;
@@ -78,7 +79,6 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     private FontUtils fontUtils;
 
     //    Adapter fields....
-//    private ArrayList<KnownFor> knownForArrayList = new ArrayList<>();
     private CelebMoviesAdapter celebMoviesAdapter;
     private String celebId, celebName, celebImage;
     private List<CelebMoviesData> celebMoviesDataArrayList = new ArrayList<>();
@@ -86,7 +86,6 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     //    Retrofit fields....
     private Call<CelebMoviesMainObject> celebMoviesMainObjectCall;
 
-//    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,26 +97,6 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
             celebId = String.valueOf(getIntent().getIntExtra(EndpointKeys.CELEBRITY_ID, -1));
             celebName = getIntent().getStringExtra(EndpointKeys.CELEB_NAME);
             celebImage = getIntent().getStringExtra(EndpointKeys.CELEB_IMAGE);
-//            knownForArrayList = getIntent().getParcelableArrayListExtra(EndpointKeys.CELEB_MOVIES);
-//            for (int i = 0; i < knownForArrayList.size(); i++) {
-//                KnownFor knownFor = knownForArrayList.get(i);
-//                MoviesResult moviesResult = new MoviesResult();
-//                moviesResult.setVote_count(knownFor.getVote_count());
-//                moviesResult.setId(knownFor.getId());
-//                moviesResult.setVideo(knownFor.getVideo());
-//                moviesResult.setVote_average(knownFor.getVote_average());
-//                moviesResult.setTitle(knownFor.getTitle());
-//                moviesResult.setPopularity(knownFor.getPopularity());
-//                moviesResult.setPoster_path(knownFor.getPoster_path());
-//                moviesResult.setOriginal_language(knownFor.getOriginal_language());
-//                moviesResult.setOriginal_title(knownFor.getOriginal_title());
-//                moviesResult.setGenre_ids(knownFor.getGenre_ids());
-//                moviesResult.setBackdrop_path(knownFor.getBackdrop_path());
-//                moviesResult.setAdult(knownFor.getAdult());
-//                moviesResult.setOverview(knownFor.getOverview());
-//                moviesResult.setRelease_date(knownFor.getRelease_date());
-//                moviesResultArrayList.add(moviesResult);
-//            }
         }
 
         //        Setting custom action bar....
@@ -125,12 +104,13 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(celebName);
+            changeToolbarFont(toolbarCelebrityMovies, this);
             Glide.with(this).load(EndpointUrl.POSTER_BASE_URL + "/" + celebImage).into(circleImageView);
         }
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
-        fontUtils.setTextViewBoldFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewError);
 
         if (ValidUtils.isNetworkAvailable(this)) {
             celebMoviesAdapter = new CelebMoviesAdapter(this, celebMoviesDataArrayList, EndpointKeys.CELEBRITY_MOVIES);
@@ -152,38 +132,20 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
                 super.onAdOpened();
             }
         });
-
-//        mInterstitialAd = new InterstitialAd(this);
-//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
-//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-//        mInterstitialAd.loadAd(adRequestInterstitial);
-//        mInterstitialAd.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdClosed() {
-//                super.onAdClosed();
-//            }
-//
-//            @Override
-//            public void onAdLoaded() {
-//                super.onAdLoaded();
-//                showInterstitial();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int i) {
-//                super.onAdFailedToLoad(i);
-//            }
-//        });
-
     }
 
-//    private void showInterstitial() {
-//        if (mInterstitialAd.isLoaded()) {
-//            mInterstitialAd.show();
-//            AdRequest adRequest = new AdRequest.Builder().build();
-//            mInterstitialAd.loadAd(adRequest);
-//        }
-//    }
+    public static void changeToolbarFont(Toolbar toolbar, Activity context) {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View view = toolbar.getChildAt(i);
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                if (tv.getText().equals(toolbar.getTitle())) {
+                    FontUtils.getFontUtils(context).setTextViewRegularFont(tv);
+                    break;
+                }
+            }
+        }
+    }
 
     @Override
     protected void onStart() {

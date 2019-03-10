@@ -12,11 +12,15 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.searchadapter.SearchPagerAdapter;
 import com.codebosses.flicks.pojo.eventbus.EventBusSearchText;
 import com.codebosses.flicks.utils.FontUtils;
+import com.codebosses.flicks.utils.ValidUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -66,6 +70,7 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
         viewPagerSearch.setAdapter(searchPagerAdapter);
         tabLayoutSearch.setupWithViewPager(viewPagerSearch);
         viewPagerSearch.setOffscreenPageLimit(2);
+        changeTabsFont();
 
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
@@ -137,13 +142,26 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
             if (System.currentTimeMillis() > (last_text_edit + delay - 500)) {
                 if (editTextSearch.getText().toString().length() != 0) {
                     String text = editTextSearch.getText().toString();
-//                    if (text.contains(" ")) {
-//                        text = text.replace(" ", "%20");
-//                    }
+                    ValidUtils.hideKeyboardFromActivity(SearchActivity.this);
                     EventBus.getDefault().post(new EventBusSearchText(text));
                 }
             }
         }
     };
+
+    private void changeTabsFont() {
+        ViewGroup vg = (ViewGroup) tabLayoutSearch.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    FontUtils.getFontUtils(this).setTextViewRegularFont((TextView) tabViewChild);
+                }
+            }
+        }
+    }
 
 }

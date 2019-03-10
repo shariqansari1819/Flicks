@@ -1,6 +1,9 @@
 
 package com.codebosses.flicks.pojo.tvseasons;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.codebosses.flicks.pojo.castandcrew.CastData;
 import com.codebosses.flicks.pojo.castandcrew.CrewData;
 
@@ -8,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Episode {
+public class Episode implements Parcelable {
 
     private String air_date;
     private Integer episode_number;
@@ -23,6 +26,56 @@ public class Episode {
     private Integer vote_count;
     private List<CrewData> crew = null;
     private List<CastData> guest_stars = null;
+
+    protected Episode(Parcel in) {
+        air_date = in.readString();
+        if (in.readByte() == 0) {
+            episode_number = null;
+        } else {
+            episode_number = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        name = in.readString();
+        overview = in.readString();
+        production_code = in.readString();
+        if (in.readByte() == 0) {
+            season_number = null;
+        } else {
+            season_number = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            show_id = null;
+        } else {
+            show_id = in.readInt();
+        }
+        still_path = in.readString();
+        if (in.readByte() == 0) {
+            vote_average = null;
+        } else {
+            vote_average = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            vote_count = null;
+        } else {
+            vote_count = in.readInt();
+        }
+    }
+
+    public static final Creator<Episode> CREATOR = new Creator<Episode>() {
+        @Override
+        public Episode createFromParcel(Parcel in) {
+            return new Episode(in);
+        }
+
+        @Override
+        public Episode[] newArray(int size) {
+            return new Episode[size];
+        }
+    };
 
     public String getAir_date() {
         return air_date;
@@ -128,4 +181,53 @@ public class Episode {
         this.guest_stars = guest_stars;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(air_date);
+        if (episode_number == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(episode_number);
+        }
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(name);
+        dest.writeString(overview);
+        dest.writeString(production_code);
+        if (season_number == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(season_number);
+        }
+        if (show_id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(show_id);
+        }
+        dest.writeString(still_path);
+        if (vote_average == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(vote_average);
+        }
+        if (vote_count == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(vote_count);
+        }
+    }
 }

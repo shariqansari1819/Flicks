@@ -7,4 +7,15 @@
         android:orderInCategory="200"
         android:title="@string/search"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuCheckUpdate"
+        android:orderInCategory="200"
+        android:title="@string/check_update" />
+
+    <item
+        android:id="@+id/menuShare"
+        android:orderInCategory="300"
+        android:title="@string/share_app" />
+
 </menu>

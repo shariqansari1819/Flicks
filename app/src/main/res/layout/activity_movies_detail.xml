@@ -13,13 +13,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarMoviesDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
             android:id="@+id/youtubePlayerViewMoviesDetail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_200sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbarMoviesDetail" />
 
 
         <androidx.cardview.widget.CardView
@@ -292,10 +302,33 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewSuggestionMoviesHeader"
             app:layout_constraintTop_toBottomOf="@+id/textViewSuggestionMoviesHeader" />
+
+        <TextView
+            android:id="@+id/textViewViewReviewsHeaderMoviesDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/movie_reviews"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewSuggestionMoviesMoviesDetail" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewReviewsMoviesDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewViewReviewsHeaderMoviesDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewViewReviewsHeaderMoviesDetail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -65,6 +66,8 @@ public class TvEpisodesAdapter extends RecyclerView.Adapter<TvEpisodesAdapter.Tv
                     title = title.substring(0, 10) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
+            double rating = episode.getVote_average();
+            holder.ratingBar.setRating((float) rating / 2);
         }
     }
 
@@ -79,6 +82,8 @@ public class TvEpisodesAdapter extends RecyclerView.Adapter<TvEpisodesAdapter.Tv
         ImageView imageViewThumbnail;
         @BindView(R.id.textViewMoviesNameEpisodesRow)
         TextView textViewMovieTitle;
+        @BindView(R.id.ratingBarEpisodesRow)
+        RatingBar ratingBar;
 
         TvShowEpisodesHolder(@NonNull View itemView) {
             super(itemView);

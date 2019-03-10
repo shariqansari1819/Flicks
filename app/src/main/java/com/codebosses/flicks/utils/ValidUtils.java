@@ -6,6 +6,9 @@ import android.net.ConnectivityManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 
 public class ValidUtils {
 
@@ -72,5 +75,18 @@ public class ValidUtils {
     public static void hideKeyboardFromFragment(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void changeToolbarFont(Toolbar toolbar, Activity context) {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View view = toolbar.getChildAt(i);
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                if (tv.getText().equals(toolbar.getTitle())) {
+                    FontUtils.getFontUtils(context).setTextViewRegularFont(tv);
+                    break;
+                }
+            }
+        }
     }
 }
