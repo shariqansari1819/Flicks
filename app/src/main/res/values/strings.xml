@@ -131,4 +131,12 @@
     <string name="later">Later</string>
     <string name="movie_reviews">Movie Reviews</string>
 
+    <!--Trending fragment strings-->
+    <string-array name="trending_tabs_array">
+        <item>Movies</item>
+        <item>Tv Shows</item>
+        <item>Celebrities</item>
+    </string-array>
+    <string name="could_not_get_tv_shows">Sorry, Could not get tv shows list.</string>
+
 </resources>

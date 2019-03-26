@@ -8,24 +8,19 @@ import java.util.Map;
 public class LatestMoviesMainObject {
 
     private Boolean adult;
-    private Object backdrop_path;
-    private Object belongs_to_collection;
+    private String backdrop_path;
     private Integer budget;
-    private List<Object> genres = null;
-    private Object homepage;
     private Integer id;
     private Integer imdb_id;
     private String original_language;
     private String original_title;
     private String overview;
-    private Integer popularity;
+    private Double popularity;
     private String poster_path;
-    //    private List<Object> production_companies = null;
     private List<ProductionCountry> production_countries = null;
     private String release_date;
     private Integer revenue;
     private Integer runtime;
-    //    private List<Object> spoken_languages = null;
     private String status;
     private String tagline;
     private String title;
@@ -41,20 +36,12 @@ public class LatestMoviesMainObject {
         this.adult = adult;
     }
 
-    public Object getBackdrop_path() {
+    public String getBackdrop_path() {
         return backdrop_path;
     }
 
-    public void setBackdrop_path(Object backdrop_path) {
+    public void setBackdrop_path(String backdrop_path) {
         this.backdrop_path = backdrop_path;
-    }
-
-    public Object getBelongs_to_collection() {
-        return belongs_to_collection;
-    }
-
-    public void setBelongs_to_collection(Object belongs_to_collection) {
-        this.belongs_to_collection = belongs_to_collection;
     }
 
     public Integer getBudget() {
@@ -63,22 +50,6 @@ public class LatestMoviesMainObject {
 
     public void setBudget(Integer budget) {
         this.budget = budget;
-    }
-
-    public List<Object> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Object> genres) {
-        this.genres = genres;
-    }
-
-    public Object getHomepage() {
-        return homepage;
-    }
-
-    public void setHomepage(Object homepage) {
-        this.homepage = homepage;
     }
 
     public Integer getId() {
@@ -121,11 +92,11 @@ public class LatestMoviesMainObject {
         this.overview = overview;
     }
 
-    public Integer getPopularity() {
+    public Double getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(Integer popularity) {
+    public void setPopularity(Double popularity) {
         this.popularity = popularity;
     }
 
@@ -136,14 +107,6 @@ public class LatestMoviesMainObject {
     public void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
     }
-
-//    public List<Object> getProduction_companies() {
-//        return production_companies;
-//    }
-//
-//    public void setProduction_companies(List<Object> production_companies) {
-//        this.production_companies = production_companies;
-//    }
 
     public List<ProductionCountry> getProduction_countries() {
         return production_countries;
@@ -176,14 +139,6 @@ public class LatestMoviesMainObject {
     public void setRuntime(Integer runtime) {
         this.runtime = runtime;
     }
-
-//    public List<Object> getSpoken_languages() {
-//        return spoken_languages;
-//    }
-//
-//    public void setSpoken_languages(List<Object> spoken_languages) {
-//        this.spoken_languages = spoken_languages;
-//    }
 
     public String getStatus() {
         return status;
@@ -232,13 +187,5 @@ public class LatestMoviesMainObject {
     public void setVote_count(Integer vote_count) {
         this.vote_count = vote_count;
     }
-
-//    public Map<String, Object> getAdditionalProperties() {
-//        return this.additionalProperties;
-//    }
-//
-//    public void setAdditionalProperty(String name, Object value) {
-//        this.additionalProperties.put(name, value);
-//    }
 
 }

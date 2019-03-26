@@ -87,10 +87,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     DrawerLayout drawerLayoutMain;
     @BindView(R.id.appBarMain)
     Toolbar toolbarMain;
-    @BindView(R.id.textViewAppBarMainTitle)
-    TextView textViewTitle;
     @BindView(R.id.adView)
     AdView adView;
+    @BindView(R.id.textViewAppBarMainTitle)
+    TextView textViewTitle;
 
     ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -137,9 +137,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 //                .putString(EndpointKeys.NOTIFICATION_TYPE, "Movies")
 //                .build();
 //        Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
-//        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class).setInputData(data).setConstraints(constraints).build();
+//        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class).setConstraints(constraints).build();
 //        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
-//
+
 //        WorkManager.getInstance().getWorkInfoByIdLiveData(oneTimeWorkRequest.getId())
 //                .observe(this, new Observer<WorkInfo>() {
 //                    @Override
@@ -148,12 +148,12 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 //                    }
 //                });
 
-        Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
+//        Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
 
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class, 12, TimeUnit.HOURS)
-                .setConstraints(constraints)
-                .build();
-        WorkManager.getInstance().enqueue(periodicWorkRequest);
+//        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class, 12, TimeUnit.HOURS)
+//                .setConstraints(constraints)
+//                .build();
+//        WorkManager.getInstance().enqueue(periodicWorkRequest);
 
         AppUpdaterUtils appUpdaterUtils = new AppUpdaterUtils(this);
         appUpdaterUtils.setUpdateFrom(UpdateFrom.GOOGLE_PLAY)

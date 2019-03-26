@@ -45,8 +45,8 @@ public class FragmentNavigationView extends Fragment {
 
     @BindView(R.id.recyclerViewNavigation)
     RecyclerView recyclerViewNavigation;
-    @BindView(R.id.imageViewShareNavigation)
-    AppCompatImageView imageViewShare;
+    @BindView(R.id.adView)
+    AdView adView;
 
     //    Adapter fields....
     CategoryAdapter adapter;
@@ -75,6 +75,9 @@ public class FragmentNavigationView extends Fragment {
         ButterKnife.bind(this, view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
 //        Disabling default animation of recyclerview....
         RecyclerView.ItemAnimator animator = recyclerViewNavigation.getItemAnimator();
@@ -111,8 +114,8 @@ public class FragmentNavigationView extends Fragment {
                 makeTrendingHeader(),
                 makeMovieHeader(),
                 makeTvHeader(),
-                makeCelebriyHeader(),
-                makeGenreHeader());
+                makeCelebriyHeader());
+//                makeGenreHeader());
 //                makeBluegrassGenre());
     }
 

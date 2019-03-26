@@ -158,7 +158,7 @@ public interface Api {
     @GET("/3/trending/{media_type}/{time_window}")
     Call<CelebritiesMainObject> getCelebTrending(@Path(EndpointKeys.MEDIA_TYPE) String media_type, @Path(EndpointKeys.TIME_WINDOW) String time_window, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.PAGE) int page);
 
-    @GET("/3//movie/latest")
+    @GET("/3/movie/latest")
     Call<LatestMoviesMainObject> getLatestMovie(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
 
 
