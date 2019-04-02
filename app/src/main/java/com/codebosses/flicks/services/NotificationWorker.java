@@ -31,7 +31,7 @@ public class NotificationWorker extends Worker {
     public Result doWork() {
 //        String notificationType = getInputData().getString(EndpointKeys.NOTIFICATION_TYPE);
 //        displayNotification("Hi", "Completeing");
-        getLatestMovie("en-US");
+//        getLatestMovie("en-US");
 
         return Result.success();
     }

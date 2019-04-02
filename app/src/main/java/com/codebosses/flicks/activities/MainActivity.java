@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     //    TODO: Instance fields....
     private int index, currentFragmentIndex;
+    private int interstitialAddCounter;
 
     //    Stack fields....
     private Map<String, Stack<Fragment>> stacks;
@@ -533,6 +534,33 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         return index;
     }
 
+    private void showAdOnListClick() {
+        if (interstitialAddCounter <= 3) {
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+            AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequestInterstitial);
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    super.onAdClosed();
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    showInterstitial();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int i) {
+                    super.onAdFailedToLoad(i);
+                }
+            });
+            showInterstitial();
+        }
+    }
+
     private void resolveStackLists(String tabId) {
         updateStackIndex(stackList, tabId);
         updateTabStackIndex(menuStacks, tabId);
@@ -554,6 +582,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        interstitialAddCounter = 0;
     }
 
     private void setCustomFont() {
@@ -609,6 +638,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     public void eventBusSelectedItem(EventBusSelectedItem eventBusSelectedItem) {
         drawerLayoutMain.closeDrawer(GravityCompat.START);
         setAppBarTitle(eventBusSelectedItem.getTitle());
+        interstitialAddCounter++;
+        showAdOnListClick();
         switch (eventBusSelectedItem.getTitle()) {
             case EndpointKeys.TRENDING:
                 index = 0;
