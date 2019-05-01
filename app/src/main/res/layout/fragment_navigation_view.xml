@@ -10,7 +10,7 @@
     android:focusable="true"
     tools:context=".fragments.FragmentNavigationView">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayoutLogoNavigation"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_150sdp"
@@ -18,14 +18,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageViewLogoNavigation"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/logo" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewAvatarNavigation"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:src="@drawable/boy_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/textViewNameNavigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/guest_user"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_17ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAvatarNavigation"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewAvatarNavigation" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewNavigation"

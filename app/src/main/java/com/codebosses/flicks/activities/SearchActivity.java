@@ -2,10 +2,12 @@ package com.codebosses.flicks.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +37,8 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
     Toolbar toolbarSearch;
     @BindView(R.id.editTextSearch)
     AppCompatEditText editTextSearch;
+    @BindView(R.id.imageViewCloseSearch)
+    AppCompatImageView imageViewClose;
     @BindView(R.id.tabLayoutSearch)
     TabLayout tabLayoutSearch;
     @BindView(R.id.viewPagerSearch)
@@ -127,6 +131,11 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         handler.removeCallbacks(input_finish_checker);
+        if (s.toString().isEmpty()) {
+            imageViewClose.setVisibility(View.GONE);
+        } else {
+            imageViewClose.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -162,6 +171,11 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
                 }
             }
         }
+    }
+
+    @OnClick(R.id.imageViewCloseSearch)
+    public void onCloseClick(View view) {
+        editTextSearch.setText("");
     }
 
 }

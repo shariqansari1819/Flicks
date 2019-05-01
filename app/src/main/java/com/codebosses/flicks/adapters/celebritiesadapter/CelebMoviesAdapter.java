@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,18 +29,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.CelebMoviesHolder> {
+public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.CelebMoviesHolder>
+        implements Filterable {
 
     private Context context;
     private FontUtils fontUtils;
     private LayoutInflater layoutInflater;
     private List<CelebMoviesData> celebMoviesDataArrayList = new ArrayList<>();
+    private List<CelebMoviesData> celebMoviesDataFilteredList = new ArrayList<>();
     private String movieType;
 
     public CelebMoviesAdapter(Context context, List<CelebMoviesData> celebMoviesDataArrayList, String movieType) {
         this.context = context;
         fontUtils = FontUtils.getFontUtils(context);
         this.celebMoviesDataArrayList = celebMoviesDataArrayList;
+        this.celebMoviesDataFilteredList = celebMoviesDataArrayList;
         layoutInflater = LayoutInflater.from(context);
         this.movieType = movieType;
     }
@@ -52,7 +57,7 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CelebMoviesAdapter.CelebMoviesHolder holder, int position) {
-        CelebMoviesData celebMoviesData = celebMoviesDataArrayList.get(position);
+        CelebMoviesData celebMoviesData = celebMoviesDataFilteredList.get(position);
         if (celebMoviesData != null) {
             if (celebMoviesData.getPoster_path() != null && !celebMoviesData.getPoster_path().equals(""))
                 Glide.with(context)
@@ -71,9 +76,45 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
         }
     }
 
+
     @Override
     public int getItemCount() {
-        return celebMoviesDataArrayList.size();
+        return celebMoviesDataFilteredList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    celebMoviesDataFilteredList = celebMoviesDataArrayList;
+                } else {
+                    List<CelebMoviesData> filteredList = new ArrayList<>();
+                    for (CelebMoviesData row : celebMoviesDataArrayList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    celebMoviesDataFilteredList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = celebMoviesDataFilteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                celebMoviesDataFilteredList = (ArrayList<CelebMoviesData>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     class CelebMoviesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

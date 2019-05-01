@@ -15,10 +15,48 @@
     <com.intrusoft.squint.DiagonalView
         android:id="@+id/diagonalViewMain"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_70sdp"
         app:angle="4"
         app:layout_constraintTop_toBottomOf="@+id/appBarCelebrityMovies"
         app:solidColor="@color/colorPrimary" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:focusedByDefault="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editTextSearchCelebrityMovies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:background="@drawable/bg_celebmovies_search"
+        android:hint="@string/_search"
+        android:paddingStart="@dimen/_34sdp"
+        android:paddingTop="@dimen/_6sdp"
+        android:paddingEnd="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_6sdp"
+        android:textColor="@color/colorPrimaryText"
+        android:textColorHint="@color/colorSecondaryLightText"
+        android:textSize="@dimen/_13ssp"
+        app:layout_constraintTop_toBottomOf="@+id/appBarCelebrityMovies" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextSearchCelebrityMovies"
+        app:layout_constraintStart_toStartOf="@+id/editTextSearchCelebrityMovies"
+        app:layout_constraintTop_toTopOf="@+id/editTextSearchCelebrityMovies"
+        app:srcCompat="@drawable/ic_action_search"
+        app:tint="@color/colorSecondaryLightText" />
+
 
     <TextView
         android:id="@+id/textViewErrorMessageCelebrityMovies"
@@ -52,7 +90,6 @@
         app:progressAnimationDuration="200"
         app:startAngle="45" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCelebrityMovies"
         android:layout_width="match_parent"
@@ -61,7 +98,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarCelebrityMovies" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearchCelebrityMovies" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"

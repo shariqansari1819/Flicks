@@ -35,7 +35,7 @@
     <string name="check_update">Check for update</string>
     <string name="share_app">Share with friends</string>
     <string name="privacy_policy">Privacy Policy</string>
-
+    <string name="guest_user">Guest User</string>
 
     <!--Upcoming movies fragment strings-->
     <string name="could_not_get_upcoming_movies">Sorry, Could not get upcoming movies list.</string>
@@ -73,6 +73,8 @@
     <string name="similar_tv_shows">Similar Tv Shows</string>
     <string name="recommended_tv_shows">Recommended Tv Shows</string>
     <string name="seasons">Seasons</string>
+    <string name="tv_show_reviews">Tv Show Reviews</string>
+    <string name="watch_full_movie">Watch full movie</string>
 
     <!--Movie detail fragment strings-->
     <string name="original_title">Original Title</string>

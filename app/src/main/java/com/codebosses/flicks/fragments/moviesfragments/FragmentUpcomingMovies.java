@@ -6,16 +6,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -23,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
@@ -35,7 +31,7 @@ import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
-import com.codebosses.flicks.utils.CommonSorting;
+import com.codebosses.flicks.utils.SortingUtils;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 
@@ -164,7 +160,7 @@ public class FragmentUpcomingMovies extends BaseFragment {
                         totalPages = moviesMainObject.getTotal_pages();
                         if (moviesMainObject.getTotal_results() > 0) {
                             List<MoviesResult> moviesResults = moviesMainObject.getResults();
-                            CommonSorting.sortMovieByDate(moviesResults);
+                            SortingUtils.sortMovieByDate(moviesResults);
                             for (int i = 0; i < moviesResults.size(); i++) {
                                 upcomingMoviesList.add(moviesResults.get(i));
                                 moviesAdapter.notifyItemInserted(upcomingMoviesList.size() - 1);

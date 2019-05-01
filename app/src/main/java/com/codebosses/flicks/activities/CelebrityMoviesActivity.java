@@ -1,7 +1,7 @@
 package com.codebosses.flicks.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +16,8 @@ import retrofit2.Callback;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -24,26 +26,18 @@ import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.bumptech.glide.Glide;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.celebritiesadapter.CelebMoviesAdapter;
-import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
-import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
-import com.codebosses.flicks.pojo.celebritiespojo.KnownFor;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
-import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
-import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
-import com.codebosses.flicks.pojo.tvpojo.TvResult;
+import com.codebosses.flicks.utils.SortingUtils;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,6 +57,8 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     Toolbar toolbarCelebrityMovies;
     @BindView(R.id.circleImageCelebMoviesAppBar)
     CircleImageView circleImageView;
+    @BindView(R.id.editTextSearchCelebrityMovies)
+    AppCompatEditText editTextSearch;
     private LinearLayoutManager linearLayoutManager;
     @BindView(R.id.adView)
     AdView adView;
@@ -111,6 +107,7 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
         fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setEditTextRegularFont(editTextSearch);
 
         if (ValidUtils.isNetworkAvailable(this)) {
             celebMoviesAdapter = new CelebMoviesAdapter(this, celebMoviesDataArrayList, EndpointKeys.CELEBRITY_MOVIES);
@@ -130,6 +127,24 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
             @Override
             public void onAdOpened() {
                 super.onAdOpened();
+            }
+        });
+
+//        All event listeners....
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                celebMoviesAdapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -183,10 +198,10 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
                     CelebMoviesMainObject celebMoviesMainObject = response.body();
                     if (celebMoviesMainObject != null) {
                         if (celebMoviesMainObject.getCast().size() > 0) {
-                            for (int i = 0; i < celebMoviesMainObject.getCast().size(); i++) {
-                                celebMoviesDataArrayList.add(celebMoviesMainObject.getCast().get(i));
-                                celebMoviesAdapter.notifyItemInserted(celebMoviesDataArrayList.size() - 1);
-                            }
+                            List<CelebMoviesData> moviesDataList = celebMoviesMainObject.getCast();
+                            celebMoviesDataArrayList.addAll(moviesDataList);
+                            SortingUtils.sortCelebMoviesByDate(celebMoviesDataArrayList);
+                            celebMoviesAdapter.notifyDataSetChanged();
                         }
                     }
                 } else {

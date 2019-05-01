@@ -18,6 +18,7 @@ import butterknife.OnClick;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.exapndablerecyclerviewadapter.CategoryAdapter;
@@ -26,6 +27,7 @@ import com.codebosses.flicks.pojo.eventbus.EventBusExpandItems;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
 import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryItem;
 import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryHeader;
+import com.codebosses.flicks.utils.FontUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -47,6 +49,8 @@ public class FragmentNavigationView extends Fragment {
     RecyclerView recyclerViewNavigation;
     @BindView(R.id.adView)
     AdView adView;
+    @BindView(R.id.textViewNameNavigation)
+    TextView textViewName;
 
     //    Adapter fields....
     CategoryAdapter adapter;
@@ -78,6 +82,8 @@ public class FragmentNavigationView extends Fragment {
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+        FontUtils.getFontUtils(getActivity()).setTextViewRegularFont(textViewName);
 
 //        Disabling default animation of recyclerview....
         RecyclerView.ItemAnimator animator = recyclerViewNavigation.getItemAnimator();
@@ -124,7 +130,7 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private CategoryHeader makeMovieHeader() {
-        return new CategoryHeader(movies, makeMovieItems(), R.drawable.ic_action_movie);
+        return new CategoryHeader(movies, makeMovieItems(), R.drawable.ic_action_movies);
     }
 
     private List<CategoryItem> makeMovieItems() {

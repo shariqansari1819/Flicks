@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
@@ -15,6 +16,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -65,7 +67,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MoviesDetailActivity extends AppCompatActivity {
@@ -128,6 +132,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
     TextView textViewReviewsHeader;
     @BindView(R.id.recyclerViewReviewsMoviesDetail)
     RecyclerView recyclerViewReviews;
+    @BindView(R.id.textViewWatchFullMovie)
+    AppCompatTextView textViewWatchFullMovie;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -327,7 +333,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
 //                                            }
                                         }
 
-//                                        @Override
+                                        //                                        @Override
 //                                        public void onStateChange(@NonNull PlayerConstants.PlayerState state) {
 //                                            super.onStateChange(state);
 //                                            switch (state) {
@@ -610,6 +616,11 @@ public class MoviesDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SuggestedMoviesActivity.class);
         intent.putExtra(EndpointKeys.MOVIE_ID, movieId);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.textViewWatchFullMovie)
+    public void onWatchFullMovieClick(View view) {
+
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.codebosses.flicks.utils;
 import android.annotation.SuppressLint;
 
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
+import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 
@@ -13,7 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CommonSorting {
+public class SortingUtils {
 
     public static void sortMovieByDate(List<MoviesResult> moviesResultArrayList) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -22,7 +23,7 @@ public class CommonSorting {
             public int compare(MoviesResult o1, MoviesResult o2) {
                 try {
                     return simpleDateFormat.parse(o2.getRelease_date()).compareTo(simpleDateFormat.parse(o1.getRelease_date()));
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return 0;
                 }
             }
@@ -37,6 +38,20 @@ public class CommonSorting {
                     return 0;
                 else
                     return 1;
+            }
+        });
+    }
+
+    public static void sortCelebMoviesByDate(List<CelebMoviesData> moviesResultList) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Collections.sort(moviesResultList, new Comparator<CelebMoviesData>() {
+            @Override
+            public int compare(CelebMoviesData o1, CelebMoviesData o2) {
+                try {
+                    return simpleDateFormat.parse(o2.getRelease_date()).compareTo(simpleDateFormat.parse(o1.getRelease_date()));
+                } catch (Exception e) {
+                    return 0;
+                }
             }
         });
     }

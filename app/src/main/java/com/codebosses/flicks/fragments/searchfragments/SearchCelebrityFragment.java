@@ -31,7 +31,7 @@ import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusSearchText;
-import com.codebosses.flicks.utils.CommonSorting;
+import com.codebosses.flicks.utils.SortingUtils;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.google.android.gms.ads.AdListener;
@@ -183,7 +183,7 @@ public class SearchCelebrityFragment extends Fragment {
                         if (celebritiesMainObject.getTotal_results() > 0) {
                             textViewError.setVisibility(View.GONE);
                             List<CelebritiesResult> celebritiesResults = celebritiesMainObject.getResults();
-                            CommonSorting.sortCelebritiesByRating(celebritiesResults);
+                            SortingUtils.sortCelebritiesByRating(celebritiesResults);
                             for (int i = 0; i < celebritiesResults.size(); i++) {
                                 searchCelebritiesList.add(celebritiesResults.get(i));
                                 celebritiesAdapter.notifyItemInserted(searchCelebritiesList.size() - 1);

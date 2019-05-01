@@ -31,6 +31,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.castandcrewadapter.CastAdapter;
 import com.codebosses.flicks.adapters.castandcrewadapter.CrewAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.MoviesGenreAdapter;
+import com.codebosses.flicks.adapters.reviewsadapter.ReviewsAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.SimilarTvShowsAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.TvShowSeasonsAdapter;
 import com.codebosses.flicks.api.Api;
@@ -43,6 +44,8 @@ import com.codebosses.flicks.pojo.eventbus.EventBusCastAndCrewClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
+import com.codebosses.flicks.pojo.reviews.ReviewsData;
+import com.codebosses.flicks.pojo.reviews.ReviewsMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.Season;
@@ -123,6 +126,10 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     RecyclerView recyclerViewSeasons;
     @BindView(R.id.toolbarTvShowsDetail)
     Toolbar toolbarTvShowsDetail;
+    @BindView(R.id.textViewViewReviewsHeaderTvShowsDetail)
+    TextView textViewReviewsHeader;
+    @BindView(R.id.recyclerViewReviewsTvShowsDetail)
+    RecyclerView recyclerViewReviews;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -130,6 +137,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     private Call<TvMainObject> similarTvShowsCall;
     private Call<TvMainObject> suggestedTvShowsCall;
     private Call<CastAndCrewMainObject> castAndCrewMainObjectCall;
+    private Call<ReviewsMainObject> reviewsMainObjectCall;
 
     //    Instance fields....
     private List<MoviesTrailerResult> moviesTrailerResultList = new ArrayList<>();
@@ -138,6 +146,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     private List<CastData> castDataList = new ArrayList<>();
     private List<CrewData> crewDataList = new ArrayList<>();
     private List<Season> seasonList = new ArrayList<>();
+    private List<ReviewsData> reviewsDataList = new ArrayList<>();
     private String tvShowId, tvShowTitle;
     private double rating;
     private int scrollingCounter = 0;
@@ -148,6 +157,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     private CastAdapter castAdapter;
     private CrewAdapter crewAdapter;
     private TvShowSeasonsAdapter tvShowSeasonsAdapter;
+    private ReviewsAdapter reviewsAdapter;
 
     //    Font fields....
     private FontUtils fontUtils;
@@ -177,6 +187,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewLightFont(textViewAudienceRating);
         fontUtils.setTextViewRegularFont(textViewSeasonsHeader);
         fontUtils.setTextViewLightFont(textViewSeasonsNumber);
+        fontUtils.setTextViewRegularFont(textViewReviewsHeader);
 
         //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(TvShowsDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -185,6 +196,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         recyclerViewSimilarTvShows.setLayoutManager(new LinearLayoutManager(TvShowsDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSuggestedTvShows.setLayoutManager(new LinearLayoutManager(TvShowsDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSeasons.setLayoutManager(new LinearLayoutManager(TvShowsDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewReviews.setLayoutManager(new LinearLayoutManager(TvShowsDetailActivity.this));
 
 //        Creating empty list adapter objects...
         similarTvShowsAdapter = new SimilarTvShowsAdapter(this, similarTvResultList, EndpointKeys.SIMILAR_TV_SHOWS_DETAIL);
@@ -192,6 +204,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         castAdapter = new CastAdapter(this, castDataList);
         crewAdapter = new CrewAdapter(this, crewDataList);
         tvShowSeasonsAdapter = new TvShowSeasonsAdapter(this, seasonList, EndpointKeys.SEASON);
+        reviewsAdapter = new ReviewsAdapter(this, reviewsDataList);
 
 //        Setting item animator for recycler views....
         recyclerViewSimilarTvShows.setItemAnimator(new DefaultItemAnimator());
@@ -199,6 +212,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         recyclerViewCrew.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCast.setItemAnimator(new DefaultItemAnimator());
         recyclerViewSeasons.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewReviews.setItemAnimator(new DefaultItemAnimator());
 
 //        Setting emoty liste adapter to recycler views....
         recyclerViewSimilarTvShows.setAdapter(similarTvShowsAdapter);
@@ -206,6 +220,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         recyclerViewCast.setAdapter(castAdapter);
         recyclerViewCrew.setAdapter(crewAdapter);
         recyclerViewSeasons.setAdapter(tvShowSeasonsAdapter);
+        recyclerViewReviews.setAdapter(reviewsAdapter);
 
         if (getIntent() != null) {
             tvShowId = String.valueOf(getIntent().getIntExtra(EndpointKeys.TV_ID, -1));
@@ -217,8 +232,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
             getSimilarTvShows(tvShowId, "en-US", 1);
             getSuggestedTvShows(tvShowId, "en-US", 1);
             getTvShowCredits(tvShowId);
+            getTvShowReviews(tvShowId, "en-US", 1);
         }
-
 
 //        Checking if user scroll nested scroll view so that youtube player can pause/resume....
         if (nestedScrollViewTvShowsDetail != null) {
@@ -288,6 +303,9 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         }
         if (castAndCrewMainObjectCall != null && castAndCrewMainObjectCall.isExecuted()) {
             castAndCrewMainObjectCall.cancel();
+        }
+        if (reviewsMainObjectCall != null && reviewsMainObjectCall.isExecuted()) {
+            reviewsMainObjectCall.cancel();
         }
         youTubePlayerView.release();
     }
@@ -557,6 +575,45 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                     } else {
                     }
                 } else {
+                }
+            }
+        });
+    }
+
+    private void getTvShowReviews(String movieId, String language, int pageNumber) {
+        reviewsMainObjectCall = Api.WEB_SERVICE.getTvReviews(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        reviewsMainObjectCall.enqueue(new Callback<ReviewsMainObject>() {
+            @Override
+            public void onResponse(Call<ReviewsMainObject> call, retrofit2.Response<ReviewsMainObject> response) {
+                if (response != null && response.isSuccessful()) {
+                    ReviewsMainObject reviewsMainObject = response.body();
+                    if (reviewsMainObject != null) {
+                        if (reviewsMainObject.getTotal_results() > 0) {
+                            textViewReviewsHeader.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < reviewsMainObject.getResults().size(); i++) {
+                                reviewsDataList.add(reviewsMainObject.getResults().get(i));
+                                reviewsAdapter.notifyItemInserted(reviewsDataList.size() - 1);
+                            }
+                        } else {
+                            textViewReviewsHeader.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewsMainObject> call, Throwable error) {
+                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
+                    return;
+                }
+                if (error != null) {
+                    if (error.getMessage().contains("No address associated with hostname")) {
+
+                    } else {
+
+                    }
+                } else {
+
                 }
             }
         });

@@ -31,6 +31,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarMoviesDetail" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewWatchFullMovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/watch_full_movie"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_14ssp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewMoviesDetail" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewThumbnailContainerMoviesDetail"
@@ -42,7 +54,7 @@
             android:visibility="gone"
             app:cardCornerRadius="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewMoviesDetail">
+            app:layout_constraintTop_toBottomOf="@+id/textViewWatchFullMovie">
 
             <ImageView
                 android:id="@+id/imageViewThumbnailMoviesDetail"
