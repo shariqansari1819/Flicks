@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
+        <activity android:name=".activities.TrailerActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity
             android:name=".activities.EpisodeDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
@@ -61,6 +65,9 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.codewaves.youtubethumbnailview.ApiKey"
+            android:value="AIzaSyCC_bwgm7pwXmBe6AobsaZIxSPCpknFJSo" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_id" />

@@ -3,6 +3,7 @@ package com.codebosses.flicks.endpoints;
 public interface EndpointKeys {
 
     String THE_MOVIE_DB_API_KEY = "0021549a1c767c99bc531d078d1cda1a";
+    String GOOGLE_API_KEY = "AIzaSyCC_bwgm7pwXmBe6AobsaZIxSPCpknFJSo";
 
     String UPCOMING_MOVIES = "Upcoming Movies";
     String TOP_RATED_MOVIES = "Top Rated Movies";
@@ -35,6 +36,8 @@ public interface EndpointKeys {
     String TRENDING_MOVIES = "Trending Movies";
     String TRENDING_TV_SHOWS = "Trending Tv Shows";
     String TRENDING_CELEBRITIES = "Trending Celebrities";
+    String DISCOVER = "Discover";
+    String GENRE = "Genre";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";
@@ -61,5 +64,6 @@ public interface EndpointKeys {
     String MEDIA_TYPE = "media_type";
     String TIME_WINDOW = "time_window";
     String NOTIFICATION_TYPE = "notification_type";
+    String YOUTUBE_KEY = "youtube_key";
 }
 

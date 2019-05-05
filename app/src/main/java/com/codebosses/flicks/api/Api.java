@@ -164,4 +164,7 @@ public interface Api {
     @GET("/3/tv/{tv_id}/reviews")
     Call<ReviewsMainObject> getTvReviews(@Path(EndpointKeys.TV_ID) String tv_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page);
 
+    @GET("/3/movie/{movie_id}/images")
+    Call<EpisodePhotosMainObject> getMoviesImages(@Path(EndpointKeys.MOVIE_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query("include_image_language") String image_language);
+
 }

@@ -51,9 +51,9 @@ public class CategoryAdapter extends ExpandableRecyclerViewAdapter<CategoryHeade
     public void onBindGroupViewHolder(CategoryHeaderHolder holder, int flatPosition,
                                       ExpandableGroup group) {
         holder.setGenreTitle(group);
-        if (group.getTitle().equals(EndpointKeys.TRENDING))
+        if (group.getTitle().equals(EndpointKeys.TRENDING) || group.getTitle().equals(EndpointKeys.DISCOVER) || group.getTitle().equals(EndpointKeys.GENRE))
             holder.genreName.setOnClickListener(v -> {
-                EventBus.getDefault().post(new EventBusExpandItems(flatPosition, EndpointKeys.TRENDING));
+                EventBus.getDefault().post(new EventBusExpandItems(flatPosition, group.getTitle()));
             });
     }
 

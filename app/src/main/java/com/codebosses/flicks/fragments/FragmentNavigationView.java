@@ -66,6 +66,8 @@ public class FragmentNavigationView extends Fragment {
     String genre;
     @BindString(R.string.trending)
     String trending;
+    @BindString(R.string.discover)
+    String discover;
 
     public FragmentNavigationView() {
         // Required empty public constructor
@@ -117,12 +119,16 @@ public class FragmentNavigationView extends Fragment {
 
     private List<CategoryHeader> makeCategories() {
         return Arrays.asList(
+                makeDiscoverHeader(),
                 makeTrendingHeader(),
                 makeMovieHeader(),
                 makeTvHeader(),
-                makeCelebriyHeader());
-//                makeGenreHeader());
-//                makeBluegrassGenre());
+                makeCelebriyHeader(),
+                makeGenreHeader());
+    }
+
+    private CategoryHeader makeDiscoverHeader() {
+        return new CategoryHeader(discover, new ArrayList<CategoryItem>(), R.drawable.ic_action_discover);
     }
 
     private CategoryHeader makeTrendingHeader() {
@@ -166,7 +172,7 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private CategoryHeader makeGenreHeader() {
-        return new CategoryHeader(genre, makeGenreItems(), R.drawable.ic_action_genre);
+        return new CategoryHeader(genre, new ArrayList<CategoryItem>(), R.drawable.ic_action_genre);
     }
 
 
