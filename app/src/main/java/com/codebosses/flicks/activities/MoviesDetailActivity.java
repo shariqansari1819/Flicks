@@ -60,6 +60,7 @@ import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObje
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
 import com.codebosses.flicks.pojo.reviews.ReviewsData;
 import com.codebosses.flicks.pojo.reviews.ReviewsMainObject;
+import com.codebosses.flicks.utils.DateUtils;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
@@ -73,6 +74,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MoviesDetailActivity extends AppCompatActivity {
@@ -220,6 +222,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewRegularFont(textViewVideosHeader);
         fontUtils.setTextViewRegularFont(textViewImageHeader);
         fontUtils.setTextViewLightFont(textViewImagesCounter);
+        fontUtils.setTextViewRegularFont(textViewWatchFullMovie);
 
 //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -371,8 +374,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                             textViewVideosCount.setText("(" + moviesTrailerResultList.size() + ")");
                         } else {
                             textViewVideosHeader.setVisibility(View.GONE);
-                            textViewVideosCount.setText("(0)");
-                            Toast.makeText(MoviesDetailActivity.this, "Could not found trailer of this movie.", Toast.LENGTH_SHORT).show();
+                            textViewVideosCount.setVisibility(View.GONE);
+                            imageButtonPlay.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -413,7 +416,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                             textViewImagesCounter.setText("(" + imagesPhotoList.size() + ")");
                         } else {
                             textViewImageHeader.setVisibility(View.GONE);
-                            textViewImagesCounter.setText("(0)");
+                            textViewImagesCounter.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -468,6 +471,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         textViewReleaseDate.setText(releaseDate);
                         textViewMovieRating.setText(String.valueOf((float) rating / 2));
                         textViewOverview.setText(overview);
+//                        try {
+//                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
+//                            if (!DateUtils.isAfterToday(date.getTime())) {
+//                                textViewWatchFullMovie.setVisibility(View.VISIBLE);
+//                            } else {
+//                                textViewWatchFullMovie.setVisibility(View.GONE);
+//                            }
+//                        } catch (Exception e) {
+//
+//                        }
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))

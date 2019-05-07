@@ -38,6 +38,12 @@ public interface EndpointKeys {
     String TRENDING_CELEBRITIES = "Trending Celebrities";
     String DISCOVER = "Discover";
     String GENRE = "Genre";
+    String ACTION_MOVIES = "action_movies";
+    String ADVENTURE_MOVIES = "adventure_movies";
+    String ANIMATED_MOVIES = "animated_movies";
+    String ROMANTIC_MOVOES = "romantic_movies";
+    String SCIENCE_FICTION_MOVIES = "science_fiction_movies";
+    String CRIME_MOVIES = "crime_movies";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";

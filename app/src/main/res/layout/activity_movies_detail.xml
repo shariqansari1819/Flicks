@@ -68,11 +68,11 @@
             android:visibility="invisible"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintCircle="@+id/imageViewCoverMovieDetail"
             app:layout_constraintCircleAngle="587"
             app:layout_constraintCircleRadius="@dimen/_130sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWatchFullMovie">
+            app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
                 android:id="@+id/imageViewThumbnailMoviesDetail"
@@ -147,6 +147,18 @@
             app:layout_constraintStart_toStartOf="@+id/ratingBarMovieDetail"
             app:layout_constraintTop_toTopOf="@+id/textViewAudienceMovieDetail" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewWatchFullMovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/watch_full_movie"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_14ssp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerMoviesDetail" />
+
         <TextView
             android:id="@+id/textViewReleaseDateHeaderMoviesDetail"
             android:layout_width="wrap_content"
@@ -157,7 +169,7 @@
             android:textSize="@dimen/_14ssp"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewVotesMoviesDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewWatchFullMovie" />
 
         <TextView
             android:id="@+id/textViewYearMoviesDetail"
@@ -168,19 +180,6 @@
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
             app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeaderMoviesDetail" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewWatchFullMovie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:text="@string/watch_full_movie"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_14ssp"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewCoverMovieDetail" />
 
         <TextView
             android:id="@+id/textViewStoryLineHeader"
@@ -439,12 +438,12 @@
             android:layout_width="@dimen/_44sdp"
             android:layout_height="@dimen/_44sdp"
             android:visibility="gone"
+            android:layout_marginTop="@dimen/_220sdp"
             app:animateProgress="true"
             app:foregroundStrokeCap="round"
             app:foregroundStrokeColor="@color/colorAccent"
             app:foregroundStrokeWidth="@dimen/_3sdp"
             app:indeterminate="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

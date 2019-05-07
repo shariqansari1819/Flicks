@@ -16,7 +16,7 @@ public class DiscoverFragment extends BaseFragment {
 
 
     public DiscoverFragment() {
-        // Required empty public constructor
+
     }
 
 

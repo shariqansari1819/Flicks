@@ -146,4 +146,16 @@
     </string-array>
     <string name="could_not_get_tv_shows">Sorry, Could not get tv shows list.</string>
 
+    <!--Genre fragment strings-->
+    <string name="action_movies">Action Movies</string>
+    <string name="adventure_movies">Adventure Movies</string>
+    <string name="animated_movies">Animated Movies</string>
+    <string name="crime_movies">Crime Movies</string>
+    <string name="documentary_movies">Documentary Movies</string>
+    <string name="family_movies">Family Movies</string>
+    <string name="music_movies">Music Movies</string>
+    <string name="romantic_movies">Romantic Movies</string>
+    <string name="science_fiction_movies">Science Fiction Movies</string>
+    <string name="war_movies">War Movies</string>
+
 </resources>

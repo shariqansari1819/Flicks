@@ -119,7 +119,7 @@ public class FragmentNavigationView extends Fragment {
 
     private List<CategoryHeader> makeCategories() {
         return Arrays.asList(
-                makeDiscoverHeader(),
+//                makeDiscoverHeader(),
                 makeTrendingHeader(),
                 makeMovieHeader(),
                 makeTvHeader(),
@@ -127,9 +127,9 @@ public class FragmentNavigationView extends Fragment {
                 makeGenreHeader());
     }
 
-    private CategoryHeader makeDiscoverHeader() {
-        return new CategoryHeader(discover, new ArrayList<CategoryItem>(), R.drawable.ic_action_discover);
-    }
+//    private CategoryHeader makeDiscoverHeader() {
+//        return new CategoryHeader(discover, new ArrayList<CategoryItem>(), R.drawable.ic_action_discover);
+//    }
 
     private CategoryHeader makeTrendingHeader() {
         return new CategoryHeader(trending, new ArrayList<CategoryItem>(), R.drawable.ic_action_trending);
@@ -173,16 +173,6 @@ public class FragmentNavigationView extends Fragment {
 
     private CategoryHeader makeGenreHeader() {
         return new CategoryHeader(genre, new ArrayList<CategoryItem>(), R.drawable.ic_action_genre);
-    }
-
-
-    private List<CategoryItem> makeGenreItems() {
-        CategoryItem action = new CategoryItem(getResources().getString(R.string.action), false);
-        CategoryItem animated = new CategoryItem(getResources().getString(R.string.animated), false);
-        CategoryItem drama = new CategoryItem(getResources().getString(R.string.drama), false);
-        CategoryItem science_fiction = new CategoryItem(getResources().getString(R.string.sceince_fiction), false);
-
-        return Arrays.asList(action, animated, drama, science_fiction);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

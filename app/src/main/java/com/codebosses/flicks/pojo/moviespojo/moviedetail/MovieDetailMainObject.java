@@ -23,7 +23,7 @@ public class MovieDetailMainObject {
     private List<ProductionCompany> production_companies = null;
     private List<ProductionCountry> production_countries = null;
     private String release_date;
-    private Integer revenue;
+    private Long revenue;
     private Integer runtime;
     private List<SpokenLanguage> spoken_languages = null;
     private String status;
@@ -161,11 +161,11 @@ public class MovieDetailMainObject {
         this.release_date = release_date;
     }
 
-    public Integer getRevenue() {
+    public Long getRevenue() {
         return revenue;
     }
 
-    public void setRevenue(Integer revenue) {
+    public void setRevenue(Long revenue) {
         this.revenue = revenue;
     }
 

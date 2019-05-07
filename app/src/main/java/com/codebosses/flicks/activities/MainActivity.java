@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 //        imageViews = new ImageView[]{imageViewHome, imageViewFriendsMap, imageViewSuggestedUsers, imageViewConversation, imageViewMore};
 
         stacks = new LinkedHashMap<>();
-        stacks.put(EndpointKeys.DISCOVER, new Stack<Fragment>());
+//        stacks.put(EndpointKeys.DISCOVER, new Stack<Fragment>());
         stacks.put(EndpointKeys.TRENDING, new Stack<Fragment>());
         stacks.put(EndpointKeys.UPCOMING_MOVIES, new Stack<Fragment>());
         stacks.put(EndpointKeys.TOP_RATED_MOVIES, new Stack<Fragment>());
@@ -286,16 +286,12 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         stacks.put(EndpointKeys.TV_SHOWS_AIRING_TODAY, new Stack<Fragment>());
         stacks.put(EndpointKeys.TOP_RATED_CELEBRITIES, new Stack<Fragment>());
         stacks.put(EndpointKeys.GENRE, new Stack<>());
-//        stacks.put(EndpointKeys.ACTION, new Stack<Fragment>());
-//        stacks.put(EndpointKeys.ANIMATED, new Stack<Fragment>());
-//        stacks.put(EndpointKeys.DRAMA, new Stack<Fragment>());
-//        stacks.put(EndpointKeys.SCIENCE_FICTION, new Stack<Fragment>());
 
         menuStacks = new ArrayList<>();
-        menuStacks.add(EndpointKeys.DISCOVER);
+        menuStacks.add(EndpointKeys.TRENDING);
 
         stackList = new ArrayList<>();
-        stackList.add(EndpointKeys.DISCOVER);
+//        stackList.add(EndpointKeys.DISCOVER);
         stackList.add(EndpointKeys.TRENDING);
         stackList.add(EndpointKeys.UPCOMING_MOVIES);
         stackList.add(EndpointKeys.TOP_RATED_MOVIES);
@@ -313,8 +309,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         stackList.add(EndpointKeys.GENRE);
 
 //        imageViews[0].setSelected(true);
-        setAppBarTitle(getResources().getString(R.string.discover));
-        selectedTab(EndpointKeys.DISCOVER);
+        setAppBarTitle(getResources().getString(R.string.trending));
+        selectedTab(EndpointKeys.TRENDING);
     }
 
     private void selectedTab(String tabId) {
@@ -328,13 +324,13 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
              * We are adding a new fragment which is not present in stack. So add to stack is true.
              */
             switch (tabId) {
-                case EndpointKeys.DISCOVER:
-                    addInitialTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.DISCOVER, discoverFragment, R.id.frameLayoutFragmentContainer, true);
-                    resolveStackLists(tabId);
-                    assignCurrentFragment(discoverFragment);
-                    break;
+//                case EndpointKeys.DISCOVER:
+//                    addInitialTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.DISCOVER, discoverFragment, R.id.frameLayoutFragmentContainer, true);
+//                    resolveStackLists(tabId);
+//                    assignCurrentFragment(discoverFragment);
+//                    break;
                 case EndpointKeys.TRENDING:
-                    addAdditionalTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.TRENDING, fragmentTrending, currentFragment, R.id.frameLayoutFragmentContainer, true);
+                    addInitialTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.TRENDING, fragmentTrending, R.id.frameLayoutFragmentContainer, true);
                     resolveStackLists(tabId);
                     assignCurrentFragment(fragmentTrending);
                     break;
@@ -480,53 +476,53 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     private int resolveTabPositions(String currentTab) {
         switch (currentTab) {
-            case EndpointKeys.DISCOVER:
-                index = 0;
-                setAppBarTitle(getResources().getString(R.string.discover));
-                break;
+//            case EndpointKeys.DISCOVER:
+//                index = 0;
+//                setAppBarTitle(getResources().getString(R.string.discover));
+//                break;
             case EndpointKeys.TRENDING:
-                index = 1;
+                index = 0;
                 setAppBarTitle(getResources().getString(R.string.trending));
                 break;
             case EndpointKeys.UPCOMING_MOVIES:
-                index = 2;
+                index = 1;
                 setAppBarTitle(getResources().getString(R.string.upcoming_movies));
                 break;
             case EndpointKeys.TOP_RATED_MOVIES:
-                index = 3;
+                index = 2;
                 setAppBarTitle(getResources().getString(R.string.top_rated_movies));
                 break;
             case EndpointKeys.LATEST_MOVIES:
-                index = 4;
+                index = 3;
                 setAppBarTitle(getResources().getString(R.string.latest_movies));
                 break;
             case EndpointKeys.IN_THEATER:
                 setAppBarTitle(getResources().getString(R.string.in_theater));
-                index = 5;
+                index = 4;
                 break;
             case EndpointKeys.TOP_RATED_TV_SHOWS:
                 setAppBarTitle(getResources().getString(R.string.top_rated_tv_shows));
-                index = 6;
+                index = 5;
                 break;
             case EndpointKeys.LATEST_TV_SHOWS:
                 setAppBarTitle(getResources().getString(R.string.latest_tv_shows));
-                index = 7;
+                index = 6;
                 break;
             case EndpointKeys.TV_SHOWS_ON_THE_AIR:
-                index = 8;
+                index = 7;
                 setAppBarTitle(getResources().getString(R.string.tv_shows_on_the_air));
                 break;
             case EndpointKeys.TV_SHOWS_AIRING_TODAY:
-                index = 9;
+                index = 8;
                 setAppBarTitle(getResources().getString(R.string.tv_shows_on_the_air_today));
                 break;
             case EndpointKeys.TOP_RATED_CELEBRITIES:
                 setAppBarTitle(getResources().getString(R.string.top_rated_celebrities));
-                index = 10;
+                index = 9;
                 break;
             case EndpointKeys.GENRE:
                 setAppBarTitle(getResources().getString(R.string.genre));
-                index = 11;
+                index = 10;
                 break;
 //            case EndpointKeys.ANIMATED:
 //                setAppBarTitle(getResources().getString(R.string.animated));
@@ -660,52 +656,52 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         interstitialAddCounter++;
         showAdOnListClick();
         switch (eventBusSelectedItem.getTitle()) {
-            case EndpointKeys.DISCOVER:
-                index = 0;
-                selectedTab(EndpointKeys.DISCOVER);
-                break;
+//            case EndpointKeys.DISCOVER:
+//                index = 0;
+//                selectedTab(EndpointKeys.DISCOVER);
+//                break;
             case EndpointKeys.TRENDING:
-                index = 1;
+                index = 0;
                 selectedTab(EndpointKeys.TRENDING);
                 break;
             case EndpointKeys.UPCOMING_MOVIES:
-                index = 2;
+                index = 1;
                 selectedTab(EndpointKeys.UPCOMING_MOVIES);
                 break;
             case EndpointKeys.TOP_RATED_MOVIES:
-                index = 3;
+                index = 2;
                 selectedTab(EndpointKeys.TOP_RATED_MOVIES);
                 break;
             case EndpointKeys.LATEST_MOVIES:
-                index = 4;
+                index = 3;
                 selectedTab(EndpointKeys.LATEST_MOVIES);
                 break;
             case EndpointKeys.IN_THEATER:
-                index = 5;
+                index = 4;
                 selectedTab(EndpointKeys.IN_THEATER);
                 break;
             case EndpointKeys.TOP_RATED_TV_SHOWS:
-                index = 6;
+                index = 5;
                 selectedTab(EndpointKeys.TOP_RATED_TV_SHOWS);
                 break;
             case EndpointKeys.LATEST_TV_SHOWS:
-                index = 7;
+                index = 6;
                 selectedTab(EndpointKeys.LATEST_TV_SHOWS);
                 break;
             case EndpointKeys.TV_SHOWS_ON_THE_AIR:
-                index = 8;
+                index = 7;
                 selectedTab(EndpointKeys.TV_SHOWS_ON_THE_AIR);
                 break;
             case EndpointKeys.TV_SHOWS_AIRING_TODAY:
-                index = 9;
+                index = 8;
                 selectedTab(EndpointKeys.TV_SHOWS_AIRING_TODAY);
                 break;
             case EndpointKeys.TOP_RATED_CELEBRITIES:
-                index = 10;
+                index = 9;
                 selectedTab(EndpointKeys.TOP_RATED_CELEBRITIES);
                 break;
             case EndpointKeys.GENRE:
-                index = 11;
+                index = 10;
                 selectedTab(EndpointKeys.GENRE);
                 break;
 //            case EndpointKeys.ANIMATED:

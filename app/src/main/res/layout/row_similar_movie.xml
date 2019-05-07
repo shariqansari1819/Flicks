@@ -9,9 +9,7 @@
         android:id="@+id/cardViewThumbnailContainerSimilarMoviesRow"
         android:layout_width="@dimen/_85sdp"
         android:layout_height="@dimen/_100sdp"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardCornerRadius="8dp">
 
         <ImageView
             android:id="@+id/imageViewThumbnailSimilarMoviesRow"
@@ -28,6 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/_3sdp"
+        android:singleLine="true"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="@+id/cardViewThumbnailContainerSimilarMoviesRow"
