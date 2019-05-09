@@ -94,7 +94,7 @@ public class FragmentTrendingMovies extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_trending_movies, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
 //        Setting custom fonts....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -127,7 +127,7 @@ public class FragmentTrendingMovies extends Fragment {
                 if (isBottomReached) {
                     pageNumber++;
                     if (pageNumber <= totalPages)
-                            getTrendingMovies(pageNumber);
+                        getTrendingMovies(pageNumber);
                 }
             }
         });
@@ -205,7 +205,7 @@ public class FragmentTrendingMovies extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void eventBusTopRatedMovieClick(EventBusMovieClick eventBusMovieClick) {
+    public void eventBusTrendingMoviesClick(EventBusMovieClick eventBusMovieClick) {
         if (eventBusMovieClick.getMovieType().equals(EndpointKeys.TRENDING_MOVIES)) {
             Intent intent = new Intent(getActivity(), MoviesDetailActivity.class);
             intent.putExtra(EndpointKeys.MOVIE_ID, topRatedMoviesList.get(eventBusMovieClick.getPosition()).getId());

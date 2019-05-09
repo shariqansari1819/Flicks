@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".activities.FullMovieActivity"></activity>
+        <activity android:name=".activities.GenreMoviesActivity"></activity>
+        <activity android:name=".activities.FullMovieActivity" />
         <activity
             android:name=".activities.TrailerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"

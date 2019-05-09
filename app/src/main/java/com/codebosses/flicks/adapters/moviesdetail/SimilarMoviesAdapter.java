@@ -60,8 +60,8 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdap
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();
             if (title != null) {
-                if (title.length() > 10)
-                    title = title.substring(0, 10) + "...";
+//                if (title.length() > 10)
+//                    title = title.substring(0, 10) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
             double movieRating = moviesResult.getVote_average();

@@ -51,12 +51,12 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastHolder> {
         CastData castData = castDataList.get(position);
         String celebName = castData.getName();
         String characterName = castData.getCharacter();
-        if (celebName.length() > 10) {
-            celebName = celebName.substring(0, 10) + "...";
-        }
-        if (characterName.length() > 11) {
-            characterName = characterName.substring(0, 11) + "...";
-        }
+//        if (celebName.length() > 10) {
+//            celebName = celebName.substring(0, 10) + "...";
+//        }
+//        if (characterName.length() > 11) {
+//            characterName = characterName.substring(0, 11) + "...";
+//        }
         Glide.with(context)
                 .load(EndpointUrl.POSTER_BASE_URL + castData.getProfile_path())
                 .apply(new RequestOptions().centerCrop())

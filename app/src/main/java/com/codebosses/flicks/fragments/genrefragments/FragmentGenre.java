@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -19,9 +20,11 @@ import android.widget.TextView;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
+import com.codebosses.flicks.activities.GenreMoviesActivity;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
@@ -200,7 +203,7 @@ public class FragmentGenre extends BaseFragment {
 
     private void getActionMovies(String language, int pageNumber) {
         circularProgressBar.setVisibility(View.VISIBLE);
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "popularity.desc", false, true, pageNumber, 28);
+        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "popularity.desc", false, true, pageNumber, Constants.ACTION_ID);
         discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -241,7 +244,7 @@ public class FragmentGenre extends BaseFragment {
     }
 
     private void getAdventureMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_count.desc", false, true, pageNumber, 12);
+        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_count.desc", false, true, pageNumber, Constants.ADVENTURE_ID);
         discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -280,7 +283,7 @@ public class FragmentGenre extends BaseFragment {
     }
 
     private void getAnimatedMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "revenue.desc", false, true, pageNumber, 12);
+        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "revenue.desc", false, true, pageNumber, Constants.ANIMATED_ID);
         discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -319,7 +322,7 @@ public class FragmentGenre extends BaseFragment {
     }
 
     private void getScienceFictionMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, 878);
+        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, Constants.SCIENCE_FICTION_ID);
         discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -358,7 +361,7 @@ public class FragmentGenre extends BaseFragment {
     }
 
     private void getRomanticMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, 10749);
+        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, Constants.ROMANTIC_ID);
         discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -397,7 +400,7 @@ public class FragmentGenre extends BaseFragment {
     }
 
     private void getCrimeMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, 80);
+        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, Constants.CRIME_ID);
         discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -435,6 +438,44 @@ public class FragmentGenre extends BaseFragment {
         });
     }
 
+    @OnClick(R.id.textViewViewMoreActionMoviesGenre)
+    public void onActionViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.ACTION_MOVIES, Constants.ACTION_ID, "popularity.desc");
+    }
+
+    @OnClick(R.id.textViewViewMoreAdventureMoviesGenre)
+    public void onAdventureViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.ADVENTURE_MOVIES, Constants.ADVENTURE_ID, "vote_count.desc");
+    }
+
+    @OnClick(R.id.textViewViewMoreAnimatedMoviesGenre)
+    public void onAnimatedViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.ANIMATED_MOVIES, Constants.ANIMATED_ID, "revenue.desc");
+    }
+
+    @OnClick(R.id.textViewViewMoreCrimeMoviesGenre)
+    public void onCrimeViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.CRIME_MOVIES, Constants.CRIME_ID, "vote_average.desc");
+    }
+
+    @OnClick(R.id.textViewViewMoreRomanticMoviesGenre)
+    public void onRomanticViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.ROMANTIC_MOVOES, Constants.ROMANTIC_ID, "vote_average.desc");
+    }
+
+    @OnClick(R.id.textViewViewMoreScienceFictionMoviesGenre)
+    public void onScienceFictionViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.SCIENCE_FICTION_MOVIES, Constants.SCIENCE_FICTION_ID, "vote_average.desc");
+    }
+
+    private void startGenreMoviesActivity(String type, int id, String sortType) {
+        Intent intent = new Intent(getActivity(), GenreMoviesActivity.class);
+        intent.putExtra(EndpointKeys.GENRE_TYPE, type);
+        intent.putExtra(EndpointKeys.GENRE_ID, id);
+        intent.putExtra(EndpointKeys.SORT_TYPE, sortType);
+        startActivity(intent);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSimilarMovieClick(EventBusMovieClick eventBusMovieClick) {
         String movieTitle = "";
@@ -465,11 +506,18 @@ public class FragmentGenre extends BaseFragment {
             movieTitle = scienceFictionMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
             rating = scienceFictionMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
         }
-        Intent intent = new Intent(getActivity(), MoviesDetailActivity.class);
-        intent.putExtra(EndpointKeys.MOVIE_ID, movieId);
-        intent.putExtra(EndpointKeys.MOVIE_TITLE, movieTitle);
-        intent.putExtra(EndpointKeys.RATING, rating);
-        startActivity(intent);
+        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.ACTION_MOVIES) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.ADVENTURE_MOVIES) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.ANIMATED_MOVIES) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.ROMANTIC_MOVOES) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.CRIME_MOVIES) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.SCIENCE_FICTION)) {
+            Intent intent = new Intent(getActivity(), MoviesDetailActivity.class);
+            intent.putExtra(EndpointKeys.MOVIE_ID, movieId);
+            intent.putExtra(EndpointKeys.MOVIE_TITLE, movieTitle);
+            intent.putExtra(EndpointKeys.RATING, rating);
+            startActivity(intent);
+        }
     }
 
 }

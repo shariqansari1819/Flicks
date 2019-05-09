@@ -44,6 +44,8 @@ public interface EndpointKeys {
     String ROMANTIC_MOVOES = "romantic_movies";
     String SCIENCE_FICTION_MOVIES = "science_fiction_movies";
     String CRIME_MOVIES = "crime_movies";
+    String GENRE_MOVIES = "genre_movies";
+    String SORT_TYPE = "sort_type";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";
@@ -71,5 +73,7 @@ public interface EndpointKeys {
     String TIME_WINDOW = "time_window";
     String NOTIFICATION_TYPE = "notification_type";
     String YOUTUBE_KEY = "youtube_key";
+    String GENRE_TYPE = "genre_type";
+    String GENRE_ID = "genre_id";
 }
 

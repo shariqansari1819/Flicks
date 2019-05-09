@@ -52,12 +52,12 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.CrewHolder> {
         String celebName = crewData.getName();
         String characterName = crewData.getJob();
 
-        if (celebName.length() > 10) {
-            celebName = celebName.substring(0, 10) + "...";
-        }
-        if (characterName.length() > 11) {
-            characterName = characterName.substring(0, 11) + "...";
-        }
+//        if (celebName.length() > 10) {
+//            celebName = celebName.substring(0, 10) + "...";
+//        }
+//        if (characterName.length() > 11) {
+//            characterName = characterName.substring(0, 11) + "...";
+//        }
         Glide.with(context)
                 .load(EndpointUrl.POSTER_BASE_URL + crewData.getProfile_path())
                 .apply(new RequestOptions().centerCrop())

@@ -14,4 +14,11 @@ public interface Constants {
     String TV = "tv";
     String PERSON = "person";
     String WEEK = "week";
+
+    int ACTION_ID = 28;
+    int ADVENTURE_ID = 12;
+    int ANIMATED_ID = 16;
+    int SCIENCE_FICTION_ID = 878;
+    int ROMANTIC_ID = 10749;
+    int CRIME_ID = 80;
 }
