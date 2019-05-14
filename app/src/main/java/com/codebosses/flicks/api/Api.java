@@ -16,14 +16,27 @@ import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.TvShowsDetailMainObject;
 import com.codebosses.flicks.pojo.tvseasons.TvSeasonsMainObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.ConnectionSpec;
 import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.TlsVersion;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -41,26 +54,25 @@ import retrofit2.http.Query;
 public interface Api {
     //        String APPLICATION_JSON_CHARSET_UTF_8 = "application/json; charset=utf-8";
 //    String XWWWORMURLENCODED = "application/x-www-form-urlencoded";
-    String APPLICATION_JSON_CHARSET_UTF_8 = "application/json; charset=utf-8";
-
-    OkHttpClient.Builder httpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Response response = chain.proceed(chain.request());
-            // Do anything with response here
-            response.header("Content-Type", APPLICATION_JSON_CHARSET_UTF_8);
-            response.header("Accept", APPLICATION_JSON_CHARSET_UTF_8);
-            return response;
-        }
-    }).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).readTimeout(120, TimeUnit.SECONDS).connectTimeout(120, TimeUnit.SECONDS).retryOnConnectionFailure(true);
-
-    OkHttpClient client = httpClient.build();
-
-    Api WEB_SERVICE = new Retrofit.Builder()
-            .baseUrl(EndpointUrl.MOVIE_DB_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build().create(Api.class);
+//    String APPLICATION_JSON_CHARSET_UTF_8 = "application/json; charset=utf-8";
+//
+//    OkHttpClient.Builder httpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+//        @Override
+//        public Response intercept(Chain chain) throws IOException {
+//            Response response = chain.proceed(chain.request());
+//            // Do anything with response here
+//            response.header("Content-Type", APPLICATION_JSON_CHARSET_UTF_8);
+//            response.header("Accept", APPLICATION_JSON_CHARSET_UTF_8);
+//            return response;
+//        }
+//    }).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).readTimeout(120, TimeUnit.SECONDS).connectTimeout(120, TimeUnit.SECONDS).retryOnConnectionFailure(true);
+//    OkHttpClient client = httpClient.build();
+//
+//    Api WEB_SERVICE = new Retrofit.Builder()
+//            .baseUrl(EndpointUrl.MOVIE_DB_BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .client(client)
+//            .build().create(Api.class);
 
     @GET("movie/upcoming")
     Call<MoviesMainObject> getUpcomingMovies(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query(EndpointKeys.PAGE) int page, @Query(EndpointKeys.REGION) String region);
@@ -169,6 +181,12 @@ public interface Api {
 
     @GET("/3/discover/movie")
     Call<MoviesMainObject> getGenreMovies(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query("sort_by") String sort_by, @Query(EndpointKeys.INCLUDE_ADULT) boolean include_adult, @Query("include_video") boolean include_video, @Query(EndpointKeys.PAGE) int page, @Query("with_genres") int with_genre);
+
+    @GET("/3/tv/{tv_id}/images")
+    Call<EpisodePhotosMainObject> getTvImages(@Path(EndpointKeys.TV_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query("include_image_language") String image_language);
+
+    @GET("/3/tv/{tv_id}/season/{season_number}/images")
+    Call<EpisodePhotosMainObject> getTvSeasonImages(@Path(EndpointKeys.TV_ID) String tv_id, @Path(EndpointKeys.SEASON_NUMBER) int season_number, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
 
 
 }

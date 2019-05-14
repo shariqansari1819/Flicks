@@ -26,6 +26,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.TvShowsDetailActivity;
 import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusSearchText;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
@@ -170,7 +171,7 @@ public class SearchTvShowsFragment extends Fragment {
     private void getTopLatestTvShows(String query, String language, int pageNumber) {
         textViewError.setVisibility(View.GONE);
         imageViewNotFound.setVisibility(View.GONE);
-        searchTvShowCall = Api.WEB_SERVICE.searchTvShows(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        searchTvShowCall = ApiClient.getClient().create(Api.class).searchTvShows(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         searchTvShowCall.enqueue(new Callback<TvMainObject>() {
             @Override
             public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {

@@ -27,6 +27,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
@@ -59,7 +60,6 @@ public class FragmentInTheater extends BaseFragment {
     AppCompatImageView imageViewError;
     private LinearLayoutManager linearLayoutManager;
 
-
     //    Resource fields....
     @BindString(R.string.could_not_get_upcoming_movies)
     String couldNotGetMovies;
@@ -73,8 +73,10 @@ public class FragmentInTheater extends BaseFragment {
     private Call<MoviesMainObject> inTheaterCall;
 
     //    Adapter fields....
-    private List<MoviesResult> inTheaterList = new ArrayList<>();
     private MoviesAdapter moviesAdapter;
+
+    //    Instance fields...
+    private List<MoviesResult> inTheaterList = new ArrayList<>();
     private int pageNumber = 1, totalPages = 0;
 
     public FragmentInTheater() {
@@ -153,11 +155,12 @@ public class FragmentInTheater extends BaseFragment {
     }
 
     private void getInTheater(String language, String region, int pageNumber) {
-        inTheaterCall = Api.WEB_SERVICE.getInTheaterMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
+        inTheaterCall = ApiClient.getClient().create(Api.class).getInTheaterMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
         inTheaterCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -181,7 +184,7 @@ public class FragmentInTheater extends BaseFragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 imageViewError.setVisibility(View.VISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
                 if (error != null) {

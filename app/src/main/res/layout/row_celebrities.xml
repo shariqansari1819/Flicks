@@ -10,7 +10,7 @@
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayoutChildCelebritiesRow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +21,9 @@
             android:layout_width="@dimen/_85sdp"
             android:layout_height="@dimen/_100sdp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageViewThumbnailCelebritiesRow"
@@ -35,47 +37,39 @@
 
         <TextView
             android:id="@+id/textViewTitleCelebritiesRow"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_toEndOf="@+id/cardViewThumbnailContainerCelebritiesRow"
+            android:singleLine="true"
             android:text="Zootopia"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
-
-        <!--<TextView-->
-        <!--android:id="@+id/textViewYearMoviesRow"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/textViewTitleMoviesRow"-->
-        <!--android:layout_alignStart="@+id/textViewTitleMoviesRow"-->
-        <!--android:layout_marginTop="@dimen/_2sdp"-->
-        <!--android:layout_marginEnd="@dimen/_10sdp"-->
-        <!--android:text="2016"-->
-        <!--android:textColor="@color/colorSecondaryLightText"-->
-        <!--android:textSize="13sp" />-->
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerCelebritiesRow"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/dividerCelebritiesRow"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_below="@+id/textViewTitleCelebritiesRow"
-            android:layout_alignStart="@+id/textViewTitleCelebritiesRow"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/bottom_shadow" />
+            android:background="@drawable/bottom_shadow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleCelebritiesRow"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleCelebritiesRow" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewRatingIconCelebritiesRow"
             android:layout_width="@dimen/_16sdp"
             android:layout_height="@dimen/_16sdp"
-            android:layout_below="@+id/dividerCelebritiesRow"
-            android:layout_alignStart="@+id/dividerCelebritiesRow"
+            android:layout_marginTop="@dimen/_10sdp"
             android:contentDescription="@string/rating_pop_corn_icon"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleCelebritiesRow"
+            app:layout_constraintTop_toBottomOf="@+id/dividerCelebritiesRow"
             app:srcCompat="@drawable/ic_action_star"
             app:tint="@color/colorPrimary" />
 
@@ -83,27 +77,26 @@
             android:id="@+id/textViewRatingCelebritiesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageViewRatingIconCelebritiesRow"
-            android:layout_alignBottom="@+id/imageViewRatingIconCelebritiesRow"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toEndOf="@+id/imageViewRatingIconCelebritiesRow"
             android:text="90%"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewRatingIconCelebritiesRow"
+            app:layout_constraintStart_toEndOf="@+id/imageViewRatingIconCelebritiesRow"
+            app:layout_constraintTop_toTopOf="@+id/imageViewRatingIconCelebritiesRow" />
 
         <TextView
             android:id="@+id/textViewAudienceCelebritiesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageViewRatingIconCelebritiesRow"
-            android:layout_alignStart="@+id/imageViewRatingIconCelebritiesRow"
             android:layout_marginTop="@dimen/_2sdp"
             android:text="@string/popularity"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_11ssp" />
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleCelebritiesRow"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewRatingIconCelebritiesRow" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

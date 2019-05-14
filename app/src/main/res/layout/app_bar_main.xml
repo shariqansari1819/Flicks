@@ -6,10 +6,10 @@
     android:background="@color/colorPrimary"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:contentInsetEnd="0dp"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:contentInsetLeft="0dp"
     app:contentInsetRight="0dp"
-    app:contentInsetStart="0dp">
+    app:contentInsetStart="0dp"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <TextView
         android:id="@+id/textViewAppBarMainTitle"
@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/_15sdp"
+        android:gravity="center"
+        android:singleLine="true"
         android:text="@string/latest_movies"
         android:textAllCaps="true"
         android:textColor="@color/colorWhite"

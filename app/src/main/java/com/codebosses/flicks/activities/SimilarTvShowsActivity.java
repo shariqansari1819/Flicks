@@ -23,6 +23,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
@@ -153,7 +154,7 @@ public class SimilarTvShowsActivity extends AppCompatActivity {
     }
 
     private void getSimilarTvShows(String tvShowsId, String language, int pageNumber) {
-        similarTvShowsCall = Api.WEB_SERVICE.getSimilarTvShows(tvShowsId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        similarTvShowsCall = ApiClient.getClient().create(Api.class).getSimilarTvShows(tvShowsId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         similarTvShowsCall.enqueue(new Callback<TvMainObject>() {
             @Override
             public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {

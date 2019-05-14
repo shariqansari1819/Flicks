@@ -5,6 +5,7 @@
     android:id="@+id/nestedScrollViewEpisodeDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/_10sdp"
     tools:context=".activities.EpisodeDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,66 +13,99 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewCoverTvEpisode"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_175sdp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewBlurTvEpisode"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_175sdp"
+            android:background="#59000000"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarTvEpisodeDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@null"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
-            android:id="@+id/youtubePlayerViewEpisodeDetail"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_200sdp"
+        <com.dd.ShadowLayout
+            android:id="@+id/shadowPlayButtonTvEpisode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewCoverTvEpisode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarTvEpisodeDetail" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:sl_cornerRadius="56dp"
+            app:sl_dx="0dp"
+            app:sl_dy="0dp"
+            app:sl_shadowColor="@color/colorPrimary"
+            app:sl_shadowRadius="3dp">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imageButtonPlayTvEpisode"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/bg_white_circle"
+                app:srcCompat="@drawable/ic_action_play" />
+
+        </com.dd.ShadowLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewThumbnailContainerEpisodeDetail"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_110sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:elevation="2dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:cardCornerRadius="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/youtubePlayerViewEpisodeDetail">
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintCircle="@+id/imageViewCoverTvEpisode"
+            app:layout_constraintCircleAngle="587"
+            app:layout_constraintCircleRadius="@dimen/_130sdp"
+            app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
                 android:id="@+id/imageViewThumbnailEpisodeDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster_thumbnail"
-                android:scaleType="centerCrop"
-                android:src="@drawable/zootopia_thumbnail" />
+                android:scaleType="centerCrop" />
 
         </androidx.cardview.widget.CardView>
+
 
         <TextView
             android:id="@+id/textViewTitleTvEpisodeDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginEnd="@dimen/_12sdp"
+            android:singleLine="true"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="normal"
+            android:textSize="@dimen/_13ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerEpisodeDetail"
-            app:layout_constraintTop_toTopOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewCoverTvEpisode" />
 
         <TextView
             android:id="@+id/textViewRatingTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@+id/textViewTitleTvEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitleTvEpisodeDetail" />
@@ -82,7 +116,7 @@
             android:layout_height="wrap_content"
             android:text="@string/ratings"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_11ssp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/textViewRatingTvEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/textViewRatingTvEpisodeDetail" />
@@ -90,7 +124,7 @@
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
             android:id="@+id/ratingBarTvEpisodeDetail"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_height="@dimen/_14sdp"
             android:layout_marginStart="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:isIndicator="true"
@@ -110,7 +144,7 @@
             android:layout_centerVertical="true"
             android:text="@string/grade_now"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_11ssp"
             android:textStyle="normal"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/textViewAudienceTvEpisodeDetail"
@@ -121,25 +155,22 @@
             android:id="@+id/textViewReleaseDateHeaderTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/first_air_date"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/_14ssp"
             android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerEpisodeDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewVotesTvEpisodeDetail" />
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
 
         <TextView
             android:id="@+id/textViewYearTvEpisodeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:textColor="@color/colorSecondaryText"
             android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="@+id/textViewReleaseDateHeaderTvEpisodeDetail"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeaderTvEpisodeDetail" />
 
         <TextView
@@ -153,7 +184,7 @@
             android:textStyle="normal"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewYearTvEpisodeDetail" />
 
         <TextView
             android:id="@+id/textViewOverviewTvEpisodeDetail"
@@ -167,6 +198,42 @@
             app:layout_constraintStart_toStartOf="@+id/textViewStoryLineHeader"
             app:layout_constraintTop_toBottomOf="@+id/textViewStoryLineHeader" />
 
+
+        <TextView
+            android:id="@+id/textViewVideosHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/videos"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewTvEpisodeDetail" />
+
+        <TextView
+            android:id="@+id/textViewVideosCountTvEpisodeDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewVideosHeader"
+            app:layout_constraintStart_toEndOf="@+id/textViewVideosHeader"
+            app:layout_constraintTop_toTopOf="@+id/textViewVideosHeader" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewVideosTvEpisodeDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewVideosHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVideosHeader" />
+
         <TextView
             android:id="@+id/textViewPhotosHeader"
             android:layout_width="wrap_content"
@@ -178,13 +245,14 @@
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
-            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewTvEpisodeDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewVideosTvEpisodeDetail" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPhotosEpisodeDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewPhotosHeader"
             app:layout_constraintTop_toBottomOf="@+id/textViewPhotosHeader" />
@@ -207,6 +275,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewCastHeader"
             app:layout_constraintTop_toBottomOf="@+id/textViewCastHeader" />
@@ -229,9 +298,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewCrewHeader"
             app:layout_constraintTop_toBottomOf="@+id/textViewCrewHeader" />
+
+        <com.budiyev.android.circularprogressbar.CircularProgressBar
+            android:id="@+id/circularProgressBarTvEpisodeDetail"
+            android:layout_width="@dimen/_44sdp"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginTop="@dimen/_220sdp"
+            android:visibility="gone"
+            app:animateProgress="true"
+            app:foregroundStrokeCap="round"
+            app:foregroundStrokeColor="@color/colorAccent"
+            app:foregroundStrokeWidth="@dimen/_3sdp"
+            app:indeterminate="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:progressAnimationDuration="200"
+            app:startAngle="45" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

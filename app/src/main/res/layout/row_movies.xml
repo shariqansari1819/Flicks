@@ -10,7 +10,7 @@
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayoutChildMoviesRow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,11 +20,13 @@
             android:id="@+id/cardViewThumbnailContainerMoviesRow"
             android:layout_width="@dimen/_85sdp"
             android:layout_height="@dimen/_100sdp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            app:cardCornerRadius="8dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageViewThumbnailMainRow"
+                android:id="@+id/imageViewThumbnailMoviesRow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster_thumbnail"
@@ -35,47 +37,50 @@
 
         <TextView
             android:id="@+id/textViewTitleMoviesRow"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_toEndOf="@+id/cardViewThumbnailContainerMoviesRow"
+            android:singleLine="true"
             android:text="Zootopia"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerMoviesRow"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewYearMoviesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewTitleMoviesRow"
-            android:layout_alignStart="@+id/textViewTitleMoviesRow"
             android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:text="2016"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesRow"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleMoviesRow" />
 
         <View
             android:id="@+id/dividerMoviesRow"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_below="@+id/textViewYearMoviesRow"
-            android:layout_alignStart="@+id/textViewYearMoviesRow"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/bottom_shadow" />
+            android:background="@drawable/bottom_shadow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesRow"
+            app:layout_constraintTop_toBottomOf="@+id/textViewYearMoviesRow" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewRatingIconMoviesRow"
             android:layout_width="@dimen/_16sdp"
             android:layout_height="@dimen/_16sdp"
-            android:layout_below="@+id/dividerMoviesRow"
-            android:layout_alignStart="@+id/dividerMoviesRow"
+            android:layout_marginTop="@dimen/_10sdp"
             android:contentDescription="@string/rating_pop_corn_icon"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesRow"
+            app:layout_constraintTop_toBottomOf="@+id/dividerMoviesRow"
             app:srcCompat="@drawable/ic_action_star"
             app:tint="@color/colorPrimary" />
 
@@ -83,66 +88,61 @@
             android:id="@+id/textViewRatingMoviesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageViewRatingIconMoviesRow"
-            android:layout_alignBottom="@+id/imageViewRatingIconMoviesRow"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toEndOf="@+id/imageViewRatingIconMoviesRow"
             android:text="90%"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewRatingIconMoviesRow"
+            app:layout_constraintStart_toEndOf="@+id/imageViewRatingIconMoviesRow"
+            app:layout_constraintTop_toTopOf="@+id/imageViewRatingIconMoviesRow" />
 
         <TextView
             android:id="@+id/textViewAudienceMainRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageViewRatingIconMoviesRow"
-            android:layout_alignStart="@+id/imageViewRatingIconMoviesRow"
             android:layout_marginTop="@dimen/_2sdp"
             android:text="@string/ratings"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_11ssp" />
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesRow"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewRatingIconMoviesRow" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewVoteCountIconMoviesRow"
             android:layout_width="@dimen/_17sdp"
             android:layout_height="@dimen/_17sdp"
-            android:layout_below="@+id/dividerMoviesRow"
-            android:layout_alignTop="@+id/imageViewRatingIconMoviesRow"
-            android:layout_alignBottom="@+id/imageViewRatingIconMoviesRow"
             android:layout_marginStart="@dimen/_30sdp"
-            android:layout_toEndOf="@+id/textViewRatingMoviesRow"
             android:contentDescription="@string/rating_pop_corn_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewRatingIconMoviesRow"
+            app:layout_constraintStart_toEndOf="@+id/textViewRatingMoviesRow"
+            app:layout_constraintTop_toTopOf="@+id/imageViewRatingIconMoviesRow"
             app:srcCompat="@drawable/popcorn_icon" />
 
         <TextView
             android:id="@+id/textViewVotesMoviesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageViewVoteCountIconMoviesRow"
-            android:layout_alignEnd="@+id/textViewVotesCountMoviesRow"
-            android:layout_alignBottom="@+id/imageViewVoteCountIconMoviesRow"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toEndOf="@+id/imageViewVoteCountIconMoviesRow"
             android:text="2000"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewVoteCountIconMoviesRow"
+            app:layout_constraintStart_toEndOf="@+id/imageViewVoteCountIconMoviesRow"
+            app:layout_constraintTop_toTopOf="@+id/imageViewVoteCountIconMoviesRow" />
 
         <TextView
             android:id="@+id/textViewVotesCountMoviesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewVotesMoviesRow"
-            android:layout_alignStart="@+id/imageViewVoteCountIconMoviesRow"
-            android:layout_alignTop="@+id/textViewAudienceMainRow"
-            android:layout_alignBottom="@+id/textViewAudienceMainRow"
             android:text="@string/vote_count"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_11ssp" />
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewAudienceMainRow"
+            app:layout_constraintStart_toStartOf="@+id/imageViewVoteCountIconMoviesRow"
+            app:layout_constraintTop_toTopOf="@+id/textViewAudienceMainRow" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

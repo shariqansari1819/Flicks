@@ -43,6 +43,7 @@ import com.codebosses.flicks.adapters.moviesdetail.VideosAdapter;
 import com.codebosses.flicks.adapters.reviewsadapter.ReviewsAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.EpisodePhotosAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
@@ -243,7 +244,6 @@ public class MoviesDetailActivity extends AppCompatActivity {
         videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
         imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList);
 
-
 //        Setting item animator for recycler views....
         recyclerViewSimilarMovies.setItemAnimator(new DefaultItemAnimator());
         recyclerViewSuggestedMovies.setItemAnimator(new DefaultItemAnimator());
@@ -253,7 +253,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         recyclerViewVideos.setItemAnimator(new DefaultItemAnimator());
         recyclerViewImages.setItemAnimator(new DefaultItemAnimator());
 
-//        Setting emoty liste adapter to recycler views....
+//        Setting empty list adapter to recycler views....
         recyclerViewSimilarMovies.setAdapter(similarMoviesAdapter);
         recyclerViewSuggestedMovies.setAdapter(suggestedMoviesAdapter);
         recyclerViewCast.setAdapter(castAdapter);
@@ -353,7 +353,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void getMovieTrailers(String language, String movieId) {
-        moviesTrailerMainObjectCall = Api.WEB_SERVICE.getMovieTrailer(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+        moviesTrailerMainObjectCall = ApiClient.getClient().create(Api.class).getMovieTrailer(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
         moviesTrailerMainObjectCall.enqueue(new Callback<MoviesTrailerMainObject>() {
             @Override
             public void onResponse(Call<MoviesTrailerMainObject> call, retrofit2.Response<MoviesTrailerMainObject> response) {
@@ -361,12 +361,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
                     MoviesTrailerMainObject moviesTrailerMainObject = response.body();
                     if (moviesTrailerMainObject != null) {
                         if (moviesTrailerMainObject.getResults().size() > 0) {
+                            textViewVideosHeader.setVisibility(View.VISIBLE);
+                            textViewVideosCount.setVisibility(View.VISIBLE);
+                            recyclerViewVideos.setVisibility(View.VISIBLE);
                             Glide.with(MoviesDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/mqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .into(imageViewCover);
-                            textViewVideosHeader.setVisibility(View.VISIBLE);
                             for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
                                 moviesTrailerResultList.add(moviesTrailerMainObject.getResults().get(i));
                                 videosAdapter.notifyItemInserted(i);
@@ -375,6 +377,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         } else {
                             textViewVideosHeader.setVisibility(View.GONE);
                             textViewVideosCount.setVisibility(View.GONE);
+                            recyclerViewVideos.setVisibility(View.GONE);
                             imageButtonPlay.setVisibility(View.GONE);
                         }
                     }
@@ -400,7 +403,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void getMovieImages(String movieId, String language) {
-        moviesImagesCall = Api.WEB_SERVICE.getMoviesImages(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, "en");
+        moviesImagesCall = ApiClient.getClient().create(Api.class).getMoviesImages(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, "en");
         moviesImagesCall.enqueue(new Callback<EpisodePhotosMainObject>() {
             @Override
             public void onResponse(Call<EpisodePhotosMainObject> call, retrofit2.Response<EpisodePhotosMainObject> response) {
@@ -409,6 +412,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                     if (imagesMainObject != null) {
                         if (imagesMainObject.getBackdrops() != null && imagesMainObject.getBackdrops().size() > 0) {
                             textViewImageHeader.setVisibility(View.VISIBLE);
+                            textViewImagesCounter.setVisibility(View.VISIBLE);
+                            recyclerViewImages.setVisibility(View.VISIBLE);
                             for (int i = 0; i < imagesMainObject.getBackdrops().size(); i++) {
                                 imagesPhotoList.add(imagesMainObject.getBackdrops().get(i));
                                 imagesAdapter.notifyItemInserted(i);
@@ -417,6 +422,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         } else {
                             textViewImageHeader.setVisibility(View.GONE);
                             textViewImagesCounter.setVisibility(View.GONE);
+                            recyclerViewImages.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -442,7 +448,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     private void getMovieDetail(String language, String movieId) {
         circularProgressBarMoviesDetail.setVisibility(View.VISIBLE);
-        movieDetailMainObjectCall = Api.WEB_SERVICE.getMovieDetail(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+        movieDetailMainObjectCall = ApiClient.getClient().create(Api.class).getMovieDetail(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
         movieDetailMainObjectCall.enqueue(new Callback<MovieDetailMainObject>() {
             @Override
             public void onResponse(Call<MovieDetailMainObject> call, retrofit2.Response<MovieDetailMainObject> response) {
@@ -500,13 +506,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     .into(imageViewCover);
                         }
                         recyclerViewGenre.setAdapter(new MoviesGenreAdapter(MoviesDetailActivity.this, movieDetailMainObject.getGenres()));
-
                         if (TextUtils.isEmpty(overview)) {
                             textViewOverViewHeader.setVisibility(View.GONE);
                             textViewOverview.setVisibility(View.GONE);
                         }
-                        if (movieDetailMainObject.getGenres().size() == 0) {
+                        if (movieDetailMainObject.getGenres().size() > 0) {
+                            textViewGenreHeader.setVisibility(View.VISIBLE);
+                            recyclerViewGenre.setVisibility(View.VISIBLE);
+                        } else {
                             textViewGenreHeader.setVisibility(View.GONE);
+                            recyclerViewGenre.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -532,7 +541,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void getMovieCredits(String movieId) {
-        castAndCrewMainObjectCall = Api.WEB_SERVICE.getMovieCredits(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY);
+        castAndCrewMainObjectCall = ApiClient.getClient().create(Api.class).getMovieCredits(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY);
         castAndCrewMainObjectCall.enqueue(new Callback<CastAndCrewMainObject>() {
             @Override
             public void onResponse(Call<CastAndCrewMainObject> call, retrofit2.Response<CastAndCrewMainObject> response) {
@@ -541,21 +550,25 @@ public class MoviesDetailActivity extends AppCompatActivity {
                     if (castAndCrewMainObject != null) {
                         if (castAndCrewMainObject.getCast().size() > 0) {
                             textViewCastHeader.setVisibility(View.VISIBLE);
+                            recyclerViewCast.setVisibility(View.VISIBLE);
                             for (int i = 0; i < castAndCrewMainObject.getCast().size(); i++) {
                                 castDataList.add(castAndCrewMainObject.getCast().get(i));
                                 castAdapter.notifyItemInserted(i);
                             }
                         } else {
                             textViewCastHeader.setVisibility(View.GONE);
+                            recyclerViewCast.setVisibility(View.GONE);
                         }
                         if (castAndCrewMainObject.getCrew().size() > 0) {
                             textViewCrewHeader.setVisibility(View.VISIBLE);
+                            recyclerViewCrew.setVisibility(View.VISIBLE);
                             for (int i = 0; i < castAndCrewMainObject.getCrew().size(); i++) {
                                 crewDataList.add(castAndCrewMainObject.getCrew().get(i));
                                 crewAdapter.notifyItemInserted(i);
                             }
                         } else {
                             textViewCrewHeader.setVisibility(View.GONE);
+                            recyclerViewCrew.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -577,7 +590,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void getSimilarMovies(String movieId, String language, int pageNumber) {
-        similarMoviesCall = Api.WEB_SERVICE.getSimilarMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        similarMoviesCall = ApiClient.getClient().create(Api.class).getSimilarMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         similarMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -588,12 +601,15 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         if (moviesMainObject.getTotal_results() > 0) {
                             textViewSimilarMoviesHeader.setVisibility(View.VISIBLE);
                             textViewViewMoreSimilarMovies.setVisibility(View.VISIBLE);
+                            recyclerViewSimilarMovies.setVisibility(View.VISIBLE);
                             for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
                                 similarMoviesList.add(moviesMainObject.getResults().get(i));
                                 similarMoviesAdapter.notifyItemInserted(similarMoviesList.size() - 1);
                             }
                         } else {
                             textViewSimilarMoviesHeader.setVisibility(View.GONE);
+                            textViewViewMoreSimilarMovies.setVisibility(View.GONE);
+                            recyclerViewSimilarMovies.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -618,7 +634,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void getSuggestedMovies(String movieId, String language, int pageNumber) {
-        suggestedMoviesCall = Api.WEB_SERVICE.getSuggestedMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        suggestedMoviesCall = ApiClient.getClient().create(Api.class).getSuggestedMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         suggestedMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -628,12 +644,15 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         if (moviesMainObject.getTotal_results() > 0) {
                             textViewSuggestionHeader.setVisibility(View.VISIBLE);
                             textViewViewMoreSuggestion.setVisibility(View.VISIBLE);
+                            recyclerViewSuggestedMovies.setVisibility(View.VISIBLE);
                             for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
                                 suggestedMoviesList.add(moviesMainObject.getResults().get(i));
                                 suggestedMoviesAdapter.notifyItemInserted(suggestedMoviesList.size() - 1);
                             }
                         } else {
                             textViewSuggestionHeader.setVisibility(View.GONE);
+                            textViewViewMoreSuggestion.setVisibility(View.GONE);
+                            recyclerViewSuggestedMovies.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -656,7 +675,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void getMovieReviews(String movieId, String language, int pageNumber) {
-        reviewsMainObjectCall = Api.WEB_SERVICE.getMovieReviews(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        reviewsMainObjectCall = ApiClient.getClient().create(Api.class).getMovieReviews(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         reviewsMainObjectCall.enqueue(new Callback<ReviewsMainObject>() {
             @Override
             public void onResponse(Call<ReviewsMainObject> call, retrofit2.Response<ReviewsMainObject> response) {
@@ -665,12 +684,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
                     if (reviewsMainObject != null) {
                         if (reviewsMainObject.getTotal_results() > 0) {
                             textViewReviewsHeader.setVisibility(View.VISIBLE);
+                            recyclerViewReviews.setVisibility(View.VISIBLE);
                             for (int i = 0; i < reviewsMainObject.getResults().size(); i++) {
                                 reviewsDataList.add(reviewsMainObject.getResults().get(i));
                                 reviewsAdapter.notifyItemInserted(reviewsDataList.size() - 1);
                             }
                         } else {
                             textViewReviewsHeader.setVisibility(View.GONE);
+                            recyclerViewReviews.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -756,11 +777,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
             movieTitle = suggestedMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
             rating = suggestedMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
         }
-        Intent intent = new Intent(this, MoviesDetailActivity.class);
-        intent.putExtra(EndpointKeys.MOVIE_ID, movieId);
-        intent.putExtra(EndpointKeys.MOVIE_TITLE, movieTitle);
-        intent.putExtra(EndpointKeys.RATING, rating);
-        startActivity(intent);
+        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.SIMILAR_MOVIES_DETAIL) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.SUGGESTED_MOVIES_DETAIL)) {
+            Intent intent = new Intent(this, MoviesDetailActivity.class);
+            intent.putExtra(EndpointKeys.MOVIE_ID, movieId);
+            intent.putExtra(EndpointKeys.MOVIE_TITLE, movieTitle);
+            intent.putExtra(EndpointKeys.RATING, rating);
+            startActivity(intent);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

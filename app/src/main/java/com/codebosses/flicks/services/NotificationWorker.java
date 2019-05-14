@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.latestmovies.LatestMoviesMainObject;
@@ -37,7 +38,7 @@ public class NotificationWorker extends Worker {
     }
 
     private void getLatestMovie(String language) {
-        latestMoviesMainObjectCall = Api.WEB_SERVICE.getLatestMovie(EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+        latestMoviesMainObjectCall = ApiClient.getClient().create(Api.class).getLatestMovie(EndpointKeys.THE_MOVIE_DB_API_KEY, language);
         latestMoviesMainObjectCall.enqueue(new Callback<LatestMoviesMainObject>() {
             @Override
             public void onResponse(Call<LatestMoviesMainObject> call, retrofit2.Response<LatestMoviesMainObject> response) {

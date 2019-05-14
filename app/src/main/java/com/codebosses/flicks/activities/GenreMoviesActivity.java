@@ -22,6 +22,7 @@ import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
@@ -52,7 +53,6 @@ public class GenreMoviesActivity extends AppCompatActivity {
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
 
-
     //    Resource fields....
     @BindString(R.string.could_not_get_movies)
     String couldNotGetMovies;
@@ -66,8 +66,10 @@ public class GenreMoviesActivity extends AppCompatActivity {
     private Call<MoviesMainObject> genreMoviesCall;
 
     //    Adapter fields....
-    private List<MoviesResult> similarMoviesList = new ArrayList<>();
     private MoviesAdapter moviesAdapter;
+
+    //    Instance fields....
+    private List<MoviesResult> moviesResults = new ArrayList<>();
     private int pageNumber = 1, totalPages = 0, genreId;
     private String genreType, sortType;
 
@@ -77,7 +79,7 @@ public class GenreMoviesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_genre_movies);
         ButterKnife.bind(this);
 
-//        Settinf custom action bar....
+//        Setting custom action bar....
         setSupportActionBar(toolbarGenreMovies);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -91,7 +93,7 @@ public class GenreMoviesActivity extends AppCompatActivity {
 
         if (ValidUtils.isNetworkAvailable(this)) {
 
-            moviesAdapter = new MoviesAdapter(this, similarMoviesList, EndpointKeys.GENRE_MOVIES);
+            moviesAdapter = new MoviesAdapter(this, moviesResults, EndpointKeys.GENRE_MOVIES);
             linearLayoutManager = new LinearLayoutManager(this);
             recyclerViewGenreMovies.setLayoutManager(linearLayoutManager);
             recyclerViewGenreMovies.setItemAnimator(new DefaultItemAnimator());
@@ -171,7 +173,7 @@ public class GenreMoviesActivity extends AppCompatActivity {
     }
 
     private void getGenreMovies(String language, int pageNumber, int genreId, String sortType) {
-        genreMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, sortType, false, true, pageNumber, genreId);
+        genreMoviesCall = ApiClient.getClient().create(Api.class).getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, sortType, false, true, pageNumber, genreId);
         genreMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -182,8 +184,8 @@ public class GenreMoviesActivity extends AppCompatActivity {
                         totalPages = moviesMainObject.getTotal_pages();
                         if (moviesMainObject.getTotal_results() > 0) {
                             for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                similarMoviesList.add(moviesMainObject.getResults().get(i));
-                                moviesAdapter.notifyItemInserted(similarMoviesList.size() - 1);
+                                moviesResults.add(moviesMainObject.getResults().get(i));
+                                moviesAdapter.notifyItemInserted(moviesResults.size() - 1);
                             }
                         }
                     }
@@ -227,9 +229,9 @@ public class GenreMoviesActivity extends AppCompatActivity {
     public void eventBusSimilarMovieClick(EventBusMovieClick eventBusMovieClick) {
         if (eventBusMovieClick.getMovieType().equals(EndpointKeys.GENRE_MOVIES)) {
             Intent intent = new Intent(this, MoviesDetailActivity.class);
-            intent.putExtra(EndpointKeys.MOVIE_ID, similarMoviesList.get(eventBusMovieClick.getPosition()).getId());
-            intent.putExtra(EndpointKeys.MOVIE_TITLE, similarMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title());
-            intent.putExtra(EndpointKeys.RATING, similarMoviesList.get(eventBusMovieClick.getPosition()).getVote_average());
+            intent.putExtra(EndpointKeys.MOVIE_ID, moviesResults.get(eventBusMovieClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.MOVIE_TITLE, moviesResults.get(eventBusMovieClick.getPosition()).getOriginal_title());
+            intent.putExtra(EndpointKeys.RATING, moviesResults.get(eventBusMovieClick.getPosition()).getVote_average());
             startActivity(intent);
         }
     }

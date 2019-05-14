@@ -27,6 +27,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
@@ -58,7 +59,6 @@ public class FragmentTopRatedMovies extends BaseFragment {
     AppCompatImageView imageViewError;
     private LinearLayoutManager linearLayoutManager;
 
-
     //    Resource fields....
     @BindString(R.string.could_not_get_upcoming_movies)
     String couldNotGetMovies;
@@ -72,15 +72,15 @@ public class FragmentTopRatedMovies extends BaseFragment {
     private Call<MoviesMainObject> topRatedMoviesCall;
 
     //    Adapter fields....
-    private List<MoviesResult> topRatedMoviesList = new ArrayList<>();
     private MoviesAdapter moviesAdapter;
-    private int pageNumber = 1, totalPages = 0;
 
+    //    Instance fields....
+    private List<MoviesResult> topRatedMoviesList = new ArrayList<>();
+    private int pageNumber = 1, totalPages = 0;
 
     public FragmentTopRatedMovies() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -152,11 +152,12 @@ public class FragmentTopRatedMovies extends BaseFragment {
     }
 
     private void getTopRatedMovies(String language, String region, int pageNumber) {
-        topRatedMoviesCall = Api.WEB_SERVICE.getTopRatedMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
+        topRatedMoviesCall = ApiClient.getClient().create(Api.class).getTopRatedMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
         topRatedMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -180,7 +181,7 @@ public class FragmentTopRatedMovies extends BaseFragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewError.setVisibility(View.VISIBLE);
                 if (error != null) {

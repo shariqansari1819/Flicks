@@ -12,11 +12,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
-import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -119,7 +117,7 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
 
     class CelebMoviesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.imageViewThumbnailMainRow)
+        @BindView(R.id.imageViewThumbnailMoviesRow)
         ImageView imageViewThumbnail;
         @BindView(R.id.textViewTitleMoviesRow)
         TextView textViewMovieTitle;

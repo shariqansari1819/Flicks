@@ -11,6 +11,8 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
+import java.util.Random;
+
 public class SplashActivity extends AppCompatActivity {
 
     private Handler handler;
@@ -27,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }
-        }, 3000);
+        }, 2000);
     }
 
     @Override

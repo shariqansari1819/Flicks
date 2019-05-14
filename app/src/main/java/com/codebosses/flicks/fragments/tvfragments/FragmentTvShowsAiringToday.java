@@ -27,6 +27,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.TvShowsDetailActivity;
 import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
@@ -70,15 +71,15 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
     private Call<TvMainObject> tvMainObjectCall;
 
     //    Adapter fields....
-    private List<TvResult> tvResultArrayList = new ArrayList<>();
     private TvShowsAdapter tvShowsAdapter;
-    private int pageNumber = 1, totalPages = 0;
 
+    //    Instance fields....
+    private List<TvResult> tvResultArrayList = new ArrayList<>();
+    private int pageNumber = 1, totalPages = 0;
 
     public FragmentTvShowsAiringToday() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -153,11 +154,12 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
     }
 
     private void getTvShowsAiringToday(String language, int pageNumber) {
-        tvMainObjectCall = Api.WEB_SERVICE.getTvAiringToday(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        tvMainObjectCall = ApiClient.getClient().create(Api.class).getTvAiringToday(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         tvMainObjectCall.enqueue(new Callback<TvMainObject>() {
             @Override
             public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     TvMainObject tvMainObject = response.body();
                     if (tvMainObject != null) {
@@ -181,7 +183,7 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 imageViewError.setVisibility(View.VISIBLE);
                 textViewError.setVisibility(View.VISIBLE);
                 if (error != null) {

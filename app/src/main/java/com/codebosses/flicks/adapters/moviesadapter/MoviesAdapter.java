@@ -28,9 +28,14 @@ import butterknife.ButterKnife;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHolder> {
 
+    //    Android fields....
     private Context context;
-    private FontUtils fontUtils;
     private LayoutInflater layoutInflater;
+
+    //    Font fields....
+    private FontUtils fontUtils;
+
+    //    Instance fields....
     private List<MoviesResult> moviesResultArrayList = new ArrayList<>();
     private String movieType;
 
@@ -60,8 +65,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();
             if (title != null) {
-                if (title.length() > 18)
-                    title = title.substring(0, 18) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
             holder.textViewMovieYear.setText(moviesResult.getRelease_date());
@@ -77,7 +80,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
 
     class MoviesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.imageViewThumbnailMainRow)
+        @BindView(R.id.imageViewThumbnailMoviesRow)
         ImageView imageViewThumbnail;
         @BindView(R.id.textViewTitleMoviesRow)
         TextView textViewMovieTitle;

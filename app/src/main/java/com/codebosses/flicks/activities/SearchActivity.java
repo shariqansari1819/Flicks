@@ -47,6 +47,7 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
     //    Adapter fields....
     private SearchPagerAdapter searchPagerAdapter;
 
+    //    Instance fields....
     long delay = 1000; // 1 seconds after user stops typing
     long last_text_edit = 0;
     Handler handler = new Handler();

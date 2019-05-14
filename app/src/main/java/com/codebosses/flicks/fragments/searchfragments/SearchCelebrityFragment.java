@@ -26,6 +26,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.CelebrityMoviesActivity;
 import com.codebosses.flicks.adapters.celebritiesadapter.CelebritiesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
@@ -171,7 +172,7 @@ public class SearchCelebrityFragment extends Fragment {
     private void searchCelebrities(String query, String language, int pageNumber) {
         textViewError.setVisibility(View.GONE);
         imageViewNotFound.setVisibility(View.GONE);
-        searchCelebritiesCall = Api.WEB_SERVICE.searchCelebrity(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, true);
+        searchCelebritiesCall = ApiClient.getClient().create(Api.class).searchCelebrity(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, true);
         searchCelebritiesCall.enqueue(new Callback<CelebritiesMainObject>() {
             @Override
             public void onResponse(Call<CelebritiesMainObject> call, retrofit2.Response<CelebritiesMainObject> response) {

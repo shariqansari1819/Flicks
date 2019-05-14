@@ -28,9 +28,14 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdapter.SimilarMoviesHolder> {
 
+    //    Android fields....
     private Context context;
-    private FontUtils fontUtils;
     private LayoutInflater layoutInflater;
+
+    //    Font fields....
+    private FontUtils fontUtils;
+
+    //    Instance fields....
     private List<MoviesResult> moviesResultArrayList = new ArrayList<>();
     private String movieType;
 
@@ -60,8 +65,6 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdap
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();
             if (title != null) {
-//                if (title.length() > 10)
-//                    title = title.substring(0, 10) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
             double movieRating = moviesResult.getVote_average();

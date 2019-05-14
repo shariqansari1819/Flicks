@@ -22,6 +22,7 @@ import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
@@ -151,7 +152,7 @@ public class SimilarMoviesActivity extends AppCompatActivity {
     }
 
     private void getSimilarMovies(String movieId, String language, int pageNumber) {
-        similarMoviesCall = Api.WEB_SERVICE.getSimilarMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        similarMoviesCall = ApiClient.getClient().create(Api.class).getSimilarMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         similarMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {

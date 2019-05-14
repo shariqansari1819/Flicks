@@ -1,6 +1,5 @@
 package com.codebosses.flicks.fragments.celebritiesfragments;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -28,6 +27,7 @@ import com.codebosses.flicks.activities.CelebrityMoviesActivity;
 import com.codebosses.flicks.adapters.celebritiesadapter.CelebritiesAdapter;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
@@ -46,9 +46,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class FragmentTopRatedCelebrities extends BaseFragment {
 
     //    Android fields....
@@ -76,14 +73,15 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
     private Call<CelebritiesMainObject> celebritiesMainObjectCall;
 
     //    Adapter fields....
-    private List<CelebritiesResult> celebritiesResultList = new ArrayList<>();
     private CelebritiesAdapter celebritiesAdapter;
+
+    //    Instance fields....
+    private List<CelebritiesResult> celebritiesResultList = new ArrayList<>();
     private int pageNumber = 1, totalPages = 0;
 
     public FragmentTopRatedCelebrities() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,11 +155,12 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
     }
 
     private void getTopRatedCelebrities(String language, int pageNumber) {
-        celebritiesMainObjectCall = Api.WEB_SERVICE.getTopRatedCelebrities(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        celebritiesMainObjectCall = ApiClient.getClient().create(Api.class).getTopRatedCelebrities(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         celebritiesMainObjectCall.enqueue(new Callback<CelebritiesMainObject>() {
             @Override
             public void onResponse(Call<CelebritiesMainObject> call, retrofit2.Response<CelebritiesMainObject> response) {
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     CelebritiesMainObject celebritiesMainObject = response.body();
                     if (celebritiesMainObject != null) {
@@ -185,7 +184,7 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewError.setVisibility(View.VISIBLE);
                 if (error != null) {

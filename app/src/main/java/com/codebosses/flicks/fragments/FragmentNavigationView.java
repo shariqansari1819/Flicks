@@ -1,20 +1,6 @@
 package com.codebosses.flicks.fragments;
 
-
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindString;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +8,11 @@ import android.widget.TextView;
 
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.exapndablerecyclerviewadapter.CategoryAdapter;
-import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusExpandItems;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
-import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryItem;
 import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryHeader;
+import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryItem;
 import com.codebosses.flicks.utils.FontUtils;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -40,9 +24,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FragmentNavigationView extends Fragment {
 
     @BindView(R.id.recyclerViewNavigation)

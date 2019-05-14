@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,22 +26,15 @@ import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.CelebrityMoviesActivity;
 import com.codebosses.flicks.adapters.celebritiesadapter.CelebritiesAdapter;
-import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
-import com.codebosses.flicks.adapters.trending.TrendingAdapter;
-import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
-import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
-import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
-import com.google.android.material.tabs.TabLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -76,9 +68,11 @@ public class FragmentTrendingCelebrities extends Fragment {
     //    Font fields....
     private FontUtils fontUtils;
 
+    //    Adapter fields....
+    private CelebritiesAdapter celebritiesAdapter;
+
     //    Instance fields....
     private List<CelebritiesResult> celebritiesResultList = new ArrayList<>();
-    private CelebritiesAdapter celebritiesAdapter;
     private int pageNumber = 1, totalPages = 0;
 
     //    Retrofit fields....
@@ -94,7 +88,7 @@ public class FragmentTrendingCelebrities extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_trending_celebrities, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         //        Setting custom fonts....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -127,7 +121,7 @@ public class FragmentTrendingCelebrities extends Fragment {
                 if (isBottomReached) {
                     pageNumber++;
                     if (pageNumber <= totalPages)
-                            getTrendingCelebrities(pageNumber);
+                        getTrendingCelebrities(pageNumber);
                 }
             }
         });
@@ -160,11 +154,12 @@ public class FragmentTrendingCelebrities extends Fragment {
     }
 
     private void getTrendingCelebrities(int pageNumber) {
-        celebritiesMainObjectCall = Api.WEB_SERVICE.getCelebTrending(Constants.PERSON, Constants.WEEK, EndpointKeys.THE_MOVIE_DB_API_KEY, pageNumber);
+        celebritiesMainObjectCall = ApiClient.getClient().create(Api.class).getCelebTrending(Constants.PERSON, Constants.WEEK, EndpointKeys.THE_MOVIE_DB_API_KEY, pageNumber);
         celebritiesMainObjectCall.enqueue(new Callback<CelebritiesMainObject>() {
             @Override
             public void onResponse(Call<CelebritiesMainObject> call, retrofit2.Response<CelebritiesMainObject> response) {
-                progressBarTrending.setVisibility(View.INVISIBLE);
+                progressBarTrending.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     CelebritiesMainObject celebritiesMainObject = response.body();
                     if (celebritiesMainObject != null) {
@@ -188,7 +183,7 @@ public class FragmentTrendingCelebrities extends Fragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                progressBarTrending.setVisibility(View.INVISIBLE);
+                progressBarTrending.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewTrending.setVisibility(View.VISIBLE);
                 if (error != null) {

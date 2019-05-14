@@ -13,11 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class TrendingAdapter extends FragmentStatePagerAdapter {
+public class TrendingPagerAdapter extends FragmentStatePagerAdapter {
 
     private Context context;
 
-    public TrendingAdapter(@NonNull FragmentManager fm,Context context) {
+    public TrendingPagerAdapter(@NonNull FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }

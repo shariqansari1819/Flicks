@@ -29,9 +29,14 @@ import butterknife.ButterKnife;
 
 public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.CelebritiesHolder> {
 
+    //    Android fields....
     private Context context;
-    private FontUtils fontUtils;
     private LayoutInflater layoutInflater;
+
+    //    Font fields....
+    private FontUtils fontUtils;
+
+    //    Instance fields....
     private List<CelebritiesResult> celebritiesResultArrayList = new ArrayList<>();
     private String celebType;
 
@@ -59,10 +64,8 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + celebritiesResult.getProfile_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .into(holder.imageViewThumbnail);
-            String title = celebritiesResult.getName();
-            if (title.length() > 18)
-                title = title.substring(0, 18) + "...";
-            holder.textViewMovieTitle.setText(title);
+            String name = celebritiesResult.getName();
+            holder.textViewMovieTitle.setText(name);
             holder.textViewRatingCount.setText(String.valueOf(celebritiesResult.getPopularity()));
         }
     }

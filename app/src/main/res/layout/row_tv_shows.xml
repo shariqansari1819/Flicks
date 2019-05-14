@@ -10,7 +10,7 @@
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayoutChildTvShowsRow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,8 +20,10 @@
             android:id="@+id/cardViewThumbnailContainerTvShowsRow"
             android:layout_width="@dimen/_85sdp"
             android:layout_height="@dimen/_100sdp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            app:cardCornerRadius="8dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageViewThumbnailTvShowsRow"
@@ -35,47 +37,51 @@
 
         <TextView
             android:id="@+id/textViewTitleTvShowsRow"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_toEndOf="@+id/cardViewThumbnailContainerTvShowsRow"
+            android:singleLine="true"
             android:text="Zootopia"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerTvShowsRow"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewYearTvShowsRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewTitleTvShowsRow"
-            android:layout_alignStart="@+id/textViewTitleTvShowsRow"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="2016"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleTvShowsRow"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleTvShowsRow" />
 
         <View
             android:id="@+id/dividerTvShowsRow"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_below="@+id/textViewYearTvShowsRow"
-            android:layout_alignStart="@+id/textViewYearTvShowsRow"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/bottom_shadow" />
+            android:background="@drawable/bottom_shadow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleTvShowsRow"
+            app:layout_constraintTop_toBottomOf="@+id/textViewYearTvShowsRow" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewRatingIconTvShowsRow"
             android:layout_width="@dimen/_16sdp"
             android:layout_height="@dimen/_16sdp"
-            android:layout_below="@+id/dividerTvShowsRow"
-            android:layout_alignStart="@+id/dividerTvShowsRow"
+            android:layout_marginTop="@dimen/_10sdp"
             android:contentDescription="@string/rating_pop_corn_icon"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleTvShowsRow"
+            app:layout_constraintTop_toBottomOf="@+id/dividerTvShowsRow"
             app:srcCompat="@drawable/ic_action_star"
             app:tint="@color/colorPrimary" />
 
@@ -83,37 +89,35 @@
             android:id="@+id/textViewRatingTvShowsRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageViewRatingIconTvShowsRow"
-            android:layout_alignBottom="@+id/imageViewRatingIconTvShowsRow"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toEndOf="@+id/imageViewRatingIconTvShowsRow"
             android:text="90%"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewRatingIconTvShowsRow"
+            app:layout_constraintStart_toEndOf="@+id/imageViewRatingIconTvShowsRow"
+            app:layout_constraintTop_toTopOf="@+id/imageViewRatingIconTvShowsRow" />
 
         <TextView
             android:id="@+id/textViewAudienceTvShowsRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageViewRatingIconTvShowsRow"
-            android:layout_alignStart="@+id/imageViewRatingIconTvShowsRow"
             android:layout_marginTop="@dimen/_2sdp"
             android:text="@string/ratings"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_11ssp" />
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleTvShowsRow"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewRatingIconTvShowsRow" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewVoteCountIconTvShowsRow"
             android:layout_width="@dimen/_17sdp"
             android:layout_height="@dimen/_17sdp"
-            android:layout_below="@+id/dividerTvShowsRow"
-            android:layout_alignTop="@+id/imageViewRatingIconTvShowsRow"
-            android:layout_alignBottom="@+id/imageViewRatingIconTvShowsRow"
             android:layout_marginStart="@dimen/_30sdp"
-            android:layout_toEndOf="@+id/textViewRatingTvShowsRow"
             android:contentDescription="@string/rating_pop_corn_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewRatingIconTvShowsRow"
+            app:layout_constraintStart_toEndOf="@+id/textViewRatingTvShowsRow"
+            app:layout_constraintTop_toTopOf="@+id/imageViewRatingIconTvShowsRow"
             app:srcCompat="@drawable/popcorn_icon" />
 
 
@@ -121,29 +125,26 @@
             android:id="@+id/textViewVotesTvShowsRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageViewVoteCountIconTvShowsRow"
-            android:layout_alignEnd="@+id/textViewVotesCountTvShowsRow"
-            android:layout_alignBottom="@+id/imageViewVoteCountIconTvShowsRow"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toEndOf="@+id/imageViewVoteCountIconTvShowsRow"
             android:text="2000"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewVoteCountIconTvShowsRow"
+            app:layout_constraintStart_toEndOf="@+id/imageViewVoteCountIconTvShowsRow"
+            app:layout_constraintTop_toTopOf="@+id/imageViewVoteCountIconTvShowsRow" />
 
         <TextView
             android:id="@+id/textViewVotesCountTvShowsRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewVotesTvShowsRow"
-            android:layout_alignStart="@+id/imageViewVoteCountIconTvShowsRow"
-            android:layout_alignTop="@+id/textViewAudienceTvShowsRow"
-            android:layout_alignBottom="@+id/textViewAudienceTvShowsRow"
             android:text="@string/vote_count"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_11ssp" />
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewAudienceTvShowsRow"
+            app:layout_constraintStart_toStartOf="@+id/imageViewVoteCountIconTvShowsRow"
+            app:layout_constraintTop_toTopOf="@+id/textViewAudienceTvShowsRow" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -26,6 +26,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusSearchText;
@@ -170,7 +171,7 @@ public class SearchMoviesFragment extends Fragment {
     private void searchMovies(String query, String language, int pageNumber) {
         textViewError.setVisibility(View.GONE);
         imageViewNotFound.setVisibility(View.GONE);
-        searchMoviesCall = Api.WEB_SERVICE.searchMovie(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, true);
+        searchMoviesCall = ApiClient.getClient().create(Api.class).searchMovie(query, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, true);
         searchMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -203,7 +204,7 @@ public class SearchMoviesFragment extends Fragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewNotFound.setVisibility(View.VISIBLE);
                 if (error != null) {

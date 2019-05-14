@@ -26,6 +26,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
@@ -70,8 +71,10 @@ public class FragmentUpcomingMovies extends BaseFragment {
     private Call<MoviesMainObject> upcomingMoviesCall;
 
     //    Adapter fields....
-    private List<MoviesResult> upcomingMoviesList = new ArrayList<>();
     private MoviesAdapter moviesAdapter;
+
+    //    Instance fields....
+    private List<MoviesResult> upcomingMoviesList = new ArrayList<>();
     private int pageNumber = 1, totalPages = 0;
 
     public FragmentUpcomingMovies() {
@@ -149,11 +152,12 @@ public class FragmentUpcomingMovies extends BaseFragment {
     }
 
     private void getUpcomingMovies(String language, String region, int pageNumber) {
-        upcomingMoviesCall = Api.WEB_SERVICE.getUpcomingMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
+        upcomingMoviesCall = ApiClient.getClient().create(Api.class).getUpcomingMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
         upcomingMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -179,7 +183,7 @@ public class FragmentUpcomingMovies extends BaseFragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewError.setVisibility(View.VISIBLE);
                 if (error != null) {

@@ -22,6 +22,7 @@ import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
@@ -51,7 +52,6 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
 
-
     //    Resource fields....
     @BindString(R.string.could_not_get_suggested_movies)
     String couldNotGetMovies;
@@ -65,8 +65,10 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
     private Call<MoviesMainObject> suggestedMoviesCall;
 
     //    Adapter fields....
-    private List<MoviesResult> suggestedMoviesList = new ArrayList<>();
     private MoviesAdapter moviesAdapter;
+
+    //    Instance fields....
+    private List<MoviesResult> suggestedMoviesList = new ArrayList<>();
     private int pageNumber = 1, totalPages = 0;
     private String movieId;
 
@@ -149,11 +151,11 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
     }
 
     private void getSuggestedMovies(String movieId, String language, int pageNumber) {
-        suggestedMoviesCall = Api.WEB_SERVICE.getSuggestedMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        suggestedMoviesCall = ApiClient.getClient().create(Api.class).getSuggestedMovies(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         suggestedMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -176,7 +178,7 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {

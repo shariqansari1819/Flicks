@@ -2,17 +2,6 @@ package com.codebosses.flicks.fragments.genrefragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +13,7 @@ import com.codebosses.flicks.activities.GenreMoviesActivity;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
@@ -31,6 +21,7 @@ import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
+import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,6 +31,19 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
+import jp.wasabeef.recyclerview.animators.FadeInRightAnimator;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class FragmentGenre extends BaseFragment {
 
@@ -84,6 +88,16 @@ public class FragmentGenre extends BaseFragment {
     RecyclerView recyclerViewCrimeMovies;
     @BindView(R.id.circularProgressBarGenre)
     CircularProgressBar circularProgressBar;
+    @BindView(R.id.imageViewErrorGenre)
+    AppCompatImageView imageViewError;
+    @BindView(R.id.textViewErrorMessageGenre)
+    TextView textViewError;
+
+    //    Resource fields....
+    @BindString(R.string.could_not_get_movies)
+    String couldNotGetMovies;
+    @BindString(R.string.internet_problem)
+    String internetProblem;
 
     //    Font fields....
     private FontUtils fontUtils;
@@ -132,46 +146,52 @@ public class FragmentGenre extends BaseFragment {
         fontUtils.setTextViewRegularFont(textViewScienceFictionMore);
 
         if (getActivity() != null) {
+            if (ValidUtils.isNetworkAvailable(getActivity())) {
 
 //            Setting layout managers....
-            recyclerViewActionMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerViewAdventureMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerViewAnimatedMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerViewCrimeMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerViewRomanticMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerViewScienceFictionMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-
-//            Setting item animator....
-            recyclerViewActionMovies.setItemAnimator(new DefaultItemAnimator());
-            recyclerViewAdventureMovies.setItemAnimator(new DefaultItemAnimator());
-            recyclerViewAnimatedMovies.setItemAnimator(new DefaultItemAnimator());
-            recyclerViewCrimeMovies.setItemAnimator(new DefaultItemAnimator());
-            recyclerViewRomanticMovies.setItemAnimator(new DefaultItemAnimator());
-            recyclerViewScienceFictionMovies.setItemAnimator(new DefaultItemAnimator());
+                recyclerViewActionMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewAdventureMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewAnimatedMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewCrimeMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewRomanticMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewScienceFictionMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
 //            Initialization of empty adapter....
-            actionMoviesAdapter = new SimilarMoviesAdapter(getActivity(), actionMoviesList, EndpointKeys.ACTION_MOVIES);
-            adventureMoviesAdapter = new SimilarMoviesAdapter(getActivity(), adventureMoviesList, EndpointKeys.ADVENTURE_MOVIES);
-            animatedMoviesAdapter = new SimilarMoviesAdapter(getActivity(), animatedMoviesList, EndpointKeys.ANIMATED_MOVIES);
-            romanticMoviesAdapter = new SimilarMoviesAdapter(getActivity(), romanticMoviesList, EndpointKeys.ROMANTIC_MOVOES);
-            scienceFictionMoviesAdapter = new SimilarMoviesAdapter(getActivity(), scienceFictionMoviesList, EndpointKeys.SCIENCE_FICTION_MOVIES);
-            crimeMoviesAdapter = new SimilarMoviesAdapter(getActivity(), crimeMoviesList, EndpointKeys.CRIME_MOVIES);
+                actionMoviesAdapter = new SimilarMoviesAdapter(getActivity(), actionMoviesList, EndpointKeys.ACTION_MOVIES);
+                adventureMoviesAdapter = new SimilarMoviesAdapter(getActivity(), adventureMoviesList, EndpointKeys.ADVENTURE_MOVIES);
+                animatedMoviesAdapter = new SimilarMoviesAdapter(getActivity(), animatedMoviesList, EndpointKeys.ANIMATED_MOVIES);
+                romanticMoviesAdapter = new SimilarMoviesAdapter(getActivity(), romanticMoviesList, EndpointKeys.ROMANTIC_MOVOES);
+                scienceFictionMoviesAdapter = new SimilarMoviesAdapter(getActivity(), scienceFictionMoviesList, EndpointKeys.SCIENCE_FICTION_MOVIES);
+                crimeMoviesAdapter = new SimilarMoviesAdapter(getActivity(), crimeMoviesList, EndpointKeys.CRIME_MOVIES);
 
 //            Setting empty adapter....
-            recyclerViewActionMovies.setAdapter(actionMoviesAdapter);
-            recyclerViewAdventureMovies.setAdapter(adventureMoviesAdapter);
-            recyclerViewAnimatedMovies.setAdapter(animatedMoviesAdapter);
-            recyclerViewCrimeMovies.setAdapter(crimeMoviesAdapter);
-            recyclerViewRomanticMovies.setAdapter(romanticMoviesAdapter);
-            recyclerViewScienceFictionMovies.setAdapter(scienceFictionMoviesAdapter);
+                recyclerViewActionMovies.setAdapter(actionMoviesAdapter);
+                recyclerViewAdventureMovies.setAdapter(adventureMoviesAdapter);
+                recyclerViewAnimatedMovies.setAdapter(animatedMoviesAdapter);
+                recyclerViewCrimeMovies.setAdapter(crimeMoviesAdapter);
+                recyclerViewRomanticMovies.setAdapter(romanticMoviesAdapter);
+                recyclerViewScienceFictionMovies.setAdapter(scienceFictionMoviesAdapter);
 
-            getActionMovies("en-US", 1);
-            getAdventureMovies("en-US", 1);
-            getAnimatedMovies("en-US", 1);
-            getScienceFictionMovies("en-US", 1);
-            getRomanticMovies("en-US", 1);
-            getCrimeMovies("en-US", 1);
+//            Setting item animator....
+                recyclerViewActionMovies.setItemAnimator(new FadeInAnimator());
+                recyclerViewAdventureMovies.setItemAnimator(new FadeInAnimator());
+                recyclerViewAnimatedMovies.setItemAnimator(new FadeInAnimator());
+                recyclerViewCrimeMovies.setItemAnimator(new FadeInAnimator());
+                recyclerViewRomanticMovies.setItemAnimator(new FadeInAnimator());
+                recyclerViewScienceFictionMovies.setItemAnimator(new FadeInAnimator());
 
+                getGenreMovies("en-US", 1, Constants.ACTION_ID, Constants.POPULARITY_DESC);
+                getGenreMovies("en-US", 1, Constants.ADVENTURE_ID, Constants.VOTE_COUNT_DESC);
+                getGenreMovies("en-US", 1, Constants.ANIMATED_ID, Constants.REVENUE_DESC);
+                getGenreMovies("en-US", 1, Constants.ROMANTIC_ID, Constants.VOTE_AVERAGE_DESC);
+                getGenreMovies("en-US", 1, Constants.SCIENCE_FICTION_ID, Constants.VOTE_AVERAGE_ASC);
+                getGenreMovies("en-US", 1, Constants.CRIME_ID, Constants.VOTE_AVERAGE_DESC);
+
+            } else {
+                textViewError.setVisibility(View.VISIBLE);
+                imageViewError.setVisibility(View.VISIBLE);
+                textViewError.setText(internetProblem);
+            }
         }
 
         return view;
@@ -201,9 +221,9 @@ public class FragmentGenre extends BaseFragment {
         }
     }
 
-    private void getActionMovies(String language, int pageNumber) {
+    private void getGenreMovies(String language, int pageNumber, int genreId, String sortType) {
         circularProgressBar.setVisibility(View.VISIBLE);
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "popularity.desc", false, true, pageNumber, Constants.ACTION_ID);
+        discoverMoviesCall = ApiClient.getClient().create(Api.class).getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, sortType, false, true, pageNumber, genreId);
         discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
@@ -211,16 +231,97 @@ public class FragmentGenre extends BaseFragment {
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
-                        if (moviesMainObject.getTotal_results() > 0) {
-                            textViewActionHeader.setVisibility(View.VISIBLE);
-                            textViewActionMore.setVisibility(View.VISIBLE);
-                            for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                actionMoviesList.add(moviesMainObject.getResults().get(i));
-                                actionMoviesAdapter.notifyItemInserted(actionMoviesList.size() - 1);
-                            }
-                        } else {
-                            textViewActionHeader.setVisibility(View.GONE);
-                            textViewActionMore.setVisibility(View.GONE);
+                        switch (genreId) {
+                            case Constants.ACTION_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewActionHeader.setVisibility(View.VISIBLE);
+                                    textViewActionMore.setVisibility(View.VISIBLE);
+                                    recyclerViewActionMovies.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        actionMoviesList.add(moviesMainObject.getResults().get(i));
+                                        actionMoviesAdapter.notifyItemInserted(actionMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewActionHeader.setVisibility(View.GONE);
+                                    textViewActionMore.setVisibility(View.GONE);
+                                    recyclerViewActionMovies.setVisibility(View.VISIBLE);
+                                }
+                                break;
+                            case Constants.ADVENTURE_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewAdventureHeader.setVisibility(View.VISIBLE);
+                                    textViewAdventureMore.setVisibility(View.VISIBLE);
+                                    recyclerViewAdventureMovies.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        adventureMoviesList.add(moviesMainObject.getResults().get(i));
+                                        adventureMoviesAdapter.notifyItemInserted(adventureMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewAdventureHeader.setVisibility(View.GONE);
+                                    textViewAdventureMore.setVisibility(View.GONE);
+                                    recyclerViewAdventureMovies.setVisibility(View.GONE);
+                                }
+                                break;
+                            case Constants.ANIMATED_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewAnimatedHeader.setVisibility(View.VISIBLE);
+                                    textViewAnimatedMore.setVisibility(View.VISIBLE);
+                                    recyclerViewAnimatedMovies.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        animatedMoviesList.add(moviesMainObject.getResults().get(i));
+                                        animatedMoviesAdapter.notifyItemInserted(animatedMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewAnimatedHeader.setVisibility(View.GONE);
+                                    textViewAnimatedMore.setVisibility(View.GONE);
+                                    recyclerViewAnimatedMovies.setVisibility(View.GONE);
+                                }
+                                break;
+                            case Constants.CRIME_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewCrimeHeader.setVisibility(View.VISIBLE);
+                                    textViewCrimeMore.setVisibility(View.VISIBLE);
+                                    recyclerViewCrimeMovies.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        crimeMoviesList.add(moviesMainObject.getResults().get(i));
+                                        crimeMoviesAdapter.notifyItemInserted(crimeMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewCrimeHeader.setVisibility(View.GONE);
+                                    textViewCrimeMore.setVisibility(View.GONE);
+                                    recyclerViewCrimeMovies.setVisibility(View.GONE);
+                                }
+                                break;
+                            case Constants.ROMANTIC_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewRomanticHeader.setVisibility(View.VISIBLE);
+                                    textViewRomanticMore.setVisibility(View.VISIBLE);
+                                    recyclerViewRomanticMovies.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        romanticMoviesList.add(moviesMainObject.getResults().get(i));
+                                        romanticMoviesAdapter.notifyItemInserted(romanticMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewRomanticHeader.setVisibility(View.GONE);
+                                    textViewRomanticMore.setVisibility(View.GONE);
+                                    recyclerViewRomanticMovies.setVisibility(View.GONE);
+                                }
+                                break;
+                            case Constants.SCIENCE_FICTION_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewScienceFictionHeader.setVisibility(View.VISIBLE);
+                                    textViewScienceFictionMore.setVisibility(View.VISIBLE);
+                                    recyclerViewScienceFictionMovies.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        scienceFictionMoviesList.add(moviesMainObject.getResults().get(i));
+                                        scienceFictionMoviesAdapter.notifyItemInserted(scienceFictionMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewScienceFictionHeader.setVisibility(View.GONE);
+                                    textViewScienceFictionMore.setVisibility(View.GONE);
+                                    recyclerViewScienceFictionMovies.setVisibility(View.GONE);
+                                }
+                                break;
                         }
                     }
                 }
@@ -229,201 +330,6 @@ public class FragmentGenre extends BaseFragment {
             @Override
             public void onFailure(Call<MoviesMainObject> call, Throwable error) {
                 circularProgressBar.setVisibility(View.GONE);
-                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
-                    return;
-                }
-                if (error != null) {
-                    if (error.getMessage().contains("No address associated with hostname")) {
-                    } else {
-
-                    }
-                } else {
-                }
-            }
-        });
-    }
-
-    private void getAdventureMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_count.desc", false, true, pageNumber, Constants.ADVENTURE_ID);
-        discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
-            @Override
-            public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                if (response != null && response.isSuccessful()) {
-                    MoviesMainObject moviesMainObject = response.body();
-                    if (moviesMainObject != null) {
-                        if (moviesMainObject.getTotal_results() > 0) {
-                            textViewAdventureHeader.setVisibility(View.VISIBLE);
-                            textViewAdventureMore.setVisibility(View.VISIBLE);
-                            for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                adventureMoviesList.add(moviesMainObject.getResults().get(i));
-                                adventureMoviesAdapter.notifyItemInserted(adventureMoviesList.size() - 1);
-                            }
-                        } else {
-                            textViewAdventureHeader.setVisibility(View.GONE);
-                            textViewAdventureMore.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MoviesMainObject> call, Throwable error) {
-                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
-                    return;
-                }
-                if (error != null) {
-                    if (error.getMessage().contains("No address associated with hostname")) {
-                    } else {
-
-                    }
-                } else {
-                }
-            }
-        });
-    }
-
-    private void getAnimatedMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "revenue.desc", false, true, pageNumber, Constants.ANIMATED_ID);
-        discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
-            @Override
-            public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                if (response != null && response.isSuccessful()) {
-                    MoviesMainObject moviesMainObject = response.body();
-                    if (moviesMainObject != null) {
-                        if (moviesMainObject.getTotal_results() > 0) {
-                            textViewAnimatedHeader.setVisibility(View.VISIBLE);
-                            textViewAnimatedMore.setVisibility(View.VISIBLE);
-                            for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                animatedMoviesList.add(moviesMainObject.getResults().get(i));
-                                animatedMoviesAdapter.notifyItemInserted(animatedMoviesList.size() - 1);
-                            }
-                        } else {
-                            textViewAnimatedHeader.setVisibility(View.GONE);
-                            textViewAnimatedMore.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MoviesMainObject> call, Throwable error) {
-                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
-                    return;
-                }
-                if (error != null) {
-                    if (error.getMessage().contains("No address associated with hostname")) {
-                    } else {
-
-                    }
-                } else {
-                }
-            }
-        });
-    }
-
-    private void getScienceFictionMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, Constants.SCIENCE_FICTION_ID);
-        discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
-            @Override
-            public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                if (response != null && response.isSuccessful()) {
-                    MoviesMainObject moviesMainObject = response.body();
-                    if (moviesMainObject != null) {
-                        if (moviesMainObject.getTotal_results() > 0) {
-                            textViewScienceFictionHeader.setVisibility(View.VISIBLE);
-                            textViewScienceFictionMore.setVisibility(View.VISIBLE);
-                            for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                scienceFictionMoviesList.add(moviesMainObject.getResults().get(i));
-                                scienceFictionMoviesAdapter.notifyItemInserted(scienceFictionMoviesList.size() - 1);
-                            }
-                        } else {
-                            textViewScienceFictionHeader.setVisibility(View.GONE);
-                            textViewScienceFictionMore.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MoviesMainObject> call, Throwable error) {
-                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
-                    return;
-                }
-                if (error != null) {
-                    if (error.getMessage().contains("No address associated with hostname")) {
-                    } else {
-
-                    }
-                } else {
-                }
-            }
-        });
-    }
-
-    private void getRomanticMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, Constants.ROMANTIC_ID);
-        discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
-            @Override
-            public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                if (response != null && response.isSuccessful()) {
-                    MoviesMainObject moviesMainObject = response.body();
-                    if (moviesMainObject != null) {
-                        if (moviesMainObject.getTotal_results() > 0) {
-                            textViewRomanticHeader.setVisibility(View.VISIBLE);
-                            textViewRomanticMore.setVisibility(View.VISIBLE);
-                            for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                romanticMoviesList.add(moviesMainObject.getResults().get(i));
-                                romanticMoviesAdapter.notifyItemInserted(romanticMoviesList.size() - 1);
-                            }
-                        } else {
-                            textViewRomanticHeader.setVisibility(View.GONE);
-                            textViewRomanticMore.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MoviesMainObject> call, Throwable error) {
-                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
-                    return;
-                }
-                if (error != null) {
-                    if (error.getMessage().contains("No address associated with hostname")) {
-                    } else {
-
-                    }
-                } else {
-                }
-            }
-        });
-    }
-
-    private void getCrimeMovies(String language, int pageNumber) {
-        discoverMoviesCall = Api.WEB_SERVICE.getGenreMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, "vote_average.desc", false, true, pageNumber, Constants.CRIME_ID);
-        discoverMoviesCall.enqueue(new Callback<MoviesMainObject>() {
-            @Override
-            public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                if (response != null && response.isSuccessful()) {
-                    MoviesMainObject moviesMainObject = response.body();
-                    if (moviesMainObject != null) {
-                        if (moviesMainObject.getTotal_results() > 0) {
-                            textViewCrimeHeader.setVisibility(View.VISIBLE);
-                            textViewCrimeMore.setVisibility(View.VISIBLE);
-                            for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                crimeMoviesList.add(moviesMainObject.getResults().get(i));
-                                crimeMoviesAdapter.notifyItemInserted(crimeMoviesList.size() - 1);
-                            }
-                        } else {
-                            textViewCrimeHeader.setVisibility(View.GONE);
-                            textViewCrimeMore.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MoviesMainObject> call, Throwable error) {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
@@ -440,32 +346,32 @@ public class FragmentGenre extends BaseFragment {
 
     @OnClick(R.id.textViewViewMoreActionMoviesGenre)
     public void onActionViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.ACTION_MOVIES, Constants.ACTION_ID, "popularity.desc");
+        startGenreMoviesActivity(EndpointKeys.ACTION_MOVIES, Constants.ACTION_ID, Constants.POPULARITY_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreAdventureMoviesGenre)
     public void onAdventureViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.ADVENTURE_MOVIES, Constants.ADVENTURE_ID, "vote_count.desc");
+        startGenreMoviesActivity(EndpointKeys.ADVENTURE_MOVIES, Constants.ADVENTURE_ID, Constants.VOTE_COUNT_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreAnimatedMoviesGenre)
     public void onAnimatedViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.ANIMATED_MOVIES, Constants.ANIMATED_ID, "revenue.desc");
+        startGenreMoviesActivity(EndpointKeys.ANIMATED_MOVIES, Constants.ANIMATED_ID, Constants.REVENUE_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreCrimeMoviesGenre)
     public void onCrimeViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.CRIME_MOVIES, Constants.CRIME_ID, "vote_average.desc");
+        startGenreMoviesActivity(EndpointKeys.CRIME_MOVIES, Constants.CRIME_ID, Constants.VOTE_AVERAGE_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreRomanticMoviesGenre)
     public void onRomanticViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.ROMANTIC_MOVOES, Constants.ROMANTIC_ID, "vote_average.desc");
+        startGenreMoviesActivity(EndpointKeys.ROMANTIC_MOVOES, Constants.ROMANTIC_ID, Constants.VOTE_AVERAGE_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreScienceFictionMoviesGenre)
     public void onScienceFictionViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.SCIENCE_FICTION_MOVIES, Constants.SCIENCE_FICTION_ID, "vote_average.desc");
+        startGenreMoviesActivity(EndpointKeys.SCIENCE_FICTION_MOVIES, Constants.SCIENCE_FICTION_ID, Constants.VOTE_AVERAGE_DESC);
     }
 
     private void startGenreMoviesActivity(String type, int id, String sortType) {

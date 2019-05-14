@@ -27,6 +27,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
@@ -73,14 +74,15 @@ public class FragmentLatestMovies extends BaseFragment {
     private Call<MoviesMainObject> latestMoviesCall;
 
     //    Adapter fields....
-    private List<MoviesResult> latestMoviesList = new ArrayList<>();
     private MoviesAdapter moviesAdapter;
+
+    //    Instance fields....
+    private List<MoviesResult> latestMoviesList = new ArrayList<>();
     private int pageNumber = 1, totalPages = 0;
 
     public FragmentLatestMovies() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -152,11 +154,12 @@ public class FragmentLatestMovies extends BaseFragment {
     }
 
     private void getLatestMovies(String language, String region, int pageNumber) {
-        latestMoviesCall = Api.WEB_SERVICE.getLatestMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
+        latestMoviesCall = ApiClient.getClient().create(Api.class).getLatestMovies(EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber, region);
         latestMoviesCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -180,7 +183,7 @@ public class FragmentLatestMovies extends BaseFragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                circularProgressBar.setVisibility(View.INVISIBLE);
+                circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewError.setVisibility(View.VISIBLE);
                 if (error != null) {

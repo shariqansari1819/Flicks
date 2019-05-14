@@ -41,6 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewActionMoviesHeaderGenre"
             app:layout_constraintTop_toBottomOf="@+id/textViewActionMoviesHeaderGenre" />
@@ -76,6 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewAdventureMoviesHeaderGenre"
             app:layout_constraintTop_toBottomOf="@+id/textViewAdventureMoviesHeaderGenre" />
@@ -111,6 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewAnimatedMoviesHeaderGenre"
             app:layout_constraintTop_toBottomOf="@+id/textViewAnimatedMoviesHeaderGenre" />
@@ -146,6 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewScienceFictionMoviesHeaderGenre"
             app:layout_constraintTop_toBottomOf="@+id/textViewScienceFictionMoviesHeaderGenre" />
@@ -181,6 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewRomanticMoviesHeaderGenre"
             app:layout_constraintTop_toBottomOf="@+id/textViewRomanticMoviesHeaderGenre" />
@@ -217,11 +222,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_goneMarginBottom="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewCrimeMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCrimeMoviesHeaderGenre" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewCrimeMoviesHeaderGenre"
+            app:layout_goneMarginBottom="@dimen/_15sdp" />
 
         <com.budiyev.android.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarGenre"
@@ -240,7 +246,30 @@
             app:progressAnimationDuration="200"
             app:startAngle="45" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewErrorGenre"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_marginTop="@dimen/_220sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_action_no_connection" />
 
+        <TextView
+            android:id="@+id/textViewErrorMessageGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_17ssp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewErrorGenre" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.codebosses.flicks.utils.customviews.CustomNestedScrollView>

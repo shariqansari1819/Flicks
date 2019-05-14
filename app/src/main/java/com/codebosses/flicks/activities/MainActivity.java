@@ -1,53 +1,28 @@
 package com.codebosses.flicks.activities;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
+import com.codebosses.flicks.fragments.celebritiesfragments.FragmentTopRatedCelebrities;
 import com.codebosses.flicks.fragments.discoverfragments.DiscoverFragment;
-import com.codebosses.flicks.fragments.genrefragments.FragmentAction;
-import com.codebosses.flicks.fragments.genrefragments.FragmentAnimated;
-import com.codebosses.flicks.fragments.genrefragments.FragmentDrama;
 import com.codebosses.flicks.fragments.genrefragments.FragmentGenre;
-import com.codebosses.flicks.fragments.genrefragments.FragmentScienceFiction;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentInTheater;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentLatestMovies;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentTopRatedMovies;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentUpcomingMovies;
 import com.codebosses.flicks.fragments.trending.FragmentTrending;
 import com.codebosses.flicks.fragments.tvfragments.FragmentLatestTvShows;
-import com.codebosses.flicks.fragments.celebritiesfragments.FragmentTopRatedCelebrities;
 import com.codebosses.flicks.fragments.tvfragments.FragmentTopRatedTvShows;
 import com.codebosses.flicks.fragments.tvfragments.FragmentTvShowsAiringToday;
 import com.codebosses.flicks.fragments.tvfragments.FragmentTvShowsOnAir;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
-import com.codebosses.flicks.services.NotificationWorker;
 import com.codebosses.flicks.utils.FontUtils;
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.AppUpdaterUtils;
@@ -69,7 +44,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.codebosses.flicks.common.Constants.DATA_KEY_1;
 import static com.codebosses.flicks.common.Constants.DATA_KEY_2;
@@ -112,13 +95,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     private FragmentTvShowsAiringToday fragmentTvShowsAiringToday;
     private FragmentTopRatedCelebrities fragmentTopRatedCelebrities;
     private FragmentGenre fragmentGenre;
-    //    private FragmentAction fragmentAction;
-//    private FragmentAnimated fragmentAnimated;
-//    private FragmentDrama fragmentDrama;
-//    private FragmentScienceFiction fragmentScienceFiction;
-    private Fragment currentFragment;
 
-    private FragmentManager fragmentManager;
+    private Fragment currentFragment;
 
     //    TODO: Instance fields....
     private int index, currentFragmentIndex;
@@ -195,8 +173,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         drawerLayoutMain.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        //        Fragment manager fields initialization....
-        fragmentManager = getSupportFragmentManager();
+
         initializeFragments();
 
         createStacks();
@@ -263,15 +240,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         fragmentTvShowsOnAir = new FragmentTvShowsOnAir();
         fragmentTvShowsAiringToday = new FragmentTvShowsAiringToday();
         fragmentGenre = new FragmentGenre();
-//        fragmentAction = new FragmentAction();
-//        fragmentAnimated = new FragmentAnimated();
-//        fragmentDrama = new FragmentDrama();
-//        fragmentScienceFiction = new FragmentScienceFiction();
     }
 
     private void createStacks() {
 
-//        imageViews = new ImageView[]{imageViewHome, imageViewFriendsMap, imageViewSuggestedUsers, imageViewConversation, imageViewMore};
 
         stacks = new LinkedHashMap<>();
 //        stacks.put(EndpointKeys.DISCOVER, new Stack<Fragment>());
@@ -302,13 +274,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         stackList.add(EndpointKeys.TV_SHOWS_ON_THE_AIR);
         stackList.add(EndpointKeys.TV_SHOWS_AIRING_TODAY);
         stackList.add(EndpointKeys.TOP_RATED_CELEBRITIES);
-        stackList.add(EndpointKeys.ACTION);
-        stackList.add(EndpointKeys.ANIMATED);
-        stackList.add(EndpointKeys.DRAMA);
-        stackList.add(EndpointKeys.SCIENCE_FICTION);
         stackList.add(EndpointKeys.GENRE);
 
-//        imageViews[0].setSelected(true);
         setAppBarTitle(getResources().getString(R.string.trending));
         selectedTab(EndpointKeys.TRENDING);
     }
@@ -384,21 +351,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                     resolveStackLists(tabId);
                     assignCurrentFragment(fragmentGenre);
                     break;
-//                case EndpointKeys.ANIMATED:
-//                    addAdditionalTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.ANIMATED, fragmentAnimated, currentFragment, R.id.frameLayoutFragmentContainer, true);
-//                    resolveStackLists(tabId);
-//                    assignCurrentFragment(fragmentAnimated);
-//                    break;
-//                case EndpointKeys.DRAMA:
-//                    addAdditionalTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.DRAMA, fragmentDrama, currentFragment, R.id.frameLayoutFragmentContainer, true);
-//                    resolveStackLists(tabId);
-//                    assignCurrentFragment(fragmentDrama);
-//                    break;
-//                case EndpointKeys.SCIENCE_FICTION:
-//                    addAdditionalTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.SCIENCE_FICTION, fragmentScienceFiction, currentFragment, R.id.frameLayoutFragmentContainer, true);
-//                    resolveStackLists(tabId);
-//                    assignCurrentFragment(fragmentScienceFiction);
-//                    break;
             }
         } else {
             /*
@@ -524,18 +476,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 setAppBarTitle(getResources().getString(R.string.genre));
                 index = 10;
                 break;
-//            case EndpointKeys.ANIMATED:
-//                setAppBarTitle(getResources().getString(R.string.animated));
-//                index = 12;
-//                break;
-//            case EndpointKeys.DRAMA:
-//                setAppBarTitle(getResources().getString(R.string.drama));
-//                index = 13;
-//                break;
-//            case EndpointKeys.SCIENCE_FICTION:
-//                setAppBarTitle(getResources().getString(R.string.sceince_fiction));
-//                index = 14;
-//                break;
         }
 //        if (index == 2) {
 //            textViewAppBarTitle.setVisibility(View.GONE);
@@ -704,18 +644,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 index = 10;
                 selectedTab(EndpointKeys.GENRE);
                 break;
-//            case EndpointKeys.ANIMATED:
-//                index = 12;
-//                selectedTab(EndpointKeys.ANIMATED);
-//                break;
-//            case EndpointKeys.DRAMA:
-//                index = 13;
-//                selectedTab(EndpointKeys.DRAMA);
-//                break;
-//            case EndpointKeys.SCIENCE_FICTION:
-//                index = 14;
-//                selectedTab(EndpointKeys.SCIENCE_FICTION);
-//                break;
         }
     }
 

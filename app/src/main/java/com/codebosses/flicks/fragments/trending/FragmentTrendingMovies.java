@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,23 +25,16 @@ import android.widget.TextView;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
-import com.codebosses.flicks.adapters.celebritiesadapter.CelebritiesAdapter;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
-import com.codebosses.flicks.adapters.trending.TrendingAdapter;
-import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
-import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
-import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
-import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
-import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
-import com.google.android.material.tabs.TabLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -76,9 +68,11 @@ public class FragmentTrendingMovies extends Fragment {
     //    Font fields....
     private FontUtils fontUtils;
 
+    //    Adapter fields....
+    private MoviesAdapter moviesAdapter;
+
     //    Instance fields....
     private List<MoviesResult> topRatedMoviesList = new ArrayList<>();
-    private MoviesAdapter moviesAdapter;
     private int pageNumber = 1, totalPages = 0;
 
     //    Retrofit fields....
@@ -87,7 +81,6 @@ public class FragmentTrendingMovies extends Fragment {
     public FragmentTrendingMovies() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,7 +105,6 @@ public class FragmentTrendingMovies extends Fragment {
 
                 progressBarTrending.setVisibility(View.VISIBLE);
                 getTrendingMovies(pageNumber);
-
             } else {
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewTrending.setVisibility(View.VISIBLE);
@@ -160,11 +152,12 @@ public class FragmentTrendingMovies extends Fragment {
     }
 
     private void getTrendingMovies(int pageNumber) {
-        moviesMainObjectCall = Api.WEB_SERVICE.getMoviesTrending(Constants.MOVIE, Constants.WEEK, EndpointKeys.THE_MOVIE_DB_API_KEY, pageNumber);
+        moviesMainObjectCall = ApiClient.getClient().create(Api.class).getMoviesTrending(Constants.MOVIE, Constants.WEEK, EndpointKeys.THE_MOVIE_DB_API_KEY, pageNumber);
         moviesMainObjectCall.enqueue(new Callback<MoviesMainObject>() {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
-                progressBarTrending.setVisibility(View.INVISIBLE);
+                progressBarTrending.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -188,7 +181,7 @@ public class FragmentTrendingMovies extends Fragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                progressBarTrending.setVisibility(View.INVISIBLE);
+                progressBarTrending.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewTrending.setVisibility(View.VISIBLE);
                 if (error != null) {

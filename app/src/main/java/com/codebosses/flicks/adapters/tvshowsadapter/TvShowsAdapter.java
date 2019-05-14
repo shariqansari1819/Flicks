@@ -30,9 +30,14 @@ import butterknife.ButterKnife;
 
 public class TvShowsAdapter extends RecyclerView.Adapter<TvShowsAdapter.TvShowsHolder> {
 
+    //    Android fields....
     private Context context;
-    private FontUtils fontUtils;
     private LayoutInflater layoutInflater;
+
+    //    Font fields....
+    private FontUtils fontUtils;
+
+    //    Instance fields....
     private List<TvResult> tvResultArrayList = new ArrayList<>();
     private String tvShowType;
 
@@ -61,8 +66,6 @@ public class TvShowsAdapter extends RecyclerView.Adapter<TvShowsAdapter.TvShowsH
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .into(holder.imageViewThumbnail);
             String title = tvResult.getOriginal_name();
-            if (title.length() > 18)
-                title = title.substring(0, 18) + "...";
             holder.textViewMovieTitle.setText(title);
             holder.textViewMovieYear.setText(tvResult.getFirst_air_date());
             holder.textViewRatingCount.setText(String.valueOf(tvResult.getVote_average()));

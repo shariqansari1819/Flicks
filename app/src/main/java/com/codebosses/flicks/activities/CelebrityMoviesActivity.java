@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.celebritiesadapter.CelebMoviesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
@@ -189,7 +190,7 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
 
     private void getCelebrityMovies(String language) {
         circularProgressBar.setVisibility(View.VISIBLE);
-        celebMoviesMainObjectCall = Api.WEB_SERVICE.getCelebMovies(celebId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+        celebMoviesMainObjectCall = ApiClient.getClient().create(Api.class).getCelebMovies(celebId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
         celebMoviesMainObjectCall.enqueue(new Callback<CelebMoviesMainObject>() {
             @Override
             public void onResponse(Call<CelebMoviesMainObject> call, retrofit2.Response<CelebMoviesMainObject> response) {

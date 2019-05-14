@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,23 +25,16 @@ import android.widget.TextView;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.TvShowsDetailActivity;
-import com.codebosses.flicks.adapters.celebritiesadapter.CelebritiesAdapter;
-import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
-import com.codebosses.flicks.adapters.trending.TrendingAdapter;
 import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
-import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
-import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
-import com.google.android.material.tabs.TabLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -76,9 +68,11 @@ public class FragmentTrendingTvShows extends Fragment {
     //    Font fields....
     private FontUtils fontUtils;
 
+    //    Adapter fields....
+    private TvShowsAdapter tvShowsAdapter;
+
     //    Instance fields....
     private List<TvResult> tvResultArrayList = new ArrayList<>();
-    private TvShowsAdapter tvShowsAdapter;
     private int pageNumber = 1, totalPages = 0;
 
     //    Retrofit fields....
@@ -93,7 +87,7 @@ public class FragmentTrendingTvShows extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trending_tv_shows, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
 //        Setting custom fonts....
         fontUtils = FontUtils.getFontUtils(getActivity());
@@ -126,7 +120,7 @@ public class FragmentTrendingTvShows extends Fragment {
                 if (isBottomReached) {
                     pageNumber++;
                     if (pageNumber <= totalPages)
-                            getTrendingTvShows(pageNumber);
+                        getTrendingTvShows(pageNumber);
                 }
             }
         });
@@ -159,11 +153,12 @@ public class FragmentTrendingTvShows extends Fragment {
     }
 
     private void getTrendingTvShows(int pageNumber) {
-        tvMainObjectCall = Api.WEB_SERVICE.getTvShowsTrending(Constants.TV, Constants.WEEK, EndpointKeys.THE_MOVIE_DB_API_KEY, pageNumber);
+        tvMainObjectCall = ApiClient.getClient().create(Api.class).getTvShowsTrending(Constants.TV, Constants.WEEK, EndpointKeys.THE_MOVIE_DB_API_KEY, pageNumber);
         tvMainObjectCall.enqueue(new Callback<TvMainObject>() {
             @Override
             public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {
-                progressBarTrending.setVisibility(View.INVISIBLE);
+                progressBarTrending.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     TvMainObject tvMainObject = response.body();
                     if (tvMainObject != null) {
@@ -187,7 +182,7 @@ public class FragmentTrendingTvShows extends Fragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                progressBarTrending.setVisibility(View.INVISIBLE);
+                progressBarTrending.setVisibility(View.GONE);
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewTrending.setVisibility(View.VISIBLE);
                 if (error != null) {

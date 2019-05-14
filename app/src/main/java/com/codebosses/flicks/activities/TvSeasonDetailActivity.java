@@ -2,6 +2,8 @@ package com.codebosses.flicks.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
@@ -32,14 +36,20 @@ import com.codebosses.flicks.adapters.castandcrewadapter.CastAdapter;
 import com.codebosses.flicks.adapters.castandcrewadapter.CrewAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.MoviesGenreAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
+import com.codebosses.flicks.adapters.moviesdetail.VideosAdapter;
+import com.codebosses.flicks.adapters.tvshowsdetail.EpisodePhotosAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.TvEpisodesAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
 import com.codebosses.flicks.pojo.castandcrew.CastData;
 import com.codebosses.flicks.pojo.castandcrew.CrewData;
+import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
+import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusCastAndCrewClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
@@ -49,6 +59,7 @@ import com.codebosses.flicks.pojo.tvseasons.TvSeasonsMainObject;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
+import com.dd.ShadowLayout;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
@@ -64,44 +75,51 @@ import java.util.List;
 public class TvSeasonDetailActivity extends AppCompatActivity {
 
     //    Android fields....
-    @BindView(R.id.youtubePlayerViewTvSeasonDetail)
-    YouTubePlayerView youTubePlayerView;
-    private YouTubePlayer youTubePlayer;
-    @BindView(R.id.cardViewThumbnailContainerTvSeasonDetail)
+    @BindView(R.id.textViewVideosHeader)
+    TextView textViewVideosHeader;
+    @BindView(R.id.recyclerViewVideosTvSeasonDetail)
+    RecyclerView recyclerViewVideos;
+    @BindView(R.id.circularProgressBarTvSeasonDetail)
+    CircularProgressBar circularProgressBarTvSeasonDetail;
+    @BindView(R.id.viewBlurTvSeason)
+    View viewBlur;
+    @BindView(R.id.imageViewCoverTvSeason)
+    AppCompatImageView imageViewCover;
+    @BindView(R.id.shadowPlayButtonTvSeason)
+    ShadowLayout shadowLayoutPlayButton;
+    @BindView(R.id.imageButtonPlayTvSeason)
+    AppCompatImageButton imageButtonPlay;
+    @BindView(R.id.cardViewThumbnailContainerTvSeason)
     CardView cardViewTvSeasonThumbnail;
-    @BindView(R.id.textViewTitleTvSeasonDetail)
+    @BindView(R.id.textViewTitleTvSeason)
     TextView textViewTitle;
-    @BindView(R.id.ratingBarTvSeasonDetail)
+    @BindView(R.id.ratingBarTvSeason)
     MaterialRatingBar ratingBar;
-    @BindView(R.id.imageViewThumbnailTvSeasonDetail)
+    @BindView(R.id.imageViewThumbnailTvSeason)
     ImageView imageViewThumbnail;
-    @BindView(R.id.textViewVotesTvSeasonDetail)
+    @BindView(R.id.textViewVotesTvSeason)
     TextView textViewVoteCount;
-    @BindView(R.id.textViewReleaseDateHeaderTvSeasonDetail)
+    @BindView(R.id.textViewReleaseDateHeaderTvSeason)
     TextView textViewReleaseDateHeader;
-    @BindView(R.id.textViewYearTvSeasonDetail)
+    @BindView(R.id.textViewYearTvSeason)
     TextView textViewReleaseDate;
-    @BindView(R.id.textViewOverviewTvSeasonDetail)
+    @BindView(R.id.textViewOverviewTvSeason)
     TextView textViewOverview;
-    //    @BindView(R.id.recyclerViewGenreTvSeasonDetail)
-//    RecyclerView recyclerViewGenre;
     @BindView(R.id.recyclerViewCastTvSeasonDetail)
     RecyclerView recyclerViewCast;
     @BindView(R.id.textViewCrewHeader)
     TextView textViewCrewHeader;
     @BindView(R.id.recyclerViewCrewTvSeasonDetail)
     RecyclerView recyclerViewCrew;
-    //    @BindView(R.id.textViewGenreHeader)
-//    TextView textViewGenreHeader;
     @BindView(R.id.textViewCastHeader)
     TextView textViewCastHeader;
     @BindView(R.id.nestedScrollViewTvSeasonDetail)
     CustomNestedScrollView nestedScrollViewTvSeasonDetail;
     @BindView(R.id.textViewStoryLineHeader)
     TextView textViewOverViewHeader;
-    @BindView(R.id.textViewRatingTvSeasonDetail)
+    @BindView(R.id.textViewRatingTvSeason)
     TextView textViewTvSeasonRating;
-    @BindView(R.id.textViewAudienceTvSeasonDetail)
+    @BindView(R.id.textViewAudienceTvSeason)
     TextView textViewAudienceRating;
     @BindView(R.id.textViewEpisodesHeader)
     TextView textViewEpisodesHeader;
@@ -109,8 +127,16 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
     TextView textViewEpisodesNumber;
     @BindView(R.id.recyclerViewEpisodesTvSeasonDetail)
     RecyclerView recyclerViewEpisodes;
-    @BindView(R.id.toolbarTvSeasonDetail)
+    @BindView(R.id.toolbarTvSeason)
     Toolbar toolbarTvSeason;
+    @BindView(R.id.textViewVideosCountTvSeasonDetail)
+    TextView textViewVideosCount;
+    @BindView(R.id.textViewImagesHeader)
+    TextView textViewImageHeader;
+    @BindView(R.id.recyclerViewImagesTvSeasonDetail)
+    RecyclerView recyclerViewImages;
+    @BindView(R.id.textViewImagesCountTvSeasonDetail)
+    TextView textViewImagesCounter;
 
     //    Font fields....
     private FontUtils fontUtils;
@@ -124,22 +150,27 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
     private List<MoviesTrailerResult> moviesTrailerResultList = new ArrayList<>();
     private List<CastData> castDataList = new ArrayList<>();
     private List<CrewData> crewDataList = new ArrayList<>();
+    private List<EpisodePhotosData> imagesPhotoList = new ArrayList<>();
 
     //    Retrofit fields....
     private Call<TvSeasonsMainObject> callTvSeasons;
     private Call<MoviesTrailerMainObject> tvSeasonTrailerMainObjectCall;
     private Call<CastAndCrewMainObject> castAndCrewMainObjectCall;
+    private Call<EpisodePhotosMainObject> moviesImagesCall;
 
     //    Adapter fields....
     private TvEpisodesAdapter tvEpisodesAdapter;
     private CastAdapter castAdapter;
     private CrewAdapter crewAdapter;
+    private VideosAdapter videosAdapter;
+    private EpisodePhotosAdapter imagesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_season_detail);
         ButterKnife.bind(this);
+        TvSeasonDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
@@ -155,27 +186,44 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewLightFont(textViewOverview);
         fontUtils.setTextViewRegularFont(textViewTvSeasonRating);
         fontUtils.setTextViewLightFont(textViewAudienceRating);
-
+        fontUtils.setTextViewRegularFont(textViewVideosHeader);
+        fontUtils.setTextViewRegularFont(textViewImageHeader);
+        fontUtils.setTextViewLightFont(textViewImagesCounter);
 
         //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(TvSeasonDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewCrew.setLayoutManager(new LinearLayoutManager(TvSeasonDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewVideos.setLayoutManager(new LinearLayoutManager(TvSeasonDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewImages.setLayoutManager(new LinearLayoutManager(TvSeasonDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewEpisodes.setLayoutManager(new GridLayoutManager(this, 3));
 
 //        Creating empty list adapter objects...
         castAdapter = new CastAdapter(this, castDataList);
         crewAdapter = new CrewAdapter(this, crewDataList);
         tvEpisodesAdapter = new TvEpisodesAdapter(this, episodesList, EndpointKeys.EPISODE);
+        videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
+        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList);
 
 //        Setting item animator for recycler views....
         recyclerViewEpisodes.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCrew.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCast.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewVideos.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewImages.setItemAnimator(new DefaultItemAnimator());
 
 //        Setting empty liste adapter to recycler views....
         recyclerViewCast.setAdapter(castAdapter);
         recyclerViewCrew.setAdapter(crewAdapter);
         recyclerViewEpisodes.setAdapter(tvEpisodesAdapter);
+        recyclerViewVideos.setAdapter(videosAdapter);
+        recyclerViewImages.setAdapter(imagesAdapter);
+
+        setSupportActionBar(toolbarTvSeason);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         if (getIntent() != null) {
             tvShowId = getIntent().getStringExtra(EndpointKeys.TV_ID);
@@ -184,32 +232,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
             getTvSeasonDetail("en-US", tvShowId, String.valueOf(seasonNumber));
             getTvSeasonTrailers("en-US", tvShowId, String.valueOf(seasonNumber));
             getTvSeasonCredits(tvShowId, String.valueOf(seasonNumber));
-        }
-
-        if (nestedScrollViewTvSeasonDetail != null) {
-
-            nestedScrollViewTvSeasonDetail.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-
-                if (scrollY > oldScrollY) {
-                    if (scrollingCounter == 0) {
-                        if (youTubePlayer != null)
-                            youTubePlayer.pause();
-                    }
-                    scrollingCounter++;
-                }
-                if (scrollY < oldScrollY) {
-                }
-
-                if (scrollY == 0) {
-                    if (youTubePlayer != null) {
-                        youTubePlayer.play();
-                    }
-                    scrollingCounter = 0;
-                }
-
-                if (scrollY == (v.getMeasuredHeight() - v.getChildAt(0).getMeasuredHeight())) {
-                }
-            });
+            getTvSeasonImages(tvShowId, seasonNumber, "");
         }
 
     }
@@ -242,10 +265,13 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
         if (castAndCrewMainObjectCall != null && castAndCrewMainObjectCall.isExecuted()) {
             castAndCrewMainObjectCall.cancel();
         }
+        if (moviesImagesCall != null && moviesImagesCall.isExecuted()) {
+            moviesImagesCall.cancel();
+        }
     }
 
     private void getTvSeasonCredits(String tvId, String seasonNumber) {
-        castAndCrewMainObjectCall = Api.WEB_SERVICE.getTvSeasonCredits(tvId, seasonNumber, EndpointKeys.THE_MOVIE_DB_API_KEY, "en-US");
+        castAndCrewMainObjectCall = ApiClient.getClient().create(Api.class).getTvSeasonCredits(tvId, seasonNumber, EndpointKeys.THE_MOVIE_DB_API_KEY, "en-US");
         castAndCrewMainObjectCall.enqueue(new Callback<CastAndCrewMainObject>() {
             @Override
             public void onResponse(Call<CastAndCrewMainObject> call, retrofit2.Response<CastAndCrewMainObject> response) {
@@ -254,21 +280,25 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                     if (castAndCrewMainObject != null) {
                         if (castAndCrewMainObject.getCast().size() > 0) {
                             textViewCastHeader.setVisibility(View.VISIBLE);
+                            recyclerViewCast.setVisibility(View.VISIBLE);
                             for (int i = 0; i < castAndCrewMainObject.getCast().size(); i++) {
                                 castDataList.add(castAndCrewMainObject.getCast().get(i));
                                 castAdapter.notifyItemInserted(i);
                             }
                         } else {
                             textViewCastHeader.setVisibility(View.GONE);
+                            recyclerViewCast.setVisibility(View.GONE);
                         }
                         if (castAndCrewMainObject.getCrew().size() > 0) {
                             textViewCrewHeader.setVisibility(View.VISIBLE);
+                            recyclerViewCrew.setVisibility(View.VISIBLE);
                             for (int i = 0; i < castAndCrewMainObject.getCrew().size(); i++) {
                                 crewDataList.add(castAndCrewMainObject.getCrew().get(i));
                                 crewAdapter.notifyItemInserted(i);
                             }
                         } else {
                             textViewCrewHeader.setVisibility(View.GONE);
+                            recyclerViewCrew.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -290,40 +320,33 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
     }
 
     private void getTvSeasonTrailers(String language, String tvId, String seasonNumber) {
-        tvSeasonTrailerMainObjectCall = Api.WEB_SERVICE.getTvSeasonTrailer(tvId, seasonNumber, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+        tvSeasonTrailerMainObjectCall = ApiClient.getClient().create(Api.class).getTvSeasonTrailer(tvId, seasonNumber, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
         tvSeasonTrailerMainObjectCall.enqueue(new Callback<MoviesTrailerMainObject>() {
             @Override
             public void onResponse(Call<MoviesTrailerMainObject> call, retrofit2.Response<MoviesTrailerMainObject> response) {
                 if (response != null && response.isSuccessful()) {
                     MoviesTrailerMainObject moviesTrailerMainObject = response.body();
                     if (moviesTrailerMainObject != null) {
-                        moviesTrailerResultList = moviesTrailerMainObject.getResults();
-                        if (moviesTrailerResultList.size() > 0) {
-                            toolbarTvSeason.setVisibility(View.GONE);
-                            TvSeasonDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                            youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-                                @Override
-                                public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
-                                    youTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-                                        @Override
-                                        public void onReady() {
-                                            super.onReady();
-                                            TvSeasonDetailActivity.this.youTubePlayer = youTubePlayer;
-                                            youTubePlayer.loadVideo(moviesTrailerResultList.get(0).getKey(), 0);
-                                        }
-                                    });
-                                }
-                            }, true);
-                        } else {
-                            youTubePlayerView.setVisibility(View.GONE);
-                            toolbarTvSeason.setVisibility(View.VISIBLE);
-                            setSupportActionBar(toolbarTvSeason);
-                            if (getSupportActionBar() != null) {
-                                getSupportActionBar().setTitle(title);
-                                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                                ValidUtils.changeToolbarFont(toolbarTvSeason, TvSeasonDetailActivity.this);
+                        if (moviesTrailerMainObject.getResults().size() > 0) {
+                            recyclerViewVideos.setVisibility(View.VISIBLE);
+                            textViewVideosHeader.setVisibility(View.VISIBLE);
+                            imageButtonPlay.setVisibility(View.VISIBLE);
+                            textViewVideosCount.setVisibility(View.VISIBLE);
+                            Glide.with(TvSeasonDetailActivity.this)
+                                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/mqdefault.jpg")
+                                    .apply(new RequestOptions().centerCrop())
+                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .into(imageViewCover);
+                            for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
+                                moviesTrailerResultList.add(moviesTrailerMainObject.getResults().get(i));
+                                videosAdapter.notifyItemInserted(i);
                             }
-                            Toast.makeText(TvSeasonDetailActivity.this, "Could not found trailer of this season.", Toast.LENGTH_SHORT).show();
+                            textViewVideosCount.setText("(" + moviesTrailerResultList.size() + ")");
+                        } else {
+                            textViewVideosHeader.setVisibility(View.GONE);
+                            textViewVideosCount.setVisibility(View.GONE);
+                            imageButtonPlay.setVisibility(View.GONE);
+                            recyclerViewVideos.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -347,11 +370,57 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void getTvSeasonImages(String tvShowId, int seasonNumber, String language) {
+        moviesImagesCall = ApiClient.getClient().create(Api.class).getTvSeasonImages(tvShowId, seasonNumber, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+        moviesImagesCall.enqueue(new Callback<EpisodePhotosMainObject>() {
+            @Override
+            public void onResponse(Call<EpisodePhotosMainObject> call, retrofit2.Response<EpisodePhotosMainObject> response) {
+                if (response != null && response.isSuccessful()) {
+                    EpisodePhotosMainObject imagesMainObject = response.body();
+                    if (imagesMainObject != null) {
+                        if (imagesMainObject.getPosters() != null && imagesMainObject.getPosters().size() > 0) {
+                            textViewImageHeader.setVisibility(View.VISIBLE);
+                            textViewImagesCounter.setVisibility(View.VISIBLE);
+                            recyclerViewImages.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < imagesMainObject.getPosters().size(); i++) {
+                                imagesPhotoList.add(imagesMainObject.getPosters().get(i));
+                                imagesAdapter.notifyItemInserted(i);
+                            }
+                            textViewImagesCounter.setText("(" + imagesPhotoList.size() + ")");
+                        } else {
+                            textViewImageHeader.setVisibility(View.GONE);
+                            textViewImagesCounter.setVisibility(View.GONE);
+                            recyclerViewImages.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EpisodePhotosMainObject> call, Throwable error) {
+                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
+                    return;
+                }
+                if (error != null) {
+                    if (error.getMessage().contains("No address associated with hostname")) {
+
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+        });
+    }
+
     private void getTvSeasonDetail(String language, String tvId, String seasonNumber) {
-        callTvSeasons = Api.WEB_SERVICE.getTvSeasonDetail(tvId, seasonNumber, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+        circularProgressBarTvSeasonDetail.setVisibility(View.VISIBLE);
+        callTvSeasons = ApiClient.getClient().create(Api.class).getTvSeasonDetail(tvId, seasonNumber, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
         callTvSeasons.enqueue(new Callback<TvSeasonsMainObject>() {
             @Override
             public void onResponse(Call<TvSeasonsMainObject> call, retrofit2.Response<TvSeasonsMainObject> response) {
+                circularProgressBarTvSeasonDetail.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     TvSeasonsMainObject tvSeasonsMainObject = response.body();
                     if (tvSeasonsMainObject != null) {
@@ -361,10 +430,11 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                         String firstAirDate = tvSeasonsMainObject.getAir_date();
                         String tvShowPosterPath = tvSeasonsMainObject.getPoster_path();
 
+                        viewBlur.setVisibility(View.VISIBLE);
+                        shadowLayoutPlayButton.setVisibility(View.VISIBLE);
                         cardViewTvSeasonThumbnail.setVisibility(View.VISIBLE);
                         textViewReleaseDateHeader.setVisibility(View.VISIBLE);
                         ratingBar.setVisibility(View.VISIBLE);
-//                        textViewGenreHeader.setVisibility(View.VISIBLE);
                         textViewAudienceRating.setVisibility(View.VISIBLE);
                         textViewTvSeasonRating.setVisibility(View.VISIBLE);
                         textViewOverViewHeader.setVisibility(View.VISIBLE);
@@ -375,15 +445,29 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                         textViewReleaseDate.setText(firstAirDate);
                         textViewTvSeasonRating.setText(String.valueOf((float) rating / 2));
                         textViewOverview.setText(overview);
+
                         Glide.with(TvSeasonDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                 .apply(new RequestOptions().fitCenter())
                                 .into(imageViewThumbnail);
-//                        recyclerViewGenre.setAdapter(new MoviesGenreAdapter(TvSeasonDetailActivity.this, tvSeasonsMainObject.getGenres()));
+                        if (moviesTrailerResultList.size() > 0) {
+                            Glide.with(TvSeasonDetailActivity.this)
+                                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/mqdefault.jpg")
+                                    .apply(new RequestOptions().centerCrop())
+                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .into(imageViewCover);
+                        } else {
+                            Glide.with(TvSeasonDetailActivity.this)
+                                    .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
+                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().fitCenter())
+                                    .into(imageViewCover);
+                        }
                         if (tvSeasonsMainObject.getEpisodes().size() > 0) {
                             textViewEpisodesHeader.setVisibility(View.VISIBLE);
                             textViewEpisodesNumber.setVisibility(View.VISIBLE);
+                            recyclerViewEpisodes.setVisibility(View.VISIBLE);
                             for (int i = 0; i < tvSeasonsMainObject.getEpisodes().size(); i++) {
                                 episodesList.add(tvSeasonsMainObject.getEpisodes().get(i));
                                 tvEpisodesAdapter.notifyItemInserted(episodesList.size() - 1);
@@ -399,6 +483,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<TvSeasonsMainObject> call, Throwable error) {
+                circularProgressBarTvSeasonDetail.setVisibility(View.GONE);
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
@@ -413,6 +498,25 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @OnClick({R.id.imageButtonPlayTvSeason, R.id.imageViewCoverTvSeason})
+    public void onPlayButtonClick(View view) {
+        if (moviesTrailerResultList.size() > 0) {
+            startTrailerActivity(moviesTrailerResultList.get(0).getKey());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusPlayVideo(EventBusPlayVideo eventBusPlayVideo) {
+        if (moviesTrailerResultList.size() > 0)
+            startTrailerActivity(moviesTrailerResultList.get(eventBusPlayVideo.getPosition()).getKey());
+    }
+
+    private void startTrailerActivity(String key) {
+        Intent intent = new Intent(this, TrailerActivity.class);
+        intent.putExtra(EndpointKeys.YOUTUBE_KEY, key);
+        startActivity(intent);
     }
 
     @Override

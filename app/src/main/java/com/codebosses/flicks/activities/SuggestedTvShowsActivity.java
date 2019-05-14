@@ -23,6 +23,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
+import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
@@ -152,7 +153,7 @@ public class SuggestedTvShowsActivity extends AppCompatActivity {
     }
 
     private void getSuggestedTvShows(String tvShowId, String language, int pageNumber) {
-        suggestedTvShowsCall = Api.WEB_SERVICE.getSuggestedTvShows(tvShowId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
+        suggestedTvShowsCall = ApiClient.getClient().create(Api.class).getSuggestedTvShows(tvShowId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, pageNumber);
         suggestedTvShowsCall.enqueue(new Callback<TvMainObject>() {
             @Override
             public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {
