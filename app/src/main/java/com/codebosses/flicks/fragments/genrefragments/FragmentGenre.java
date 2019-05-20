@@ -86,6 +86,18 @@ public class FragmentGenre extends BaseFragment {
     TextView textViewCrimeMore;
     @BindView(R.id.recyclerViewCrimeGenre)
     RecyclerView recyclerViewCrimeMovies;
+    @BindView(R.id.textViewHorrorMoviesHeaderGenre)
+    TextView textViewHorrorHeader;
+    @BindView(R.id.textViewViewMoreHorrorMoviesGenre)
+    TextView textViewHorrorMore;
+    @BindView(R.id.recyclerViewHorrorGenre)
+    RecyclerView recyclerViewHorror;
+    @BindView(R.id.textViewThrillerMoviesHeaderGenre)
+    TextView textViewThrillerHeader;
+    @BindView(R.id.textViewViewMoreThrillerMoviesGenre)
+    TextView textViewThrilerMore;
+    @BindView(R.id.recyclerViewThrillerGenre)
+    RecyclerView recyclerViewThriller;
     @BindView(R.id.circularProgressBarGenre)
     CircularProgressBar circularProgressBar;
     @BindView(R.id.imageViewErrorGenre)
@@ -109,6 +121,8 @@ public class FragmentGenre extends BaseFragment {
     private SimilarMoviesAdapter crimeMoviesAdapter;
     private SimilarMoviesAdapter romanticMoviesAdapter;
     private SimilarMoviesAdapter scienceFictionMoviesAdapter;
+    private SimilarMoviesAdapter horrorMoviesAdapter;
+    private SimilarMoviesAdapter thrillerMoviesAdapter;
 
     //    Instance fields....
     private List<MoviesResult> actionMoviesList = new ArrayList<>();
@@ -117,6 +131,8 @@ public class FragmentGenre extends BaseFragment {
     private List<MoviesResult> crimeMoviesList = new ArrayList<>();
     private List<MoviesResult> romanticMoviesList = new ArrayList<>();
     private List<MoviesResult> scienceFictionMoviesList = new ArrayList<>();
+    private List<MoviesResult> horrorMoviesList = new ArrayList<>();
+    private List<MoviesResult> thrillerMoviesList = new ArrayList<>();
 
     //    Retrofit fields...
     private Call<MoviesMainObject> discoverMoviesCall;
@@ -144,6 +160,10 @@ public class FragmentGenre extends BaseFragment {
         fontUtils.setTextViewRegularFont(textViewCrimeMore);
         fontUtils.setTextViewRegularFont(textViewRomanticMore);
         fontUtils.setTextViewRegularFont(textViewScienceFictionMore);
+        fontUtils.setTextViewRegularFont(textViewHorrorHeader);
+        fontUtils.setTextViewRegularFont(textViewHorrorMore);
+        fontUtils.setTextViewRegularFont(textViewThrillerHeader);
+        fontUtils.setTextViewRegularFont(textViewThrilerMore);
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
@@ -155,6 +175,8 @@ public class FragmentGenre extends BaseFragment {
                 recyclerViewCrimeMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                 recyclerViewRomanticMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                 recyclerViewScienceFictionMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewHorror.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewThriller.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
 //            Initialization of empty adapter....
                 actionMoviesAdapter = new SimilarMoviesAdapter(getActivity(), actionMoviesList, EndpointKeys.ACTION_MOVIES);
@@ -163,6 +185,8 @@ public class FragmentGenre extends BaseFragment {
                 romanticMoviesAdapter = new SimilarMoviesAdapter(getActivity(), romanticMoviesList, EndpointKeys.ROMANTIC_MOVOES);
                 scienceFictionMoviesAdapter = new SimilarMoviesAdapter(getActivity(), scienceFictionMoviesList, EndpointKeys.SCIENCE_FICTION_MOVIES);
                 crimeMoviesAdapter = new SimilarMoviesAdapter(getActivity(), crimeMoviesList, EndpointKeys.CRIME_MOVIES);
+                horrorMoviesAdapter = new SimilarMoviesAdapter(getActivity(), horrorMoviesList, EndpointKeys.HORROR_MOVIES);
+                thrillerMoviesAdapter = new SimilarMoviesAdapter(getActivity(), thrillerMoviesList, EndpointKeys.THRILLER_MOVIES);
 
 //            Setting empty adapter....
                 recyclerViewActionMovies.setAdapter(actionMoviesAdapter);
@@ -171,6 +195,8 @@ public class FragmentGenre extends BaseFragment {
                 recyclerViewCrimeMovies.setAdapter(crimeMoviesAdapter);
                 recyclerViewRomanticMovies.setAdapter(romanticMoviesAdapter);
                 recyclerViewScienceFictionMovies.setAdapter(scienceFictionMoviesAdapter);
+                recyclerViewHorror.setAdapter(horrorMoviesAdapter);
+                recyclerViewThriller.setAdapter(thrillerMoviesAdapter);
 
 //            Setting item animator....
                 recyclerViewActionMovies.setItemAnimator(new FadeInAnimator());
@@ -179,13 +205,17 @@ public class FragmentGenre extends BaseFragment {
                 recyclerViewCrimeMovies.setItemAnimator(new FadeInAnimator());
                 recyclerViewRomanticMovies.setItemAnimator(new FadeInAnimator());
                 recyclerViewScienceFictionMovies.setItemAnimator(new FadeInAnimator());
+                recyclerViewHorror.setItemAnimator(new FadeInAnimator());
+                recyclerViewThriller.setItemAnimator(new FadeInAnimator());
 
                 getGenreMovies("en-US", 1, Constants.ACTION_ID, Constants.POPULARITY_DESC);
                 getGenreMovies("en-US", 1, Constants.ADVENTURE_ID, Constants.VOTE_COUNT_DESC);
                 getGenreMovies("en-US", 1, Constants.ANIMATED_ID, Constants.REVENUE_DESC);
-                getGenreMovies("en-US", 1, Constants.ROMANTIC_ID, Constants.VOTE_AVERAGE_DESC);
-                getGenreMovies("en-US", 1, Constants.SCIENCE_FICTION_ID, Constants.VOTE_AVERAGE_ASC);
-                getGenreMovies("en-US", 1, Constants.CRIME_ID, Constants.VOTE_AVERAGE_DESC);
+                getGenreMovies("en-US", 1, Constants.ROMANTIC_ID, Constants.POPULARITY_DESC);
+                getGenreMovies("en-US", 1, Constants.SCIENCE_FICTION_ID, Constants.POPULARITY_DESC);
+                getGenreMovies("en-US", 1, Constants.CRIME_ID, Constants.POPULARITY_DESC);
+                getGenreMovies("en-US", 1, Constants.HORROR_ID, Constants.POPULARITY_DESC);
+                getGenreMovies("en-US", 1, Constants.THRILLER_ID, Constants.POPULARITY_DESC);
 
             } else {
                 textViewError.setVisibility(View.VISIBLE);
@@ -322,6 +352,36 @@ public class FragmentGenre extends BaseFragment {
                                     recyclerViewScienceFictionMovies.setVisibility(View.GONE);
                                 }
                                 break;
+                            case Constants.HORROR_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewHorrorHeader.setVisibility(View.VISIBLE);
+                                    textViewHorrorMore.setVisibility(View.VISIBLE);
+                                    recyclerViewHorror.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        horrorMoviesList.add(moviesMainObject.getResults().get(i));
+                                        horrorMoviesAdapter.notifyItemInserted(horrorMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewHorrorHeader.setVisibility(View.GONE);
+                                    textViewHorrorMore.setVisibility(View.GONE);
+                                    recyclerViewHorror.setVisibility(View.GONE);
+                                }
+                                break;
+                            case Constants.THRILLER_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewThrillerHeader.setVisibility(View.VISIBLE);
+                                    textViewThrilerMore.setVisibility(View.VISIBLE);
+                                    recyclerViewThriller.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        thrillerMoviesList.add(moviesMainObject.getResults().get(i));
+                                        thrillerMoviesAdapter.notifyItemInserted(thrillerMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewThrillerHeader.setVisibility(View.GONE);
+                                    textViewThrilerMore.setVisibility(View.GONE);
+                                    recyclerViewThriller.setVisibility(View.GONE);
+                                }
+                                break;
                         }
                     }
                 }
@@ -374,6 +434,16 @@ public class FragmentGenre extends BaseFragment {
         startGenreMoviesActivity(EndpointKeys.SCIENCE_FICTION_MOVIES, Constants.SCIENCE_FICTION_ID, Constants.VOTE_AVERAGE_DESC);
     }
 
+    @OnClick(R.id.textViewViewMoreHorrorMoviesGenre)
+    public void onHorrorViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.HORROR_MOVIES, Constants.HORROR_ID, Constants.VOTE_AVERAGE_DESC);
+    }
+
+    @OnClick(R.id.textViewViewMoreThrillerMoviesGenre)
+    public void onThrillerViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.THRILLER_MOVIES, Constants.THRILLER_ID, Constants.VOTE_AVERAGE_DESC);
+    }
+
     private void startGenreMoviesActivity(String type, int id, String sortType) {
         Intent intent = new Intent(getActivity(), GenreMoviesActivity.class);
         intent.putExtra(EndpointKeys.GENRE_TYPE, type);
@@ -411,13 +481,23 @@ public class FragmentGenre extends BaseFragment {
             movieId = scienceFictionMoviesList.get(eventBusMovieClick.getPosition()).getId();
             movieTitle = scienceFictionMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
             rating = scienceFictionMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
+        } else if (eventBusMovieClick.getMovieType().equals(EndpointKeys.HORROR_MOVIES)) {
+            movieId = horrorMoviesList.get(eventBusMovieClick.getPosition()).getId();
+            movieTitle = horrorMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
+            rating = horrorMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
+        } else if (eventBusMovieClick.getMovieType().equals(EndpointKeys.THRILLER_MOVIES)) {
+            movieId = thrillerMoviesList.get(eventBusMovieClick.getPosition()).getId();
+            movieTitle = thrillerMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
+            rating = thrillerMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
         }
         if (eventBusMovieClick.getMovieType().equals(EndpointKeys.ACTION_MOVIES) ||
                 eventBusMovieClick.getMovieType().equals(EndpointKeys.ADVENTURE_MOVIES) ||
                 eventBusMovieClick.getMovieType().equals(EndpointKeys.ANIMATED_MOVIES) ||
                 eventBusMovieClick.getMovieType().equals(EndpointKeys.ROMANTIC_MOVOES) ||
                 eventBusMovieClick.getMovieType().equals(EndpointKeys.CRIME_MOVIES) ||
-                eventBusMovieClick.getMovieType().equals(EndpointKeys.SCIENCE_FICTION)) {
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.SCIENCE_FICTION) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.HORROR_MOVIES) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.THRILLER_MOVIES)) {
             Intent intent = new Intent(getActivity(), MoviesDetailActivity.class);
             intent.putExtra(EndpointKeys.MOVIE_ID, movieId);
             intent.putExtra(EndpointKeys.MOVIE_TITLE, movieTitle);

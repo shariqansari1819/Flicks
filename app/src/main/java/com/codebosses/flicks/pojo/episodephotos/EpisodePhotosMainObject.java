@@ -12,6 +12,15 @@ public class EpisodePhotosMainObject {
     private List<EpisodePhotosData> stills = new ArrayList<>();
     private List<EpisodePhotosData> backdrops = new ArrayList<>();
     private List<EpisodePhotosData> posters = new ArrayList<>();
+    private List<EpisodePhotosData> profiles = new ArrayList<>();
+
+    public List<EpisodePhotosData> getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(List<EpisodePhotosData> profiles) {
+        this.profiles = profiles;
+    }
 
     public List<EpisodePhotosData> getPosters() {
         return posters;

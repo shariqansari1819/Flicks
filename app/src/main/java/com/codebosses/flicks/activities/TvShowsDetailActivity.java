@@ -63,6 +63,7 @@ import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.TvShowsDetailMainObject;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
+import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.dd.ShadowLayout;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
@@ -85,10 +86,10 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     RecyclerView recyclerViewVideos;
     @BindView(R.id.circularProgressBarTvShowsDetail)
     CircularProgressBar circularProgressBarMoviesDetail;
-    @BindView(R.id.viewBlurTvShowsDetail)
-    View viewBlur;
+    //    @BindView(R.id.viewBlurTvShowsDetail)
+//    View viewBlur;
     @BindView(R.id.imageViewCoverTvShowsDetail)
-    AppCompatImageView imageViewCover;
+    CrescentoImageView imageViewCover;
     @BindView(R.id.shadowPlayButtonTvShowsDetail)
     ShadowLayout shadowLayoutPlayButton;
     @BindView(R.id.imageButtonPlayTvShowsDetail)
@@ -250,7 +251,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         tvShowSeasonsAdapter = new TvShowSeasonsAdapter(this, seasonList, EndpointKeys.SEASON);
         reviewsAdapter = new ReviewsAdapter(this, reviewsDataList);
         videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
-        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList);
+        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList,EndpointKeys.TV_SHOW_IMAGES);
 
 //        Setting item animator for recycler views....
         recyclerViewSimilarTvShows.setItemAnimator(new DefaultItemAnimator());
@@ -262,7 +263,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         recyclerViewVideos.setItemAnimator(new DefaultItemAnimator());
         recyclerViewImages.setItemAnimator(new DefaultItemAnimator());
 
-//        Setting emoty liste adapter to recycler views....
+//        Setting empty list adapter to recycler views....
         recyclerViewSimilarTvShows.setAdapter(similarTvShowsAdapter);
         recyclerViewSuggestedTvShows.setAdapter(suggestedTvShowsAdapter);
         recyclerViewCast.setAdapter(castAdapter);
@@ -458,7 +459,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     }
 
     private void getTvShowImages(String tvShowId, String language) {
-        moviesImagesCall = ApiClient.getClient().create(Api.class).getTvImages(tvShowId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, "en");
+        moviesImagesCall = ApiClient.getClient().create(Api.class).getTvImages(tvShowId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, "");
         moviesImagesCall.enqueue(new Callback<EpisodePhotosMainObject>() {
             @Override
             public void onResponse(Call<EpisodePhotosMainObject> call, retrofit2.Response<EpisodePhotosMainObject> response) {
@@ -517,7 +518,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         String firstAirDate = tvShowsDetailMainObject.getFirst_air_date();
                         String tvShowPosterPath = tvShowsDetailMainObject.getPoster_path();
 
-                        viewBlur.setVisibility(View.VISIBLE);
+//                        viewBlur.setVisibility(View.VISIBLE);
                         shadowLayoutPlayButton.setVisibility(View.VISIBLE);
                         cardViewThumbnail.setVisibility(View.VISIBLE);
                         textViewReleaseDateHeader.setVisibility(View.VISIBLE);
@@ -531,7 +532,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         textViewSeasonsNumber.setText("(" + tvShowsDetailMainObject.getSeasons().size() + ")");
                         textViewTitle.setText(originalName);
                         textViewReleaseDate.setText(firstAirDate);
-                        textViewTvShowsRating.setText(String.valueOf((float) rating / 2));
+                        textViewTvShowsRating.setText(String.valueOf(rating));
                         textViewOverview.setText(overview);
                         Glide.with(TvShowsDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
@@ -551,8 +552,13 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                     .apply(new RequestOptions().fitCenter())
                                     .into(imageViewCover);
                         }
-
-                        recyclerViewGenre.setAdapter(new MoviesGenreAdapter(TvShowsDetailActivity.this, tvShowsDetailMainObject.getGenres()));
+                        if (tvShowsDetailMainObject.getGenres().size() > 0) {
+                            recyclerViewGenre.setVisibility(View.VISIBLE);
+                            recyclerViewGenre.setAdapter(new MoviesGenreAdapter(TvShowsDetailActivity.this, tvShowsDetailMainObject.getGenres()));
+                        } else {
+                            textViewGenreHeader.setVisibility(View.GONE);
+                            recyclerViewGenre.setVisibility(View.GONE);
+                        }
                         if (tvShowsDetailMainObject.getSeasons().size() > 0) {
                             textViewSeasonsHeader.setVisibility(View.VISIBLE);
                             textViewSeasonsNumber.setVisibility(View.VISIBLE);
@@ -843,7 +849,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
             name = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getName();
             image = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path();
         }
-        Intent intent = new Intent(this, CelebrityMoviesActivity.class);
+        Intent intent = new Intent(this, CelebrityDetailActivity.class);
         intent.putExtra(EndpointKeys.CELEBRITY_ID, castId);
         intent.putExtra(EndpointKeys.CELEB_NAME, name);
         intent.putExtra(EndpointKeys.CELEB_IMAGE, image);

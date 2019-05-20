@@ -124,6 +124,12 @@ public class GenreMoviesActivity extends AppCompatActivity {
                         case EndpointKeys.SCIENCE_FICTION_MOVIES:
                             textViewAppBarTitle.setText(getResources().getString(R.string.science_fiction_movies));
                             break;
+                        case EndpointKeys.HORROR_MOVIES:
+                            textViewAppBarTitle.setText(getResources().getString(R.string.horror_movies));
+                            break;
+                        case EndpointKeys.THRILLER_MOVIES:
+                            textViewAppBarTitle.setText(getResources().getString(R.string.thriller_movies));
+                            break;
                     }
                     getGenreMovies("en-US", pageNumber, genreId, sortType);
                 }

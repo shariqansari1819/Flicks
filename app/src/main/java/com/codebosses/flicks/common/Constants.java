@@ -21,6 +21,10 @@ public interface Constants {
     int SCIENCE_FICTION_ID = 878;
     int ROMANTIC_ID = 10749;
     int CRIME_ID = 80;
+    int HORROR_ID = 27;
+    int THRILLER_ID = 53;
+    int FAMILY_ID = 10751;
+    int COMEDY = 35;
 
     String POPULARITY_DESC = "popularity.desc";
     String POPULARITY_ASC = "popularity.asc";

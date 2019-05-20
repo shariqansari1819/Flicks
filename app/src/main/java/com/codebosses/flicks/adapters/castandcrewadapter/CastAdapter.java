@@ -60,8 +60,8 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastHolder> {
         Glide.with(context)
                 .load(EndpointUrl.POSTER_BASE_URL + castData.getProfile_path())
                 .apply(new RequestOptions().centerCrop())
-                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                .apply(new RequestOptions().error(R.drawable.zootopia_thumbnail))
+                .apply(new RequestOptions().placeholder(R.drawable.avatar))
+                .apply(new RequestOptions().error(R.drawable.avatar))
                 .into(holder.imageViewCelebs);
         holder.textViewCelebName.setText(celebName);
         holder.textViewCharacter.setText(characterName);

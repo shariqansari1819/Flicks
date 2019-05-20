@@ -59,7 +59,11 @@ import com.codebosses.flicks.pojo.tvseasons.TvSeasonsMainObject;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
+import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.dd.ShadowLayout;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
@@ -81,10 +85,10 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
     RecyclerView recyclerViewVideos;
     @BindView(R.id.circularProgressBarTvSeasonDetail)
     CircularProgressBar circularProgressBarTvSeasonDetail;
-    @BindView(R.id.viewBlurTvSeason)
-    View viewBlur;
+    //    @BindView(R.id.viewBlurTvSeason)
+//    View viewBlur;
     @BindView(R.id.imageViewCoverTvSeason)
-    AppCompatImageView imageViewCover;
+    CrescentoImageView imageViewCover;
     @BindView(R.id.shadowPlayButtonTvSeason)
     ShadowLayout shadowLayoutPlayButton;
     @BindView(R.id.imageButtonPlayTvSeason)
@@ -165,12 +169,37 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
     private VideosAdapter videosAdapter;
     private EpisodePhotosAdapter imagesAdapter;
 
+    //    Ad mob fields....
+    private InterstitialAd mInterstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_season_detail);
         ButterKnife.bind(this);
         TvSeasonDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
@@ -202,7 +231,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
         crewAdapter = new CrewAdapter(this, crewDataList);
         tvEpisodesAdapter = new TvEpisodesAdapter(this, episodesList, EndpointKeys.EPISODE);
         videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
-        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList);
+        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList,EndpointKeys.TV_SEASON_IMAGES);
 
 //        Setting item animator for recycler views....
         recyclerViewEpisodes.setItemAnimator(new DefaultItemAnimator());
@@ -237,9 +266,18 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
 
     }
 
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+        showInterstitial();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -430,7 +468,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                         String firstAirDate = tvSeasonsMainObject.getAir_date();
                         String tvShowPosterPath = tvSeasonsMainObject.getPoster_path();
 
-                        viewBlur.setVisibility(View.VISIBLE);
+//                        viewBlur.setVisibility(View.VISIBLE);
                         shadowLayoutPlayButton.setVisibility(View.VISIBLE);
                         cardViewTvSeasonThumbnail.setVisibility(View.VISIBLE);
                         textViewReleaseDateHeader.setVisibility(View.VISIBLE);
@@ -443,7 +481,8 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                         textViewEpisodesNumber.setText("(" + tvSeasonsMainObject.getEpisodes().size() + ")");
                         textViewTitle.setText(originalName);
                         textViewReleaseDate.setText(firstAirDate);
-                        textViewTvSeasonRating.setText(String.valueOf((float) rating / 2));
+                        textViewTvSeasonRating.setText(String.valueOf(rating));
+                        ratingBar.setRating((float) rating / 2);
                         textViewOverview.setText(overview);
 
                         Glide.with(TvSeasonDetailActivity.this)
@@ -542,7 +581,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
             name = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getName();
             image = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path();
         }
-        Intent intent = new Intent(this, CelebrityMoviesActivity.class);
+        Intent intent = new Intent(this, CelebrityDetailActivity.class);
         intent.putExtra(EndpointKeys.CELEBRITY_ID, castId);
         intent.putExtra(EndpointKeys.CELEB_NAME, name);
         intent.putExtra(EndpointKeys.CELEB_IMAGE, image);

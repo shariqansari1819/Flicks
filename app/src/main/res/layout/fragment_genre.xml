@@ -223,10 +223,84 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewCrimeMoviesHeaderGenre"
             app:layout_constraintTop_toBottomOf="@+id/textViewCrimeMoviesHeaderGenre"
+            app:layout_goneMarginBottom="@dimen/_15sdp" />
+
+        <TextView
+            android:id="@+id/textViewHorrorMoviesHeaderGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/horror_movies"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCrimeGenre" />
+
+        <TextView
+            android:id="@+id/textViewViewMoreHorrorMoviesGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_more"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_13ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewHorrorMoviesHeaderGenre"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewHorrorMoviesHeaderGenre" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewHorrorGenre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewHorrorMoviesHeaderGenre"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHorrorMoviesHeaderGenre"
+            app:layout_goneMarginBottom="@dimen/_15sdp" />
+
+        <TextView
+            android:id="@+id/textViewThrillerMoviesHeaderGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/thriller_movies"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewHorrorGenre" />
+
+        <TextView
+            android:id="@+id/textViewViewMoreThrillerMoviesGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_more"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_13ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewThrillerMoviesHeaderGenre"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewThrillerMoviesHeaderGenre" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewThrillerGenre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewThrillerMoviesHeaderGenre"
+            app:layout_constraintTop_toBottomOf="@+id/textViewThrillerMoviesHeaderGenre"
             app:layout_goneMarginBottom="@dimen/_15sdp" />
 
         <com.budiyev.android.circularprogressbar.CircularProgressBar

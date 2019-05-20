@@ -57,6 +57,7 @@ import com.codebosses.flicks.pojo.tvseasons.Episode;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
+import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.dd.ShadowLayout;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
@@ -79,10 +80,10 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     RecyclerView recyclerViewVideos;
     @BindView(R.id.circularProgressBarTvEpisodeDetail)
     CircularProgressBar circularProgressBarTvSeasonDetail;
-    @BindView(R.id.viewBlurTvEpisode)
-    View viewBlur;
+    //    @BindView(R.id.viewBlurTvEpisode)
+//    View viewBlur;
     @BindView(R.id.imageViewCoverTvEpisode)
-    AppCompatImageView imageViewCover;
+    CrescentoImageView imageViewCover;
     @BindView(R.id.shadowPlayButtonTvEpisode)
     ShadowLayout shadowLayoutPlayButton;
     @BindView(R.id.imageButtonPlayTvEpisode)
@@ -182,7 +183,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         castAdapter = new CastAdapter(this, castDataList);
         crewAdapter = new CrewAdapter(this, crewDataList);
         videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
-        episodePhotosAdapter = new EpisodePhotosAdapter(this, episodePhotosDataList);
+        episodePhotosAdapter = new EpisodePhotosAdapter(this, episodePhotosDataList, EndpointKeys.EPISODE_IMAGES);
 
 //        Setting item animator for recycler views....
         recyclerViewCrew.setItemAnimator(new DefaultItemAnimator());
@@ -347,7 +348,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
 //                castAdapter.notifyItemInserted(i);
 //            }
 //        }
-        viewBlur.setVisibility(View.VISIBLE);
+//        viewBlur.setVisibility(View.VISIBLE);
         shadowLayoutPlayButton.setVisibility(View.VISIBLE);
         textViewTitle.setVisibility(View.VISIBLE);
         cardViewThumbnail.setVisibility(View.VISIBLE);
@@ -361,7 +362,8 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         textViewTitle.setText(episode.getName());
         textViewReleaseDate.setText(episode.getAir_date());
         double rating = episode.getVote_average();
-        textViewTvShowsRating.setText(String.valueOf((float) rating / 2));
+        textViewTvShowsRating.setText(String.valueOf(rating));
+        ratingBar.setRating((float) rating / 2);
         textViewOverview.setText(episode.getOverview());
         Glide.with(EpisodeDetailActivity.this)
                 .load(EndpointUrl.POSTER_BASE_URL + "/" + episode.getStill_path())

@@ -3,11 +3,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="admob_id">ca-app-pub-2898731232039780~2784308181</string>
+    <string name="admob_id">ca-app-pub-6469792959930420~4310653327</string>
     <string name="testing_admob_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="banner_admob_id">ca-app-pub-2898731232039780/2777225864</string>
+    <string name="banner_admob_id">ca-app-pub-6469792959930420/9726631533</string>
     <string name="testing_banner_admob_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_admob_id">ca-app-pub-2898731232039780/2003254144</string>
+    <string name="interstitial_admob_id">ca-app-pub-6469792959930420/3899589782</string>
     <string name="testing_interstitial_admob_id">ca-app-pub-3940256099942544/1033173712</string>
 
     <!--Main activity screen strings-->
@@ -92,7 +92,7 @@
     <string name="movie_status">Movie Status</string>
     <string name="cast">The Cast</string>
     <string name="crew">The Crew</string>
-    <string name="view_more">View more</string>
+    <string name="view_more"><u>View more</u></string>
     <string name="similar_movies">Similar Movies</string>
     <string name="suggestion">Suggestion</string>
     <string name="story_line">Story line</string>
@@ -157,5 +157,7 @@
     <string name="romantic_movies">Romantic Movies</string>
     <string name="science_fiction_movies">Science Fiction Movies</string>
     <string name="war_movies">War Movies</string>
+    <string name="horror_movies">Horror Movies</string>
+    <string name="thriller_movies">Thrill Movies</string>
 
 </resources>

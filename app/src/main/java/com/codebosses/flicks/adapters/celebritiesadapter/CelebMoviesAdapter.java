@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
+import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.utils.FontUtils;
 
@@ -148,7 +149,7 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
 
         @Override
         public void onClick(View v) {
-            EventBus.getDefault().post(new EventBusMovieClick(getAdapterPosition(), movieType));
+            EventBus.getDefault().post(new EventBusCelebrityMovieClick(getAdapterPosition(), movieType, celebMoviesDataFilteredList.get(getAdapterPosition()).getId()));
         }
 
     }

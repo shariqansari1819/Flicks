@@ -5,23 +5,25 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/_12sdp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewCelebContainerCastCrewRow"
-        android:layout_width="@dimen/_85sdp"
-        android:layout_height="@dimen/_100sdp"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <!--<androidx.cardview.widget.CardView-->
+        <!--android:id="@+id/cardViewCelebContainerCastCrewRow"-->
+        <!--android:layout_width="@dimen/_85sdp"-->
+        <!--android:layout_height="@dimen/_100sdp"-->
+        <!--app:cardCornerRadius="8dp"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent">-->
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewCelebCastCrewRow"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_85sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/poster_thumbnail"
             android:scaleType="centerCrop"
-            android:src="@drawable/zootopia_thumbnail" />
+            android:src="@drawable/avatar" />
 
-    </androidx.cardview.widget.CardView>
+    <!--</androidx.cardview.widget.CardView>-->
 
     <TextView
         android:id="@+id/textViewCelebNameCastCrewRow"
@@ -31,9 +33,9 @@
         android:singleLine="true"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/_12ssp"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewCelebContainerCastCrewRow"
-        app:layout_constraintStart_toStartOf="@+id/cardViewCelebContainerCastCrewRow"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewCelebContainerCastCrewRow" />
+        app:layout_constraintEnd_toEndOf="@+id/imageViewCelebCastCrewRow"
+        app:layout_constraintStart_toStartOf="@+id/imageViewCelebCastCrewRow"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCelebCastCrewRow" />
 
     <TextView
         android:id="@+id/textViewCelebCharacterCastCrewRow"
@@ -44,8 +46,8 @@
         android:singleLine="true"
         android:textColor="@color/colorSecondaryText"
         android:textSize="@dimen/_11ssp"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewCelebContainerCastCrewRow"
-        app:layout_constraintStart_toStartOf="@+id/cardViewCelebContainerCastCrewRow"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewCelebCastCrewRow"
+        app:layout_constraintStart_toStartOf="@+id/imageViewCelebCastCrewRow"
         app:layout_constraintTop_toBottomOf="@+id/textViewCelebNameCastCrewRow" />
 
 

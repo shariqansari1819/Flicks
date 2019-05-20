@@ -43,17 +43,21 @@ public class SortingUtils {
     }
 
     public static void sortCelebMoviesByDate(List<CelebMoviesData> moviesResultList) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Collections.sort(moviesResultList, new Comparator<CelebMoviesData>() {
-            @Override
-            public int compare(CelebMoviesData o1, CelebMoviesData o2) {
-                try {
-                    return simpleDateFormat.parse(o2.getRelease_date()).compareTo(simpleDateFormat.parse(o1.getRelease_date()));
-                } catch (Exception e) {
-                    return 0;
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Collections.sort(moviesResultList, new Comparator<CelebMoviesData>() {
+                @Override
+                public int compare(CelebMoviesData o1, CelebMoviesData o2) {
+                    try {
+                        return simpleDateFormat.parse(o2.getRelease_date()).compareTo(simpleDateFormat.parse(o1.getRelease_date()));
+                    } catch (Exception e) {
+                        return 0;
+                    }
                 }
-            }
-        });
+            });
+        }catch (Exception e){
+
+        }
     }
 
 }

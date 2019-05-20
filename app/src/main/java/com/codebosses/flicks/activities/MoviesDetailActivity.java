@@ -1,42 +1,34 @@
 package com.codebosses.flicks.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
-import retrofit2.Call;
-import retrofit2.Callback;
-
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.castandcrewadapter.CastAdapter;
 import com.codebosses.flicks.adapters.castandcrewadapter.CrewAdapter;
-import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.MoviesGenreAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.VideosAdapter;
@@ -61,22 +53,51 @@ import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObje
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
 import com.codebosses.flicks.pojo.reviews.ReviewsData;
 import com.codebosses.flicks.pojo.reviews.ReviewsMainObject;
+import com.codebosses.flicks.utils.AdBlocker;
 import com.codebosses.flicks.utils.DateUtils;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
+import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.dd.ShadowLayout;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.internal.gmsg.HttpClient;
+import com.thefinestartist.finestwebview.FinestWebView;
+import com.thefinestartist.finestwebview.listeners.WebViewListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.ByteArrayInputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MoviesDetailActivity extends AppCompatActivity {
 
@@ -87,10 +108,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
     RecyclerView recyclerViewVideos;
     @BindView(R.id.circularProgressBarMoviesDetail)
     CircularProgressBar circularProgressBarMoviesDetail;
-    @BindView(R.id.viewBlurMoviesDetail)
-    View viewBlur;
+    //    @BindView(R.id.viewBlurMoviesDetail)
+//    View viewBlur;
     @BindView(R.id.imageViewCoverMovieDetail)
-    AppCompatImageView imageViewCover;
+    CrescentoImageView imageViewCover;
     @BindView(R.id.shadowPlayButtonMoviesDetail)
     ShadowLayout shadowLayoutPlayButton;
     @BindView(R.id.imageButtonPlayMoviesDetail)
@@ -159,6 +180,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
     RecyclerView recyclerViewImages;
     @BindView(R.id.textViewImagesCountMoviesDetail)
     TextView textViewImagesCounter;
+    @BindView(R.id.textViewTagLineHeader)
+    TextView textViewTagLineHeader;
+    @BindView(R.id.textViewTagLineMoviesDetail)
+    TextView textViewTagLine;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -177,7 +202,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private List<MoviesResult> suggestedMoviesList = new ArrayList<>();
     private List<ReviewsData> reviewsDataList = new ArrayList<>();
     private List<EpisodePhotosData> imagesPhotoList = new ArrayList<>();
-    private String movieId, movieTitle;
+    private String movieId;
     private double rating;
     private int scrollingCounter = 0;
 
@@ -193,6 +218,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
     //    Font fields....
     private FontUtils fontUtils;
 
+    //    Ad mob fields....
+    private InterstitialAd mInterstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,11 +228,35 @@ public class MoviesDetailActivity extends AppCompatActivity {
         MoviesDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
+
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
         fontUtils.setTextViewRegularFont(textViewTitle);
         fontUtils.setTextViewLightFont(textViewVoteCount);
         fontUtils.setTextViewRegularFont(textViewReleaseDateHeader);
+        fontUtils.setTextViewRegularFont(textViewTagLineHeader);
+        fontUtils.setTextViewLightFont(textViewTagLine);
         fontUtils.setTextViewLightFont(textViewReleaseDate);
         fontUtils.setTextViewRegularFont(textViewGenreHeader);
         fontUtils.setTextViewRegularFont(textViewCastHeader);
@@ -242,7 +294,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         crewAdapter = new CrewAdapter(this, crewDataList);
         reviewsAdapter = new ReviewsAdapter(this, reviewsDataList);
         videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
-        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList);
+        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList,EndpointKeys.MOVIES_IMAGES);
 
 //        Setting item animator for recycler views....
         recyclerViewSimilarMovies.setItemAnimator(new DefaultItemAnimator());
@@ -269,17 +321,21 @@ public class MoviesDetailActivity extends AppCompatActivity {
         }
 
         if (getIntent() != null) {
-            movieId = String.valueOf(getIntent().getIntExtra(EndpointKeys.MOVIE_ID, -1));
-            rating = getIntent().getDoubleExtra(EndpointKeys.RATING, 0.0);
-            movieTitle = getIntent().getStringExtra(EndpointKeys.MOVIE_TITLE);
-            ratingBar.setRating((float) rating / 2);
-            getMovieTrailers("en-US", movieId);
-            getMovieDetail("en-US", movieId);
-            getMovieCredits(movieId);
-            getSimilarMovies(movieId, "en-US", 1);
-            getSuggestedMovies(movieId, "en-US", 1);
-            getMovieReviews(movieId, "en-US", 1);
-            getMovieImages(movieId, "en-US");
+            if (ValidUtils.isNetworkAvailable(this)) {
+                movieId = String.valueOf(getIntent().getIntExtra(EndpointKeys.MOVIE_ID, -1));
+                rating = getIntent().getDoubleExtra(EndpointKeys.RATING, 0.0);
+//            movieTitle = getIntent().getStringExtra(EndpointKeys.MOVIE_TITLE);
+                ratingBar.setRating((float) rating / 2);
+                getMovieTrailers("en-US", movieId);
+                getMovieDetail("en-US", movieId);
+                getMovieCredits(movieId);
+                getSimilarMovies(movieId, "en-US", 1);
+                getSuggestedMovies(movieId, "en-US", 1);
+                getMovieReviews(movieId, "en-US", 1);
+                getMovieImages(movieId, "");
+            } else {
+
+            }
         }
 
 //        if (nestedScrollViewMoviesDetail != null) {
@@ -310,6 +366,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     }
 
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -321,6 +385,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        showInterstitial();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -403,7 +468,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void getMovieImages(String movieId, String language) {
-        moviesImagesCall = ApiClient.getClient().create(Api.class).getMoviesImages(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, "en");
+        moviesImagesCall = ApiClient.getClient().create(Api.class).getMoviesImages(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY, language, "");
         moviesImagesCall.enqueue(new Callback<EpisodePhotosMainObject>() {
             @Override
             public void onResponse(Call<EpisodePhotosMainObject> call, retrofit2.Response<EpisodePhotosMainObject> response) {
@@ -461,8 +526,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         String overview = movieDetailMainObject.getOverview();
                         String releaseDate = movieDetailMainObject.getRelease_date();
                         String moviePosterPath = movieDetailMainObject.getPoster_path();
+                        String tagLine = movieDetailMainObject.getTagline();
 
-                        viewBlur.setVisibility(View.VISIBLE);
+//                        viewBlur.setVisibility(View.VISIBLE);
                         shadowLayoutPlayButton.setVisibility(View.VISIBLE);
                         cardViewThumbnail.setVisibility(View.VISIBLE);
                         textViewReleaseDateHeader.setVisibility(View.VISIBLE);
@@ -472,11 +538,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         textViewMovieRating.setVisibility(View.VISIBLE);
                         textViewOverViewHeader.setVisibility(View.VISIBLE);
                         textViewVoteCount.setVisibility(View.VISIBLE);
+                        textViewTagLineHeader.setVisibility(View.VISIBLE);
 
                         textViewTitle.setText(originalTitle);
                         textViewReleaseDate.setText(releaseDate);
-                        textViewMovieRating.setText(String.valueOf((float) rating / 2));
+                        textViewMovieRating.setText(String.valueOf(rating));
                         textViewOverview.setText(overview);
+                        textViewTagLine.setText(tagLine);
+                        if (overview.isEmpty()) {
+                            textViewTagLine.setVisibility(View.GONE);
+                        }
 //                        try {
 //                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
 //                            if (!DateUtils.isAfterToday(date.getTime())) {
@@ -505,7 +576,12 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     .apply(new RequestOptions().fitCenter())
                                     .into(imageViewCover);
                         }
-                        recyclerViewGenre.setAdapter(new MoviesGenreAdapter(MoviesDetailActivity.this, movieDetailMainObject.getGenres()));
+                        if (movieDetailMainObject.getGenres().size() > 0) {
+                            recyclerViewGenre.setAdapter(new MoviesGenreAdapter(MoviesDetailActivity.this, movieDetailMainObject.getGenres()));
+                        } else {
+                            textViewGenreHeader.setVisibility(View.GONE);
+                            recyclerViewGenre.setVisibility(View.GONE);
+                        }
                         if (TextUtils.isEmpty(overview)) {
                             textViewOverViewHeader.setVisibility(View.GONE);
                             textViewOverview.setVisibility(View.GONE);
@@ -738,7 +814,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.textViewWatchFullMovie)
     public void onWatchFullMovieClick(View view) {
-
+        generateTicket(movieId);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -762,6 +838,109 @@ public class MoviesDetailActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    private void generateTicket(String videoId) {
+        AlertDialog alertDialog = new SpotsDialog.Builder().setContext(this).build();
+        alertDialog.show();
+        AndroidNetworking.get("https://api6.ipify.org/")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String ipAddress) {
+                        AndroidNetworking.get(EndpointUrl.VIDEO_SPIDER_BASE_URL)
+                                .addQueryParameter("key", EndpointKeys.VIDEO_SPIDER_KEY)
+                                .addQueryParameter("secret_key", EndpointKeys.VIDEO_SPIDER_SECRET_KEY)
+                                .addQueryParameter("video_id", videoId)
+                                .addQueryParameter("s", "0")
+                                .addQueryParameter("ip", ipAddress)
+                                .build()
+                                .getAsString(new StringRequestListener() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        alertDialog.dismiss();
+                                        String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + videoId + "&tmdb=1&ticket=" + response + "";
+//                                        Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
+//                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
+//                                        startActivity(intent);
+                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
+                                                .titleDefault(textViewTitle.getText().toString())
+                                                .showUrl(false)
+                                                .webViewBuiltInZoomControls(true)
+                                                .webViewDisplayZoomControls(true)
+                                                .showSwipeRefreshLayout(true)
+                                                .menuSelector(R.drawable.selector_light_theme)
+                                                .menuTextGravity(Gravity.CENTER)
+                                                .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
+                                                .dividerHeight(0)
+                                                .gradientDivider(false)
+                                                .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
+                                                .addWebViewListener(new WebViewListener() {
+                                                    @Override
+                                                    public void onReceivedTouchIconUrl(String url, boolean precomposed) {
+                                                        super.onReceivedTouchIconUrl(url, precomposed);
+                                                        Toast.makeText(MoviesDetailActivity.this, url, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                })
+                                                .show(url);
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        alertDialog.dismiss();
+                                        Toast.makeText(MoviesDetailActivity.this, anError.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
+    }
+
+    public class MyWebViewClient extends WebViewClient {
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (url.endsWith(".mp4")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(url), "video/*");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(intent);
+                return true;
+            } else if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:")
+                    || url.startsWith("mms:") || url.startsWith("mmsto:")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(intent);
+                return true;
+            } else {
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        }
+
+        private Map<String, Boolean> loadedUrls = new HashMap<>();
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            boolean ad;
+            if (!loadedUrls.containsKey(url)) {
+                ad = AdBlocker.isAd(url);
+                loadedUrls.put(url, ad);
+            } else {
+                ad = loadedUrls.get(url);
+            }
+            return ad ? AdBlocker.createEmptyResource() :
+                    super.shouldInterceptRequest(view, url);
+        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSimilarMovieClick(EventBusMovieClick eventBusMovieClick) {
@@ -800,7 +979,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
             name = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getName();
             image = crewDataList.get(eventBusCastAndCrewClick.getPosition()).getProfile_path();
         }
-        Intent intent = new Intent(this, CelebrityMoviesActivity.class);
+        Intent intent = new Intent(this, CelebrityDetailActivity.class);
         intent.putExtra(EndpointKeys.CELEBRITY_ID, castId);
         intent.putExtra(EndpointKeys.CELEB_NAME, name);
         intent.putExtra(EndpointKeys.CELEB_IMAGE, image);

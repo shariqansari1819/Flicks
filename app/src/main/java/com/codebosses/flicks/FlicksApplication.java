@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.androidnetworking.AndroidNetworking;
 import com.google.android.gms.ads.MobileAds;
 
 import java.util.HashMap;
@@ -23,6 +24,8 @@ public class FlicksApplication extends Application {
     public void onCreate() {
         super.onCreate();
         flicksApplication = this;
+
+        AndroidNetworking.initialize(this);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(flicksApplication);
         editor = sharedPreferences.edit();

@@ -8,7 +8,7 @@
     android:layout_marginEnd="@dimen/_12sdp"
     android:layout_marginBottom="@dimen/_4sdp"
     android:background="@drawable/bg_genre"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="13dp">
 
     <ImageView
         android:id="@+id/imageViewThumbnailEpisodePhotosRow"

@@ -61,8 +61,8 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.CrewHolder> {
         Glide.with(context)
                 .load(EndpointUrl.POSTER_BASE_URL + crewData.getProfile_path())
                 .apply(new RequestOptions().centerCrop())
-                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                .apply(new RequestOptions().error(R.drawable.zootopia_thumbnail))
+                .apply(new RequestOptions().placeholder(R.drawable.avatar))
+                .apply(new RequestOptions().error(R.drawable.avatar))
                 .into(holder.imageViewCelebs);
         holder.textViewCelebName.setText(celebName);
         holder.textViewCharacter.setText(characterName);

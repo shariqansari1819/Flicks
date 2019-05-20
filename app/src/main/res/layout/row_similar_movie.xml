@@ -9,7 +9,7 @@
         android:id="@+id/cardViewThumbnailContainerSimilarMoviesRow"
         android:layout_width="@dimen/_85sdp"
         android:layout_height="@dimen/_100sdp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="13dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

@@ -61,7 +61,7 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
         if (celebritiesResult != null) {
             if (celebritiesResult.getProfile_path() != null && !celebritiesResult.getProfile_path().equals(""))
                 Glide.with(context)
-                        .load(EndpointUrl.POSTER_BASE_URL + "/" + celebritiesResult.getProfile_path())
+                        .load(EndpointUrl.PROFILE_BASE_URL + "/" + celebritiesResult.getProfile_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .into(holder.imageViewThumbnail);
             String name = celebritiesResult.getName();

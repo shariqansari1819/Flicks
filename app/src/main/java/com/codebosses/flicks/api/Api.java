@@ -5,6 +5,7 @@ import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesMainObject;
+import com.codebosses.flicks.pojo.celebrity_detail.CelebrityDetailMainObject;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.latestmovies.LatestMoviesMainObject;
@@ -188,5 +189,10 @@ public interface Api {
     @GET("/3/tv/{tv_id}/season/{season_number}/images")
     Call<EpisodePhotosMainObject> getTvSeasonImages(@Path(EndpointKeys.TV_ID) String tv_id, @Path(EndpointKeys.SEASON_NUMBER) int season_number, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
 
+    @GET("/3/person/{person_id}/images")
+    Call<EpisodePhotosMainObject> getCelebImages(@Path(EndpointKeys.PERSON_ID) String person_id, @Query(EndpointKeys.API_KEY) String api_key);
+
+    @GET("/3/person/{person_id}")
+    Call<CelebrityDetailMainObject> getCelebDetail(@Path(EndpointKeys.PERSON_ID) String person_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
 
 }

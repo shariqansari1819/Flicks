@@ -4,6 +4,8 @@ public interface EndpointKeys {
 
     String THE_MOVIE_DB_API_KEY = "0021549a1c767c99bc531d078d1cda1a";
     String GOOGLE_API_KEY = "AIzaSyCC_bwgm7pwXmBe6AobsaZIxSPCpknFJSo";
+    String VIDEO_SPIDER_KEY = "SDpxVZhrUXd8zzxu";
+    String VIDEO_SPIDER_SECRET_KEY = "njbu872wom79c60l3c3q6cojavt3qy";
 
     String UPCOMING_MOVIES = "Upcoming Movies";
     String TOP_RATED_MOVIES = "Top Rated Movies";
@@ -45,6 +47,8 @@ public interface EndpointKeys {
     String SCIENCE_FICTION_MOVIES = "science_fiction_movies";
     String CRIME_MOVIES = "crime_movies";
     String GENRE_MOVIES = "genre_movies";
+    String HORROR_MOVIES = "horror_movies";
+    String THRILLER_MOVIES = "thriller_movies";
     String SORT_TYPE = "sort_type";
 
     String API_KEY = "api_key";
@@ -75,5 +79,14 @@ public interface EndpointKeys {
     String YOUTUBE_KEY = "youtube_key";
     String GENRE_TYPE = "genre_type";
     String GENRE_ID = "genre_id";
+    String MOVIE_URL = "movie_url";
+
+    String CELEBRITY_IMAGES = "celebrity_images";
+    String EPISODE_IMAGES = "episode_images";
+    String MOVIES_IMAGES = "movies_images";
+    String TV_SEASON_IMAGES = "tv_season_images";
+    String TV_SHOW_IMAGES = "tv_show_images";
+
+    String IMAGE_POSITION = "image_position";
 }
 

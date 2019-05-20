@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.codebosses.flicks.utils.customviews.CustomNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollViewCelebrityDetail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/_15sdp"
+    tools:context="com.codebosses.flicks.activities.CelebrityDetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.huanhailiuxin.coolviewpager.CoolViewPager
+            android:id="@+id/coolViewPagerCelebrityDetail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_175sdp"
+            android:background="@color/colorBlack"
+            android:visibility="invisible"
+            app:cvp_autoscroll="true"
+            app:cvp_autoscrolldirection="forward"
+            app:cvp_drawedgeeffect="false"
+            app:cvp_infiniteloop="true"
+            app:cvp_intervalinmillis="4000"
+            app:cvp_scrollduration="1000"
+            app:cvp_scrollmode="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageVieCelebImageCelebrityDetail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_175sdp"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewBlurCelebrityDetail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_175sdp"
+            android:background="#33000000"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarCelebrityDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewThumbnailContainerCelebrityDetail"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:visibility="invisible"
+            app:cardCornerRadius="13dp"
+            app:cardElevation="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageVieCelebImageCelebrityDetail">
+
+            <ImageView
+                android:id="@+id/imageViewThumbnailCelebrityDetail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/poster_thumbnail"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textViewTitleCelebNameCelebrityDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerCelebrityDetail"
+            app:layout_constraintTop_toTopOf="@+id/cardViewThumbnailContainerCelebrityDetail" />
+
+        <TextView
+            android:id="@+id/textViewKnownForCelebrityDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleCelebNameCelebrityDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleCelebNameCelebrityDetail" />
+
+        <TextView
+            android:id="@+id/textViewBornCelebrityDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleCelebNameCelebrityDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewKnownForCelebrityDetail" />
+
+        <TextView
+            android:id="@+id/textViewBornPlaceCelebrityDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:maxLines="2"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleCelebNameCelebrityDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBornCelebrityDetail" />
+
+        <TextView
+            android:id="@+id/textViewStoryLineHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/story_line"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="normal"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerCelebrityDetail"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerCelebrityDetail" />
+
+        <TextView
+            android:id="@+id/textViewOverviewCelebrityDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewStoryLineHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStoryLineHeader" />
+
+        <TextView
+            android:id="@+id/textViewImagesHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/images"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerCelebrityDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOverviewCelebrityDetail" />
+
+        <TextView
+            android:id="@+id/textViewImagesCountCelebrityDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewImagesHeader"
+            app:layout_constraintStart_toEndOf="@+id/textViewImagesHeader"
+            app:layout_constraintTop_toTopOf="@+id/textViewImagesHeader" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewImagesCelebrityDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewImagesHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewImagesHeader" />
+
+        <TextView
+            android:id="@+id/textViewMoviesHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/movies"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerCelebrityDetail"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagesCelebrityDetail" />
+
+        <TextView
+            android:id="@+id/textViewViewMoreMovies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:text="@string/view_more"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_13ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewMoviesHeader"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewMoviesHeader" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMoviesMoviesDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewMoviesHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMoviesHeader" />
+
+        <com.budiyev.android.circularprogressbar.CircularProgressBar
+            android:id="@+id/circularProgressBarCelebrityDetail"
+            android:layout_width="@dimen/_44sdp"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_margin="@dimen/_220sdp"
+            android:visibility="gone"
+            app:animateProgress="true"
+            app:foregroundStrokeCap="round"
+            app:foregroundStrokeColor="@color/colorAccent"
+            app:foregroundStrokeWidth="@dimen/_3sdp"
+            app:indeterminate="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:progressAnimationDuration="200"
+            app:startAngle="45" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.codebosses.flicks.utils.customviews.CustomNestedScrollView>

@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     }
 
     private void showAdOnListClick() {
-        if (interstitialAddCounter <= 3) {
+        if (interstitialAddCounter <= 5) {
             mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
             AdRequest adRequestInterstitial = new AdRequest.Builder().build();

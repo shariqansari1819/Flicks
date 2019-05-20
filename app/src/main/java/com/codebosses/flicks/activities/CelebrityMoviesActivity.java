@@ -32,6 +32,7 @@ import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesMainObject;
+import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.utils.SortingUtils;
 import com.codebosses.flicks.utils.FontUtils;
@@ -39,6 +40,7 @@ import com.codebosses.flicks.utils.ValidUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -83,12 +85,36 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     //    Retrofit fields....
     private Call<CelebMoviesMainObject> celebMoviesMainObjectCall;
 
+    //    Ad mob fields....
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_celebrity_movies);
         ButterKnife.bind(this);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
 
         if (getIntent() != null) {
             celebId = String.valueOf(getIntent().getIntExtra(EndpointKeys.CELEBRITY_ID, -1));
@@ -148,6 +174,14 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
     }
 
     public static void changeToolbarFont(Toolbar toolbar, Activity context) {
@@ -232,10 +266,10 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void eventBusCelebMoviesClick(EventBusMovieClick eventBusMovieClick) {
-        if (eventBusMovieClick.getMovieType().equals(EndpointKeys.CELEBRITY_MOVIES)) {
+    public void eventBusCelebMoviesClick(EventBusCelebrityMovieClick eventBusMovieClick) {
+        if (eventBusMovieClick.getType().equals(EndpointKeys.CELEBRITY_MOVIES)) {
             Intent intent = new Intent(this, MoviesDetailActivity.class);
-            intent.putExtra(EndpointKeys.MOVIE_ID, celebMoviesDataArrayList.get(eventBusMovieClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.MOVIE_ID, eventBusMovieClick.getMovieId());
             intent.putExtra(EndpointKeys.MOVIE_TITLE, celebMoviesDataArrayList.get(eventBusMovieClick.getPosition()).getTitle());
             intent.putExtra(EndpointKeys.RATING, celebMoviesDataArrayList.get(eventBusMovieClick.getPosition()).getVote_average());
             startActivity(intent);

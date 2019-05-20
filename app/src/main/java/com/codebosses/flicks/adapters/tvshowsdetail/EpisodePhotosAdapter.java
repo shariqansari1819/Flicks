@@ -12,8 +12,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
+import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.Genre;
 import com.codebosses.flicks.utils.FontUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +31,13 @@ public class EpisodePhotosAdapter extends RecyclerView.Adapter<EpisodePhotosAdap
     private List<EpisodePhotosData> episodePhotosDataList = new ArrayList<>();
     private Context context;
     private LayoutInflater layoutInflater;
+    private String clickType;
 
-    public EpisodePhotosAdapter(Context context, List<EpisodePhotosData> episodePhotosDataList) {
+    public EpisodePhotosAdapter(Context context, List<EpisodePhotosData> episodePhotosDataList, String clickType) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         this.episodePhotosDataList = episodePhotosDataList;
+        this.clickType = clickType;
     }
 
     @NonNull
@@ -46,7 +51,7 @@ public class EpisodePhotosAdapter extends RecyclerView.Adapter<EpisodePhotosAdap
         EpisodePhotosData episodePhotosData = episodePhotosDataList.get(position);
         if (episodePhotosData.getFile_path() != null && !episodePhotosData.getFile_path().equals(""))
             Glide.with(context)
-                    .load(EndpointUrl.POSTER_BASE_URL + "/" + episodePhotosData.getFile_path())
+                    .load(EndpointUrl.IMAGES_BASE_URL + "/" + episodePhotosData.getFile_path())
                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                     .into(holder.imageViewThumbnail);
     }
@@ -65,6 +70,13 @@ public class EpisodePhotosAdapter extends RecyclerView.Adapter<EpisodePhotosAdap
         EpisodePhotosHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new EventBusImageClick(getAdapterPosition(), clickType));
+                }
+            });
         }
     }
 
