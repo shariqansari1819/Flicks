@@ -11,6 +11,9 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
+import com.codebosses.flicks.pojo.eventbus.EventBusPagerImageClick;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,13 @@ public class CelebrityImagesPagerAdapter extends PagerAdapter {
                 .load(EndpointUrl.PROFILE_BASE_URL + celebImagesList.get(position).getFile_path())
                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                 .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new EventBusPagerImageClick(position));
+            }
+        });
 
         container.addView(view);
         return view;

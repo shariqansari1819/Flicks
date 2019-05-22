@@ -251,7 +251,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         tvShowSeasonsAdapter = new TvShowSeasonsAdapter(this, seasonList, EndpointKeys.SEASON);
         reviewsAdapter = new ReviewsAdapter(this, reviewsDataList);
         videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
-        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList,EndpointKeys.TV_SHOW_IMAGES);
+        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList, EndpointKeys.TV_SHOW_IMAGES);
 
 //        Setting item animator for recycler views....
         recyclerViewSimilarTvShows.setItemAnimator(new DefaultItemAnimator());
@@ -518,27 +518,39 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         String firstAirDate = tvShowsDetailMainObject.getFirst_air_date();
                         String tvShowPosterPath = tvShowsDetailMainObject.getPoster_path();
 
+                        if (!originalName.isEmpty()) {
+                            textViewTitle.setText(originalName);
+                        }
+
+                        if (!overview.isEmpty()) {
+                            textViewOverViewHeader.setVisibility(View.VISIBLE);
+                            textViewOverview.setVisibility(View.VISIBLE);
+                            textViewOverview.setText(overview);
+                        }
+
+                        if (!firstAirDate.isEmpty()) {
+                            textViewReleaseDateHeader.setVisibility(View.VISIBLE);
+                            textViewReleaseDate.setVisibility(View.VISIBLE);
+                            textViewReleaseDate.setText(firstAirDate);
+                        }
+
 //                        viewBlur.setVisibility(View.VISIBLE);
                         shadowLayoutPlayButton.setVisibility(View.VISIBLE);
                         cardViewThumbnail.setVisibility(View.VISIBLE);
-                        textViewReleaseDateHeader.setVisibility(View.VISIBLE);
                         ratingBar.setVisibility(View.VISIBLE);
-                        textViewGenreHeader.setVisibility(View.VISIBLE);
                         textViewAudienceRating.setVisibility(View.VISIBLE);
                         textViewTvShowsRating.setVisibility(View.VISIBLE);
-                        textViewOverViewHeader.setVisibility(View.VISIBLE);
                         textViewVoteCount.setVisibility(View.VISIBLE);
 
                         textViewSeasonsNumber.setText("(" + tvShowsDetailMainObject.getSeasons().size() + ")");
-                        textViewTitle.setText(originalName);
-                        textViewReleaseDate.setText(firstAirDate);
                         textViewTvShowsRating.setText(String.valueOf(rating));
-                        textViewOverview.setText(overview);
+
                         Glide.with(TvShowsDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                 .apply(new RequestOptions().fitCenter())
                                 .into(imageViewThumbnail);
+
                         if (moviesTrailerResultList.size() > 0) {
                             Glide.with(TvShowsDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/mqdefault.jpg")
@@ -552,13 +564,16 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                     .apply(new RequestOptions().fitCenter())
                                     .into(imageViewCover);
                         }
+
                         if (tvShowsDetailMainObject.getGenres().size() > 0) {
                             recyclerViewGenre.setVisibility(View.VISIBLE);
+                            textViewGenreHeader.setVisibility(View.VISIBLE);
                             recyclerViewGenre.setAdapter(new MoviesGenreAdapter(TvShowsDetailActivity.this, tvShowsDetailMainObject.getGenres()));
                         } else {
                             textViewGenreHeader.setVisibility(View.GONE);
                             recyclerViewGenre.setVisibility(View.GONE);
                         }
+
                         if (tvShowsDetailMainObject.getSeasons().size() > 0) {
                             textViewSeasonsHeader.setVisibility(View.VISIBLE);
                             textViewSeasonsNumber.setVisibility(View.VISIBLE);
@@ -567,18 +582,12 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                 seasonList.add(tvShowsDetailMainObject.getSeasons().get(i));
                                 tvShowSeasonsAdapter.notifyItemInserted(seasonList.size() - 1);
                             }
-                        }
-                        if (TextUtils.isEmpty(overview)) {
-                            textViewOverview.setVisibility(View.GONE);
-                            textViewOverViewHeader.setVisibility(View.GONE);
-                        }
-                        if (tvShowsDetailMainObject.getGenres().size() > 0) {
-                            textViewGenreHeader.setVisibility(View.VISIBLE);
-                            textViewGenreHeader.setVisibility(View.VISIBLE);
                         } else {
-                            recyclerViewGenre.setVisibility(View.GONE);
-                            textViewGenreHeader.setVisibility(View.GONE);
+                            textViewSeasonsHeader.setVisibility(View.GONE);
+                            textViewSeasonsNumber.setVisibility(View.GONE);
+                            recyclerViewSeasons.setVisibility(View.GONE);
                         }
+
                     }
                 }
             }

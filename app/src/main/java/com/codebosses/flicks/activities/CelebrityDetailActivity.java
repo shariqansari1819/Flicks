@@ -30,6 +30,7 @@ import com.codebosses.flicks.adapters.celebrity_detail.CelebrityImagesPagerAdapt
 import com.codebosses.flicks.adapters.tvshowsdetail.EpisodePhotosAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
+import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
@@ -39,6 +40,7 @@ import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusPagerImageClick;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.SortingUtils;
 import com.codebosses.flicks.utils.ValidUtils;
@@ -122,6 +124,12 @@ public class CelebrityDetailActivity extends AppCompatActivity {
             celebId = String.valueOf(getIntent().getIntExtra(EndpointKeys.CELEBRITY_ID, -1));
             celebName = getIntent().getStringExtra(EndpointKeys.CELEB_NAME);
             celebImage = getIntent().getStringExtra(EndpointKeys.CELEB_IMAGE);
+            if (celebImage == null) {
+                celebImage = "";
+            }
+            if (celebName == null) {
+                celebName = "";
+            }
         }
 
 //        Setting custom font....
@@ -234,6 +242,7 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                             textViewImagesHeader.setVisibility(View.VISIBLE);
                             textViewImagesCount.setVisibility(View.VISIBLE);
                             recyclerViewImages.setVisibility(View.VISIBLE);
+                            textViewViewMoreMovies.setVisibility(View.VISIBLE);
                             textViewImagesCount.setText("(" + celebImagesList.size() + ")");
                             imagesAdapter.notifyItemRangeInserted(0, celebImagesList.size());
                         } else {
@@ -245,6 +254,7 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                             coolViewPagerCelebrityDetail.setVisibility(View.INVISIBLE);
                             textViewImagesHeader.setVisibility(View.GONE);
                             textViewImagesCount.setVisibility(View.GONE);
+                            textViewViewMoreMovies.setVisibility(View.GONE);
                             recyclerViewImages.setVisibility(View.GONE);
                         }
                     }
@@ -284,10 +294,10 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                         textViewName.setText(celebrityDetailMainObject.getName());
                         textViewBornPlace.setText(celebrityDetailMainObject.getPlaceOfBirth());
 
-                        if (!celebImage.isEmpty()) {
+                        if (celebrityDetailMainObject.getProfilePath() != null && !celebrityDetailMainObject.getProfilePath().isEmpty()) {
                             cardViewThumbnail.setVisibility(View.VISIBLE);
                             Glide.with(CelebrityDetailActivity.this)
-                                    .load(EndpointUrl.PROFILE_BASE_URL + celebImage)
+                                    .load(EndpointUrl.PROFILE_BASE_URL + celebrityDetailMainObject.getProfilePath())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .into(imageViewThumbnail);
                         }
@@ -378,7 +388,18 @@ public class CelebrityDetailActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusPagerImageClick(EventBusPagerImageClick eventBusPagerImageClick) {
+        startImageSliderActivity(eventBusPagerImageClick.getPosition());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusImageClick(EventBusImageClick eventBusImageClick) {
+        if (eventBusImageClick.getClickType().equals(EndpointKeys.CELEBRITY_IMAGES)) {
+            startImageSliderActivity(eventBusImageClick.getPosition());
+        }
+    }
+
+    private void startImageSliderActivity(int position) {
         ArrayList<String> images = new ArrayList<>();
         for (int i = 0; i < celebImagesList.size(); i++) {
             images.add(EndpointUrl.POSTER_BASE_URL + celebImagesList.get(i).getFile_path());
@@ -386,7 +407,7 @@ public class CelebrityDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ImagesSliderActivity.class);
         intent.putExtra("images", images);
         intent.putExtra(EndpointKeys.CELEB_NAME, celebName);
-        intent.putExtra(EndpointKeys.IMAGE_POSITION, eventBusImageClick.getPosition());
+        intent.putExtra(EndpointKeys.IMAGE_POSITION, position);
         startActivity(intent);
     }
 

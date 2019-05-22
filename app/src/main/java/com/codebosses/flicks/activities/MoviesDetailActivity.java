@@ -3,12 +3,7 @@ package com.codebosses.flicks.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.text.format.Formatter;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,7 +58,6 @@ import com.dd.ShadowLayout;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.internal.gmsg.HttpClient;
 import com.thefinestartist.finestwebview.FinestWebView;
 import com.thefinestartist.finestwebview.listeners.WebViewListener;
 
@@ -71,17 +65,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.ByteArrayInputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -294,7 +283,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         crewAdapter = new CrewAdapter(this, crewDataList);
         reviewsAdapter = new ReviewsAdapter(this, reviewsDataList);
         videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
-        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList,EndpointKeys.MOVIES_IMAGES);
+        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList, EndpointKeys.MOVIES_IMAGES);
 
 //        Setting item animator for recycler views....
         recyclerViewSimilarMovies.setItemAnimator(new DefaultItemAnimator());
@@ -528,36 +517,49 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         String moviePosterPath = movieDetailMainObject.getPoster_path();
                         String tagLine = movieDetailMainObject.getTagline();
 
+                        if (!originalTitle.isEmpty()) {
+                            textViewTitle.setText(originalTitle);
+                        }
+
+                        if (!overview.isEmpty()) {
+                            textViewOverViewHeader.setVisibility(View.VISIBLE);
+                            textViewOverview.setVisibility(View.VISIBLE);
+                            textViewOverview.setText(overview);
+                        }
+
+                        if (!releaseDate.isEmpty()) {
+                            textViewReleaseDateHeader.setVisibility(View.VISIBLE);
+                            textViewReleaseDate.setVisibility(View.VISIBLE);
+                            textViewReleaseDate.setText(releaseDate);
+                        }
+
+                        if (!tagLine.isEmpty()) {
+                            textViewTagLineHeader.setVisibility(View.VISIBLE);
+                            textViewTagLine.setVisibility(View.VISIBLE);
+                            textViewTagLine.setText(tagLine);
+                        }
+
 //                        viewBlur.setVisibility(View.VISIBLE);
                         shadowLayoutPlayButton.setVisibility(View.VISIBLE);
                         cardViewThumbnail.setVisibility(View.VISIBLE);
-                        textViewReleaseDateHeader.setVisibility(View.VISIBLE);
                         ratingBar.setVisibility(View.VISIBLE);
-                        textViewGenreHeader.setVisibility(View.VISIBLE);
                         textViewAudienceRating.setVisibility(View.VISIBLE);
                         textViewMovieRating.setVisibility(View.VISIBLE);
-                        textViewOverViewHeader.setVisibility(View.VISIBLE);
                         textViewVoteCount.setVisibility(View.VISIBLE);
-                        textViewTagLineHeader.setVisibility(View.VISIBLE);
 
-                        textViewTitle.setText(originalTitle);
-                        textViewReleaseDate.setText(releaseDate);
                         textViewMovieRating.setText(String.valueOf(rating));
-                        textViewOverview.setText(overview);
-                        textViewTagLine.setText(tagLine);
-                        if (overview.isEmpty()) {
-                            textViewTagLine.setVisibility(View.GONE);
+
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
+                            if (!DateUtils.isAfterToday(date.getTime())) {
+                                textViewWatchFullMovie.setVisibility(View.VISIBLE);
+                            } else {
+                                textViewWatchFullMovie.setVisibility(View.GONE);
+                            }
+                        } catch (Exception e) {
+
                         }
-//                        try {
-//                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
-//                            if (!DateUtils.isAfterToday(date.getTime())) {
-//                                textViewWatchFullMovie.setVisibility(View.VISIBLE);
-//                            } else {
-//                                textViewWatchFullMovie.setVisibility(View.GONE);
-//                            }
-//                        } catch (Exception e) {
-//
-//                        }
+
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
@@ -576,23 +578,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     .apply(new RequestOptions().fitCenter())
                                     .into(imageViewCover);
                         }
+
                         if (movieDetailMainObject.getGenres().size() > 0) {
+                            textViewGenreHeader.setVisibility(View.VISIBLE);
+                            recyclerViewGenre.setVisibility(View.VISIBLE);
                             recyclerViewGenre.setAdapter(new MoviesGenreAdapter(MoviesDetailActivity.this, movieDetailMainObject.getGenres()));
                         } else {
                             textViewGenreHeader.setVisibility(View.GONE);
                             recyclerViewGenre.setVisibility(View.GONE);
                         }
-                        if (TextUtils.isEmpty(overview)) {
-                            textViewOverViewHeader.setVisibility(View.GONE);
-                            textViewOverview.setVisibility(View.GONE);
-                        }
-                        if (movieDetailMainObject.getGenres().size() > 0) {
-                            textViewGenreHeader.setVisibility(View.VISIBLE);
-                            recyclerViewGenre.setVisibility(View.VISIBLE);
-                        } else {
-                            textViewGenreHeader.setVisibility(View.GONE);
-                            recyclerViewGenre.setVisibility(View.GONE);
-                        }
+
                     }
                 }
             }
