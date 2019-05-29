@@ -7,6 +7,7 @@ import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesMainObject;
 import com.codebosses.flicks.pojo.celebrity_detail.CelebrityDetailMainObject;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
+import com.codebosses.flicks.pojo.moviespojo.ExternalId;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.latestmovies.LatestMoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
@@ -194,5 +195,11 @@ public interface Api {
 
     @GET("/3/person/{person_id}")
     Call<CelebrityDetailMainObject> getCelebDetail(@Path(EndpointKeys.PERSON_ID) String person_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
+    @GET("/3/movie/{movie_id}/external_ids")
+    Call<ExternalId> getMovieExternalId(@Path(EndpointKeys.MOVIE_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key);
+
+    @GET("/3/tv/{tv_id}/external_ids")
+    Call<ExternalId> getTvExternalId(@Path(EndpointKeys.TV_ID) String tv_id,@Query(EndpointKeys.API_KEY) String api_key);
 
 }

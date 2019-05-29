@@ -155,6 +155,22 @@
             app:layout_constraintStart_toStartOf="@+id/ratingBarTvEpisodeDetail"
             app:layout_constraintTop_toTopOf="@+id/textViewAudienceTvEpisodeDetail" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewWatchFullMovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@drawable/bg_watch_movie"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/watch_full_episode"
+            android:textAllCaps="false"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_13ssp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
+
+
         <TextView
             android:id="@+id/textViewReleaseDateHeaderTvEpisodeDetail"
             android:layout_width="wrap_content"
@@ -165,7 +181,7 @@
             android:textSize="@dimen/_14ssp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewWatchFullMovie" />
 
         <TextView
             android:id="@+id/textViewYearTvEpisodeDetail"

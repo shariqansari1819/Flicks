@@ -6,12 +6,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.androidnetworking.AndroidNetworking;
+import com.downloader.PRDownloader;
 import com.google.android.gms.ads.MobileAds;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import androidx.annotation.NonNull;
 import androidx.multidex.MultiDex;
 
 public class FlicksApplication extends Application {
@@ -20,12 +17,16 @@ public class FlicksApplication extends Application {
     public SharedPreferences sharedPreferences;
     public SharedPreferences.Editor editor;
 
+    public static int appAlive = 1;
+
     @Override
     public void onCreate() {
         super.onCreate();
         flicksApplication = this;
 
+
         AndroidNetworking.initialize(this);
+        PRDownloader.initialize(getApplicationContext());
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(flicksApplication);
         editor = sharedPreferences.edit();

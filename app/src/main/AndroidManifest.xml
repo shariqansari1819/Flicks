@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
         android:name=".FlicksApplication"
@@ -17,10 +21,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".activities.ImagesSliderActivity"></activity>
-        <activity android:name=".activities.CelebrityDetailActivity" />
-        <activity android:name=".activities.GenreMoviesActivity" />
-        <activity android:name=".activities.FullMovieActivity" />
+        <activity
+            android:name=".activities.ImagesSliderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CelebrityDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.GenreMoviesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.FullMovieActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TrailerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
@@ -34,8 +46,12 @@
             android:name=".activities.TvSeasonDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:parentActivityName=".activities.TvShowsDetailActivity" />
-        <activity android:name=".activities.SuggestedTvShowsActivity" />
-        <activity android:name=".activities.SimilarTvShowsActivity" />
+        <activity
+            android:name=".activities.SuggestedTvShowsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SimilarTvShowsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SuggestedMoviesActivity"
             android:parentActivityName=".activities.MoviesDetailActivity" />
@@ -70,6 +86,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<activity-->
+        <!--android:name=".utils.customviews.adblockwebview.ui.AdBlocksWebViewActivity"-->
+        <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"-->
+        <!--android:configChanges="orientation|screenSize" />-->
+
+        <service android:name=".services.BackgroundNotificationService"
+            android:enabled="true"/>
+
         <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

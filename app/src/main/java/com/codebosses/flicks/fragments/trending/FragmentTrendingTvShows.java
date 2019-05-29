@@ -159,6 +159,7 @@ public class FragmentTrendingTvShows extends Fragment {
             public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {
                 progressBarTrending.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
+                imageViewTrending.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     TvMainObject tvMainObject = response.body();
                     if (tvMainObject != null) {

@@ -27,7 +27,7 @@ public class FragmentTrending extends BaseFragment {
     @BindView(R.id.tabLayoutTrending)
     TabLayout tabLayoutTrending;
     @BindView(R.id.viewPagerTrending)
-    ViewPager viewPagerTrending;
+    public ViewPager viewPagerTrending;
 
     //    Instance fields....
     private TrendingPagerAdapter trendingAdapter;

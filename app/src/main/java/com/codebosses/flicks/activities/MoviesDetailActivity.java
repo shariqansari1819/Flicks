@@ -4,13 +4,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +35,10 @@ import com.codebosses.flicks.pojo.castandcrew.CrewData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusCastAndCrewClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
+import com.codebosses.flicks.pojo.moviespojo.ExternalId;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
@@ -48,7 +46,6 @@ import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObje
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
 import com.codebosses.flicks.pojo.reviews.ReviewsData;
 import com.codebosses.flicks.pojo.reviews.ReviewsMainObject;
-import com.codebosses.flicks.utils.AdBlocker;
 import com.codebosses.flicks.utils.DateUtils;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
@@ -58,8 +55,6 @@ import com.dd.ShadowLayout;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.thefinestartist.finestwebview.FinestWebView;
-import com.thefinestartist.finestwebview.listeners.WebViewListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,9 +63,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -80,6 +73,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -173,6 +167,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     TextView textViewTagLineHeader;
     @BindView(R.id.textViewTagLineMoviesDetail)
     TextView textViewTagLine;
+    private AlertDialog alertDialog;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -182,6 +177,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private Call<MoviesMainObject> suggestedMoviesCall;
     private Call<ReviewsMainObject> reviewsMainObjectCall;
     private Call<EpisodePhotosMainObject> moviesImagesCall;
+    private Call<ExternalId> externalIdCall;
 
     //    Instance fields....
     private List<MoviesTrailerResult> moviesTrailerResultList = new ArrayList<>();
@@ -516,6 +512,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         String releaseDate = movieDetailMainObject.getRelease_date();
                         String moviePosterPath = movieDetailMainObject.getPoster_path();
                         String tagLine = movieDetailMainObject.getTagline();
+                        String backdropPath = movieDetailMainObject.getBackdrop_path();
 
                         if (!originalTitle.isEmpty()) {
                             textViewTitle.setText(originalTitle);
@@ -563,7 +560,6 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                                .apply(new RequestOptions().fitCenter())
                                 .into(imageViewThumbnail);
                         if (moviesTrailerResultList.size() > 0) {
                             Glide.with(MoviesDetailActivity.this)
@@ -572,8 +568,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .into(imageViewCover);
                         } else {
+                            if (backdropPath.equals(""))
+                                backdropPath = moviePosterPath;
                             Glide.with(MoviesDetailActivity.this)
-                                    .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
+                                    .load(EndpointUrl.POSTER_BASE_URL + "/" + backdropPath)
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .apply(new RequestOptions().fitCenter())
                                     .into(imageViewCover);
@@ -809,13 +807,32 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.textViewWatchFullMovie)
     public void onWatchFullMovieClick(View view) {
-        generateTicket(movieId);
+        getMovieExternalId(movieId);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusPlayVideo(EventBusPlayVideo eventBusPlayVideo) {
         if (moviesTrailerResultList.size() > 0)
             startTrailerActivity(moviesTrailerResultList.get(eventBusPlayVideo.getPosition()).getKey());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusImageClick(EventBusImageClick eventBusImageClick) {
+        if (eventBusImageClick.getClickType().equals(EndpointKeys.MOVIES_IMAGES)) {
+            startImageSliderActivity(eventBusImageClick.getPosition());
+        }
+    }
+
+    private void startImageSliderActivity(int position) {
+        ArrayList<String> images = new ArrayList<>();
+        for (int i = 0; i < imagesPhotoList.size(); i++) {
+            images.add(EndpointUrl.SLIDER_IMAGE_BASE_URL + imagesPhotoList.get(i).getFile_path());
+        }
+        Intent intent = new Intent(this, ImagesSliderActivity.class);
+        intent.putExtra("images", images);
+        intent.putExtra(EndpointKeys.CELEB_NAME, textViewTitle.getText().toString());
+        intent.putExtra(EndpointKeys.IMAGE_POSITION, position);
+        startActivity(intent);
     }
 
     private void startTrailerActivity(String key) {
@@ -834,9 +851,30 @@ public class MoviesDetailActivity extends AppCompatActivity {
         return false;
     }
 
-    private void generateTicket(String videoId) {
-        AlertDialog alertDialog = new SpotsDialog.Builder().setContext(this).build();
+    private void getMovieExternalId(String movieId) {
+        alertDialog = new SpotsDialog.Builder().setContext(this).build();
         alertDialog.show();
+        externalIdCall = ApiClient.getClient().create(Api.class).getMovieExternalId(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY);
+        externalIdCall.enqueue(new Callback<ExternalId>() {
+            @Override
+            public void onResponse(Call<ExternalId> call, retrofit2.Response<ExternalId> response) {
+                if (response != null && response.isSuccessful()) {
+                    ExternalId externalId = response.body();
+                    if (externalId != null) {
+                        generateTicket(externalId.getImdbId());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExternalId> call, Throwable error) {
+                alertDialog.dismiss();
+                Toast.makeText(MoviesDetailActivity.this, "Could not get movie.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void generateTicket(String videoId) {
         AndroidNetworking.get("https://api6.ipify.org/")
                 .build()
                 .getAsString(new StringRequestListener() {
@@ -853,30 +891,33 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
                                         alertDialog.dismiss();
-                                        String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + videoId + "&tmdb=1&ticket=" + response + "";
+                                        String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + videoId + "&ticket=" + response + "";
 //                                        Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
 //                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
 //                                        startActivity(intent);
-                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
-                                                .titleDefault(textViewTitle.getText().toString())
-                                                .showUrl(false)
-                                                .webViewBuiltInZoomControls(true)
-                                                .webViewDisplayZoomControls(true)
-                                                .showSwipeRefreshLayout(true)
-                                                .menuSelector(R.drawable.selector_light_theme)
-                                                .menuTextGravity(Gravity.CENTER)
-                                                .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
-                                                .dividerHeight(0)
-                                                .gradientDivider(false)
-                                                .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
-                                                .addWebViewListener(new WebViewListener() {
-                                                    @Override
-                                                    public void onReceivedTouchIconUrl(String url, boolean precomposed) {
-                                                        super.onReceivedTouchIconUrl(url, precomposed);
-                                                        Toast.makeText(MoviesDetailActivity.this, url, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                })
-                                                .show(url);
+//                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
+//                                                .titleDefault(textViewTitle.getText().toString())
+//                                                .showUrl(false)
+//                                                .webViewBuiltInZoomControls(true)
+//                                                .webViewDisplayZoomControls(true)
+//                                                .showSwipeRefreshLayout(true)
+//                                                .menuSelector(R.drawable.selector_light_theme)
+//                                                .menuTextGravity(Gravity.CENTER)
+//                                                .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
+//                                                .dividerHeight(0)
+//                                                .gradientDivider(false)
+//                                                .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
+//                                                .addWebViewListener(new WebViewListener() {
+//                                                    @Override
+//                                                    public void onReceivedTouchIconUrl(String url, boolean precomposed) {
+//                                                        super.onReceivedTouchIconUrl(url, precomposed);
+//                                                        Toast.makeText(MoviesDetailActivity.this, url, Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                })
+//                                                .show(url);
+//                                        AdBlocksWebViewActivity.startWebView(MoviesDetailActivity.this, url, getResources().getColor(R.color.colorWhite));
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                        startActivity(Intent.createChooser(browserIntent, "Watch movie using"));
                                     }
 
                                     @Override
@@ -889,53 +930,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(ANError anError) {
-
+                        alertDialog.dismiss();
                     }
                 });
     }
-
-    public class MyWebViewClient extends WebViewClient {
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.endsWith(".mp4")) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(url), "video/*");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(intent);
-                return true;
-            } else if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:")
-                    || url.startsWith("mms:") || url.startsWith("mmsto:")) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(intent);
-                return true;
-            } else {
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-        }
-
-        private Map<String, Boolean> loadedUrls = new HashMap<>();
-
-        @SuppressWarnings("deprecation")
-        @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            boolean ad;
-            if (!loadedUrls.containsKey(url)) {
-                ad = AdBlocker.isAd(url);
-                loadedUrls.put(url, ad);
-            } else {
-                ad = loadedUrls.get(url);
-            }
-            return ad ? AdBlocker.createEmptyResource() :
-                    super.shouldInterceptRequest(view, url);
-        }
-    }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSimilarMovieClick(EventBusMovieClick eventBusMovieClick) {

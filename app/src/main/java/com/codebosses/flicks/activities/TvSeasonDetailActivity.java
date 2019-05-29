@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,6 +50,7 @@ import com.codebosses.flicks.pojo.castandcrew.CrewData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusCastAndCrewClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
@@ -179,27 +181,27 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         TvSeasonDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
-        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequestInterstitial);
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                showInterstitial();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-            }
-        });
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+//        mInterstitialAd.loadAd(adRequestInterstitial);
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//            }
+//
+//            @Override
+//            public void onAdLoaded() {
+//                super.onAdLoaded();
+//                showInterstitial();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//                super.onAdFailedToLoad(i);
+//            }
+//        });
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
@@ -231,7 +233,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
         crewAdapter = new CrewAdapter(this, crewDataList);
         tvEpisodesAdapter = new TvEpisodesAdapter(this, episodesList, EndpointKeys.EPISODE);
         videosAdapter = new VideosAdapter(this, moviesTrailerResultList);
-        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList,EndpointKeys.TV_SEASON_IMAGES);
+        imagesAdapter = new EpisodePhotosAdapter(this, imagesPhotoList, EndpointKeys.TV_SEASON_IMAGES);
 
 //        Setting item animator for recycler views....
         recyclerViewEpisodes.setItemAnimator(new DefaultItemAnimator());
@@ -266,18 +268,18 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
 
     }
 
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequest);
-        }
-    }
+//    private void showInterstitial() {
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            mInterstitialAd.loadAd(adRequest);
+//        }
+//    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        showInterstitial();
+//        showInterstitial();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -488,7 +490,6 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                         Glide.with(TvSeasonDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                                .apply(new RequestOptions().fitCenter())
                                 .into(imageViewThumbnail);
                         if (moviesTrailerResultList.size() > 0) {
                             Glide.with(TvSeasonDetailActivity.this)
@@ -550,6 +551,25 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
     public void eventBusPlayVideo(EventBusPlayVideo eventBusPlayVideo) {
         if (moviesTrailerResultList.size() > 0)
             startTrailerActivity(moviesTrailerResultList.get(eventBusPlayVideo.getPosition()).getKey());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusImageClick(EventBusImageClick eventBusImageClick) {
+        if (eventBusImageClick.getClickType().equals(EndpointKeys.TV_SEASON_IMAGES)) {
+            startImageSliderActivity(eventBusImageClick.getPosition());
+        }
+    }
+
+    private void startImageSliderActivity(int position) {
+        ArrayList<String> images = new ArrayList<>();
+        for (int i = 0; i < imagesPhotoList.size(); i++) {
+            images.add(EndpointUrl.SLIDER_IMAGE_BASE_URL + imagesPhotoList.get(i).getFile_path());
+        }
+        Intent intent = new Intent(this, ImagesSliderActivity.class);
+        intent.putExtra("images", images);
+        intent.putExtra(EndpointKeys.CELEB_NAME, textViewTitle.getText().toString());
+        intent.putExtra(EndpointKeys.IMAGE_POSITION, position);
+        startActivity(intent);
     }
 
     private void startTrailerActivity(String key) {

@@ -156,6 +156,7 @@ public class FragmentTopRatedTvShows extends BaseFragment {
             public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {
                 circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
+                imageViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     TvMainObject tvMainObject = response.body();
                     if (tvMainObject != null) {

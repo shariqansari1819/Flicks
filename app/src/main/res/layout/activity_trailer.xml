@@ -8,6 +8,16 @@
     tools:context="com.codebosses.flicks.activities.TrailerActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewDownloadTrailer"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+        android:layout_margin="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewCloseTrailer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewCloseTrailer"
+        app:srcCompat="@drawable/ic_action_download" />
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageViewCloseTrailer"
         android:layout_width="@dimen/_24sdp"
         android:layout_height="@dimen/_24sdp"

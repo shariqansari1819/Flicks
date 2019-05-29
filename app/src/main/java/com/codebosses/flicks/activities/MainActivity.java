@@ -51,6 +51,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -379,6 +380,19 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     }
 
     private void resolveBackPressed() {
+        if (currentTab.equals(EndpointKeys.TRENDING)) {
+            if (fragmentTrending.viewPagerTrending.getCurrentItem() != 0) {
+                fragmentTrending.viewPagerTrending.setCurrentItem(0);
+            } else {
+                resolveStack();
+            }
+        } else {
+            resolveStack();
+        }
+
+    }
+
+    private void resolveStack() {
         int stackValue = 0;
         if (stacks.get(currentTab).size() == 1) {
             Stack<Fragment> value = stacks.get(stackList.get(1));
@@ -490,7 +504,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     }
 
     private void showAdOnListClick() {
-        if (interstitialAddCounter <= 5) {
+        if (interstitialAddCounter <= 2) {
             mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
             AdRequest adRequestInterstitial = new AdRequest.Builder().build();
@@ -575,6 +589,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(Intent.createChooser(i, "Open using"));
+                return true;
+            case R.id.menuRateUs:
+                startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                 return true;
         }
         return false;

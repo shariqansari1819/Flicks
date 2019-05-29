@@ -158,6 +158,7 @@ public class FragmentUpcomingMovies extends BaseFragment {
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
                 circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
+                imageViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {

@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -50,6 +51,7 @@ import com.codebosses.flicks.pojo.castandcrew.CrewData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusCastAndCrewClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
@@ -517,6 +519,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         String overview = tvShowsDetailMainObject.getOverview();
                         String firstAirDate = tvShowsDetailMainObject.getFirst_air_date();
                         String tvShowPosterPath = tvShowsDetailMainObject.getPoster_path();
+                        String backDropPath = tvShowsDetailMainObject.getBackdrop_path();
 
                         if (!originalName.isEmpty()) {
                             textViewTitle.setText(originalName);
@@ -548,7 +551,6 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         Glide.with(TvShowsDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                                .apply(new RequestOptions().fitCenter())
                                 .into(imageViewThumbnail);
 
                         if (moviesTrailerResultList.size() > 0) {
@@ -558,8 +560,10 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .into(imageViewCover);
                         } else {
+                            if (backDropPath.equals(""))
+                                backDropPath = tvShowPosterPath;
                             Glide.with(TvShowsDetailActivity.this)
-                                    .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
+                                    .load(EndpointUrl.POSTER_BASE_URL + "/" + backDropPath)
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .apply(new RequestOptions().fitCenter())
                                     .into(imageViewCover);
@@ -629,7 +633,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                             }
                         } else {
                             textViewSimilarTvShowsHeader.setVisibility(View.GONE);
-                            textViewViewMoreSimilarTvShows.setVisibility(View.VISIBLE);
+                            textViewViewMoreSimilarTvShows.setVisibility(View.GONE);
                             recyclerViewSimilarTvShows.setVisibility(View.GONE);
                         }
                     }
@@ -799,6 +803,25 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     public void eventBusPlayVideo(EventBusPlayVideo eventBusPlayVideo) {
         if (moviesTrailerResultList.size() > 0)
             startTrailerActivity(moviesTrailerResultList.get(eventBusPlayVideo.getPosition()).getKey());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusImageClick(EventBusImageClick eventBusImageClick) {
+        if (eventBusImageClick.getClickType().equals(EndpointKeys.TV_SHOW_IMAGES)) {
+            startImageSliderActivity(eventBusImageClick.getPosition());
+        }
+    }
+
+    private void startImageSliderActivity(int position) {
+        ArrayList<String> images = new ArrayList<>();
+        for (int i = 0; i < imagesPhotoList.size(); i++) {
+            images.add(EndpointUrl.SLIDER_IMAGE_BASE_URL + imagesPhotoList.get(i).getFile_path());
+        }
+        Intent intent = new Intent(this, ImagesSliderActivity.class);
+        intent.putExtra("images", images);
+        intent.putExtra(EndpointKeys.CELEB_NAME, textViewTitle.getText().toString());
+        intent.putExtra(EndpointKeys.IMAGE_POSITION, position);
+        startActivity(intent);
     }
 
     private void startTrailerActivity(String key) {

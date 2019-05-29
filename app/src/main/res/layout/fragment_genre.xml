@@ -4,6 +4,8 @@
     android:id="@+id/nestedScrollViewGenre"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/_12sdp"
+    android:layout_marginEnd="@dimen/_12sdp"
     tools:context="com.codebosses.flicks.fragments.genrefragments.FragmentGenre">
 
     <androidx.constraintlayout.widget.ConstraintLayout

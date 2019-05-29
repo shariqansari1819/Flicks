@@ -55,9 +55,7 @@
         android:id="@+id/recyclerViewGenreMovies"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_12sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarGenreMovies" />

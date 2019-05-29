@@ -161,6 +161,7 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
             public void onResponse(Call<CelebritiesMainObject> call, retrofit2.Response<CelebritiesMainObject> response) {
                 circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
+                imageViewError.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     CelebritiesMainObject celebritiesMainObject = response.body();
                     if (celebritiesMainObject != null) {

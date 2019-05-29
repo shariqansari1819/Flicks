@@ -161,6 +161,7 @@ public class FragmentTrendingCelebrities extends Fragment {
             public void onResponse(Call<CelebritiesMainObject> call, retrofit2.Response<CelebritiesMainObject> response) {
                 progressBarTrending.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
+                imageViewTrending.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     CelebritiesMainObject celebritiesMainObject = response.body();
                     if (celebritiesMainObject != null) {

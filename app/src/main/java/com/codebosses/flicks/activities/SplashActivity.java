@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.codebosses.flicks.FlicksApplication;
 import com.codebosses.flicks.R;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -22,14 +24,19 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
-            }
-        }, 2000);
+        if (FlicksApplication.appAlive == 1) {
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                }
+            }, 2000);
+        } else {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
     @Override
@@ -38,6 +45,7 @@ public class SplashActivity extends AppCompatActivity {
         if (handler != null) {
             handler.removeCallbacks(null);
         }
+        FlicksApplication.appAlive = 0;
     }
 
     @Override

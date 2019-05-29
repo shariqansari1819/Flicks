@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'io.fabric'
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.codebosses.flicksapp"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 22   //  21 May 2019
-        versionName "1.3"
+        versionCode 23   //  26 May 2019
+        versionName "1.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -48,6 +48,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.thoughtbot:expandablerecyclerview:1.3'
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:9.0.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'me.zhanghai.android.materialratingbar:library:1.3.2'
     implementation 'com.google.android.gms:play-services-ads:17.1.3'
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
@@ -63,6 +64,10 @@ dependencies {
     implementation 'com.thefinestartist:finestwebview:1.2.7'
     implementation 'com.github.HuanHaiLiuXin:CoolViewPager:v1.0.0'
     implementation 'com.github.chrisbanes:PhotoView:1.2.6'
+    implementation 'com.mindorks.android:prdownloader:0.5.0'
+    implementation 'com.github.Commit451:YouTubeExtractor:4.2.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
@@ -11,14 +12,18 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -28,6 +33,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -47,13 +55,16 @@ import com.codebosses.flicks.pojo.castandcrew.CastData;
 import com.codebosses.flicks.pojo.castandcrew.CrewData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
+import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
+import com.codebosses.flicks.pojo.moviespojo.ExternalId;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
 import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvResult;
 
 import com.codebosses.flicks.pojo.tvseasons.Episode;
+import com.codebosses.flicks.utils.DateUtils;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
@@ -68,7 +79,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EpisodeDetailActivity extends AppCompatActivity {
@@ -128,10 +141,14 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     Toolbar toolbarTvEpisode;
     @BindView(R.id.textViewVideosCountTvEpisodeDetail)
     TextView textViewVideosCount;
+    @BindView(R.id.textViewWatchFullMovie)
+    AppCompatTextView textViewWatchFullMovie;
+    private AlertDialog alertDialog;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
     private Call<EpisodePhotosMainObject> episodePhotosMainObjectCall;
+    private Call<ExternalId> externalIdCall;
     private Call<CastAndCrewMainObject> castAndCrewMainObjectCall;
 
     //    Instance fields....
@@ -368,7 +385,6 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         Glide.with(EpisodeDetailActivity.this)
                 .load(EndpointUrl.POSTER_BASE_URL + "/" + episode.getStill_path())
                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                .apply(new RequestOptions().fitCenter())
                 .into(imageViewThumbnail);
         if (moviesTrailerResultList.size() > 0) {
             Glide.with(EpisodeDetailActivity.this)
@@ -378,7 +394,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
                     .into(imageViewCover);
         } else {
             Glide.with(EpisodeDetailActivity.this)
-                    .load(EndpointUrl.POSTER_BASE_URL + "/" + episode.getStill_path())
+                    .load(EndpointUrl.POSTER_BASE_URL + episode.getStill_path())
                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                     .apply(new RequestOptions().fitCenter())
                     .into(imageViewCover);
@@ -386,6 +402,17 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(episode.getOverview())) {
             textViewOverview.setVisibility(View.GONE);
             textViewOverViewHeader.setVisibility(View.GONE);
+        }
+
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(episode.getAir_date());
+            if (!DateUtils.isAfterToday(date.getTime())) {
+                textViewWatchFullMovie.setVisibility(View.VISIBLE);
+            } else {
+                textViewWatchFullMovie.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -400,6 +427,114 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     public void eventBusPlayVideo(EventBusPlayVideo eventBusPlayVideo) {
         if (moviesTrailerResultList.size() > 0)
             startTrailerActivity(moviesTrailerResultList.get(eventBusPlayVideo.getPosition()).getKey());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusImageClick(EventBusImageClick eventBusImageClick) {
+        if (eventBusImageClick.getClickType().equals(EndpointKeys.EPISODE_IMAGES)) {
+            startImageSliderActivity(eventBusImageClick.getPosition());
+        }
+    }
+
+    @OnClick(R.id.textViewWatchFullMovie)
+    public void onWatchFullMovieClick(View view) {
+        getTvExternalId(tvShowId);
+    }
+
+    private void getTvExternalId(String tvShowId) {
+        alertDialog = new SpotsDialog.Builder().setContext(this).build();
+        alertDialog.show();
+        externalIdCall = ApiClient.getClient().create(Api.class).getTvExternalId(tvShowId, EndpointKeys.THE_MOVIE_DB_API_KEY);
+        externalIdCall.enqueue(new Callback<ExternalId>() {
+            @Override
+            public void onResponse(Call<ExternalId> call, retrofit2.Response<ExternalId> response) {
+                if (response != null && response.isSuccessful()) {
+                    ExternalId externalId = response.body();
+                    if (externalId != null) {
+                        generateTicket(externalId.getImdbId(), seasonNumber);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExternalId> call, Throwable error) {
+                alertDialog.dismiss();
+                Toast.makeText(EpisodeDetailActivity.this, "Could not get episode.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void generateTicket(String tvShowId, String seasonNumber) {
+        AndroidNetworking.get("https://api6.ipify.org/")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String ipAddress) {
+                        AndroidNetworking.get(EndpointUrl.VIDEO_SPIDER_BASE_URL)
+                                .addQueryParameter("key", EndpointKeys.VIDEO_SPIDER_KEY)
+                                .addQueryParameter("secret_key", EndpointKeys.VIDEO_SPIDER_SECRET_KEY)
+                                .addQueryParameter("video_id", tvShowId)
+                                .addQueryParameter("s", seasonNumber)
+                                .addQueryParameter("ip", ipAddress)
+                                .build()
+                                .getAsString(new StringRequestListener() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        alertDialog.dismiss();
+                                        String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + tvShowId + "&tv=1&s=" + seasonNumber + "&e=" + episodeNumber + "&ticket=" + response;
+//                                        Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
+//                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
+//                                        startActivity(intent);
+//                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
+//                                                .titleDefault(textViewTitle.getText().toString())
+//                                                .showUrl(false)
+//                                                .webViewBuiltInZoomControls(true)
+//                                                .webViewDisplayZoomControls(true)
+//                                                .showSwipeRefreshLayout(true)
+//                                                .menuSelector(R.drawable.selector_light_theme)
+//                                                .menuTextGravity(Gravity.CENTER)
+//                                                .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
+//                                                .dividerHeight(0)
+//                                                .gradientDivider(false)
+//                                                .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
+//                                                .addWebViewListener(new WebViewListener() {
+//                                                    @Override
+//                                                    public void onReceivedTouchIconUrl(String url, boolean precomposed) {
+//                                                        super.onReceivedTouchIconUrl(url, precomposed);
+//                                                        Toast.makeText(MoviesDetailActivity.this, url, Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                })
+//                                                .show(url);
+//                                        AdBlocksWebViewActivity.startWebView(MoviesDetailActivity.this, url, getResources().getColor(R.color.colorWhite));
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                        startActivity(Intent.createChooser(browserIntent, "Watch using"));
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        alertDialog.dismiss();
+                                        Toast.makeText(EpisodeDetailActivity.this, anError.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        alertDialog.dismiss();
+                    }
+                });
+    }
+
+    private void startImageSliderActivity(int position) {
+        ArrayList<String> images = new ArrayList<>();
+        for (int i = 0; i < episodePhotosDataList.size(); i++) {
+            images.add(EndpointUrl.SLIDER_IMAGE_BASE_URL + episodePhotosDataList.get(i).getFile_path());
+        }
+        Intent intent = new Intent(this, ImagesSliderActivity.class);
+        intent.putExtra("images", images);
+        intent.putExtra(EndpointKeys.CELEB_NAME, textViewTitle.getText().toString());
+        intent.putExtra(EndpointKeys.IMAGE_POSITION, position);
+        startActivity(intent);
     }
 
     private void startTrailerActivity(String key) {

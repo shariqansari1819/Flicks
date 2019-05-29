@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menuDownload"
-        android:title="Download"
+        android:icon="@drawable/download"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_action_download"
-        />
+        android:title="Download"
+        app:showAsAction="always" />
 </menu>

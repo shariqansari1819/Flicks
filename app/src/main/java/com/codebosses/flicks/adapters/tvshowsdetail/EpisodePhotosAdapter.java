@@ -23,6 +23,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -51,7 +52,7 @@ public class EpisodePhotosAdapter extends RecyclerView.Adapter<EpisodePhotosAdap
         EpisodePhotosData episodePhotosData = episodePhotosDataList.get(position);
         if (episodePhotosData.getFile_path() != null && !episodePhotosData.getFile_path().equals(""))
             Glide.with(context)
-                    .load(EndpointUrl.IMAGES_BASE_URL + "/" + episodePhotosData.getFile_path())
+                    .load(EndpointUrl.POSTER_BASE_URL + "/" + episodePhotosData.getFile_path())
                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                     .into(holder.imageViewThumbnail);
     }
