@@ -22,7 +22,7 @@
             android:id="@+id/imageViewAvatarNavigation"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
-            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_30sdp"
             android:src="@drawable/boy_avatar"
             app:layout_constraintStart_toStartOf="parent"

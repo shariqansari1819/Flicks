@@ -570,6 +570,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         switch (item.getItemId()) {
             case R.id.menuSearch:
                 startActivity(new Intent(this, SearchActivity.class));
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
             case R.id.menuCheckUpdate:
                 new AppUpdater(MainActivity.this)

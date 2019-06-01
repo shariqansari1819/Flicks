@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,11 +57,13 @@ public class FragmentTvShowsOnAir extends BaseFragment {
     RecyclerView recyclerViewTvShowsOnAir;
     @BindView(R.id.imageViewErrorTvShowsOnAir)
     AppCompatImageView imageViewError;
+    @BindView(R.id.textViewRetryMessageTvShowsOnAir)
+    TextView textViewRetry;
     private LinearLayoutManager linearLayoutManager;
 
 
     //    Resource fields....
-    @BindString(R.string.could_not_get_on_air_tv_shows)
+    @BindString(R.string.could_not_get_tv_shows)
     String couldNotGetTvShows;
     @BindString(R.string.internet_problem)
     String internetProblem;
@@ -93,26 +97,17 @@ public class FragmentTvShowsOnAir extends BaseFragment {
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewRetry);
 
         if (getActivity() != null) {
-            if (ValidUtils.isNetworkAvailable(getActivity())) {
-
-                tvShowsAdapter = new TvShowsAdapter(getActivity(), tvResultArrayList, EndpointKeys.TV_SHOWS_ON_THE_AIR);
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerViewTvShowsOnAir.setLayoutManager(linearLayoutManager);
-                recyclerViewTvShowsOnAir.setAdapter(tvShowsAdapter);
-                recyclerViewTvShowsOnAir.setItemAnimator(new FadeInDownAnimator());
-                if (recyclerViewTvShowsOnAir.getItemAnimator() != null)
-                    recyclerViewTvShowsOnAir.getItemAnimator().setAddDuration(500);
-
-                circularProgressBar.setVisibility(View.VISIBLE);
-                getOnAirTvShows("en-US", pageNumber);
-
-            } else {
-                textViewError.setVisibility(View.VISIBLE);
-                imageViewError.setVisibility(View.VISIBLE);
-                textViewError.setText(internetProblem);
-            }
+            tvShowsAdapter = new TvShowsAdapter(getActivity(), tvResultArrayList, EndpointKeys.TV_SHOWS_ON_THE_AIR);
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerViewTvShowsOnAir.setLayoutManager(linearLayoutManager);
+            recyclerViewTvShowsOnAir.setAdapter(tvShowsAdapter);
+            recyclerViewTvShowsOnAir.setItemAnimator(new FadeInDownAnimator());
+            if (recyclerViewTvShowsOnAir.getItemAnimator() != null)
+                recyclerViewTvShowsOnAir.getItemAnimator().setAddDuration(500);
+            loadOnAirTvShowsFirstTime();
         }
         recyclerViewTvShowsOnAir.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -162,6 +157,7 @@ public class FragmentTvShowsOnAir extends BaseFragment {
                 circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
                 imageViewError.setVisibility(View.GONE);
+                textViewRetry.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     TvMainObject tvMainObject = response.body();
                     if (tvMainObject != null) {
@@ -174,9 +170,12 @@ public class FragmentTvShowsOnAir extends BaseFragment {
                         }
                     }
                 } else {
-                    textViewError.setVisibility(View.VISIBLE);
-                    textViewError.setText(couldNotGetTvShows);
-                    imageViewError.setVisibility(View.VISIBLE);
+                    if (pageNumber == 1) {
+                        textViewError.setVisibility(View.VISIBLE);
+                        textViewError.setText(couldNotGetTvShows);
+                        imageViewError.setVisibility(View.VISIBLE);
+                        textViewRetry.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -186,19 +185,45 @@ public class FragmentTvShowsOnAir extends BaseFragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.GONE);
-                imageViewError.setVisibility(View.VISIBLE);
-                textViewError.setVisibility(View.VISIBLE);
+                if (pageNumber == 1) {
+                    imageViewError.setVisibility(View.VISIBLE);
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewRetry.setVisibility(View.VISIBLE);
+                }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
-                        textViewError.setText(internetProblem);
+                        if (pageNumber == 1)
+                            textViewError.setText(internetProblem);
                     } else {
-                        textViewError.setText(error.getMessage());
+                        if (pageNumber == 1)
+                            textViewError.setText(couldNotGetTvShows);
                     }
                 } else {
-                    textViewError.setText(couldNotGetTvShows);
+                    if (pageNumber == 1)
+                        textViewError.setText(couldNotGetTvShows);
                 }
             }
         });
+    }
+
+    private void loadOnAirTvShowsFirstTime() {
+        if (ValidUtils.isNetworkAvailable(getActivity())) {
+            circularProgressBar.setVisibility(View.VISIBLE);
+            getOnAirTvShows("en-US", pageNumber);
+        } else {
+            textViewError.setVisibility(View.VISIBLE);
+            imageViewError.setVisibility(View.VISIBLE);
+            textViewRetry.setVisibility(View.VISIBLE);
+            textViewError.setText(internetProblem);
+        }
+    }
+
+    @OnClick(R.id.textViewRetryMessageTvShowsOnAir)
+    public void onRetryClick(View view) {
+        textViewError.setVisibility(View.GONE);
+        imageViewError.setVisibility(View.GONE);
+        textViewRetry.setVisibility(View.GONE);
+        loadOnAirTvShowsFirstTime();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

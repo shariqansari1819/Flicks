@@ -2,7 +2,8 @@
 <resources>
     <color name="colorPrimary">#FF8E5D</color>
     <color name="colorPrimaryDark">#FF8E5D</color>
-    <color name="colorAccent">#59CB6D</color>
+    <!--<color name="colorAccent">#59CB6D</color>-->
+    <color name="colorAccent">#40C1DB</color>
     <color name="colorLightGrey">#AAB1C1</color>
     <color name="colorPrimaryText">#202020</color>
     <color name="colorSecondaryText">#657786</color>

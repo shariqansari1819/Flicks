@@ -568,7 +568,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .into(imageViewCover);
                         } else {
-                            if (backdropPath.equals(""))
+                            if (backdropPath == null || backdropPath.equals(""))
                                 backdropPath = moviePosterPath;
                             Glide.with(MoviesDetailActivity.this)
                                     .load(EndpointUrl.POSTER_BASE_URL + "/" + backdropPath)

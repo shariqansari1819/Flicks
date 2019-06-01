@@ -2,16 +2,17 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height">
+    android:layout_height="45dp"
+    android:background="@drawable/ripple_rectangle">
 
     <TextView
         android:id="@+id/list_item_artist_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/list_item_left_margin"
+        android:layout_marginStart="@dimen/_50sdp"
         android:gravity="center_vertical"
-        tools:text="Artist Name"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="@dimen/_12ssp"/>
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="@dimen/_14ssp"
+        tools:text="Artist Name" />
 
 </FrameLayout>

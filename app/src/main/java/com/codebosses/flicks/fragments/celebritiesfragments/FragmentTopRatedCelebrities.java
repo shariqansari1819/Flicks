@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +60,8 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
     RecyclerView recyclerViewTopRatedCelebrities;
     @BindView(R.id.imageViewErrorTopRatedCelebrities)
     AppCompatImageView imageViewError;
+    @BindView(R.id.textViewRetryMessageTopRatedCeleb)
+    TextView textViewRetry;
     private LinearLayoutManager linearLayoutManager;
 
     //    Resource fields....
@@ -91,27 +95,18 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
-        fontUtils.setTextViewBoldFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewRetry);
 
         if (getActivity() != null) {
-            if (ValidUtils.isNetworkAvailable(getActivity())) {
-
-                celebritiesAdapter = new CelebritiesAdapter(getActivity(), celebritiesResultList, EndpointKeys.TOP_RATED_CELEBRITIES);
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerViewTopRatedCelebrities.setLayoutManager(linearLayoutManager);
-                recyclerViewTopRatedCelebrities.setAdapter(celebritiesAdapter);
-                recyclerViewTopRatedCelebrities.setItemAnimator(new FadeInDownAnimator());
-                if (recyclerViewTopRatedCelebrities.getItemAnimator() != null)
-                    recyclerViewTopRatedCelebrities.getItemAnimator().setAddDuration(500);
-
-                circularProgressBar.setVisibility(View.VISIBLE);
-                getTopRatedCelebrities("en-US", pageNumber);
-
-            } else {
-                textViewError.setVisibility(View.VISIBLE);
-                textViewError.setText(internetProblem);
-                imageViewError.setVisibility(View.VISIBLE);
-            }
+            celebritiesAdapter = new CelebritiesAdapter(getActivity(), celebritiesResultList, EndpointKeys.TOP_RATED_CELEBRITIES);
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerViewTopRatedCelebrities.setLayoutManager(linearLayoutManager);
+            recyclerViewTopRatedCelebrities.setAdapter(celebritiesAdapter);
+            recyclerViewTopRatedCelebrities.setItemAnimator(new FadeInDownAnimator());
+            if (recyclerViewTopRatedCelebrities.getItemAnimator() != null)
+                recyclerViewTopRatedCelebrities.getItemAnimator().setAddDuration(500);
+            loadTopRatedCelebritiesFirstTime();
         }
         recyclerViewTopRatedCelebrities.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -162,6 +157,7 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
                 circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
                 imageViewError.setVisibility(View.GONE);
+                textViewRetry.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     CelebritiesMainObject celebritiesMainObject = response.body();
                     if (celebritiesMainObject != null) {
@@ -174,9 +170,12 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
                         }
                     }
                 } else {
-                    textViewError.setVisibility(View.VISIBLE);
-                    textViewError.setText(couldNotGetCelebrities);
-                    imageViewError.setVisibility(View.VISIBLE);
+                    if (pageNumber == 1) {
+                        textViewError.setVisibility(View.VISIBLE);
+                        textViewError.setText(couldNotGetCelebrities);
+                        imageViewError.setVisibility(View.VISIBLE);
+                        textViewRetry.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -186,19 +185,45 @@ public class FragmentTopRatedCelebrities extends BaseFragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.GONE);
-                textViewError.setVisibility(View.VISIBLE);
-                imageViewError.setVisibility(View.VISIBLE);
+                if (pageNumber == 1) {
+                    textViewError.setVisibility(View.VISIBLE);
+                    imageViewError.setVisibility(View.VISIBLE);
+                    textViewRetry.setVisibility(View.VISIBLE);
+                }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
-                        textViewError.setText(internetProblem);
+                        if (pageNumber == 1)
+                            textViewError.setText(internetProblem);
                     } else {
-                        textViewError.setText(error.getMessage());
+                        if (pageNumber == 1)
+                            textViewError.setText(couldNotGetCelebrities);
                     }
                 } else {
-                    textViewError.setText(couldNotGetCelebrities);
+                    if (pageNumber == 1)
+                        textViewError.setText(couldNotGetCelebrities);
                 }
             }
         });
+    }
+
+    private void loadTopRatedCelebritiesFirstTime() {
+        if (ValidUtils.isNetworkAvailable(getActivity())) {
+            circularProgressBar.setVisibility(View.VISIBLE);
+            getTopRatedCelebrities("en-US", pageNumber);
+        } else {
+            textViewError.setVisibility(View.VISIBLE);
+            imageViewError.setVisibility(View.VISIBLE);
+            textViewRetry.setVisibility(View.VISIBLE);
+            textViewError.setText(internetProblem);
+        }
+    }
+
+    @OnClick(R.id.textViewRetryMessageTopRatedCeleb)
+    public void onRetryClick(View view) {
+        textViewError.setVisibility(View.GONE);
+        imageViewError.setVisibility(View.GONE);
+        textViewRetry.setVisibility(View.GONE);
+        loadTopRatedCelebritiesFirstTime();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

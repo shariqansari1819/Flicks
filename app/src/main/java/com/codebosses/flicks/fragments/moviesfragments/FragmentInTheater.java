@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,10 +60,12 @@ public class FragmentInTheater extends BaseFragment {
     RecyclerView recyclerViewInTheater;
     @BindView(R.id.imageViewErrorInTheater)
     AppCompatImageView imageViewError;
+    @BindView(R.id.textViewRetryInTheater)
+    TextView textViewRetry;
     private LinearLayoutManager linearLayoutManager;
 
     //    Resource fields....
-    @BindString(R.string.could_not_get_upcoming_movies)
+    @BindString(R.string.could_not_get_movies)
     String couldNotGetMovies;
     @BindString(R.string.internet_problem)
     String internetProblem;
@@ -93,26 +97,17 @@ public class FragmentInTheater extends BaseFragment {
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewRetry);
 
         if (getActivity() != null) {
-            if (ValidUtils.isNetworkAvailable(getActivity())) {
-
-                moviesAdapter = new MoviesAdapter(getActivity(), inTheaterList, EndpointKeys.IN_THEATER);
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerViewInTheater.setLayoutManager(linearLayoutManager);
-                recyclerViewInTheater.setAdapter(moviesAdapter);
-                recyclerViewInTheater.setItemAnimator(new FadeInDownAnimator());
-                if (recyclerViewInTheater.getItemAnimator() != null)
-                    recyclerViewInTheater.getItemAnimator().setAddDuration(500);
-
-                circularProgressBar.setVisibility(View.VISIBLE);
-                getInTheater("en-US", "", pageNumber);
-
-            } else {
-                textViewError.setVisibility(View.VISIBLE);
-                imageViewError.setVisibility(View.VISIBLE);
-                textViewError.setText(internetProblem);
-            }
+            moviesAdapter = new MoviesAdapter(getActivity(), inTheaterList, EndpointKeys.IN_THEATER);
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerViewInTheater.setLayoutManager(linearLayoutManager);
+            recyclerViewInTheater.setAdapter(moviesAdapter);
+            recyclerViewInTheater.setItemAnimator(new FadeInDownAnimator());
+            if (recyclerViewInTheater.getItemAnimator() != null)
+                recyclerViewInTheater.getItemAnimator().setAddDuration(500);
+            loadInTheaterMoviesFirstTime();
         }
         recyclerViewInTheater.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -162,6 +157,7 @@ public class FragmentInTheater extends BaseFragment {
                 circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
                 imageViewError.setVisibility(View.GONE);
+                textViewRetry.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -174,9 +170,12 @@ public class FragmentInTheater extends BaseFragment {
                         }
                     }
                 } else {
-                    textViewError.setVisibility(View.VISIBLE);
-                    textViewError.setText(couldNotGetMovies);
-                    imageViewError.setVisibility(View.VISIBLE);
+                    if (pageNumber == 1) {
+                        textViewError.setVisibility(View.VISIBLE);
+                        textViewError.setText(couldNotGetMovies);
+                        imageViewError.setVisibility(View.VISIBLE);
+                        textViewRetry.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -186,19 +185,45 @@ public class FragmentInTheater extends BaseFragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.GONE);
-                imageViewError.setVisibility(View.VISIBLE);
-                textViewError.setVisibility(View.VISIBLE);
+                if (pageNumber == 1) {
+                    imageViewError.setVisibility(View.VISIBLE);
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewRetry.setVisibility(View.VISIBLE);
+                }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
-                        textViewError.setText(internetProblem);
+                        if (pageNumber == 1)
+                            textViewError.setText(internetProblem);
                     } else {
-                        textViewError.setText(error.getMessage());
+                        if (pageNumber == 1)
+                            textViewError.setText(couldNotGetMovies);
                     }
                 } else {
-                    textViewError.setText(couldNotGetMovies);
+                    if (pageNumber == 1)
+                        textViewError.setText(couldNotGetMovies);
                 }
             }
         });
+    }
+
+    private void loadInTheaterMoviesFirstTime() {
+        if (ValidUtils.isNetworkAvailable(getActivity())) {
+            circularProgressBar.setVisibility(View.VISIBLE);
+            getInTheater("en-US", "", pageNumber);
+        } else {
+            textViewError.setVisibility(View.VISIBLE);
+            imageViewError.setVisibility(View.VISIBLE);
+            textViewRetry.setVisibility(View.VISIBLE);
+            textViewError.setText(internetProblem);
+        }
+    }
+
+    @OnClick(R.id.textViewRetryInTheater)
+    public void onRetryClick(View view) {
+        textViewError.setVisibility(View.GONE);
+        imageViewError.setVisibility(View.GONE);
+        textViewRetry.setVisibility(View.GONE);
+        loadInTheaterMoviesFirstTime();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,11 +57,13 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
     RecyclerView recyclerViewTvShowsAiringToday;
     @BindView(R.id.imageViewErrorTvShowsAiringToday)
     AppCompatImageView imageViewError;
+    @BindView(R.id.textViewRetryMessageTvShowsAiringToday)
+    TextView textViewRetry;
     private LinearLayoutManager linearLayoutManager;
 
 
     //    Resource fields....
-    @BindString(R.string.could_not_get_tv_shows_airing_today)
+    @BindString(R.string.could_not_get_tv_shows)
     String couldNotGetTvShows;
     @BindString(R.string.internet_problem)
     String internetProblem;
@@ -91,26 +95,17 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewRetry);
 
         if (getActivity() != null) {
-            if (ValidUtils.isNetworkAvailable(getActivity())) {
-
-                tvShowsAdapter = new TvShowsAdapter(getActivity(), tvResultArrayList, EndpointKeys.TV_SHOWS_AIRING_TODAY);
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerViewTvShowsAiringToday.setLayoutManager(linearLayoutManager);
-                recyclerViewTvShowsAiringToday.setAdapter(tvShowsAdapter);
-                recyclerViewTvShowsAiringToday.setItemAnimator(new FadeInDownAnimator());
-                if (recyclerViewTvShowsAiringToday.getItemAnimator() != null)
-                    recyclerViewTvShowsAiringToday.getItemAnimator().setAddDuration(500);
-
-                circularProgressBar.setVisibility(View.VISIBLE);
-                getTvShowsAiringToday("en-US", pageNumber);
-
-            } else {
-                textViewError.setVisibility(View.VISIBLE);
-                imageViewError.setVisibility(View.VISIBLE);
-                textViewError.setText(internetProblem);
-            }
+            tvShowsAdapter = new TvShowsAdapter(getActivity(), tvResultArrayList, EndpointKeys.TV_SHOWS_AIRING_TODAY);
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerViewTvShowsAiringToday.setLayoutManager(linearLayoutManager);
+            recyclerViewTvShowsAiringToday.setAdapter(tvShowsAdapter);
+            recyclerViewTvShowsAiringToday.setItemAnimator(new FadeInDownAnimator());
+            if (recyclerViewTvShowsAiringToday.getItemAnimator() != null)
+                recyclerViewTvShowsAiringToday.getItemAnimator().setAddDuration(500);
+            loadAiringTodayTvShowsFirstTime();
         }
         recyclerViewTvShowsAiringToday.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -161,6 +156,7 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
                 circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
                 imageViewError.setVisibility(View.GONE);
+                textViewRetry.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     TvMainObject tvMainObject = response.body();
                     if (tvMainObject != null) {
@@ -173,9 +169,12 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
                         }
                     }
                 } else {
-                    textViewError.setVisibility(View.VISIBLE);
-                    textViewError.setText(couldNotGetTvShows);
-                    imageViewError.setVisibility(View.VISIBLE);
+                    if (pageNumber == 1) {
+                        textViewError.setVisibility(View.VISIBLE);
+                        textViewError.setText(couldNotGetTvShows);
+                        textViewRetry.setVisibility(View.VISIBLE);
+                        imageViewError.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -185,19 +184,45 @@ public class FragmentTvShowsAiringToday extends BaseFragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.GONE);
-                imageViewError.setVisibility(View.VISIBLE);
-                textViewError.setVisibility(View.VISIBLE);
+                if (pageNumber == 1) {
+                    imageViewError.setVisibility(View.VISIBLE);
+                    textViewRetry.setVisibility(View.VISIBLE);
+                    textViewError.setVisibility(View.VISIBLE);
+                }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
-                        textViewError.setText(internetProblem);
+                        if (pageNumber == 1)
+                            textViewError.setText(internetProblem);
                     } else {
-                        textViewError.setText(error.getMessage());
+                        if (pageNumber == 1)
+                            textViewError.setText(couldNotGetTvShows);
                     }
                 } else {
-                    textViewError.setText(couldNotGetTvShows);
+                    if (pageNumber == 1)
+                        textViewError.setText(couldNotGetTvShows);
                 }
             }
         });
+    }
+
+    private void loadAiringTodayTvShowsFirstTime() {
+        if (ValidUtils.isNetworkAvailable(getActivity())) {
+            circularProgressBar.setVisibility(View.VISIBLE);
+            getTvShowsAiringToday("en-US", pageNumber);
+        } else {
+            textViewError.setVisibility(View.VISIBLE);
+            imageViewError.setVisibility(View.VISIBLE);
+            textViewRetry.setVisibility(View.VISIBLE);
+            textViewError.setText(internetProblem);
+        }
+    }
+
+    @OnClick(R.id.textViewRetryMessageTvShowsAiringToday)
+    public void onRetryClick(View view) {
+        textViewError.setVisibility(View.GONE);
+        imageViewError.setVisibility(View.GONE);
+        textViewRetry.setVisibility(View.GONE);
+        loadAiringTodayTvShowsFirstTime();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

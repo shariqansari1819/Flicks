@@ -6,30 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.codebosses.flicks.fragments.trending.FragmentTrendingCelebrities">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageViewErrorTrendingCelebrities"
-        android:layout_width="@dimen/_70sdp"
-        android:layout_height="@dimen/_70sdp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_action_no_connection" />
-
-    <TextView
-        android:id="@+id/textViewErrorMessageTrendingCelebrities"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:gravity="center"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="@dimen/_17ssp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewErrorTrendingCelebrities" />
-
     <com.budiyev.android.circularprogressbar.CircularProgressBar
         android:id="@+id/circularProgressBarTrendingCelebrities"
         android:layout_width="@dimen/_44sdp"
@@ -53,5 +29,51 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewErrorTrendingCelebrities"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_action_no_connection" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRetry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewErrorTrendingCelebrities">
+
+        <TextView
+            android:id="@+id/textViewErrorMessageTrendingCelebrities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_14ssp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textViewRetryMessageTrendingCelebrities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:gravity="center_horizontal"
+            android:text="@string/retry"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_15ssp"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,7 +42,7 @@
 
     <!--Upcoming movies fragment strings-->
     <string name="could_not_get_upcoming_movies">Sorry, Could not get upcoming movies list.</string>
-    <string name="internet_problem">There is some problem with internet connection.</string>
+    <string name="internet_problem">Connection problem.</string>
     <string name="poster_thumbnail">Poster Image Thumbnail</string>
     <string name="rating_pop_corn_icon">Rating pop corn icon image</string>
     <string name="movie_rating">Movie Rating</string>
@@ -51,7 +51,7 @@
 
     <!--Top rated celebrities strings-->
     <string name="popularity">Popularity</string>
-    <string name="could_not_get_celebrities">Sorry, Could not get celebrities list.</string>
+    <string name="could_not_get_celebrities">Could not get celebrities.</string>
 
     <!--Top rated tv shows fragment strings-->
     <string name="could_not_get_top_rated_tv_shows">Sorry, Could not get top rated tv shows list.</string>
@@ -106,7 +106,7 @@
     <string name="could_not_get_suggested_movies">Sorry, Could not get suggested movies list.</string>
 
     <!--Celebrity movies activity strings-->
-    <string name="could_not_get_movies">Sorry, Could not get movies list.</string>
+    <string name="could_not_get_movies">Could not get movies.</string>
 
     <!--Similar tv shows fragments strings-->
     <string name="could_not_get_similar_tv_shows">Sorry, Could not get similar tv shows list.</string>
@@ -144,7 +144,8 @@
         <item>Tv Shows</item>
         <item>Celebrities</item>
     </string-array>
-    <string name="could_not_get_tv_shows">Sorry, Could not get tv shows list.</string>
+    <string name="could_not_get_tv_shows">Could not get tv shows.</string>
+    <string name="retry"><u>Retry</u></string>
 
     <!--Genre fragment strings-->
     <string name="action_movies">Action Movies</string>

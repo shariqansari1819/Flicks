@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height"
+    android:layout_height="42dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     android:background="@drawable/ripple_rectangle">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/list_item_genre_icon"
-        android:layout_width="@dimen/_17sdp"
-        android:layout_height="@dimen/_17sdp"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
         android:layout_gravity="start|center_vertical"
-        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginStart="@dimen/_12sdp"
         android:contentDescription="@null"
         app:tint="@color/colorSecondaryLightText" />
 
@@ -21,10 +21,10 @@
         android:id="@+id/list_item_genre_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/list_item_left_margin"
+        android:layout_marginStart="@dimen/_50sdp"
         android:gravity="center_vertical"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="@dimen/_13ssp"
+        android:textSize="@dimen/_15ssp"
         tools:text="Genre" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -33,7 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:layout_marginEnd="@dimen/horizontal_margin"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_arrow_down" />
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_arrow_down"
+        app:tint="@color/colorSecondaryLightText" />
 
 </FrameLayout>

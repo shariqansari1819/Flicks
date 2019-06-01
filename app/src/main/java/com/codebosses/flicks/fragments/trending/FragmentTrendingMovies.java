@@ -9,9 +9,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,6 +59,8 @@ public class FragmentTrendingMovies extends Fragment {
     CircularProgressBar progressBarTrending;
     @BindView(R.id.imageViewErrorTrendingMovies)
     ImageView imageViewTrending;
+    @BindView(R.id.textViewRetryMessageTrendingMovies)
+    TextView textViewRetry;
     private LinearLayoutManager linearLayoutManager;
 
     //    Resource fields....
@@ -92,24 +96,17 @@ public class FragmentTrendingMovies extends Fragment {
 //        Setting custom fonts....
         fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewRetry);
 
         if (getActivity() != null) {
-            if (ValidUtils.isNetworkAvailable(getActivity())) {
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                moviesAdapter = new MoviesAdapter(getActivity(), topRatedMoviesList, EndpointKeys.TRENDING_MOVIES);
-                recyclerViewTrending.setAdapter(moviesAdapter);
-                recyclerViewTrending.setLayoutManager(linearLayoutManager);
-                recyclerViewTrending.setItemAnimator(new FadeInDownAnimator());
-                if (recyclerViewTrending.getItemAnimator() != null)
-                    recyclerViewTrending.getItemAnimator().setAddDuration(500);
-
-                progressBarTrending.setVisibility(View.VISIBLE);
-                getTrendingMovies(pageNumber);
-            } else {
-                textViewError.setVisibility(View.VISIBLE);
-                imageViewTrending.setVisibility(View.VISIBLE);
-                textViewError.setText(internetProblem);
-            }
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            moviesAdapter = new MoviesAdapter(getActivity(), topRatedMoviesList, EndpointKeys.TRENDING_MOVIES);
+            recyclerViewTrending.setAdapter(moviesAdapter);
+            recyclerViewTrending.setLayoutManager(linearLayoutManager);
+            recyclerViewTrending.setItemAnimator(new FadeInDownAnimator());
+            if (recyclerViewTrending.getItemAnimator() != null)
+                recyclerViewTrending.getItemAnimator().setAddDuration(500);
+            loadTrendingMoviesFirstTime();
         }
         recyclerViewTrending.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -159,6 +156,7 @@ public class FragmentTrendingMovies extends Fragment {
                 progressBarTrending.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
                 imageViewTrending.setVisibility(View.GONE);
+                textViewRetry.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -171,9 +169,12 @@ public class FragmentTrendingMovies extends Fragment {
                         }
                     }
                 } else {
-                    textViewError.setVisibility(View.VISIBLE);
-                    imageViewTrending.setVisibility(View.VISIBLE);
-                    textViewError.setText(couldNotGetMovies);
+                    if (pageNumber == 1) {
+                        textViewError.setVisibility(View.VISIBLE);
+                        imageViewTrending.setVisibility(View.VISIBLE);
+                        textViewRetry.setVisibility(View.VISIBLE);
+                        textViewError.setText(couldNotGetMovies);
+                    }
                 }
             }
 
@@ -183,19 +184,48 @@ public class FragmentTrendingMovies extends Fragment {
                     return;
                 }
                 progressBarTrending.setVisibility(View.GONE);
-                textViewError.setVisibility(View.VISIBLE);
-                imageViewTrending.setVisibility(View.VISIBLE);
+                if (pageNumber == 1) {
+                    textViewError.setVisibility(View.VISIBLE);
+                    imageViewTrending.setVisibility(View.VISIBLE);
+                    textViewRetry.setVisibility(View.VISIBLE);
+                }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
-                        textViewError.setText(internetProblem);
+                        if (pageNumber == 1) {
+                            textViewError.setText(internetProblem);
+                        }
                     } else {
-                        textViewError.setText(error.getMessage());
+                        if (pageNumber == 1) {
+                            textViewError.setText(couldNotGetMovies);
+                        }
                     }
                 } else {
-                    textViewError.setText(couldNotGetMovies);
+                    if (pageNumber == 1) {
+                        textViewError.setText(couldNotGetMovies);
+                    }
                 }
             }
         });
+    }
+
+    private void loadTrendingMoviesFirstTime() {
+        if (ValidUtils.isNetworkAvailable(getActivity())) {
+            progressBarTrending.setVisibility(View.VISIBLE);
+            getTrendingMovies(pageNumber);
+        } else {
+            textViewError.setVisibility(View.VISIBLE);
+            imageViewTrending.setVisibility(View.VISIBLE);
+            textViewRetry.setVisibility(View.VISIBLE);
+            textViewError.setText(internetProblem);
+        }
+    }
+
+    @OnClick(R.id.textViewRetryMessageTrendingMovies)
+    public void onRetryClick(View view) {
+        textViewError.setVisibility(View.GONE);
+        imageViewTrending.setVisibility(View.GONE);
+        textViewRetry.setVisibility(View.GONE);
+        loadTrendingMoviesFirstTime();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

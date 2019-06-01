@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,11 +60,13 @@ public class FragmentLatestMovies extends BaseFragment {
     RecyclerView recyclerViewLatestMovies;
     @BindView(R.id.imageViewErrorLatestMovies)
     AppCompatImageView imageViewError;
+    @BindView(R.id.textViewRetryMessageLatestMovies)
+    TextView textViewRetry;
     private LinearLayoutManager linearLayoutManager;
 
 
     //    Resource fields....
-    @BindString(R.string.could_not_get_upcoming_movies)
+    @BindString(R.string.could_not_get_movies)
     String couldNotGetMovies;
     @BindString(R.string.internet_problem)
     String internetProblem;
@@ -93,26 +97,17 @@ public class FragmentLatestMovies extends BaseFragment {
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewRetry);
 
         if (getActivity() != null) {
-            if (ValidUtils.isNetworkAvailable(getActivity())) {
-
-                moviesAdapter = new MoviesAdapter(getActivity(), latestMoviesList, EndpointKeys.LATEST_MOVIES);
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerViewLatestMovies.setLayoutManager(linearLayoutManager);
-                recyclerViewLatestMovies.setAdapter(moviesAdapter);
-                recyclerViewLatestMovies.setItemAnimator(new FadeInDownAnimator());
-                if (recyclerViewLatestMovies.getItemAnimator() != null)
-                    recyclerViewLatestMovies.getItemAnimator().setAddDuration(500);
-
-                circularProgressBar.setVisibility(View.VISIBLE);
-                getLatestMovies("en-US", "", pageNumber);
-
-            } else {
-                textViewError.setVisibility(View.VISIBLE);
-                imageViewError.setVisibility(View.VISIBLE);
-                textViewError.setText(internetProblem);
-            }
+            moviesAdapter = new MoviesAdapter(getActivity(), latestMoviesList, EndpointKeys.LATEST_MOVIES);
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerViewLatestMovies.setLayoutManager(linearLayoutManager);
+            recyclerViewLatestMovies.setAdapter(moviesAdapter);
+            recyclerViewLatestMovies.setItemAnimator(new FadeInDownAnimator());
+            if (recyclerViewLatestMovies.getItemAnimator() != null)
+                recyclerViewLatestMovies.getItemAnimator().setAddDuration(500);
+            loadLatestMoviesFirstTime();
         }
         recyclerViewLatestMovies.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -161,6 +156,7 @@ public class FragmentLatestMovies extends BaseFragment {
                 circularProgressBar.setVisibility(View.GONE);
                 textViewError.setVisibility(View.GONE);
                 imageViewError.setVisibility(View.GONE);
+                textViewRetry.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
@@ -173,9 +169,11 @@ public class FragmentLatestMovies extends BaseFragment {
                         }
                     }
                 } else {
-                    textViewError.setVisibility(View.VISIBLE);
+                    if (pageNumber == 1)
+                        textViewError.setVisibility(View.VISIBLE);
                     imageViewError.setVisibility(View.VISIBLE);
                     textViewError.setText(couldNotGetMovies);
+                    textViewRetry.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -185,19 +183,45 @@ public class FragmentLatestMovies extends BaseFragment {
                     return;
                 }
                 circularProgressBar.setVisibility(View.GONE);
-                textViewError.setVisibility(View.VISIBLE);
-                imageViewError.setVisibility(View.VISIBLE);
+                if (pageNumber == 1) {
+                    textViewError.setVisibility(View.VISIBLE);
+                    imageViewError.setVisibility(View.VISIBLE);
+                    textViewRetry.setVisibility(View.VISIBLE);
+                }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
-                        textViewError.setText(internetProblem);
+                        if (pageNumber == 1)
+                            textViewError.setText(internetProblem);
                     } else {
-                        textViewError.setText(error.getMessage());
+                        if (pageNumber == 1)
+                            textViewError.setText(couldNotGetMovies);
                     }
                 } else {
-                    textViewError.setText(couldNotGetMovies);
+                    if (pageNumber == 1)
+                        textViewError.setText(couldNotGetMovies);
                 }
             }
         });
+    }
+
+    private void loadLatestMoviesFirstTime() {
+        if (ValidUtils.isNetworkAvailable(getActivity())) {
+            circularProgressBar.setVisibility(View.VISIBLE);
+            getLatestMovies("en-US", "", pageNumber);
+        } else {
+            textViewError.setVisibility(View.VISIBLE);
+            imageViewError.setVisibility(View.VISIBLE);
+            textViewRetry.setVisibility(View.VISIBLE);
+            textViewError.setText(internetProblem);
+        }
+    }
+
+    @OnClick(R.id.textViewRetryMessageLatestMovies)
+    public void onRetryClick(View view) {
+        textViewError.setVisibility(View.GONE);
+        imageViewError.setVisibility(View.GONE);
+        textViewRetry.setVisibility(View.GONE);
+        loadLatestMoviesFirstTime();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

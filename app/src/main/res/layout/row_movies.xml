@@ -9,7 +9,7 @@
     android:layout_marginEnd="@dimen/_12sdp"
     android:layout_marginBottom="@dimen/_3sdp"
     app:cardBackgroundColor="@color/colorWhite"
-    app:cardCornerRadius="5dp"
+    app:cardCornerRadius="13dp"
     app:cardElevation="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +24,7 @@
             android:layout_height="@dimen/_100sdp"
             app:cardCornerRadius="13dp"
             app:cardElevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 

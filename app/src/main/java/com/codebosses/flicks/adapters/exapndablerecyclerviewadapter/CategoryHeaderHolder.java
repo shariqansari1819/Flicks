@@ -18,7 +18,7 @@ import static android.view.animation.Animation.RELATIVE_TO_SELF;
 public class CategoryHeaderHolder extends GroupViewHolder {
 
     public TextView genreName;
-    private ImageView arrow;
+    public ImageView arrow;
     private ImageView icon;
 
     public CategoryHeaderHolder(View itemView, Context context) {

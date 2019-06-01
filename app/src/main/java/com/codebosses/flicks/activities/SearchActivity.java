@@ -179,4 +179,9 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
         editTextSearch.setText("");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
 }
