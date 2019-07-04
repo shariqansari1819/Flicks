@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -162,7 +163,13 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private CategoryHeader makeGenreHeader() {
-        return new CategoryHeader(genre, new ArrayList<CategoryItem>(), R.drawable.ic_action_genre);
+        return new CategoryHeader(genre, makeGenreItems(), R.drawable.ic_action_genre);
+    }
+
+    private List<CategoryItem> makeGenreItems() {
+        CategoryItem topRatedTvShows = new CategoryItem(getResources().getString(R.string.movies), false);
+        CategoryItem latestTvShows = new CategoryItem(getResources().getString(R.string.tv_shows), false);
+        return Arrays.asList(topRatedTvShows, latestTvShows);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

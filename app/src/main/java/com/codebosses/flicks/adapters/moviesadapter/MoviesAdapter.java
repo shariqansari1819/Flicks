@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointKeys;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -62,6 +64,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();
             if (title != null) {

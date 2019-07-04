@@ -119,6 +119,7 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
         }
         return true;

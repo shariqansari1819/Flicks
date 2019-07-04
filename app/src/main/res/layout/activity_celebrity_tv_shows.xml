@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayoutCelebrityMovies"
+    android:id="@+id/constraintLayoutCelebrityTvShows"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorFragmentBackground"
-    tools:context=".activities.CelebrityMoviesActivity">
+    tools:context="com.codebosses.flicks.activities.CelebrityTvShowsActivity">
 
     <include
-        android:id="@+id/appBarCelebrityMovies"
+        android:id="@+id/appBarCelebrityTvShows"
         layout="@layout/app_bar_celeb_movies" />
 
     <com.intrusoft.squint.DiagonalView
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_70sdp"
         app:angle="4"
-        app:layout_constraintTop_toBottomOf="@+id/appBarCelebrityMovies"
+        app:layout_constraintTop_toBottomOf="@+id/appBarCelebrityTvShows"
         app:solidColor="@color/colorPrimary" />
 
     <FrameLayout
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/editTextSearchCelebrityMovies"
+        android:id="@+id/editTextSearchCelebrityTvShows"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_12sdp"
@@ -45,21 +45,21 @@
         android:textColor="@color/colorPrimaryText"
         android:textColorHint="@color/colorSecondaryLightText"
         android:textSize="@dimen/_13ssp"
-        app:layout_constraintTop_toBottomOf="@+id/appBarCelebrityMovies" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarCelebrityTvShows" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="@dimen/_16sdp"
         android:layout_height="@dimen/_16sdp"
         android:layout_marginStart="@dimen/_8sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextSearchCelebrityMovies"
-        app:layout_constraintStart_toStartOf="@+id/editTextSearchCelebrityMovies"
-        app:layout_constraintTop_toTopOf="@+id/editTextSearchCelebrityMovies"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextSearchCelebrityTvShows"
+        app:layout_constraintStart_toStartOf="@+id/editTextSearchCelebrityTvShows"
+        app:layout_constraintTop_toTopOf="@+id/editTextSearchCelebrityTvShows"
         app:srcCompat="@drawable/ic_action_search"
         app:tint="@color/colorSecondaryLightText" />
 
 
     <TextView
-        android:id="@+id/textViewErrorMessageCelebrityMovies"
+        android:id="@+id/textViewErrorMessageCelebrityTvShows"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -74,7 +74,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.budiyev.android.circularprogressbar.CircularProgressBar
-        android:id="@+id/circularProgressBarCelebrityMovies"
+        android:id="@+id/circularProgressBarCelebrityTvShows"
         android:layout_width="@dimen/_44sdp"
         android:layout_height="@dimen/_44sdp"
         android:visibility="gone"
@@ -91,12 +91,12 @@
         app:startAngle="45" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCelebrityMovies"
+        android:id="@+id/recyclerViewCelebrityTvShows"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintBottom_toTopOf="@+id/adView"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSearchCelebrityMovies" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearchCelebrityTvShows" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"

@@ -24,6 +24,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
@@ -59,11 +60,10 @@ public class SimilarTvShowsAdapter extends RecyclerView.Adapter<SimilarTvShowsAd
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getName();
             if (title != null) {
-                if (title.length() > 10)
-                    title = title.substring(0, 10) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
             double movieRating = moviesResult.getVote_average();

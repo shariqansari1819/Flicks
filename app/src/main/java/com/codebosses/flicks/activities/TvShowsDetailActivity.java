@@ -204,7 +204,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_shows_detail);
-        TvShowsDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ValidUtils.transparentStatusAndNavigation(this);
+//        TvShowsDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
 //        Setting custom fonts....
@@ -400,9 +401,10 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                             textViewVideosHeader.setVisibility(View.VISIBLE);
                             textViewVideosCount.setVisibility(View.VISIBLE);
                             Glide.with(TvShowsDetailActivity.this)
-                                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/mqdefault.jpg")
+                                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/hqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                             for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
                                 moviesTrailerResultList.add(moviesTrailerMainObject.getResults().get(i));
@@ -521,17 +523,17 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         String tvShowPosterPath = tvShowsDetailMainObject.getPoster_path();
                         String backDropPath = tvShowsDetailMainObject.getBackdrop_path();
 
-                        if (!originalName.isEmpty()) {
+                        if (originalName != null && !originalName.isEmpty()) {
                             textViewTitle.setText(originalName);
                         }
 
-                        if (!overview.isEmpty()) {
+                        if (overview != null && !overview.isEmpty()) {
                             textViewOverViewHeader.setVisibility(View.VISIBLE);
                             textViewOverview.setVisibility(View.VISIBLE);
                             textViewOverview.setText(overview);
                         }
 
-                        if (!firstAirDate.isEmpty()) {
+                        if (firstAirDate != null && !firstAirDate.isEmpty()) {
                             textViewReleaseDateHeader.setVisibility(View.VISIBLE);
                             textViewReleaseDate.setVisibility(View.VISIBLE);
                             textViewReleaseDate.setText(firstAirDate);
@@ -551,6 +553,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         Glide.with(TvShowsDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                .thumbnail(0.1f)
                                 .into(imageViewThumbnail);
 
                         if (moviesTrailerResultList.size() > 0) {
@@ -558,14 +561,16 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/mqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                         } else {
-                            if (backDropPath.equals(""))
+                            if (backDropPath == null || backDropPath.equals(""))
                                 backDropPath = tvShowPosterPath;
                             Glide.with(TvShowsDetailActivity.this)
                                     .load(EndpointUrl.POSTER_BASE_URL + "/" + backDropPath)
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .apply(new RequestOptions().fitCenter())
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                         }
 

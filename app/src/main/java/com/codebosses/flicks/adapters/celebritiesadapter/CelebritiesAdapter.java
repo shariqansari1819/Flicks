@@ -63,6 +63,7 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
                 Glide.with(context)
                         .load(EndpointUrl.PROFILE_BASE_URL + "/" + celebritiesResult.getProfile_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String name = celebritiesResult.getName();
             holder.textViewMovieTitle.setText(name);

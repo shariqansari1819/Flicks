@@ -62,6 +62,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastHolder> {
                 .apply(new RequestOptions().centerCrop())
                 .apply(new RequestOptions().placeholder(R.drawable.avatar))
                 .apply(new RequestOptions().error(R.drawable.avatar))
+                .thumbnail(0.1f)
                 .into(holder.imageViewCelebs);
         holder.textViewCelebName.setText(celebName);
         holder.textViewCharacter.setText(characterName);

@@ -4,9 +4,7 @@
     android:id="@+id/nestedScrollViewGenre"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/_12sdp"
-    android:layout_marginEnd="@dimen/_12sdp"
-    tools:context="com.codebosses.flicks.fragments.genrefragments.FragmentGenre">
+    tools:context="com.codebosses.flicks.fragments.genrefragments.FragmentTvShowsGenre">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutGenre"
@@ -14,295 +12,366 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textViewActionMoviesHeaderGenre"
+            android:id="@+id/textViewActionTvShowsHeaderGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/action_movies"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_14ssp"
+            android:text="@string/action"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewViewMoreActionMoviesGenre"
+            android:id="@+id/textViewViewMoreActionTvShowsGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_13ssp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewActionMoviesHeaderGenre"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewActionTvShowsHeaderGenre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewActionMoviesHeaderGenre" />
+            app:layout_constraintTop_toTopOf="@+id/textViewActionTvShowsHeaderGenre" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewActionMoviesGenre"
+            android:id="@+id/recyclerViewActionTvShowsGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewActionMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewActionMoviesHeaderGenre" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewActionTvShowsHeaderGenre" />
 
         <TextView
-            android:id="@+id/textViewAdventureMoviesHeaderGenre"
+            android:id="@+id/textViewAdventureTvShowsHeaderGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/adventure_movies"
+            android:text="@string/adventure"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewActionMoviesGenre" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewActionTvShowsGenre" />
 
         <TextView
-            android:id="@+id/textViewViewMoreAdventureMoviesGenre"
+            android:id="@+id/textViewViewMoreAdventureTvShowsGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewAdventureMoviesHeaderGenre"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewAdventureTvShowsHeaderGenre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewAdventureMoviesHeaderGenre" />
+            app:layout_constraintTop_toTopOf="@+id/textViewAdventureTvShowsHeaderGenre" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewAdventureMoviesGenre"
+            android:id="@+id/recyclerViewAdventureTvShowsGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewAdventureMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAdventureMoviesHeaderGenre" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAdventureTvShowsHeaderGenre" />
 
         <TextView
-            android:id="@+id/textViewAnimatedMoviesHeaderGenre"
+            android:id="@+id/textViewAnimatedTvShowsHeaderGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/animated_movies"
+            android:text="@string/animated"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewAdventureMoviesGenre" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewAdventureTvShowsGenre" />
 
         <TextView
-            android:id="@+id/textViewViewMoreAnimatedMoviesGenre"
+            android:id="@+id/textViewViewMoreAnimatedTvShowsGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewAnimatedMoviesHeaderGenre"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewAnimatedTvShowsHeaderGenre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewAnimatedMoviesHeaderGenre" />
+            app:layout_constraintTop_toTopOf="@+id/textViewAnimatedTvShowsHeaderGenre" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewAnimatedMoviesGenre"
+            android:id="@+id/recyclerViewAnimatedTvShowsGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewAnimatedMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAnimatedMoviesHeaderGenre" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAnimatedTvShowsHeaderGenre" />
 
         <TextView
-            android:id="@+id/textViewScienceFictionMoviesHeaderGenre"
+            android:id="@+id/textViewScienceFictionTvShowsHeaderGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/science_fiction_movies"
+            android:text="@string/science_fiction"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewAnimatedMoviesGenre" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewAnimatedTvShowsGenre" />
 
         <TextView
-            android:id="@+id/textViewViewMoreScienceFictionMoviesGenre"
+            android:id="@+id/textViewViewMoreScienceFictionTvShowsGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewScienceFictionMoviesHeaderGenre"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewScienceFictionTvShowsHeaderGenre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewScienceFictionMoviesHeaderGenre" />
+            app:layout_constraintTop_toTopOf="@+id/textViewScienceFictionTvShowsHeaderGenre" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewScienceFictionGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewScienceFictionMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewScienceFictionMoviesHeaderGenre" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewScienceFictionTvShowsHeaderGenre" />
 
         <TextView
-            android:id="@+id/textViewRomanticMoviesHeaderGenre"
+            android:id="@+id/textViewRomanticTvShowsHeaderGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/romantic_movies"
+            android:text="@string/romantic"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewScienceFictionGenre" />
 
         <TextView
-            android:id="@+id/textViewViewMoreRomanticMoviesGenre"
+            android:id="@+id/textViewViewMoreRomanticTvShowsGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewRomanticMoviesHeaderGenre"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewRomanticTvShowsHeaderGenre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewRomanticMoviesHeaderGenre" />
+            app:layout_constraintTop_toTopOf="@+id/textViewRomanticTvShowsHeaderGenre" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewRomanticGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewRomanticMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewRomanticMoviesHeaderGenre" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRomanticTvShowsHeaderGenre" />
 
         <TextView
-            android:id="@+id/textViewCrimeMoviesHeaderGenre"
+            android:id="@+id/textViewCrimeTvShowsHeaderGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/crime_movies"
+            android:text="@string/crime"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewRomanticGenre" />
 
-
         <TextView
-            android:id="@+id/textViewViewMoreCrimeMoviesGenre"
+            android:id="@+id/textViewViewMoreCrimeTvShowsGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewCrimeMoviesHeaderGenre"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewCrimeTvShowsHeaderGenre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewCrimeMoviesHeaderGenre" />
+            app:layout_constraintTop_toTopOf="@+id/textViewCrimeTvShowsHeaderGenre" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCrimeGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewCrimeMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCrimeMoviesHeaderGenre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCrimeTvShowsHeaderGenre"
             app:layout_goneMarginBottom="@dimen/_15sdp" />
 
         <TextView
-            android:id="@+id/textViewHorrorMoviesHeaderGenre"
+            android:id="@+id/textViewHorrorTvShowsHeaderGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/horror_movies"
+            android:text="@string/horror"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewCrimeGenre" />
 
         <TextView
-            android:id="@+id/textViewViewMoreHorrorMoviesGenre"
+            android:id="@+id/textViewViewMoreHorrorTvShowsGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewHorrorMoviesHeaderGenre"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewHorrorTvShowsHeaderGenre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewHorrorMoviesHeaderGenre" />
+            app:layout_constraintTop_toTopOf="@+id/textViewHorrorTvShowsHeaderGenre" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewHorrorGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewHorrorMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewHorrorMoviesHeaderGenre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHorrorTvShowsHeaderGenre"
             app:layout_goneMarginBottom="@dimen/_15sdp" />
 
         <TextView
-            android:id="@+id/textViewThrillerMoviesHeaderGenre"
+            android:id="@+id/textViewThrillerTvShowsHeaderGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/thriller_movies"
+            android:text="@string/thrill"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewHorrorGenre" />
 
         <TextView
-            android:id="@+id/textViewViewMoreThrillerMoviesGenre"
+            android:id="@+id/textViewViewMoreThrillerTvShowsGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:text="@string/view_more"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewThrillerMoviesHeaderGenre"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewThrillerTvShowsHeaderGenre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewThrillerMoviesHeaderGenre" />
+            app:layout_constraintTop_toTopOf="@+id/textViewThrillerTvShowsHeaderGenre" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewThrillerGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewThrillerTvShowsHeaderGenre"
+            app:layout_goneMarginBottom="@dimen/_15sdp" />
+
+        <TextView
+            android:id="@+id/textViewComedyTvShowsHeaderGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/comedy"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewThrillerGenre" />
+
+        <TextView
+            android:id="@+id/textViewViewMoreComedyTvShowsGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:text="@string/view_more"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewComedyTvShowsHeaderGenre"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewComedyTvShowsHeaderGenre" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewComedyGenre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewThrillerMoviesHeaderGenre"
-            app:layout_constraintTop_toBottomOf="@+id/textViewThrillerMoviesHeaderGenre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewComedyTvShowsHeaderGenre"
             app:layout_goneMarginBottom="@dimen/_15sdp" />
 
         <com.budiyev.android.circularprogressbar.CircularProgressBar
@@ -324,8 +393,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewErrorGenre"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
             android:layout_marginTop="@dimen/_220sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
@@ -333,18 +402,40 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_action_no_connection" />
 
-        <TextView
-            android:id="@+id/textViewErrorMessageGenre"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayoutRetry"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:gravity="center"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_17ssp"
-            android:visibility="gone"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewErrorGenre" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewErrorGenre">
+
+            <TextView
+                android:id="@+id/textViewErrorMessageGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/_14ssp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textViewRetryMessageGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:gravity="center_horizontal"
+                android:text="@string/retry"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/_15ssp"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

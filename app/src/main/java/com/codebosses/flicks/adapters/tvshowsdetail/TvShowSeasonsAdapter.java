@@ -58,11 +58,10 @@ public class TvShowSeasonsAdapter extends RecyclerView.Adapter<TvShowSeasonsAdap
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + season.getPoster_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = season.getName();
             if (title != null) {
-                if (title.length() > 10)
-                    title = title.substring(0, 10) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
             holder.materialRatingBar.setVisibility(View.GONE);

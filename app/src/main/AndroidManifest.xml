@@ -21,6 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
+        <activity android:name=".activities.CelebrityTvShowsActivity"/>
         <activity
             android:name=".activities.ImagesSliderActivity"
             android:screenOrientation="portrait" />
@@ -85,14 +86,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--<activity-->
-        <!--android:name=".utils.customviews.adblockwebview.ui.AdBlocksWebViewActivity"-->
-        <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"-->
-        <!--android:configChanges="orientation|screenSize" />-->
-
-        <service android:name=".services.BackgroundNotificationService"
-            android:enabled="true"/>
+        </activity> <!-- <activity -->
+        <!-- android:name=".utils.customviews.adblockwebview.ui.AdBlocksWebViewActivity" -->
+        <!-- android:theme="@style/Theme.AppCompat.Light.NoActionBar" -->
+        <!-- android:configChanges="orientation|screenSize" /> -->
+        <service
+            android:name=".services.BackgroundNotificationService"
+            android:enabled="true" />
 
         <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"

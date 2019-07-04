@@ -51,9 +51,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosHold
         MoviesTrailerResult moviesTrailerResult = moviesTrailerResultList.get(position);
         holder.textViewNameVideo.setText(moviesTrailerResult.getName());
         Glide.with(context)
-                .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResult.getKey() + "/mqdefault.jpg")
+                .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResult.getKey() + "/hqdefault.jpg")
                 .apply(new RequestOptions().centerCrop())
                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                .thumbnail(0.1f)
                 .into(holder.imageViewThumbnail);
     }
 

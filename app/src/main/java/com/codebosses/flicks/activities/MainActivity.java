@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.codebosses.flicks.R;
@@ -12,7 +13,8 @@ import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.fragments.celebritiesfragments.FragmentTopRatedCelebrities;
 import com.codebosses.flicks.fragments.discoverfragments.DiscoverFragment;
-import com.codebosses.flicks.fragments.genrefragments.FragmentGenre;
+import com.codebosses.flicks.fragments.genrefragments.FragmentMoviesGenre;
+import com.codebosses.flicks.fragments.genrefragments.FragmentTvShowsGenre;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentInTheater;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentLatestMovies;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentTopRatedMovies;
@@ -34,6 +36,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.intrusoft.squint.DiagonalView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     AdView adView;
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewTitle;
+    @BindView(R.id.diagonalViewMain)
+    DiagonalView diagonalViewMain;
 
     ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -95,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     private FragmentTvShowsOnAir fragmentTvShowsOnAir;
     private FragmentTvShowsAiringToday fragmentTvShowsAiringToday;
     private FragmentTopRatedCelebrities fragmentTopRatedCelebrities;
-    private FragmentGenre fragmentGenre;
+    private FragmentMoviesGenre fragmentMoviesGenre;
+    private FragmentTvShowsGenre fragmentTvShowsGenre;
 
     private Fragment currentFragment;
 
@@ -240,7 +246,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         fragmentTopRatedCelebrities = new FragmentTopRatedCelebrities();
         fragmentTvShowsOnAir = new FragmentTvShowsOnAir();
         fragmentTvShowsAiringToday = new FragmentTvShowsAiringToday();
-        fragmentGenre = new FragmentGenre();
+        fragmentMoviesGenre = new FragmentMoviesGenre();
+        fragmentTvShowsGenre = new FragmentTvShowsGenre();
     }
 
     private void createStacks() {
@@ -258,7 +265,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         stacks.put(EndpointKeys.TV_SHOWS_ON_THE_AIR, new Stack<Fragment>());
         stacks.put(EndpointKeys.TV_SHOWS_AIRING_TODAY, new Stack<Fragment>());
         stacks.put(EndpointKeys.TOP_RATED_CELEBRITIES, new Stack<Fragment>());
-        stacks.put(EndpointKeys.GENRE, new Stack<>());
+        stacks.put(EndpointKeys.MOVIES, new Stack<>());
+        stacks.put(EndpointKeys.TV_SHOWS, new Stack<>());
 
         menuStacks = new ArrayList<>();
         menuStacks.add(EndpointKeys.TRENDING);
@@ -275,7 +283,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         stackList.add(EndpointKeys.TV_SHOWS_ON_THE_AIR);
         stackList.add(EndpointKeys.TV_SHOWS_AIRING_TODAY);
         stackList.add(EndpointKeys.TOP_RATED_CELEBRITIES);
-        stackList.add(EndpointKeys.GENRE);
+        stackList.add(EndpointKeys.MOVIES);
+        stackList.add(EndpointKeys.TV_SHOWS);
 
         setAppBarTitle(getResources().getString(R.string.trending));
         selectedTab(EndpointKeys.TRENDING);
@@ -347,10 +356,15 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                     resolveStackLists(tabId);
                     assignCurrentFragment(fragmentTopRatedCelebrities);
                     break;
-                case EndpointKeys.GENRE:
-                    addAdditionalTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.GENRE, fragmentGenre, currentFragment, R.id.frameLayoutFragmentContainer, true);
+                case EndpointKeys.MOVIES:
+                    addAdditionalTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.MOVIES, fragmentMoviesGenre, currentFragment, R.id.frameLayoutFragmentContainer, true);
                     resolveStackLists(tabId);
-                    assignCurrentFragment(fragmentGenre);
+                    assignCurrentFragment(fragmentMoviesGenre);
+                    break;
+                case EndpointKeys.TV_SHOWS:
+                    addAdditionalTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.TV_SHOWS, fragmentTvShowsGenre, currentFragment, R.id.frameLayoutFragmentContainer, true);
+                    resolveStackLists(tabId);
+                    assignCurrentFragment(fragmentTvShowsGenre);
                     break;
             }
         } else {
@@ -486,9 +500,13 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 setAppBarTitle(getResources().getString(R.string.top_rated_celebrities));
                 index = 9;
                 break;
-            case EndpointKeys.GENRE:
-                setAppBarTitle(getResources().getString(R.string.genre));
+            case EndpointKeys.MOVIES:
+                setAppBarTitle(getResources().getString(R.string.movies));
                 index = 10;
+                break;
+            case EndpointKeys.TV_SHOWS:
+                setAppBarTitle(getResources().getString(R.string.tv_shows));
+                index = 11;
                 break;
         }
 //        if (index == 2) {
@@ -658,16 +676,20 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 index = 9;
                 selectedTab(EndpointKeys.TOP_RATED_CELEBRITIES);
                 break;
-            case EndpointKeys.GENRE:
+            case EndpointKeys.MOVIES:
                 index = 10;
-                selectedTab(EndpointKeys.GENRE);
+                selectedTab(EndpointKeys.MOVIES);
+                break;
+            case EndpointKeys.TV_SHOWS:
+                index = 11;
+                selectedTab(EndpointKeys.TV_SHOWS);
                 break;
         }
     }
-
 
     @Override
     public void onFragmentInteractionCallback(Bundle bundle) {
 
     }
+
 }

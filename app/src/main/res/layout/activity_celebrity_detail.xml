@@ -5,12 +5,12 @@
     android:id="@+id/nestedScrollViewCelebrityDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/_15sdp"
     tools:context="com.codebosses.flicks.activities.CelebrityDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_12sdp">
 
         <com.huanhailiuxin.coolviewpager.CoolViewPager
             android:id="@+id/coolViewPagerCelebrityDetail"
@@ -50,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:layout_marginTop="@dimen/_5sdp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -194,20 +195,33 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/movies"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerCelebrityDetail"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagesCelebrityDetail" />
 
         <TextView
+            android:id="@+id/textViewMoviesCountCelebrityDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewMoviesHeader"
+            app:layout_constraintStart_toEndOf="@+id/textViewMoviesHeader"
+            app:layout_constraintTop_toTopOf="@+id/textViewMoviesHeader" />
+
+
+        <TextView
             android:id="@+id/textViewViewMoreMovies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_12sdp"
-            android:text="@string/view_more"
+            android:text="@string/view_all"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/textViewMoviesHeader"
             app:layout_constraintEnd_toEndOf="parent"
@@ -222,6 +236,55 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewMoviesHeader"
             app:layout_constraintTop_toBottomOf="@+id/textViewMoviesHeader" />
+
+        <TextView
+            android:id="@+id/textViewTvShowsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/tv_shows"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerCelebrityDetail"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewMoviesMoviesDetail" />
+
+        <TextView
+            android:id="@+id/textViewTvShowsCountCelebrityDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTvShowsHeader"
+            app:layout_constraintStart_toEndOf="@+id/textViewTvShowsHeader"
+            app:layout_constraintTop_toTopOf="@+id/textViewTvShowsHeader" />
+
+
+        <TextView
+            android:id="@+id/textViewViewMoreTvShows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:text="@string/view_all"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTvShowsHeader"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewTvShowsHeader" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTvShowsMoviesDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewTvShowsHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTvShowsHeader" />
 
         <com.budiyev.android.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBarCelebrityDetail"

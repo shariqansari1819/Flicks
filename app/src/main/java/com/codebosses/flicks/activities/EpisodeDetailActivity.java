@@ -172,8 +172,9 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_episode_detail);
+        ValidUtils.transparentStatusAndNavigation(this);
         ButterKnife.bind(this);
-        EpisodeDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        EpisodeDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
@@ -276,6 +277,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/mqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                             for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
                                 moviesTrailerResultList.add(moviesTrailerMainObject.getResults().get(i));
@@ -385,18 +387,21 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         Glide.with(EpisodeDetailActivity.this)
                 .load(EndpointUrl.POSTER_BASE_URL + "/" + episode.getStill_path())
                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                .thumbnail(0.1f)
                 .into(imageViewThumbnail);
         if (moviesTrailerResultList.size() > 0) {
             Glide.with(EpisodeDetailActivity.this)
-                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/mqdefault.jpg")
+                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/hqdefault.jpg")
                     .apply(new RequestOptions().centerCrop())
                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                    .thumbnail(0.1f)
                     .into(imageViewCover);
         } else {
             Glide.with(EpisodeDetailActivity.this)
                     .load(EndpointUrl.POSTER_BASE_URL + episode.getStill_path())
                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                     .apply(new RequestOptions().fitCenter())
+                    .thumbnail(0.1f)
                     .into(imageViewCover);
         }
         if (TextUtils.isEmpty(episode.getOverview())) {

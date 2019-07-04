@@ -210,7 +210,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_detail);
-        MoviesDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ValidUtils.transparentStatusAndNavigation(this);
+//        MoviesDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
         mInterstitialAd = new InterstitialAd(this);
@@ -415,9 +416,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
                             textViewVideosCount.setVisibility(View.VISIBLE);
                             recyclerViewVideos.setVisibility(View.VISIBLE);
                             Glide.with(MoviesDetailActivity.this)
-                                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/mqdefault.jpg")
+                                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/hqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                             for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
                                 moviesTrailerResultList.add(moviesTrailerMainObject.getResults().get(i));
@@ -566,6 +568,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/mqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                         } else {
                             if (backdropPath == null || backdropPath.equals(""))
@@ -574,6 +577,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     .load(EndpointUrl.POSTER_BASE_URL + "/" + backdropPath)
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .apply(new RequestOptions().fitCenter())
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                         }
 

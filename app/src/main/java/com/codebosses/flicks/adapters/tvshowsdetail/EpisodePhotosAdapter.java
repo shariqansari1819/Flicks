@@ -54,6 +54,7 @@ public class EpisodePhotosAdapter extends RecyclerView.Adapter<EpisodePhotosAdap
             Glide.with(context)
                     .load(EndpointUrl.POSTER_BASE_URL + "/" + episodePhotosData.getFile_path())
                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                    .thumbnail(0.1f)
                     .into(holder.imageViewThumbnail);
     }
 

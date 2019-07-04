@@ -52,7 +52,6 @@ public class SimilarMoviesActivity extends AppCompatActivity {
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
 
-
     //    Resource fields....
     @BindString(R.string.could_not_get_similar_movies)
     String couldNotGetMovies;

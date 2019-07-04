@@ -64,6 +64,7 @@ public class TvShowsAdapter extends RecyclerView.Adapter<TvShowsAdapter.TvShowsH
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + tvResult.getPoster_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = tvResult.getOriginal_name();
             holder.textViewMovieTitle.setText(title);

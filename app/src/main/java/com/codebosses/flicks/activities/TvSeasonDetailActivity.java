@@ -178,8 +178,9 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_season_detail);
+        ValidUtils.transparentStatusAndNavigation(this);
         ButterKnife.bind(this);
-        TvSeasonDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        TvSeasonDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 //        mInterstitialAd = new InterstitialAd(this);
 //        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
@@ -220,6 +221,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewRegularFont(textViewVideosHeader);
         fontUtils.setTextViewRegularFont(textViewImageHeader);
         fontUtils.setTextViewLightFont(textViewImagesCounter);
+        fontUtils.setTextViewLightFont(textViewVideosCount);
 
         //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(TvSeasonDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -373,9 +375,10 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                             imageButtonPlay.setVisibility(View.VISIBLE);
                             textViewVideosCount.setVisibility(View.VISIBLE);
                             Glide.with(TvSeasonDetailActivity.this)
-                                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/mqdefault.jpg")
+                                    .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/hqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                             for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
                                 moviesTrailerResultList.add(moviesTrailerMainObject.getResults().get(i));
@@ -490,18 +493,21 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                         Glide.with(TvSeasonDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
                                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                .thumbnail(0.1f)
                                 .into(imageViewThumbnail);
                         if (moviesTrailerResultList.size() > 0) {
                             Glide.with(TvSeasonDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/mqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                         } else {
                             Glide.with(TvSeasonDetailActivity.this)
                                     .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                                     .apply(new RequestOptions().fitCenter())
+                                    .thumbnail(0.1f)
                                     .into(imageViewCover);
                         }
                         if (tvSeasonsMainObject.getEpisodes().size() > 0) {

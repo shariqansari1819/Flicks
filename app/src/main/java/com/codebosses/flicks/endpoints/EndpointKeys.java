@@ -40,6 +40,8 @@ public interface EndpointKeys {
     String TRENDING_CELEBRITIES = "Trending Celebrities";
     String DISCOVER = "Discover";
     String GENRE = "Genre";
+    String MOVIES_GENRE = "Movies Genre";
+    String TV_SHOWS_GENRE = "Tv Shows Genre";
     String ACTION_MOVIES = "action_movies";
     String ADVENTURE_MOVIES = "adventure_movies";
     String ANIMATED_MOVIES = "animated_movies";
@@ -49,7 +51,19 @@ public interface EndpointKeys {
     String GENRE_MOVIES = "genre_movies";
     String HORROR_MOVIES = "horror_movies";
     String THRILLER_MOVIES = "thriller_movies";
+    String COMEDY_MOVIES = "comedy_movies";
+    String ACTION_TV_SHOWS = "action_tv_shows";
+    String ADVENTURE_TV_SHOWS = "adventure_tv_shows";
+    String ANIMATED_TV_SHOWS = "animated_tv_shows";
+    String ROMANTIC_TV_SHOWS = "romantic_tv_shows";
+    String CRIME_TV_SHOWS = "crime_tv_shows";
+    String THRILLER_TV_SHOWS = "thrill_tv_shows";
+    String COMEDY_TV_SHOWS = "comedy_tv_shows";
+    String HORROR_TV_SHOWS = "horror_tv_shows";
+    String SCIENCE_FICTION_TV_SHOWS = "science_fiction_tv_shows";
     String SORT_TYPE = "sort_type";
+    String MOVIES = "Movies";
+    String TV_SHOWS = "Tv Shows";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";
@@ -60,6 +74,7 @@ public interface EndpointKeys {
     String RATING = "rating";
     String CELEBRITY_ID = "celebrity_id";
     String CELEB_MOVIES = "celeb_movies";
+    String CELEB_TV_SHOWS = "celeb_tv_shows";
     String CELEB_NAME = "celeb_name";
     String CELEB_IMAGE = "celeb_image";
     String TV_ID = "tv_id";
@@ -78,6 +93,7 @@ public interface EndpointKeys {
     String NOTIFICATION_TYPE = "notification_type";
     String YOUTUBE_KEY = "youtube_key";
     String GENRE_TYPE = "genre_type";
+    String CELEBRITY_TV_SHOWS = "celebrity_tv_shows";
     String GENRE_ID = "genre_id";
     String MOVIE_URL = "movie_url";
 
@@ -86,7 +102,8 @@ public interface EndpointKeys {
     String MOVIES_IMAGES = "movies_images";
     String TV_SEASON_IMAGES = "tv_season_images";
     String TV_SHOW_IMAGES = "tv_show_images";
-
+    String TYPE = "type";
     String IMAGE_POSITION = "image_position";
+    String GENRE_TV_SHOWS = "genre_tv_shows";
 }
 

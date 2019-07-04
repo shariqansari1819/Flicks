@@ -11,7 +11,7 @@ import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.GenreMoviesActivity;
 import com.codebosses.flicks.activities.MoviesDetailActivity;
-import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
+import com.codebosses.flicks.adapters.genre.GenreAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
@@ -32,20 +32,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
-import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
-import jp.wasabeef.recyclerview.animators.FadeInRightAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class FragmentGenre extends BaseFragment {
+public class FragmentMoviesGenre extends BaseFragment {
 
     //    Android fields....
     @BindView(R.id.nestedScrollViewGenre)
@@ -104,6 +102,14 @@ public class FragmentGenre extends BaseFragment {
     AppCompatImageView imageViewError;
     @BindView(R.id.textViewErrorMessageGenre)
     TextView textViewError;
+    @BindView(R.id.textViewRetryMessageGenre)
+    TextView textViewRetry;
+    @BindView(R.id.textViewComedyMoviesHeaderGenre)
+    TextView textViewComedyMoviesHeader;
+    @BindView(R.id.textViewViewMoreComedyMoviesGenre)
+    TextView textViewComedyMoviesMore;
+    @BindView(R.id.recyclerViewComedyGenre)
+    RecyclerView recyclerViewComedy;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_movies)
@@ -115,14 +121,15 @@ public class FragmentGenre extends BaseFragment {
     private FontUtils fontUtils;
 
     //    Adapter fields...
-    private SimilarMoviesAdapter actionMoviesAdapter;
-    private SimilarMoviesAdapter adventureMoviesAdapter;
-    private SimilarMoviesAdapter animatedMoviesAdapter;
-    private SimilarMoviesAdapter crimeMoviesAdapter;
-    private SimilarMoviesAdapter romanticMoviesAdapter;
-    private SimilarMoviesAdapter scienceFictionMoviesAdapter;
-    private SimilarMoviesAdapter horrorMoviesAdapter;
-    private SimilarMoviesAdapter thrillerMoviesAdapter;
+    private GenreAdapter actionMoviesAdapter;
+    private GenreAdapter adventureMoviesAdapter;
+    private GenreAdapter animatedMoviesAdapter;
+    private GenreAdapter crimeMoviesAdapter;
+    private GenreAdapter romanticMoviesAdapter;
+    private GenreAdapter scienceFictionMoviesAdapter;
+    private GenreAdapter horrorMoviesAdapter;
+    private GenreAdapter thrillerMoviesAdapter;
+    private GenreAdapter comedyMoviesAdapter;
 
     //    Instance fields....
     private List<MoviesResult> actionMoviesList = new ArrayList<>();
@@ -133,17 +140,19 @@ public class FragmentGenre extends BaseFragment {
     private List<MoviesResult> scienceFictionMoviesList = new ArrayList<>();
     private List<MoviesResult> horrorMoviesList = new ArrayList<>();
     private List<MoviesResult> thrillerMoviesList = new ArrayList<>();
+    private List<MoviesResult> comedyMoviesList = new ArrayList<>();
+    private boolean isFirstTimeLoaded;
 
     //    Retrofit fields...
     private Call<MoviesMainObject> discoverMoviesCall;
 
-    public FragmentGenre() {
+    public FragmentMoviesGenre() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_genre, container, false);
+        View view = inflater.inflate(R.layout.fragment_movies_genre, container, false);
         ButterKnife.bind(this, view);
 
 //        Setting custom font to android views....
@@ -164,6 +173,10 @@ public class FragmentGenre extends BaseFragment {
         fontUtils.setTextViewRegularFont(textViewHorrorMore);
         fontUtils.setTextViewRegularFont(textViewThrillerHeader);
         fontUtils.setTextViewRegularFont(textViewThrilerMore);
+        fontUtils.setTextViewRegularFont(textViewRetry);
+        fontUtils.setTextViewRegularFont(textViewError);
+        fontUtils.setTextViewRegularFont(textViewComedyMoviesHeader);
+        fontUtils.setTextViewRegularFont(textViewComedyMoviesMore);
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
@@ -177,16 +190,18 @@ public class FragmentGenre extends BaseFragment {
                 recyclerViewScienceFictionMovies.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                 recyclerViewHorror.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                 recyclerViewThriller.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewComedy.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
 //            Initialization of empty adapter....
-                actionMoviesAdapter = new SimilarMoviesAdapter(getActivity(), actionMoviesList, EndpointKeys.ACTION_MOVIES);
-                adventureMoviesAdapter = new SimilarMoviesAdapter(getActivity(), adventureMoviesList, EndpointKeys.ADVENTURE_MOVIES);
-                animatedMoviesAdapter = new SimilarMoviesAdapter(getActivity(), animatedMoviesList, EndpointKeys.ANIMATED_MOVIES);
-                romanticMoviesAdapter = new SimilarMoviesAdapter(getActivity(), romanticMoviesList, EndpointKeys.ROMANTIC_MOVOES);
-                scienceFictionMoviesAdapter = new SimilarMoviesAdapter(getActivity(), scienceFictionMoviesList, EndpointKeys.SCIENCE_FICTION_MOVIES);
-                crimeMoviesAdapter = new SimilarMoviesAdapter(getActivity(), crimeMoviesList, EndpointKeys.CRIME_MOVIES);
-                horrorMoviesAdapter = new SimilarMoviesAdapter(getActivity(), horrorMoviesList, EndpointKeys.HORROR_MOVIES);
-                thrillerMoviesAdapter = new SimilarMoviesAdapter(getActivity(), thrillerMoviesList, EndpointKeys.THRILLER_MOVIES);
+                actionMoviesAdapter = new GenreAdapter(getActivity(), actionMoviesList, EndpointKeys.ACTION_MOVIES);
+                adventureMoviesAdapter = new GenreAdapter(getActivity(), adventureMoviesList, EndpointKeys.ADVENTURE_MOVIES);
+                animatedMoviesAdapter = new GenreAdapter(getActivity(), animatedMoviesList, EndpointKeys.ANIMATED_MOVIES);
+                romanticMoviesAdapter = new GenreAdapter(getActivity(), romanticMoviesList, EndpointKeys.ROMANTIC_MOVOES);
+                scienceFictionMoviesAdapter = new GenreAdapter(getActivity(), scienceFictionMoviesList, EndpointKeys.SCIENCE_FICTION_MOVIES);
+                crimeMoviesAdapter = new GenreAdapter(getActivity(), crimeMoviesList, EndpointKeys.CRIME_MOVIES);
+                horrorMoviesAdapter = new GenreAdapter(getActivity(), horrorMoviesList, EndpointKeys.HORROR_MOVIES);
+                thrillerMoviesAdapter = new GenreAdapter(getActivity(), thrillerMoviesList, EndpointKeys.THRILLER_MOVIES);
+                comedyMoviesAdapter = new GenreAdapter(getActivity(), comedyMoviesList, EndpointKeys.COMEDY_MOVIES);
 
 //            Setting empty adapter....
                 recyclerViewActionMovies.setAdapter(actionMoviesAdapter);
@@ -197,6 +212,7 @@ public class FragmentGenre extends BaseFragment {
                 recyclerViewScienceFictionMovies.setAdapter(scienceFictionMoviesAdapter);
                 recyclerViewHorror.setAdapter(horrorMoviesAdapter);
                 recyclerViewThriller.setAdapter(thrillerMoviesAdapter);
+                recyclerViewComedy.setAdapter(comedyMoviesAdapter);
 
 //            Setting item animator....
                 recyclerViewActionMovies.setItemAnimator(new FadeInAnimator());
@@ -207,20 +223,15 @@ public class FragmentGenre extends BaseFragment {
                 recyclerViewScienceFictionMovies.setItemAnimator(new FadeInAnimator());
                 recyclerViewHorror.setItemAnimator(new FadeInAnimator());
                 recyclerViewThriller.setItemAnimator(new FadeInAnimator());
+                recyclerViewComedy.setItemAnimator(new FadeInAnimator());
 
-                getGenreMovies("en-US", 1, Constants.ACTION_ID, Constants.POPULARITY_DESC);
-                getGenreMovies("en-US", 1, Constants.ADVENTURE_ID, Constants.VOTE_COUNT_DESC);
-                getGenreMovies("en-US", 1, Constants.ANIMATED_ID, Constants.REVENUE_DESC);
-                getGenreMovies("en-US", 1, Constants.ROMANTIC_ID, Constants.POPULARITY_DESC);
-                getGenreMovies("en-US", 1, Constants.SCIENCE_FICTION_ID, Constants.POPULARITY_DESC);
-                getGenreMovies("en-US", 1, Constants.CRIME_ID, Constants.POPULARITY_DESC);
-                getGenreMovies("en-US", 1, Constants.HORROR_ID, Constants.POPULARITY_DESC);
-                getGenreMovies("en-US", 1, Constants.THRILLER_ID, Constants.POPULARITY_DESC);
+                loadGenreMovies();
 
             } else {
                 textViewError.setVisibility(View.VISIBLE);
                 imageViewError.setVisibility(View.VISIBLE);
                 textViewError.setText(internetProblem);
+                textViewRetry.setVisibility(View.VISIBLE);
             }
         }
 
@@ -258,9 +269,13 @@ public class FragmentGenre extends BaseFragment {
             @Override
             public void onResponse(Call<MoviesMainObject> call, retrofit2.Response<MoviesMainObject> response) {
                 circularProgressBar.setVisibility(View.GONE);
+                textViewError.setVisibility(View.GONE);
+                imageViewError.setVisibility(View.GONE);
+                textViewRetry.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
+                        isFirstTimeLoaded = true;
                         switch (genreId) {
                             case Constants.ACTION_ID:
                                 if (moviesMainObject.getTotal_results() > 0) {
@@ -382,23 +397,56 @@ public class FragmentGenre extends BaseFragment {
                                     recyclerViewThriller.setVisibility(View.GONE);
                                 }
                                 break;
+                            case Constants.COMEDY:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewComedyMoviesHeader.setVisibility(View.VISIBLE);
+                                    textViewComedyMoviesMore.setVisibility(View.VISIBLE);
+                                    recyclerViewComedy.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        comedyMoviesList.add(moviesMainObject.getResults().get(i));
+                                        comedyMoviesAdapter.notifyItemInserted(comedyMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewComedyMoviesHeader.setVisibility(View.GONE);
+                                    textViewComedyMoviesMore.setVisibility(View.GONE);
+                                    recyclerViewComedy.setVisibility(View.GONE);
+                                }
+                                break;
                         }
+                    }
+                } else {
+                    if (!isFirstTimeLoaded) {
+                        textViewError.setVisibility(View.VISIBLE);
+                        textViewError.setText(couldNotGetMovies);
+                        imageViewError.setVisibility(View.VISIBLE);
+                        textViewRetry.setVisibility(View.VISIBLE);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<MoviesMainObject> call, Throwable error) {
-                circularProgressBar.setVisibility(View.GONE);
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
+                circularProgressBar.setVisibility(View.GONE);
+                if (!isFirstTimeLoaded) {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText(couldNotGetMovies);
+                    imageViewError.setVisibility(View.VISIBLE);
+                    textViewRetry.setVisibility(View.VISIBLE);
+                }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
+                        if (!isFirstTimeLoaded)
+                            textViewError.setText(internetProblem);
                     } else {
-
+                        if (!isFirstTimeLoaded)
+                            textViewError.setText(couldNotGetMovies);
                     }
                 } else {
+                    if (!isFirstTimeLoaded)
+                        textViewError.setText(couldNotGetMovies);
                 }
             }
         });
@@ -411,37 +459,42 @@ public class FragmentGenre extends BaseFragment {
 
     @OnClick(R.id.textViewViewMoreAdventureMoviesGenre)
     public void onAdventureViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.ADVENTURE_MOVIES, Constants.ADVENTURE_ID, Constants.VOTE_COUNT_DESC);
+        startGenreMoviesActivity(EndpointKeys.ADVENTURE_MOVIES, Constants.ADVENTURE_ID, Constants.POPULARITY_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreAnimatedMoviesGenre)
     public void onAnimatedViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.ANIMATED_MOVIES, Constants.ANIMATED_ID, Constants.REVENUE_DESC);
+        startGenreMoviesActivity(EndpointKeys.ANIMATED_MOVIES, Constants.ANIMATED_ID, Constants.POPULARITY_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreCrimeMoviesGenre)
     public void onCrimeViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.CRIME_MOVIES, Constants.CRIME_ID, Constants.VOTE_AVERAGE_DESC);
+        startGenreMoviesActivity(EndpointKeys.CRIME_MOVIES, Constants.CRIME_ID, Constants.POPULARITY_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreRomanticMoviesGenre)
     public void onRomanticViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.ROMANTIC_MOVOES, Constants.ROMANTIC_ID, Constants.VOTE_AVERAGE_DESC);
+        startGenreMoviesActivity(EndpointKeys.ROMANTIC_MOVOES, Constants.ROMANTIC_ID, Constants.POPULARITY_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreScienceFictionMoviesGenre)
     public void onScienceFictionViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.SCIENCE_FICTION_MOVIES, Constants.SCIENCE_FICTION_ID, Constants.VOTE_AVERAGE_DESC);
+        startGenreMoviesActivity(EndpointKeys.SCIENCE_FICTION_MOVIES, Constants.SCIENCE_FICTION_ID, Constants.POPULARITY_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreHorrorMoviesGenre)
     public void onHorrorViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.HORROR_MOVIES, Constants.HORROR_ID, Constants.VOTE_AVERAGE_DESC);
+        startGenreMoviesActivity(EndpointKeys.HORROR_MOVIES, Constants.HORROR_ID, Constants.POPULARITY_DESC);
     }
 
     @OnClick(R.id.textViewViewMoreThrillerMoviesGenre)
     public void onThrillerViewMoreClick(View view) {
-        startGenreMoviesActivity(EndpointKeys.THRILLER_MOVIES, Constants.THRILLER_ID, Constants.VOTE_AVERAGE_DESC);
+        startGenreMoviesActivity(EndpointKeys.THRILLER_MOVIES, Constants.THRILLER_ID, Constants.POPULARITY_DESC);
+    }
+
+    @OnClick(R.id.textViewViewMoreComedyMoviesGenre)
+    public void onComedyViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.COMEDY_MOVIES, Constants.COMEDY, Constants.POPULARITY_DESC);
     }
 
     private void startGenreMoviesActivity(String type, int id, String sortType) {
@@ -449,7 +502,36 @@ public class FragmentGenre extends BaseFragment {
         intent.putExtra(EndpointKeys.GENRE_TYPE, type);
         intent.putExtra(EndpointKeys.GENRE_ID, id);
         intent.putExtra(EndpointKeys.SORT_TYPE, sortType);
+        intent.putExtra(EndpointKeys.TYPE, EndpointKeys.MOVIES);
         startActivity(intent);
+    }
+
+    private void loadGenreMovies() {
+        if (ValidUtils.isNetworkAvailable(getActivity())) {
+            circularProgressBar.setVisibility(View.VISIBLE);
+            getGenreMovies("en-US", 1, Constants.ACTION_ID, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.ADVENTURE_ID, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.ANIMATED_ID, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.ROMANTIC_ID, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.SCIENCE_FICTION_ID, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.CRIME_ID, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.HORROR_ID, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.THRILLER_ID, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.COMEDY, Constants.POPULARITY_DESC);
+        } else {
+            textViewError.setVisibility(View.VISIBLE);
+            imageViewError.setVisibility(View.VISIBLE);
+            textViewRetry.setVisibility(View.VISIBLE);
+            textViewError.setText(internetProblem);
+        }
+    }
+
+    @OnClick(R.id.textViewRetryMessageGenre)
+    public void onRetryClick(View view) {
+        textViewError.setVisibility(View.GONE);
+        imageViewError.setVisibility(View.GONE);
+        textViewRetry.setVisibility(View.GONE);
+        loadGenreMovies();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -489,6 +571,10 @@ public class FragmentGenre extends BaseFragment {
             movieId = thrillerMoviesList.get(eventBusMovieClick.getPosition()).getId();
             movieTitle = thrillerMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
             rating = thrillerMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
+        } else if (eventBusMovieClick.getMovieType().equals(EndpointKeys.COMEDY_MOVIES)) {
+            movieId = comedyMoviesList.get(eventBusMovieClick.getPosition()).getId();
+            movieTitle = comedyMoviesList.get(eventBusMovieClick.getPosition()).getOriginal_title();
+            rating = comedyMoviesList.get(eventBusMovieClick.getPosition()).getVote_average();
         }
         if (eventBusMovieClick.getMovieType().equals(EndpointKeys.ACTION_MOVIES) ||
                 eventBusMovieClick.getMovieType().equals(EndpointKeys.ADVENTURE_MOVIES) ||
@@ -497,7 +583,8 @@ public class FragmentGenre extends BaseFragment {
                 eventBusMovieClick.getMovieType().equals(EndpointKeys.CRIME_MOVIES) ||
                 eventBusMovieClick.getMovieType().equals(EndpointKeys.SCIENCE_FICTION) ||
                 eventBusMovieClick.getMovieType().equals(EndpointKeys.HORROR_MOVIES) ||
-                eventBusMovieClick.getMovieType().equals(EndpointKeys.THRILLER_MOVIES)) {
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.THRILLER_MOVIES) ||
+                eventBusMovieClick.getMovieType().equals(EndpointKeys.COMEDY_MOVIES)) {
             Intent intent = new Intent(getActivity(), MoviesDetailActivity.class);
             intent.putExtra(EndpointKeys.MOVIE_ID, movieId);
             intent.putExtra(EndpointKeys.MOVIE_TITLE, movieTitle);

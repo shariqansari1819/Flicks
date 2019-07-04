@@ -5,7 +5,7 @@
     android:id="@+id/nestedScrollViewEpisodeDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_12sdp"
     tools:context=".activities.EpisodeDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +37,7 @@
             android:id="@+id/toolbarTvEpisodeDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:background="@null"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@+id/textViewTitleTvEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitleTvEpisodeDetail" />
@@ -128,7 +129,7 @@
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
             android:id="@+id/ratingBarTvEpisodeDetail"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_14sdp"
+            android:layout_height="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:isIndicator="true"
@@ -164,12 +165,11 @@
             android:padding="@dimen/_8sdp"
             android:text="@string/watch_full_episode"
             android:textAllCaps="false"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/_13ssp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
-
 
         <TextView
             android:id="@+id/textViewReleaseDateHeaderTvEpisodeDetail"
@@ -178,7 +178,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/first_air_date"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/textViewWatchFullMovie" />
@@ -189,7 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="13sp"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateHeaderTvEpisodeDetail" />
 
@@ -200,7 +200,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/story_line"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="normal"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
@@ -213,7 +213,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="13sp"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewStoryLineHeader"
             app:layout_constraintTop_toBottomOf="@+id/textViewStoryLineHeader" />
@@ -226,7 +226,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/videos"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
@@ -248,10 +248,12 @@
             android:id="@+id/recyclerViewVideosTvEpisodeDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewVideosHeader"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewVideosHeader" />
 
         <TextView
@@ -261,7 +263,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/photos"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
@@ -284,7 +286,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/cast"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
@@ -307,7 +309,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/crew"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"

@@ -9,13 +9,17 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
+import com.codebosses.flicks.pojo.celebritiespojo.celebtvshows.CelebTvShowsData;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityMovieClick;
-import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityTvShowsClick;
 import com.codebosses.flicks.utils.FontUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,63 +27,60 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.CelebMoviesHolder>
-        implements Filterable {
+public class CelebTvShowsAdapter extends RecyclerView.Adapter<CelebTvShowsAdapter.CelebTvShowsHolder> implements Filterable {
 
     private Context context;
     private FontUtils fontUtils;
     private LayoutInflater layoutInflater;
-    private List<CelebMoviesData> celebMoviesDataArrayList = new ArrayList<>();
-    private List<CelebMoviesData> celebMoviesDataFilteredList = new ArrayList<>();
+    private List<CelebTvShowsData> celebTvShowsDataList = new ArrayList<>();
+    private List<CelebTvShowsData> celebTvShowsDataFilteredList = new ArrayList<>();
     private String movieType;
 
-    public CelebMoviesAdapter(Context context, List<CelebMoviesData> celebMoviesDataArrayList, String movieType) {
+    public CelebTvShowsAdapter(Context context, List<CelebTvShowsData> celebTvShowsDataList, String movieType) {
         this.context = context;
         fontUtils = FontUtils.getFontUtils(context);
-        this.celebMoviesDataArrayList = celebMoviesDataArrayList;
-        this.celebMoviesDataFilteredList = celebMoviesDataArrayList;
+        this.celebTvShowsDataList = celebTvShowsDataList;
+        this.celebTvShowsDataFilteredList = celebTvShowsDataList;
         layoutInflater = LayoutInflater.from(context);
         this.movieType = movieType;
     }
 
     @NonNull
     @Override
-    public CelebMoviesAdapter.CelebMoviesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CelebTvShowsAdapter.CelebTvShowsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.row_movies, parent, false);
-        return new CelebMoviesAdapter.CelebMoviesHolder(view);
+        return new CelebTvShowsAdapter.CelebTvShowsHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CelebMoviesAdapter.CelebMoviesHolder holder, int position) {
-        CelebMoviesData celebMoviesData = celebMoviesDataFilteredList.get(position);
-        if (celebMoviesData != null) {
-            if (celebMoviesData.getPoster_path() != null && !celebMoviesData.getPoster_path().equals(""))
+    public void onBindViewHolder(@NonNull CelebTvShowsAdapter.CelebTvShowsHolder holder, int position) {
+        CelebTvShowsData celebTvShowsData = celebTvShowsDataFilteredList.get(position);
+        if (celebTvShowsData != null) {
+            if (celebTvShowsData.getPosterPath() != null && !celebTvShowsData.getPosterPath().equals(""))
                 Glide.with(context)
-                        .load(EndpointUrl.POSTER_BASE_URL + "/" + celebMoviesData.getPoster_path())
+                        .load(EndpointUrl.POSTER_BASE_URL + "/" + celebTvShowsData.getPosterPath())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
-            String title = celebMoviesData.getTitle();
+            String title = celebTvShowsData.getOriginalName();
             if (title != null) {
 //                if (title.length() > 17)
 //                    title = title.substring(0, 17) + "...";
                 holder.textViewMovieTitle.setText(title);
             }
-            holder.textViewMovieYear.setText(celebMoviesData.getRelease_date());
-            holder.textViewRatingCount.setText(String.valueOf(celebMoviesData.getVote_average()));
-            holder.textViewVoteCount.setText(String.valueOf(celebMoviesData.getVote_count()));
+            holder.textViewMovieYear.setText(celebTvShowsData.getFirstAirDate());
+            holder.textViewRatingCount.setText(String.valueOf(celebTvShowsData.getVoteAverage()));
+            holder.textViewVoteCount.setText(String.valueOf(celebTvShowsData.getVoteCount()));
         }
     }
 
 
     @Override
     public int getItemCount() {
-        return celebMoviesDataFilteredList.size();
+        return celebTvShowsDataFilteredList.size();
     }
 
     @Override
@@ -89,35 +90,35 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    celebMoviesDataFilteredList = celebMoviesDataArrayList;
+                    celebTvShowsDataFilteredList = celebTvShowsDataList;
                 } else {
-                    List<CelebMoviesData> filteredList = new ArrayList<>();
-                    for (CelebMoviesData row : celebMoviesDataArrayList) {
+                    List<CelebTvShowsData> filteredList = new ArrayList<>();
+                    for (CelebTvShowsData row : celebTvShowsDataList) {
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                        if (row.getOriginalName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
 
-                    celebMoviesDataFilteredList = filteredList;
+                    celebTvShowsDataFilteredList = filteredList;
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = celebMoviesDataFilteredList;
+                filterResults.values = celebTvShowsDataFilteredList;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                celebMoviesDataFilteredList = (ArrayList<CelebMoviesData>) filterResults.values;
+                celebTvShowsDataFilteredList = (ArrayList<CelebTvShowsData>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
     }
 
-    class CelebMoviesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class CelebTvShowsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.imageViewThumbnailMoviesRow)
         ImageView imageViewThumbnail;
@@ -134,7 +135,7 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
         @BindView(R.id.textViewVotesCountMoviesRow)
         TextView textViewVoteCountText;
 
-        CelebMoviesHolder(@NonNull View itemView) {
+        CelebTvShowsHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -150,10 +151,9 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
 
         @Override
         public void onClick(View v) {
-            EventBus.getDefault().post(new EventBusCelebrityMovieClick(getAdapterPosition(), movieType, celebMoviesDataFilteredList.get(getAdapterPosition()).getId()));
+            EventBus.getDefault().post(new EventBusCelebrityTvShowsClick(getAdapterPosition(), movieType, celebTvShowsDataFilteredList.get(getAdapterPosition()).getId()));
         }
 
     }
-
 
 }

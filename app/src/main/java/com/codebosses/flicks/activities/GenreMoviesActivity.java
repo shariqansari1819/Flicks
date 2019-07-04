@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,13 +22,17 @@ import android.widget.TextView;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.moviesadapter.MoviesAdapter;
+import com.codebosses.flicks.adapters.tvshowsadapter.TvShowsAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
+import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
+import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 
@@ -64,14 +69,17 @@ public class GenreMoviesActivity extends AppCompatActivity {
 
     //    Retrofit fields....
     private Call<MoviesMainObject> genreMoviesCall;
+    private Call<TvMainObject> genreTvCall;
 
     //    Adapter fields....
     private MoviesAdapter moviesAdapter;
+    private TvShowsAdapter tvShowsAdapter;
 
     //    Instance fields....
     private List<MoviesResult> moviesResults = new ArrayList<>();
+    private List<TvResult> tvResults = new ArrayList<>();
     private int pageNumber = 1, totalPages = 0, genreId;
-    private String genreType, sortType;
+    private String genreType, sortType, type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,45 +101,86 @@ public class GenreMoviesActivity extends AppCompatActivity {
 
         if (ValidUtils.isNetworkAvailable(this)) {
 
-            moviesAdapter = new MoviesAdapter(this, moviesResults, EndpointKeys.GENRE_MOVIES);
+
             linearLayoutManager = new LinearLayoutManager(this);
             recyclerViewGenreMovies.setLayoutManager(linearLayoutManager);
             recyclerViewGenreMovies.setItemAnimator(new DefaultItemAnimator());
-            recyclerViewGenreMovies.setAdapter(moviesAdapter);
+
 
             if (getIntent() != null) {
                 genreType = getIntent().getStringExtra(EndpointKeys.GENRE_TYPE);
                 genreId = getIntent().getIntExtra(EndpointKeys.GENRE_ID, -1);
                 sortType = getIntent().getStringExtra(EndpointKeys.SORT_TYPE);
+                type = getIntent().getStringExtra(EndpointKeys.TYPE);
                 if (genreType != null) {
                     circularProgressBar.setVisibility(View.VISIBLE);
-                    switch (genreType) {
-                        case EndpointKeys.ACTION_MOVIES:
-                            textViewAppBarTitle.setText(getResources().getString(R.string.action_movies));
-                            break;
-                        case EndpointKeys.ADVENTURE_MOVIES:
-                            textViewAppBarTitle.setText(getResources().getString(R.string.adventure_movies));
-                            break;
-                        case EndpointKeys.ANIMATED_MOVIES:
-                            textViewAppBarTitle.setText(getResources().getString(R.string.animated_movies));
-                            break;
-                        case EndpointKeys.CRIME_MOVIES:
-                            textViewAppBarTitle.setText(getResources().getString(R.string.crime_movies));
-                            break;
-                        case EndpointKeys.ROMANTIC_MOVOES:
-                            textViewAppBarTitle.setText(getResources().getString(R.string.romantic_movies));
-                            break;
-                        case EndpointKeys.SCIENCE_FICTION_MOVIES:
-                            textViewAppBarTitle.setText(getResources().getString(R.string.science_fiction_movies));
-                            break;
-                        case EndpointKeys.HORROR_MOVIES:
-                            textViewAppBarTitle.setText(getResources().getString(R.string.horror_movies));
-                            break;
-                        case EndpointKeys.THRILLER_MOVIES:
-                            textViewAppBarTitle.setText(getResources().getString(R.string.thriller_movies));
-                            break;
+                    if (type.equals(EndpointKeys.MOVIES)) {
+                        moviesAdapter = new MoviesAdapter(this, moviesResults, EndpointKeys.GENRE_MOVIES);
+                        recyclerViewGenreMovies.setAdapter(moviesAdapter);
+                        switch (genreType) {
+                            case EndpointKeys.ACTION_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.action_movies));
+                                break;
+                            case EndpointKeys.ADVENTURE_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.adventure_movies));
+                                break;
+                            case EndpointKeys.ANIMATED_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.animated_movies));
+                                break;
+                            case EndpointKeys.CRIME_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.crime_movies));
+                                break;
+                            case EndpointKeys.ROMANTIC_MOVOES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.romantic_movies));
+                                break;
+                            case EndpointKeys.SCIENCE_FICTION_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.science_fiction_movies));
+                                break;
+                            case EndpointKeys.HORROR_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.horror_movies));
+                                break;
+                            case EndpointKeys.THRILLER_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.thriller_movies));
+                                break;
+                            case EndpointKeys.COMEDY_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.comedy_movies));
+                                break;
+                        }
+                        getGenreMovies("en-US", pageNumber, genreId, sortType);
+                    } else {
+                        tvShowsAdapter = new TvShowsAdapter(this, tvResults, EndpointKeys.GENRE_TV_SHOWS);
+                        recyclerViewGenreMovies.setAdapter(tvShowsAdapter);
+                        switch (genreType) {
+                            case EndpointKeys.ACTION_TV_SHOWS:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.action_tv_shows));
+                                break;
+                            case EndpointKeys.ADVENTURE_TV_SHOWS:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.adventure_tv_shows));
+                                break;
+                            case EndpointKeys.ANIMATED_TV_SHOWS:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.animated_tv_shows));
+                                break;
+                            case EndpointKeys.CRIME_TV_SHOWS:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.crime_tv_shows));
+                                break;
+                            case EndpointKeys.ROMANTIC_MOVOES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.romantic_tv_shows));
+                                break;
+                            case EndpointKeys.SCIENCE_FICTION_TV_SHOWS:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.science_fiction_tv_shows));
+                                break;
+                            case EndpointKeys.HORROR_TV_SHOWS:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.horror_tv_shows));
+                                break;
+                            case EndpointKeys.THRILLER_TV_SHOWS:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.thriller_tv_shows));
+                                break;
+                            case EndpointKeys.COMEDY_TV_SHOWS:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.comedy_tv_shows));
+                                break;
+                        }
+                        getGenreTvShows("en-US", pageNumber, genreId, sortType);
                     }
-                    getGenreMovies("en-US", pageNumber, genreId, sortType);
                 }
             }
         } else {
@@ -147,7 +196,10 @@ public class GenreMoviesActivity extends AppCompatActivity {
                 if (isBottomReached) {
                     pageNumber++;
                     if (pageNumber <= totalPages)
-                        getGenreMovies("en-US", pageNumber, genreId, sortType);
+                        if (type.equals(EndpointKeys.MOVIES))
+                            getGenreMovies("en-US", pageNumber, genreId, sortType);
+                        else
+                            getGenreTvShows("en-US", pageNumber, genreId, sortType);
                 }
             }
         });
@@ -221,6 +273,49 @@ public class GenreMoviesActivity extends AppCompatActivity {
         });
     }
 
+    private void getGenreTvShows(String language, int pageNumber, int genreId, String sortType) {
+        genreTvCall = ApiClient.getClient().create(Api.class).getGenreTvShows(EndpointKeys.THE_MOVIE_DB_API_KEY, language, sortType, pageNumber, genreId);
+        genreTvCall.enqueue(new Callback<TvMainObject>() {
+            @Override
+            public void onResponse(Call<TvMainObject> call, retrofit2.Response<TvMainObject> response) {
+                circularProgressBar.setVisibility(View.INVISIBLE);
+                if (response != null && response.isSuccessful()) {
+                    TvMainObject tvMainObject = response.body();
+                    if (tvMainObject != null) {
+                        totalPages = tvMainObject.getTotal_pages();
+                        if (tvMainObject.getTotal_results() > 0) {
+                            for (int i = 0; i < tvMainObject.getResults().size(); i++) {
+                                tvResults.add(tvMainObject.getResults().get(i));
+                                tvShowsAdapter.notifyItemInserted(tvResults.size() - 1);
+                            }
+                        }
+                    }
+                } else {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText(couldNotGetMovies);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TvMainObject> call, Throwable error) {
+                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
+                    return;
+                }
+                circularProgressBar.setVisibility(View.INVISIBLE);
+                textViewError.setVisibility(View.VISIBLE);
+                if (error != null) {
+                    if (error.getMessage().contains("No address associated with hostname")) {
+                        textViewError.setText(internetProblem);
+                    } else {
+                        textViewError.setText(error.getMessage());
+                    }
+                } else {
+                    textViewError.setText(couldNotGetMovies);
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -229,6 +324,17 @@ public class GenreMoviesActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusTvShowsClick(EventBusTvShowsClick eventBusTvShowsClick) {
+        if (eventBusTvShowsClick.getTvShowType().equals(EndpointKeys.GENRE_TV_SHOWS)) {
+            Intent intent = new Intent(this, TvShowsDetailActivity.class);
+            intent.putExtra(EndpointKeys.TV_ID, tvResults.get(eventBusTvShowsClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.TV_NAME, tvResults.get(eventBusTvShowsClick.getPosition()).getOriginal_name());
+            intent.putExtra(EndpointKeys.RATING, tvResults.get(eventBusTvShowsClick.getPosition()).getVote_average());
+            startActivity(intent);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

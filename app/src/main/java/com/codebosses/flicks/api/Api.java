@@ -5,6 +5,7 @@ import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesMainObject;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesMainObject;
+import com.codebosses.flicks.pojo.celebritiespojo.celebtvshows.CelebTvShowsMainObject;
 import com.codebosses.flicks.pojo.celebrity_detail.CelebrityDetailMainObject;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.moviespojo.ExternalId;
@@ -142,6 +143,9 @@ public interface Api {
     @GET("/3/person/{person_id}/movie_credits")
     Call<CelebMoviesMainObject> getCelebMovies(@Path(EndpointKeys.PERSON_ID) String person_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
 
+    @GET("/3/person/{person_id}/tv_credits")
+    Call<CelebTvShowsMainObject> getCelebTvShows(@Path(EndpointKeys.PERSON_ID) String person_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language);
+
     @GET("/3/tv/{tv_id}/credits")
     Call<CastAndCrewMainObject> getTvCredits(@Path(EndpointKeys.TV_ID) String tv_id, @Query(EndpointKeys.API_KEY) String api_key);
 
@@ -183,6 +187,9 @@ public interface Api {
 
     @GET("/3/discover/movie")
     Call<MoviesMainObject> getGenreMovies(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query("sort_by") String sort_by, @Query(EndpointKeys.INCLUDE_ADULT) boolean include_adult, @Query("include_video") boolean include_video, @Query(EndpointKeys.PAGE) int page, @Query("with_genres") int with_genre);
+
+    @GET("/3/discover/tv")
+    Call<TvMainObject> getGenreTvShows(@Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query("sort_by") String sort_by, @Query(EndpointKeys.PAGE) int page, @Query("with_genres") int with_genre);
 
     @GET("/3/tv/{tv_id}/images")
     Call<EpisodePhotosMainObject> getTvImages(@Path(EndpointKeys.TV_ID) String movie_id, @Query(EndpointKeys.API_KEY) String api_key, @Query(EndpointKeys.LANGUAGE) String language, @Query("include_image_language") String image_language);

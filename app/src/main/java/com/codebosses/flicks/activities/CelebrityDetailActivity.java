@@ -1,5 +1,16 @@
 package com.codebosses.flicks.activities;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
@@ -7,42 +18,31 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.celebrity_detail.CelebMoviesDetailAdapter;
+import com.codebosses.flicks.adapters.celebrity_detail.CelebTvShowsDetailAdapter;
 import com.codebosses.flicks.adapters.celebrity_detail.CelebrityImagesPagerAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.EpisodePhotosAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
-import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesMainObject;
+import com.codebosses.flicks.pojo.celebritiespojo.celebtvshows.CelebTvShowsData;
+import com.codebosses.flicks.pojo.celebritiespojo.celebtvshows.CelebTvShowsMainObject;
 import com.codebosses.flicks.pojo.celebrity_detail.CelebrityDetailMainObject;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusPagerImageClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.utils.FontUtils;
-import com.codebosses.flicks.utils.SortingUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.huanhailiuxin.coolviewpager.CoolViewPager;
 
@@ -52,6 +52,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+
+import static com.codebosses.flicks.utils.ValidUtils.transparentStatusAndNavigation;
 
 public class CelebrityDetailActivity extends AppCompatActivity {
 
@@ -94,20 +102,33 @@ public class CelebrityDetailActivity extends AppCompatActivity {
     RecyclerView recyclerViewMovies;
     @BindView(R.id.circularProgressBarCelebrityDetail)
     CircularProgressBar circularProgressBar;
+    @BindView(R.id.textViewTvShowsHeader)
+    TextView textViewTvShowsHeader;
+    @BindView(R.id.textViewViewMoreTvShows)
+    TextView textViewViewMoreTvShows;
+    @BindView(R.id.recyclerViewTvShowsMoviesDetail)
+    RecyclerView recyclerViewTvShows;
+    @BindView(R.id.textViewMoviesCountCelebrityDetail)
+    TextView textViewMoviesCount;
+    @BindView(R.id.textViewTvShowsCountCelebrityDetail)
+    TextView textViewTvShowsCount;
 
     //    Retrofit fields....
     private Call<EpisodePhotosMainObject> celebImagesCall;
     private Call<CelebrityDetailMainObject> celebrityDetailMainObjectCall;
     private Call<CelebMoviesMainObject> celebMoviesMainObjectCall;
+    private Call<CelebTvShowsMainObject> celebTvShowsMainObjectCall;
 
     //    Instance fields....
     private List<EpisodePhotosData> celebImagesList = new ArrayList<>();
     private List<CelebMoviesData> celebMoviesDataArrayList = new ArrayList<>();
+    private List<CelebTvShowsData> celebTvShowsDataList = new ArrayList<>();
     private String celebId, celebName, celebImage;
 
     //    Adapter fields....
     private CelebrityImagesPagerAdapter celebrityImagesPagerAdapter;
     private CelebMoviesDetailAdapter celebMoviesDetailAdapter;
+    private CelebTvShowsDetailAdapter celebTvShowsDetailAdapter;
     private EpisodePhotosAdapter imagesAdapter;
 
     //    Font fields....
@@ -117,7 +138,8 @@ public class CelebrityDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_celebrity_detail);
-        CelebrityDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        transparentStatusAndNavigation(this);
+//        CelebrityDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
         if (getIntent() != null) {
@@ -143,21 +165,29 @@ public class CelebrityDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewLightFont(textViewImagesCount);
         fontUtils.setTextViewRegularFont(textViewMoviesHeader);
         fontUtils.setTextViewRegularFont(textViewViewMoreMovies);
+        fontUtils.setTextViewRegularFont(textViewTvShowsHeader);
+        fontUtils.setTextViewRegularFont(textViewViewMoreTvShows);
+        fontUtils.setTextViewLightFont(textViewMoviesCount);
+        fontUtils.setTextViewLightFont(textViewTvShowsCount);
 
 //        Setting layout managers....
         recyclerViewImages.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         recyclerViewMovies.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        recyclerViewTvShows.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
 //        Initialization of empty adapter fields....
         imagesAdapter = new EpisodePhotosAdapter(this, celebImagesList, EndpointKeys.CELEBRITY_IMAGES);
         celebMoviesDetailAdapter = new CelebMoviesDetailAdapter(this, celebMoviesDataArrayList, EndpointKeys.CELEB_MOVIES);
+        celebTvShowsDetailAdapter = new CelebTvShowsDetailAdapter(this, celebTvShowsDataList, EndpointKeys.CELEB_TV_SHOWS);
 
 //        Setting empty Adapter....
         recyclerViewImages.setAdapter(imagesAdapter);
         recyclerViewMovies.setAdapter(celebMoviesDetailAdapter);
+        recyclerViewTvShows.setAdapter(celebTvShowsDetailAdapter);
 
         recyclerViewImages.setItemAnimator(new DefaultItemAnimator());
         recyclerViewMovies.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewTvShows.setItemAnimator(new DefaultItemAnimator());
 
 //        Setting custom action bar....
         setSupportActionBar(toolbarCelebrityDetail);
@@ -170,8 +200,7 @@ public class CelebrityDetailActivity extends AppCompatActivity {
             getCelebImages(celebId);
             getCelebDetail(celebId);
             getCelebrityMovies(celebId);
-        } else {
-
+            getCelebrityTvShows(celebId);
         }
 
     }
@@ -213,11 +242,23 @@ public class CelebrityDetailActivity extends AppCompatActivity {
         if (celebMoviesMainObjectCall != null && celebMoviesMainObjectCall.isExecuted()) {
             celebMoviesMainObjectCall.cancel();
         }
+        if (celebTvShowsMainObjectCall != null && celebTvShowsMainObjectCall.isExecuted()) {
+            celebTvShowsMainObjectCall.cancel();
+        }
     }
 
     @OnClick(R.id.textViewViewMoreMovies)
     public void onViewMoreMoviesClick(View view) {
         Intent intent = new Intent(this, CelebrityMoviesActivity.class);
+        intent.putExtra(EndpointKeys.CELEBRITY_ID, Integer.parseInt(celebId));
+        intent.putExtra(EndpointKeys.CELEB_NAME, celebName);
+        intent.putExtra(EndpointKeys.CELEB_IMAGE, celebImage);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.textViewViewMoreTvShows)
+    public void onViewMoreTvShowsClick(View view) {
+        Intent intent = new Intent(this, CelebrityTvShowsActivity.class);
         intent.putExtra(EndpointKeys.CELEBRITY_ID, Integer.parseInt(celebId));
         intent.putExtra(EndpointKeys.CELEB_NAME, celebName);
         intent.putExtra(EndpointKeys.CELEB_IMAGE, celebImage);
@@ -242,7 +283,6 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                             textViewImagesHeader.setVisibility(View.VISIBLE);
                             textViewImagesCount.setVisibility(View.VISIBLE);
                             recyclerViewImages.setVisibility(View.VISIBLE);
-                            textViewViewMoreMovies.setVisibility(View.VISIBLE);
                             textViewImagesCount.setText("(" + celebImagesList.size() + ")");
                             imagesAdapter.notifyItemRangeInserted(0, celebImagesList.size());
                         } else {
@@ -250,11 +290,11 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                             Glide.with(CelebrityDetailActivity.this)
                                     .load(EndpointUrl.PROFILE_BASE_URL + celebImage)
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewCelebrity);
                             coolViewPagerCelebrityDetail.setVisibility(View.INVISIBLE);
                             textViewImagesHeader.setVisibility(View.GONE);
                             textViewImagesCount.setVisibility(View.GONE);
-                            textViewViewMoreMovies.setVisibility(View.GONE);
                             recyclerViewImages.setVisibility(View.GONE);
                         }
                     }
@@ -289,7 +329,6 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                 if (response != null && response.isSuccessful()) {
                     CelebrityDetailMainObject celebrityDetailMainObject = response.body();
                     if (celebrityDetailMainObject != null) {
-                        textViewBorn.setText("Born: " + celebrityDetailMainObject.getBirthday());
                         textViewKnownFor.setText(celebrityDetailMainObject.getKnownForDepartment());
                         textViewName.setText(celebrityDetailMainObject.getName());
                         textViewBornPlace.setText(celebrityDetailMainObject.getPlaceOfBirth());
@@ -299,9 +338,15 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                             Glide.with(CelebrityDetailActivity.this)
                                     .load(EndpointUrl.PROFILE_BASE_URL + celebrityDetailMainObject.getProfilePath())
                                     .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .thumbnail(0.1f)
                                     .into(imageViewThumbnail);
                         }
-
+                        if(celebrityDetailMainObject.getBirthday() != null && !celebrityDetailMainObject.getBirthday().isEmpty()){
+                            textViewBorn.setText("Born: " + celebrityDetailMainObject.getBirthday());
+                            textViewBorn.setVisibility(View.VISIBLE);
+                        }else{
+                            textViewBorn.setVisibility(View.GONE);
+                        }
                         if (!celebrityDetailMainObject.getBiography().isEmpty()) {
                             textViewStoryLineHeader.setVisibility(View.VISIBLE);
                             textViewStoryLineHeader.setText("About " + celebrityDetailMainObject.getName());
@@ -342,14 +387,17 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                     CelebMoviesMainObject celebMoviesMainObject = response.body();
                     if (celebMoviesMainObject != null) {
                         if (celebMoviesMainObject.getCast().size() > 0) {
+                            textViewMoviesCount.setVisibility(View.VISIBLE);
                             textViewMoviesHeader.setVisibility(View.VISIBLE);
                             textViewViewMoreMovies.setVisibility(View.VISIBLE);
                             recyclerViewMovies.setVisibility(View.VISIBLE);
+                            textViewMoviesCount.setText("(" + celebMoviesMainObject.getCast().size() + ")");
                             for (int i = 0; i < celebMoviesMainObject.getCast().size(); i++) {
                                 celebMoviesDataArrayList.add(celebMoviesMainObject.getCast().get(i));
                                 celebMoviesDetailAdapter.notifyItemInserted(i);
                             }
                         } else {
+                            textViewMoviesCount.setVisibility(View.GONE);
                             textViewMoviesHeader.setVisibility(View.GONE);
                             textViewViewMoreMovies.setVisibility(View.GONE);
                             recyclerViewMovies.setVisibility(View.GONE);
@@ -374,6 +422,63 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getCelebrityTvShows(String language) {
+        celebTvShowsMainObjectCall = ApiClient.getClient().create(Api.class).getCelebTvShows(celebId, EndpointKeys.THE_MOVIE_DB_API_KEY, language);
+        celebTvShowsMainObjectCall.enqueue(new Callback<CelebTvShowsMainObject>() {
+            @Override
+            public void onResponse(Call<CelebTvShowsMainObject> call, retrofit2.Response<CelebTvShowsMainObject> response) {
+                if (response != null && response.isSuccessful()) {
+                    CelebTvShowsMainObject celebMoviesMainObject = response.body();
+                    if (celebMoviesMainObject != null) {
+                        if (celebMoviesMainObject.getCast().size() > 0) {
+                            textViewTvShowsHeader.setVisibility(View.VISIBLE);
+                            textViewViewMoreTvShows.setVisibility(View.VISIBLE);
+                            recyclerViewTvShows.setVisibility(View.VISIBLE);
+                            textViewTvShowsCount.setVisibility(View.VISIBLE);
+                            textViewTvShowsCount.setText("(" + celebMoviesMainObject.getCast().size() + ")");
+                            for (int i = 0; i < celebMoviesMainObject.getCast().size(); i++) {
+                                celebTvShowsDataList.add(celebMoviesMainObject.getCast().get(i));
+                                celebTvShowsDetailAdapter.notifyItemInserted(i);
+                            }
+                        } else {
+                            textViewTvShowsHeader.setVisibility(View.GONE);
+                            textViewViewMoreTvShows.setVisibility(View.GONE);
+                            recyclerViewTvShows.setVisibility(View.GONE);
+                            textViewTvShowsCount.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CelebTvShowsMainObject> call, Throwable error) {
+                if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
+                    return;
+                }
+                if (error != null) {
+                    if (error.getMessage().contains("No address associated with hostname")) {
+
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusCelebTvShowsClick(EventBusTvShowsClick eventBusTvShowsClick) {
+        if (eventBusTvShowsClick.getTvShowType().equals(EndpointKeys.CELEB_TV_SHOWS)) {
+            Intent intent = new Intent(this, TvShowsDetailActivity.class);
+            intent.putExtra(EndpointKeys.TV_ID, celebTvShowsDataList.get(eventBusTvShowsClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.TV_NAME, celebTvShowsDataList.get(eventBusTvShowsClick.getPosition()).getOriginalName());
+            intent.putExtra(EndpointKeys.RATING, celebTvShowsDataList.get(eventBusTvShowsClick.getPosition()).getVoteAverage());
+            startActivity(intent);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

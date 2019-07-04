@@ -32,6 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/_3sdp"
+        android:singleLine="true"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="@+id/cardViewThumbnailContainerEpisodesRow"
