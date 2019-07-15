@@ -29,6 +29,8 @@ import com.codebosses.flicks.adapters.reviewsadapter.ReviewsAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.EpisodePhotosAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
+import com.codebosses.flicks.common.Constants;
+import com.codebosses.flicks.common.StringMethods;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
@@ -39,10 +41,13 @@ import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusCastAndCrewClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusMovieDetailGenreClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusMovieGenreList;
 import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
 import com.codebosses.flicks.pojo.moviespojo.ExternalId;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
+import com.codebosses.flicks.pojo.moviespojo.moviedetail.Genre;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.MovieDetailMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
@@ -198,6 +203,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private List<MoviesResult> suggestedMoviesList = new ArrayList<>();
     private List<ReviewsData> reviewsDataList = new ArrayList<>();
     private List<EpisodePhotosData> imagesPhotoList = new ArrayList<>();
+    private List<Genre> genreList = new ArrayList<>();
     private String movieId;
     private double rating;
     private int scrollingCounter = 0;
@@ -531,6 +537,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         String tagLine = movieDetailMainObject.getTagline();
                         String backdropPath = movieDetailMainObject.getBackdrop_path();
                         Integer runtime = movieDetailMainObject.getRuntime();
+                        genreList = movieDetailMainObject.getGenres();
 
                         if (originalTitle != null && !originalTitle.isEmpty()) {
                             textViewTitle.setText(originalTitle);
@@ -616,10 +623,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     .into(imageViewCover);
                         }
 
-                        if (movieDetailMainObject.getGenres().size() > 0) {
+                        if (genreList.size() > 0) {
                             textViewGenreHeader.setVisibility(View.VISIBLE);
                             recyclerViewGenre.setVisibility(View.VISIBLE);
-                            recyclerViewGenre.setAdapter(new MoviesGenreAdapter(MoviesDetailActivity.this, movieDetailMainObject.getGenres()));
+                            recyclerViewGenre.setAdapter(new MoviesGenreAdapter(MoviesDetailActivity.this, genreList));
                         } else {
                             textViewGenreHeader.setVisibility(View.GONE);
                             recyclerViewGenre.setVisibility(View.GONE);
@@ -869,6 +876,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
         if (eventBusImageClick.getClickType().equals(EndpointKeys.MOVIES_IMAGES)) {
             startImageSliderActivity(eventBusImageClick.getPosition());
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusGenreClick(EventBusMovieDetailGenreClick eventBusMovieDetailGenreClick) {
+        Intent intent = new Intent(this, GenreMoviesActivity.class);
+        intent.putExtra(EndpointKeys.GENRE_TYPE, StringMethods.getMovieGenreTypeById(genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId()));
+        intent.putExtra(EndpointKeys.GENRE_ID, genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId());
+        intent.putExtra(EndpointKeys.SORT_TYPE, Constants.POPULARITY_DESC);
+        intent.putExtra(EndpointKeys.TYPE, EndpointKeys.MOVIES);
+        startActivity(intent);
     }
 
     private void startImageSliderActivity(int position) {

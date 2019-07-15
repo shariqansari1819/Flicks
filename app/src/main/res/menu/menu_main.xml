@@ -27,35 +27,40 @@
     <item
         android:id="@+id/menuRateUs"
         android:orderInCategory="500"
-        android:title="" />
+        android:title="@string/rate_flicks" />
 
     <!--<item-->
     <!--android:id="@+id/menuSetting"-->
     <!--android:orderInCategory="500"-->
     <!--android:title="@string/setting" />-->
 
-    <!--<item-->
-    <!--android:id="@+id/menuFollowUs"-->
-    <!--android:orderInCategory="600"-->
-    <!--android:title="@string/follow_us">-->
+    <item
+        android:id="@+id/menuFollowUs"
+        android:orderInCategory="600"
+        android:title="@string/follow_us">
 
-    <!--<menu>-->
-    <!--<group>-->
-    <!--<item-->
-    <!--android:id="@+id/subMenuFacebook"-->
-    <!--android:title="Facebook" />-->
-    <!--<item-->
-    <!--android:id="@+id/subMenuGoogle"-->
-    <!--android:title="Google" />-->
-    <!--<item-->
-    <!--android:id="@+id/subMenuInstagram"-->
-    <!--android:title="Instagram" />-->
-    <!--<item-->
-    <!--android:id="@+id/subMenuTwitter"-->
-    <!--android:title="Twitter" />-->
-    <!--</group>-->
-    <!--</menu>-->
+        <menu>
+            <group>
 
-    <!--</item>-->
+                <item
+                    android:id="@+id/subMenuFacebook"
+                    android:icon="@drawable/ic_action_facebook"
+                    android:title="@string/facebook" />
+
+                <!--<item-->
+                <!--android:id="@+id/subMenuGoogle"-->
+                <!--android:title="Google" />-->
+                <!--<item-->
+                    <!--android:id="@+id/subMenuInstagram"-->
+                    <!--android:title="Instagram" />-->
+
+                <item
+                    android:id="@+id/subMenuTwitter"
+                    android:icon="@drawable/ic_action_twitter"
+                    android:title="@string/twitter" />
+
+            </group>
+        </menu>
+    </item>
 
 </menu>

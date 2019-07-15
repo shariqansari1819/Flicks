@@ -64,7 +64,7 @@
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:background="@drawable/bg_white_circle"
-                app:srcCompat="@drawable/ic_action_play" />
+                app:srcCompat="@drawable/ic_action_circle_play" />
 
         </com.dd.ShadowLayout>
 

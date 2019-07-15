@@ -22,7 +22,8 @@
             android:layout_height="@dimen/_16sdp"
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/_16sdp"
-            app:srcCompat="@drawable/ic_action_download" />
+            app:srcCompat="@drawable/ic_download"
+            app:tint="@color/colorWhite" />
 
     </androidx.appcompat.widget.Toolbar>
 

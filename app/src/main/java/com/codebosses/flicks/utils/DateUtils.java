@@ -17,10 +17,20 @@ public class DateUtils {
         return true;
     }
 
-    public static String getMovieTime(int time){
+    public static String getMovieTime(int time) {
         int hours = time / 60; //since both are ints, you get an int
         int minutes = time % 60;
         return hours + "h " + minutes + "m";
+    }
+
+    public static String convertSecondsToHMmSs(long milliseconds) {
+        int seconds = (int) (milliseconds / 1000) % 60;
+        int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
+//        int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
+        if (minutes == 0)
+            return seconds + "s";
+        else
+            return minutes + "m " + seconds + "s";
     }
 
 }

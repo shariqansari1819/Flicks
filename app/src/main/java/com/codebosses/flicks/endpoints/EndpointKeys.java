@@ -107,5 +107,8 @@ public interface EndpointKeys {
     String TYPE = "type";
     String IMAGE_POSITION = "image_position";
     String GENRE_TV_SHOWS = "genre_tv_shows";
+
+
+    String VIDEO_PATH = "video_path";
 }
 

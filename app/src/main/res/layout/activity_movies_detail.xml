@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_action_play" />
+            app:srcCompat="@drawable/ic_action_circle_play" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewThumbnailContainerMoviesDetail"
@@ -162,9 +162,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:text="1h 21min"
-            android:visibility="gone"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/_13ssp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewRuntimeMoviesDetail"
             app:layout_constraintStart_toEndOf="@+id/imageViewRuntimeMoviesDetail"
             app:layout_constraintTop_toTopOf="@+id/imageViewRuntimeMoviesDetail" />

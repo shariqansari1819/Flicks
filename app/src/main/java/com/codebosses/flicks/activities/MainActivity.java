@@ -6,7 +6,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +57,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -127,6 +131,11 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     //    TODO: Instance fields....
     private int index, currentFragmentIndex;
     private int interstitialAddCounter;
+    private int maxTimeToLoadAd = 59;
+    private Handler handler = new Handler();
+    private Timer timer;
+    private TimerTask timerTask;
+    private int adShowCounter;
 
     //    Stack fields....
     private Map<String, Stack<Fragment>> stacks;
@@ -253,27 +262,29 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
             }
         });
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
-        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequestInterstitial);
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-            }
+        startTimer();
 
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                showInterstitial();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-            }
-        });
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
+//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+//        mInterstitialAd.loadAd(adRequestInterstitial);
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//            }
+//
+//            @Override
+//            public void onAdLoaded() {
+//                super.onAdLoaded();
+//                showInterstitial();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//                super.onAdFailedToLoad(i);
+//            }
+//        });
 
 //        Event listeners....
         EventBus.getDefault().register(this);
@@ -282,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     @Override
     protected void onStart() {
         super.onStart();
-        showInterstitial();
+//        showInterstitial();
     }
 
     private void showInterstitial() {
@@ -591,30 +602,28 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     }
 
     private void showAdOnListClick() {
-        if (interstitialAddCounter <= 1) {
-            mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
-            AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequestInterstitial);
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    super.onAdClosed();
-                }
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
 
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-                    showInterstitial();
-                }
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
 
-                @Override
-                public void onAdFailedToLoad(int i) {
-                    super.onAdFailedToLoad(i);
-                }
-            });
-            showInterstitial();
-        }
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
+        showInterstitial();
     }
 
     private void resolveStackLists(String tabId) {
@@ -638,7 +647,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        adShowCounter = 0;
         interstitialAddCounter = 0;
+        maxTimeToLoadAd = 0;
+        stopTimer();
     }
 
     private void setCustomFont() {
@@ -704,8 +716,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     public void eventBusSelectedItem(EventBusSelectedItem eventBusSelectedItem) {
         drawerLayoutMain.closeDrawer(true);
         setAppBarTitle(eventBusSelectedItem.getTitle());
-        interstitialAddCounter++;
-        showAdOnListClick();
+//        interstitialAddCounter++;
+//        showAdOnListClick();
         switch (eventBusSelectedItem.getTitle()) {
 //            case EndpointKeys.DISCOVER:
 //                index = 0;
@@ -819,5 +831,46 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
                 break;
         }
+    }
+
+    private void startTimer() {
+        timer = new Timer();
+        initializeTimerTask();
+        timer.schedule(timerTask, 1000, 1000);
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    private void initializeTimerTask() {
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adShowCounter++;
+                        Log.i("MainActivity", "run: " + adShowCounter);
+                        if (interstitialAddCounter < 4) {
+                            if (adShowCounter == maxTimeToLoadAd) {
+                                interstitialAddCounter++;
+                                maxTimeToLoadAd += 250;
+                                adShowCounter = 0;
+                                showAdOnListClick();
+                            }
+                        } else {
+                            adShowCounter = 0;
+                            interstitialAddCounter = 0;
+                            maxTimeToLoadAd = 0;
+                            stopTimer();
+                        }
+                    }
+                });
+            }
+        };
     }
 }

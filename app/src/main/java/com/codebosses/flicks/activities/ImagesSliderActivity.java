@@ -101,23 +101,19 @@ public class ImagesSliderActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_image_slider, menu);
-//        return true;
-//    }
-
     @OnClick(R.id.imageViewDownload)
     public void onDownloadClick(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
                     (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
-                downloadImage(images.get(viewPagerImageSlider.getCurrentItem()));
+                if (createDirectory())
+                    downloadImage(images.get(viewPagerImageSlider.getCurrentItem()));
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         } else {
-            downloadImage(images.get(viewPagerImageSlider.getCurrentItem()));
+            if (createDirectory())
+                downloadImage(images.get(viewPagerImageSlider.getCurrentItem()));
         }
     }
 
@@ -142,16 +138,18 @@ public class ImagesSliderActivity extends AppCompatActivity {
                 }
             }
             if (counter == grantResults.length) {
-                downloadImage(images.get(viewPagerImageSlider.getCurrentItem()));
+                if (createDirectory())
+                    downloadImage(images.get(viewPagerImageSlider.getCurrentItem()));
             }
         }
     }
 
     private void downloadImage(String path) {
         Toast.makeText(this, "Downloading...", Toast.LENGTH_SHORT).show();
-        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String downloadPath = Environment.getExternalStorageDirectory() + File.separator + "Flicks/images";
         String fileName = path.substring(path.lastIndexOf("/"));
-        PRDownloader.download(path, file.getAbsolutePath(), fileName)
+        PRDownloader.download(path, downloadPath, fileName)
                 .build()
                 .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                     @Override
@@ -181,7 +179,7 @@ public class ImagesSliderActivity extends AppCompatActivity {
 
                     @Override
                     public void onDownloadComplete() {
-                        scanFile(file.getAbsolutePath());
+                        scanFile(downloadPath);
                         Toast.makeText(ImagesSliderActivity.this, "Image downloaded successfully.", Toast.LENGTH_SHORT).show();
                     }
 
@@ -194,7 +192,6 @@ public class ImagesSliderActivity extends AppCompatActivity {
     }
 
     private void scanFile(String path) {
-
         MediaScannerConnection.scanFile(ImagesSliderActivity.this,
                 new String[]{path}, null,
                 new MediaScannerConnection.OnScanCompletedListener() {
@@ -203,5 +200,14 @@ public class ImagesSliderActivity extends AppCompatActivity {
                         Log.i("TAG", "Finished scanning " + path);
                     }
                 });
+    }
+
+    private boolean createDirectory() {
+        File folder = new File(Environment.getExternalStorageDirectory(), "Flicks");
+        boolean success = true;
+        if (!folder.exists()) {
+            success = folder.mkdir();
+        }
+        return success;
     }
 }
