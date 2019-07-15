@@ -59,6 +59,8 @@ public class FragmentNavigationView extends Fragment {
     String trending;
     @BindString(R.string.discover)
     String discover;
+    @BindString(R.string.offline)
+    String offline;
 
     public FragmentNavigationView() {
         // Required empty public constructor
@@ -115,7 +117,8 @@ public class FragmentNavigationView extends Fragment {
                 makeMovieHeader(),
                 makeTvHeader(),
                 makeCelebriyHeader(),
-                makeGenreHeader());
+                makeGenreHeader(),
+                makeOfflineHeader());
     }
 
 //    private CategoryHeader makeDiscoverHeader() {
@@ -124,6 +127,10 @@ public class FragmentNavigationView extends Fragment {
 
     private CategoryHeader makeTrendingHeader() {
         return new CategoryHeader(trending, new ArrayList<CategoryItem>(), R.drawable.ic_action_trending);
+    }
+
+    private CategoryHeader makeOfflineHeader() {
+        return new CategoryHeader(offline, new ArrayList<CategoryItem>(), R.drawable.ic_download);
     }
 
     private CategoryHeader makeMovieHeader() {
@@ -158,7 +165,6 @@ public class FragmentNavigationView extends Fragment {
 
     private List<CategoryItem> makeCelebrityItems() {
         CategoryItem topRatedCelebrity = new CategoryItem(getResources().getString(R.string.top_rated_celebrities), false);
-
         return Arrays.asList(topRatedCelebrity);
     }
 

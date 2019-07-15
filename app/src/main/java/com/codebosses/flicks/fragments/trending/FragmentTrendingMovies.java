@@ -1,6 +1,5 @@
 package com.codebosses.flicks.fragments.trending;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -22,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
@@ -45,7 +45,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FragmentTrendingMovies extends Fragment {
 
     //    Android fields....
@@ -62,6 +61,8 @@ public class FragmentTrendingMovies extends Fragment {
     @BindView(R.id.textViewRetryMessageTrendingMovies)
     TextView textViewRetry;
     private LinearLayoutManager linearLayoutManager;
+//    @BindView(R.id.linearLayoutLoadMoreTrendingMovies)
+//    LinearLayout linearLayoutLoadMore;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_movies)
@@ -115,8 +116,10 @@ public class FragmentTrendingMovies extends Fragment {
                 boolean isBottomReached = !recyclerView.canScrollVertically(1);
                 if (isBottomReached) {
                     pageNumber++;
-                    if (pageNumber <= totalPages)
+                    if (pageNumber <= totalPages) {
+//                        linearLayoutLoadMore.setVisibility(View.VISIBLE);
                         getTrendingMovies(pageNumber);
+                    }
                 }
             }
         });
@@ -158,6 +161,9 @@ public class FragmentTrendingMovies extends Fragment {
                 imageViewTrending.setVisibility(View.GONE);
                 textViewRetry.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
+//                    if (pageNumber != 1) {
+//                        linearLayoutLoadMore.setVisibility(View.INVISIBLE);
+//                    }
                     MoviesMainObject moviesMainObject = response.body();
                     if (moviesMainObject != null) {
                         totalPages = moviesMainObject.getTotal_pages();
@@ -169,12 +175,15 @@ public class FragmentTrendingMovies extends Fragment {
                         }
                     }
                 } else {
-                    if (pageNumber == 1) {
+                    if (pageNumber == 1 && getActivity() != null) {
                         textViewError.setVisibility(View.VISIBLE);
                         imageViewTrending.setVisibility(View.VISIBLE);
                         textViewRetry.setVisibility(View.VISIBLE);
                         textViewError.setText(couldNotGetMovies);
                     }
+//                    else {
+//                        linearLayoutLoadMore.setVisibility(View.INVISIBLE);
+//                    }
                 }
             }
 
@@ -183,24 +192,25 @@ public class FragmentTrendingMovies extends Fragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                progressBarTrending.setVisibility(View.GONE);
-                if (pageNumber == 1) {
+                if (getActivity() != null)
+                    progressBarTrending.setVisibility(View.GONE);
+                if (pageNumber == 1 && getActivity() != null) {
                     textViewError.setVisibility(View.VISIBLE);
                     imageViewTrending.setVisibility(View.VISIBLE);
                     textViewRetry.setVisibility(View.VISIBLE);
                 }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
-                        if (pageNumber == 1) {
+                        if (pageNumber == 1 && getActivity() != null) {
                             textViewError.setText(internetProblem);
                         }
                     } else {
-                        if (pageNumber == 1) {
+                        if (pageNumber == 1 && getActivity() != null) {
                             textViewError.setText(couldNotGetMovies);
                         }
                     }
                 } else {
-                    if (pageNumber == 1) {
+                    if (pageNumber == 1 && getActivity() != null) {
                         textViewError.setText(couldNotGetMovies);
                     }
                 }

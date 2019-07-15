@@ -25,6 +25,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -60,17 +61,28 @@ public class TvShowsAdapter extends RecyclerView.Adapter<TvShowsAdapter.TvShowsH
     public void onBindViewHolder(@NonNull TvShowsHolder holder, int position) {
         TvResult tvResult = tvResultArrayList.get(position);
         if (tvResult != null) {
-            if (tvResult.getPoster_path() != null && !tvResult.getPoster_path().equals(""))
+            String posterPath = tvResult.getPoster_path();
+            String title = tvResult.getOriginal_name();
+            String releaseDate = tvResult.getFirst_air_date();
+            double voteAverage = tvResult.getVote_average();
+            int voteCount = tvResult.getVote_count();
+            if (posterPath != null && !posterPath.equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + tvResult.getPoster_path())
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
-            String title = tvResult.getOriginal_name();
-            holder.textViewMovieTitle.setText(title);
-            holder.textViewMovieYear.setText(tvResult.getFirst_air_date());
-            holder.textViewRatingCount.setText(String.valueOf(tvResult.getVote_average()));
-            holder.textViewVoteCount.setText(String.valueOf(tvResult.getVote_count()));
+            if (title != null && !title.isEmpty())
+                holder.textViewMovieTitle.setText(title);
+            else
+                holder.textViewMovieTitle.setText("No Title Fount");
+            if (releaseDate != null && !releaseDate.isEmpty()) {
+                holder.textViewMovieYear.setText(releaseDate);
+            } else {
+                holder.textViewMovieYear.setText("No First Air Date");
+            }
+            holder.textViewRatingCount.setText(String.valueOf(voteAverage));
+            holder.textViewVoteCount.setText(String.valueOf(voteCount));
         }
     }
 

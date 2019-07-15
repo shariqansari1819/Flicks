@@ -20,12 +20,14 @@ public class CategoryHeaderHolder extends GroupViewHolder {
     public TextView genreName;
     public ImageView arrow;
     private ImageView icon;
+    public View viewDivider;
 
     public CategoryHeaderHolder(View itemView, Context context) {
         super(itemView);
         genreName = (TextView) itemView.findViewById(R.id.list_item_genre_name);
         arrow = (ImageView) itemView.findViewById(R.id.list_item_genre_arrow);
         icon = (ImageView) itemView.findViewById(R.id.list_item_genre_icon);
+        viewDivider = itemView.findViewById(R.id.dividerItemGenreHeaderRow);
 
         FontUtils.getFontUtils(context).setTextViewRegularFont(genreName);
     }

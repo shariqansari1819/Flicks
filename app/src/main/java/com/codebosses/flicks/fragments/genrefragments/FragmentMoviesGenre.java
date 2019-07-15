@@ -110,6 +110,12 @@ public class FragmentMoviesGenre extends BaseFragment {
     TextView textViewComedyMoviesMore;
     @BindView(R.id.recyclerViewComedyGenre)
     RecyclerView recyclerViewComedy;
+    @BindView(R.id.textViewFamilyMoviesHeaderGenre)
+    TextView textViewFamilyMoviesHeader;
+    @BindView(R.id.textViewViewMoreFamilyMoviesGenre)
+    TextView textViewFamilyMoviesMore;
+    @BindView(R.id.recyclerViewFamilyGenre)
+    RecyclerView recyclerViewFamily;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_movies)
@@ -130,6 +136,7 @@ public class FragmentMoviesGenre extends BaseFragment {
     private GenreAdapter horrorMoviesAdapter;
     private GenreAdapter thrillerMoviesAdapter;
     private GenreAdapter comedyMoviesAdapter;
+    private GenreAdapter familyMoviesAdapter;
 
     //    Instance fields....
     private List<MoviesResult> actionMoviesList = new ArrayList<>();
@@ -141,6 +148,7 @@ public class FragmentMoviesGenre extends BaseFragment {
     private List<MoviesResult> horrorMoviesList = new ArrayList<>();
     private List<MoviesResult> thrillerMoviesList = new ArrayList<>();
     private List<MoviesResult> comedyMoviesList = new ArrayList<>();
+    private List<MoviesResult> familyMoviesList = new ArrayList<>();
     private boolean isFirstTimeLoaded;
 
     //    Retrofit fields...
@@ -177,6 +185,8 @@ public class FragmentMoviesGenre extends BaseFragment {
         fontUtils.setTextViewRegularFont(textViewError);
         fontUtils.setTextViewRegularFont(textViewComedyMoviesHeader);
         fontUtils.setTextViewRegularFont(textViewComedyMoviesMore);
+        fontUtils.setTextViewRegularFont(textViewFamilyMoviesHeader);
+        fontUtils.setTextViewRegularFont(textViewFamilyMoviesMore);
 
         if (getActivity() != null) {
             if (ValidUtils.isNetworkAvailable(getActivity())) {
@@ -191,6 +201,7 @@ public class FragmentMoviesGenre extends BaseFragment {
                 recyclerViewHorror.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                 recyclerViewThriller.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                 recyclerViewComedy.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                recyclerViewFamily.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
 //            Initialization of empty adapter....
                 actionMoviesAdapter = new GenreAdapter(getActivity(), actionMoviesList, EndpointKeys.ACTION_MOVIES);
@@ -202,6 +213,7 @@ public class FragmentMoviesGenre extends BaseFragment {
                 horrorMoviesAdapter = new GenreAdapter(getActivity(), horrorMoviesList, EndpointKeys.HORROR_MOVIES);
                 thrillerMoviesAdapter = new GenreAdapter(getActivity(), thrillerMoviesList, EndpointKeys.THRILLER_MOVIES);
                 comedyMoviesAdapter = new GenreAdapter(getActivity(), comedyMoviesList, EndpointKeys.COMEDY_MOVIES);
+                familyMoviesAdapter = new GenreAdapter(getActivity(), familyMoviesList, EndpointKeys.FAMILY_MOVIES);
 
 //            Setting empty adapter....
                 recyclerViewActionMovies.setAdapter(actionMoviesAdapter);
@@ -213,6 +225,7 @@ public class FragmentMoviesGenre extends BaseFragment {
                 recyclerViewHorror.setAdapter(horrorMoviesAdapter);
                 recyclerViewThriller.setAdapter(thrillerMoviesAdapter);
                 recyclerViewComedy.setAdapter(comedyMoviesAdapter);
+                recyclerViewFamily.setAdapter(familyMoviesAdapter);
 
 //            Setting item animator....
                 recyclerViewActionMovies.setItemAnimator(new FadeInAnimator());
@@ -224,6 +237,7 @@ public class FragmentMoviesGenre extends BaseFragment {
                 recyclerViewHorror.setItemAnimator(new FadeInAnimator());
                 recyclerViewThriller.setItemAnimator(new FadeInAnimator());
                 recyclerViewComedy.setItemAnimator(new FadeInAnimator());
+                recyclerViewFamily.setItemAnimator(new FadeInAnimator());
 
                 loadGenreMovies();
 
@@ -412,6 +426,21 @@ public class FragmentMoviesGenre extends BaseFragment {
                                     recyclerViewComedy.setVisibility(View.GONE);
                                 }
                                 break;
+                            case Constants.FAMILY_ID:
+                                if (moviesMainObject.getTotal_results() > 0) {
+                                    textViewFamilyMoviesHeader.setVisibility(View.VISIBLE);
+                                    textViewFamilyMoviesMore.setVisibility(View.VISIBLE);
+                                    recyclerViewFamily.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
+                                        familyMoviesList.add(moviesMainObject.getResults().get(i));
+                                        familyMoviesAdapter.notifyItemInserted(familyMoviesList.size() - 1);
+                                    }
+                                } else {
+                                    textViewFamilyMoviesHeader.setVisibility(View.GONE);
+                                    textViewFamilyMoviesMore.setVisibility(View.GONE);
+                                    recyclerViewFamily.setVisibility(View.GONE);
+                                }
+                                break;
                         }
                     }
                 } else {
@@ -497,6 +526,11 @@ public class FragmentMoviesGenre extends BaseFragment {
         startGenreMoviesActivity(EndpointKeys.COMEDY_MOVIES, Constants.COMEDY, Constants.POPULARITY_DESC);
     }
 
+    @OnClick(R.id.textViewViewMoreFamilyMoviesGenre)
+    public void onFamilyViewMoreClick(View view) {
+        startGenreMoviesActivity(EndpointKeys.FAMILY_MOVIES, Constants.FAMILY_ID, Constants.POPULARITY_DESC);
+    }
+
     private void startGenreMoviesActivity(String type, int id, String sortType) {
         Intent intent = new Intent(getActivity(), GenreMoviesActivity.class);
         intent.putExtra(EndpointKeys.GENRE_TYPE, type);
@@ -518,6 +552,7 @@ public class FragmentMoviesGenre extends BaseFragment {
             getGenreMovies("en-US", 1, Constants.HORROR_ID, Constants.POPULARITY_DESC);
             getGenreMovies("en-US", 1, Constants.THRILLER_ID, Constants.POPULARITY_DESC);
             getGenreMovies("en-US", 1, Constants.COMEDY, Constants.POPULARITY_DESC);
+            getGenreMovies("en-US", 1, Constants.FAMILY_ID, Constants.POPULARITY_DESC);
         } else {
             textViewError.setVisibility(View.VISIBLE);
             imageViewError.setVisibility(View.VISIBLE);

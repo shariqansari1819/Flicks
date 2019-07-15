@@ -4,13 +4,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="admob_id">ca-app-pub-6469792959930420~4310653327</string>
-    <!--<string name="admob_id">ca-app-pub-2437026319136761~4737487139</string>-->
+    <!--<string name="testing_admob_id">ca-app-pub-2437026319136761~4737487139</string>-->
     <string name="testing_admob_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="banner_admob_id">ca-app-pub-6469792959930420/9726631533</string>
-    <!--<string name="banner_admob_id">ca-app-pub-2437026319136761/2551319251</string>-->
+    <!--<string name="testing_banner_admob_id">ca-app-pub-2437026319136761/2551319251</string>-->
     <string name="testing_banner_admob_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="interstitial_admob_id">ca-app-pub-6469792959930420/3899589782</string>
-    <!--<string name="interstitial_admob_id">ca-app-pub-2437026319136761/6817867327</string>-->
+    <!--<string name="testing_interstitial_admob_id">ca-app-pub-2437026319136761/6817867327</string>-->
     <string name="testing_interstitial_admob_id">ca-app-pub-3940256099942544/1033173712</string>
 
     <!--Main activity screen strings-->
@@ -23,7 +23,7 @@
     <string name="genre">Genre</string>
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="upcoming_movies">Upcoming Movies</string>
-    <string name="in_theater">In Theater</string>
+    <string name="in_theater">Movies In Theater</string>
     <string name="latest_movies">Latest Movies</string>
     <string name="top_rated_tv_shows">Top Rated Tv Shows</string>
     <string name="latest_tv_shows">Latest Tv Shows</string>
@@ -35,13 +35,15 @@
     <string name="drama">Drama</string>
     <string name="sceince_fiction">Science Fiction</string>
     <string name="trending">Trending</string>
-    <string name="check_update">Check for update</string>
-    <string name="share_app">Share via</string>
+    <string name="check_update">Check for Update</string>
+    <string name="share_app">Share Flicks</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="guest_user">Guest User</string>
     <string name="discover">Discover</string>
     <string name="setting">Setting</string>
     <string name="follow_us">Follow Us</string>
+    <string name="offline">Offline</string>
+    <string name="rate_flicks">Rate Flicks</string>
 
     <!--Upcoming movies fragment strings-->
     <string name="could_not_get_upcoming_movies">Sorry, Could not get upcoming movies list.</string>
@@ -80,9 +82,10 @@
     <string name="recommended_tv_shows">Recommended Tv Shows</string>
     <string name="seasons">Seasons</string>
     <string name="tv_show_reviews">Tv Show Reviews</string>
-    <string name="watch_full_movie">Watch full movie</string>
+    <string name="watch_full_movie">Watch Full Movie</string>
     <string name="videos">Videos</string>
     <string name="images">Images</string>
+    <string name="production_companies">Production Companies</string>
 
     <!--Movie detail fragment strings-->
     <string name="original_title">Original Title</string>
@@ -149,6 +152,7 @@
     </string-array>
     <string name="could_not_get_tv_shows">Could not get tv shows.</string>
     <string name="retry"><u>Retry</u></string>
+    <string name="loading_more">Loading more&#8230;</string>
 
     <!--Genre fragment strings-->
     <string name="action_movies">Action Movies</string>

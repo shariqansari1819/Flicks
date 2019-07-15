@@ -21,7 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".activities.CelebrityTvShowsActivity"/>
+        <activity android:name=".activities.OfflineActivity"></activity>
+        <activity
+            android:name=".activities.CelebrityTvShowsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ImagesSliderActivity"
             android:screenOrientation="portrait" />
@@ -42,11 +45,13 @@
         <activity
             android:name=".activities.EpisodeDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:parentActivityName=".activities.TvShowsDetailActivity" />
+            android:parentActivityName=".activities.TvShowsDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TvSeasonDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:parentActivityName=".activities.TvShowsDetailActivity" />
+            android:parentActivityName=".activities.TvShowsDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SuggestedTvShowsActivity"
             android:screenOrientation="portrait" />
@@ -55,30 +60,36 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SuggestedMoviesActivity"
-            android:parentActivityName=".activities.MoviesDetailActivity" />
+            android:parentActivityName=".activities.MoviesDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SimilarMoviesActivity"
-            android:parentActivityName=".activities.MoviesDetailActivity" />
+            android:parentActivityName=".activities.MoviesDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MoviesDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SearchActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TvShowsDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.CelebrityMoviesActivity"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeFullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -105,7 +116,7 @@
             android:value="AIzaSyCC_bwgm7pwXmBe6AobsaZIxSPCpknFJSo" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_id" />
+            android:value="@string/testing_admob_id" />
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.TrailerActivity;
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
@@ -42,10 +43,11 @@ public class BackgroundNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null) {
+
             notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel("FLICK_CH_01", "FLICKS", NotificationManager.IMPORTANCE_LOW);
+                NotificationChannel notificationChannel = new NotificationChannel("FLICK_CH_01", "FLICKS", NotificationManager.IMPORTANCE_DEFAULT);
 
                 notificationChannel.setDescription("no sound");
                 notificationChannel.setSound(null, null);
@@ -55,22 +57,22 @@ public class BackgroundNotificationService extends IntentService {
                 notificationManager.createNotificationChannel(notificationChannel);
             }
 
-
             notificationBuilder = new NotificationCompat.Builder(this, "id")
-                    .setSmallIcon(android.R.drawable.stat_sys_download)
-                    .setContentTitle("Download")
+                    .setSmallIcon(R.drawable.logo)
+                    .setContentTitle(intent.getStringExtra("name"))
                     .setContentText("Downloading video")
                     .setDefaults(0)
-                    .setAutoCancel(true);
+                    .setAutoCancel(false);
             notificationManager.notify(0, notificationBuilder.build());
 
-            downloadVideo(intent.getStringExtra("path"));
+            downloadVideo(intent.getStringExtra("path"),intent.getStringExtra("name"));
         }
     }
 
-    private void downloadVideo(String path) {
-        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        PRDownloader.download(path, file.getAbsolutePath(), UUID.randomUUID().toString() + ".mp4")
+    private void downloadVideo(String path,String name) {
+//        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String downloadPath = Environment.getExternalStorageDirectory() + File.separator + "Flicks/videos";
+        PRDownloader.download(path, downloadPath,name + ".mp4")
                 .build()
                 .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                     @Override
@@ -102,7 +104,7 @@ public class BackgroundNotificationService extends IntentService {
                     @Override
                     public void onDownloadComplete() {
                         BackgroundNotificationService.this.onDownloadComplete(true);
-                        scanFile(file.getAbsolutePath());
+                        scanFile(downloadPath);
                         Toast.makeText(BackgroundNotificationService.this, "Video downloaded successfully.", Toast.LENGTH_SHORT).show();
                     }
 
@@ -116,14 +118,13 @@ public class BackgroundNotificationService extends IntentService {
 
     private void updateNotification(int currentProgress) {
 
-
         notificationBuilder.setProgress(100, currentProgress, false);
         notificationBuilder.setContentText("Downloaded: " + currentProgress + "%");
         notificationManager.notify(0, notificationBuilder.build());
     }
 
     private void sendProgressUpdate(boolean downloadComplete) {
-
+        notificationBuilder.setAutoCancel(true);
         Intent intent = new Intent(TrailerActivity.PROGRESS_UPDATE);
         intent.putExtra("downloadComplete", downloadComplete);
         LocalBroadcastManager.getInstance(BackgroundNotificationService.this).sendBroadcast(intent);

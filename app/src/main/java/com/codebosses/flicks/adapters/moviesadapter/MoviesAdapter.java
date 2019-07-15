@@ -60,19 +60,29 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
     public void onBindViewHolder(@NonNull MoviesHolder holder, int position) {
         MoviesResult moviesResult = moviesResultArrayList.get(position);
         if (moviesResult != null) {
-            if (moviesResult.getPoster_path() != null && !moviesResult.getPoster_path().equals(""))
+            String posterPath = moviesResult.getPoster_path();
+            String title = moviesResult.getTitle();
+            String releaseDate = moviesResult.getRelease_date();
+            double voteAverage = moviesResult.getVote_average();
+            int voteCount = moviesResult.getVote_count();
+            if (posterPath != null && !posterPath.equals(""))
                 Glide.with(context)
-                        .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
+                        .load(EndpointUrl.POSTER_BASE_URL + "/" + posterPath)
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
-            String title = moviesResult.getTitle();
-            if (title != null) {
+            if (title != null && !title.isEmpty()) {
                 holder.textViewMovieTitle.setText(title);
+            } else {
+                holder.textViewMovieTitle.setText("No Title Found");
             }
-            holder.textViewMovieYear.setText(moviesResult.getRelease_date());
-            holder.textViewRatingCount.setText(String.valueOf(moviesResult.getVote_average()));
-            holder.textViewVoteCount.setText(String.valueOf(moviesResult.getVote_count()));
+            if (releaseDate != null && !releaseDate.isEmpty())
+                holder.textViewMovieYear.setText(releaseDate);
+            else {
+                holder.textViewMovieYear.setText("No Release Date");
+            }
+            holder.textViewRatingCount.setText(String.valueOf(voteAverage));
+            holder.textViewVoteCount.setText(String.valueOf(voteCount));
         }
     }
 

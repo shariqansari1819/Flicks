@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.castandcrewadapter.CastAdapter;
 import com.codebosses.flicks.adapters.castandcrewadapter.CrewAdapter;
+import com.codebosses.flicks.adapters.moviesdetail.CompanyAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.MoviesGenreAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.VideosAdapter;
@@ -52,6 +54,7 @@ import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.dd.ShadowLayout;
+import com.devs.readmoreoption.ReadMoreOption;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -66,7 +69,9 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -95,8 +100,6 @@ public class MoviesDetailActivity extends AppCompatActivity {
 //    View viewBlur;
     @BindView(R.id.imageViewCoverMovieDetail)
     CrescentoImageView imageViewCover;
-    @BindView(R.id.shadowPlayButtonMoviesDetail)
-    ShadowLayout shadowLayoutPlayButton;
     @BindView(R.id.imageButtonPlayMoviesDetail)
     AppCompatImageButton imageButtonPlay;
     @BindView(R.id.textViewTitleMoviesDetail)
@@ -154,7 +157,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     @BindView(R.id.recyclerViewReviewsMoviesDetail)
     RecyclerView recyclerViewReviews;
     @BindView(R.id.textViewWatchFullMovie)
-    AppCompatTextView textViewWatchFullMovie;
+    AppCompatButton buttonWatchFullMovie;
     @BindView(R.id.textViewVideosCountMoviesDetail)
     TextView textViewVideosCount;
     @BindView(R.id.textViewImagesHeader)
@@ -167,6 +170,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
     TextView textViewTagLineHeader;
     @BindView(R.id.textViewTagLineMoviesDetail)
     TextView textViewTagLine;
+    @BindView(R.id.imageViewRuntimeMoviesDetail)
+    AppCompatImageView imageViewRuntime;
+    @BindView(R.id.textViewRuntimeMoviesDetail)
+    TextView textViewRuntime;
+    @BindView(R.id.textViewCompaniesHeader)
+    TextView textViewCompaniesHeader;
+    @BindView(R.id.recyclerViewCompaniesMoviesDetail)
+    RecyclerView recyclerViewCompanies;
     private AlertDialog alertDialog;
 
     //    Retrofit calls....
@@ -215,7 +226,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
         AdRequest adRequestInterstitial = new AdRequest.Builder().build();
         mInterstitialAd.loadAd(adRequestInterstitial);
         mInterstitialAd.setAdListener(new AdListener() {
@@ -261,7 +272,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewRegularFont(textViewVideosHeader);
         fontUtils.setTextViewRegularFont(textViewImageHeader);
         fontUtils.setTextViewLightFont(textViewImagesCounter);
-        fontUtils.setTextViewRegularFont(textViewWatchFullMovie);
+        fontUtils.setButtonRegularFont(buttonWatchFullMovie);
+        fontUtils.setTextViewRegularFont(textViewRuntime);
+        fontUtils.setTextViewRegularFont(textViewCompaniesHeader);
 
 //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -271,6 +284,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         recyclerViewSuggestedMovies.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewVideos.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewImages.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewCompanies.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewReviews.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this));
 
 //        Creating empty list adapter objects...
@@ -290,6 +304,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         recyclerViewReviews.setItemAnimator(new DefaultItemAnimator());
         recyclerViewVideos.setItemAnimator(new DefaultItemAnimator());
         recyclerViewImages.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewCompanies.setItemAnimator(new DefaultItemAnimator());
 
 //        Setting empty list adapter to recycler views....
         recyclerViewSimilarMovies.setAdapter(similarMoviesAdapter);
@@ -515,31 +530,51 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         String moviePosterPath = movieDetailMainObject.getPoster_path();
                         String tagLine = movieDetailMainObject.getTagline();
                         String backdropPath = movieDetailMainObject.getBackdrop_path();
+                        Integer runtime = movieDetailMainObject.getRuntime();
 
-                        if (!originalTitle.isEmpty()) {
+                        if (originalTitle != null && !originalTitle.isEmpty()) {
                             textViewTitle.setText(originalTitle);
                         }
 
-                        if (!overview.isEmpty()) {
+                        if (overview != null && !overview.isEmpty()) {
                             textViewOverViewHeader.setVisibility(View.VISIBLE);
                             textViewOverview.setVisibility(View.VISIBLE);
-                            textViewOverview.setText(overview);
+//                            textViewOverview.setText(overview);
+
+                            ReadMoreOption readMoreOption = new ReadMoreOption.Builder(MoviesDetailActivity.this)
+                                    .textLength(2, ReadMoreOption.TYPE_LINE) // OR
+                                    //.textLength(300, ReadMoreOption.TYPE_CHARACTER)
+                                    .moreLabel("MORE")
+                                    .lessLabel("LESS")
+                                    .moreLabelColor(Color.RED)
+                                    .lessLabelColor(getResources().getColor(R.color.colorAccent))
+                                    .labelUnderLine(true)
+                                    .expandAnimation(true)
+                                    .build();
+
+                            readMoreOption.addReadMoreTo(textViewOverview, overview);
                         }
 
-                        if (!releaseDate.isEmpty()) {
+                        if (releaseDate != null && !releaseDate.isEmpty()) {
                             textViewReleaseDateHeader.setVisibility(View.VISIBLE);
                             textViewReleaseDate.setVisibility(View.VISIBLE);
                             textViewReleaseDate.setText(releaseDate);
                         }
 
-                        if (!tagLine.isEmpty()) {
+                        if (tagLine != null && !tagLine.isEmpty()) {
                             textViewTagLineHeader.setVisibility(View.VISIBLE);
                             textViewTagLine.setVisibility(View.VISIBLE);
                             textViewTagLine.setText(tagLine);
                         }
 
+                        if (runtime != null && runtime != 0) {
+                            imageViewRuntime.setVisibility(View.VISIBLE);
+                            textViewRuntime.setVisibility(View.VISIBLE);
+                            textViewRuntime.setText(DateUtils.getMovieTime(runtime));
+                        }
+
 //                        viewBlur.setVisibility(View.VISIBLE);
-                        shadowLayoutPlayButton.setVisibility(View.VISIBLE);
+                        imageButtonPlay.setVisibility(View.VISIBLE);
                         cardViewThumbnail.setVisibility(View.VISIBLE);
                         ratingBar.setVisibility(View.VISIBLE);
                         textViewAudienceRating.setVisibility(View.VISIBLE);
@@ -551,9 +586,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         try {
                             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
                             if (!DateUtils.isAfterToday(date.getTime())) {
-                                textViewWatchFullMovie.setVisibility(View.VISIBLE);
+                                buttonWatchFullMovie.setVisibility(View.VISIBLE);
                             } else {
-                                textViewWatchFullMovie.setVisibility(View.GONE);
+                                buttonWatchFullMovie.setVisibility(View.GONE);
                             }
                         } catch (Exception e) {
 
@@ -588,6 +623,15 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         } else {
                             textViewGenreHeader.setVisibility(View.GONE);
                             recyclerViewGenre.setVisibility(View.GONE);
+                        }
+
+                        if (movieDetailMainObject.getProduction_companies() != null && movieDetailMainObject.getProduction_companies().size() > 0) {
+                            textViewCompaniesHeader.setVisibility(View.VISIBLE);
+                            recyclerViewCompanies.setVisibility(View.VISIBLE);
+                            recyclerViewCompanies.setAdapter(new CompanyAdapter(MoviesDetailActivity.this, movieDetailMainObject.getProduction_companies()));
+                        } else {
+                            textViewCompaniesHeader.setVisibility(View.GONE);
+                            recyclerViewCompanies.setVisibility(View.GONE);
                         }
 
                     }
@@ -805,7 +849,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     @OnClick({R.id.imageButtonPlayMoviesDetail, R.id.imageViewCoverMovieDetail})
     public void onPlayButtonClick(View view) {
         if (moviesTrailerResultList.size() > 0) {
-            startTrailerActivity(moviesTrailerResultList.get(0).getKey());
+            startTrailerActivity(moviesTrailerResultList.get(0).getKey(), moviesTrailerResultList.get(0).getName());
         }
     }
 
@@ -817,7 +861,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusPlayVideo(EventBusPlayVideo eventBusPlayVideo) {
         if (moviesTrailerResultList.size() > 0)
-            startTrailerActivity(moviesTrailerResultList.get(eventBusPlayVideo.getPosition()).getKey());
+            startTrailerActivity(moviesTrailerResultList.get(eventBusPlayVideo.getPosition()).getKey(), moviesTrailerResultList.get(eventBusPlayVideo.getPosition()).getName());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -839,9 +883,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void startTrailerActivity(String key) {
+    private void startTrailerActivity(String key, String name) {
         Intent intent = new Intent(this, TrailerActivity.class);
         intent.putExtra(EndpointKeys.YOUTUBE_KEY, key);
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 
@@ -857,6 +902,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     private void getMovieExternalId(String movieId) {
         alertDialog = new SpotsDialog.Builder().setContext(this).build();
+        alertDialog.setMessage("Extracting video source...");
         alertDialog.show();
         externalIdCall = ApiClient.getClient().create(Api.class).getMovieExternalId(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY);
         externalIdCall.enqueue(new Callback<ExternalId>() {
@@ -879,6 +925,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void generateTicket(String videoId) {
+        alertDialog.setMessage("Please wait...");
         AndroidNetworking.get("https://api6.ipify.org/")
                 .build()
                 .getAsString(new StringRequestListener() {

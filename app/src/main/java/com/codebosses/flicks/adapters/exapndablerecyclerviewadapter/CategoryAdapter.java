@@ -48,14 +48,21 @@ public class CategoryAdapter extends ExpandableRecyclerViewAdapter<CategoryHeade
     }
 
     @Override
-    public void onBindGroupViewHolder(CategoryHeaderHolder holder, int flatPosition,
-                                      ExpandableGroup group) {
+    public void onBindGroupViewHolder(CategoryHeaderHolder holder, int flatPosition, ExpandableGroup group) {
         holder.setGenreTitle(group);
-        if (group.getTitle().equals(EndpointKeys.TRENDING) || group.getTitle().equals(EndpointKeys.DISCOVER)) {
+        holder.setIsRecyclable(false);
+        if (group.getTitle().equals(EndpointKeys.TRENDING)
+                || group.getTitle().equals(EndpointKeys.DISCOVER)
+                || group.getTitle().equals(EndpointKeys.OFFLINE)) {
             holder.arrow.setVisibility(View.GONE);
             holder.genreName.setOnClickListener(v -> {
                 EventBus.getDefault().post(new EventBusExpandItems(flatPosition, group.getTitle()));
             });
+        }
+        if (group.getTitle().equals(EndpointKeys.OFFLINE)) {
+            holder.viewDivider.setVisibility(View.VISIBLE);
+        } else {
+            holder.viewDivider.setVisibility(View.GONE);
         }
     }
 

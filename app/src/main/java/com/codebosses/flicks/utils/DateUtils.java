@@ -17,4 +17,10 @@ public class DateUtils {
         return true;
     }
 
+    public static String getMovieTime(int time){
+        int hours = time / 60; //since both are ints, you get an int
+        int minutes = time % 60;
+        return hours + "h " + minutes + "m";
+    }
+
 }

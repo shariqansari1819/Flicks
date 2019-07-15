@@ -44,7 +44,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:singleLine="true"
             android:text="Zootopia"
             android:textColor="@color/colorPrimaryText"
@@ -70,7 +69,6 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/bottom_shadow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesRow"
@@ -78,8 +76,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewRatingIconMoviesRow"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:contentDescription="@string/rating_pop_corn_icon"
             app:layout_constraintStart_toStartOf="@+id/textViewTitleMoviesRow"
@@ -120,7 +118,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageViewRatingIconMoviesRow"
             app:layout_constraintStart_toEndOf="@+id/textViewRatingMoviesRow"
             app:layout_constraintTop_toTopOf="@+id/imageViewRatingIconMoviesRow"
-            app:srcCompat="@drawable/popcorn_icon" />
+            app:srcCompat="@drawable/ic_action_popcorn" />
 
         <TextView
             android:id="@+id/textViewVotesMoviesRow"

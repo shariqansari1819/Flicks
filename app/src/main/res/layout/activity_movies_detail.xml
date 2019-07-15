@@ -22,42 +22,41 @@
             app:curvature="50dp"
             app:layout_constraintTop_toTopOf="parent"
             app:tintAlpha="50"
-            app:tintColor="#FFFFFF"
+            app:tintColor="#000"
             app:tintModes="manual" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarMoviesDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
             android:layout_marginTop="@dimen/_5sdp"
+            android:background="@null"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.dd.ShadowLayout
-            android:id="@+id/shadowPlayButtonMoviesDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewFavoriteMoviesDetail"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_action_bordered_heart"
+            app:tint="@color/colorWhite" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imageButtonPlayMoviesDetail"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/bg_white_circle"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewCoverMovieDetail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:sl_cornerRadius="56dp"
-            app:sl_dx="0dp"
-            app:sl_dy="0dp"
-            app:sl_shadowColor="@color/colorPrimary"
-            app:sl_shadowRadius="3dp">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/imageButtonPlayMoviesDetail"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:background="@drawable/bg_white_circle"
-                app:srcCompat="@drawable/ic_action_play" />
-
-        </com.dd.ShadowLayout>
+            app:srcCompat="@drawable/ic_action_play" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewThumbnailContainerMoviesDetail"
@@ -147,20 +146,44 @@
             app:layout_constraintStart_toStartOf="@+id/ratingBarMovieDetail"
             app:layout_constraintTop_toTopOf="@+id/textViewAudienceMovieDetail" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewRuntimeMoviesDetail"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerMoviesDetail"
+            app:srcCompat="@drawable/ic_action_circular_clock" />
+
+        <TextView
+            android:id="@+id/textViewRuntimeMoviesDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="1h 21min"
+            android:visibility="gone"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewRuntimeMoviesDetail"
+            app:layout_constraintStart_toEndOf="@+id/imageViewRuntimeMoviesDetail"
+            app:layout_constraintTop_toTopOf="@+id/imageViewRuntimeMoviesDetail" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/textViewWatchFullMovie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/bg_watch_movie"
-            android:padding="@dimen/_8sdp"
+            android:paddingStart="@dimen/_12sdp"
+            android:paddingEnd="@dimen/_12sdp"
             android:text="@string/watch_full_movie"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_14ssp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerMoviesDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewRuntimeMoviesDetail" />
 
         <TextView
             android:id="@+id/textViewReleaseDateHeaderMoviesDetail"
@@ -261,6 +284,29 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewGenreHeader" />
 
         <TextView
+            android:id="@+id/textViewCompaniesHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/production_companies"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewGenreMoviesDetail" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCompaniesMoviesDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewGenreHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCompaniesHeader" />
+
+        <TextView
             android:id="@+id/textViewVideosHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -271,7 +317,7 @@
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerMoviesDetail"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewGenreMoviesDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCompaniesMoviesDetail" />
 
         <TextView
             android:id="@+id/textViewVideosCountMoviesDetail"
@@ -291,8 +337,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:visibility="gone"
             android:layout_marginEnd="@dimen/_2sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewVideosHeader" />

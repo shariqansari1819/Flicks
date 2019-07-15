@@ -26,9 +26,46 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTrendingMovies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/linearLayoutLoadMoreTrendingMovies"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="@dimen/_5sdp"-->
+        <!--android:gravity="center"-->
+        <!--android:visibility="gone"-->
+        <!--android:orientation="horizontal"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent">-->
+
+        <!--<com.budiyev.android.circularprogressbar.CircularProgressBar-->
+            <!--android:id="@+id/circularProgressBarLoadMoreTrendingMovies"-->
+            <!--android:layout_width="@dimen/_16sdp"-->
+            <!--android:layout_height="@dimen/_16sdp"-->
+            <!--android:layout_marginEnd="@dimen/_10sdp"-->
+            <!--app:animateProgress="true"-->
+            <!--app:foregroundStrokeCap="round"-->
+            <!--app:foregroundStrokeColor="@color/colorAccent"-->
+            <!--app:foregroundStrokeWidth="@dimen/_1sdp"-->
+            <!--app:indeterminate="true"-->
+            <!--app:progressAnimationDuration="200"-->
+            <!--app:startAngle="45" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewLoadMoreTrendingMovies"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/loading_more"-->
+            <!--android:textColor="@color/colorAccent"-->
+            <!--android:textSize="@dimen/_14ssp" />-->
+
+    <!--</LinearLayout>-->
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageViewErrorTrendingMovies"

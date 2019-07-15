@@ -1,8 +1,13 @@
 package com.codebosses.flicks.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +24,7 @@ import com.codebosses.flicks.fragments.moviesfragments.FragmentInTheater;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentLatestMovies;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentTopRatedMovies;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentUpcomingMovies;
+import com.codebosses.flicks.fragments.offline.OfflineFragment;
 import com.codebosses.flicks.fragments.trending.FragmentTrending;
 import com.codebosses.flicks.fragments.tvfragments.FragmentLatestTvShows;
 import com.codebosses.flicks.fragments.tvfragments.FragmentTopRatedTvShows;
@@ -37,21 +43,29 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.intrusoft.squint.DiagonalView;
+import com.liuzhenlin.slidingdrawerlayout.SlidingDrawerLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -69,11 +83,11 @@ import static com.codebosses.flicks.utils.backstack.StackListManager.updateStack
 import static com.codebosses.flicks.utils.backstack.StackListManager.updateStackToIndexFirst;
 import static com.codebosses.flicks.utils.backstack.StackListManager.updateTabStackIndex;
 
-public class MainActivity extends AppCompatActivity implements BaseFragment.FragmentInteractionCallback {
+public class MainActivity extends AppCompatActivity implements BaseFragment.FragmentInteractionCallback, SlidingDrawerLayout.OnDrawerScrollListener {
 
     //    Android fields....
     @BindView(R.id.drawerLayoutMain)
-    DrawerLayout drawerLayoutMain;
+    SlidingDrawerLayout drawerLayoutMain;
     @BindView(R.id.appBarMain)
     Toolbar toolbarMain;
     @BindView(R.id.adView)
@@ -82,8 +96,12 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     TextView textViewTitle;
     @BindView(R.id.diagonalViewMain)
     DiagonalView diagonalViewMain;
+    private DrawerArrowDrawable mHomeAsUpIndicator;
 
     ActionBarDrawerToggle actionBarDrawerToggle;
+
+    @ColorInt
+    static int sColorPrimary = -1;
 
     //    Font fields....
     private FontUtils fontUtils;
@@ -102,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     private FragmentTopRatedCelebrities fragmentTopRatedCelebrities;
     private FragmentMoviesGenre fragmentMoviesGenre;
     private FragmentTvShowsGenre fragmentTvShowsGenre;
+//    private OfflineFragment fragmentOffline;
 
     private Fragment currentFragment;
 
@@ -164,21 +183,61 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                     }
                 }).start();
 
+
+//        DisplayMetrics metrics = getResources().getDisplayMetrics();
+//        final int screenWidth = metrics.widthPixels;
+//        Drawable icon = ContextCompat.getDrawable(this, R.mipmap.ic_launcher_round);
+//        assert icon != null;
+//        final float width_dif = (float) icon.getIntrinsicWidth() + 20f * metrics.density;
+//
+//        drawerLayoutMain.setContentSensitiveEdgeSize(screenWidth);
+//        drawerLayoutMain.setStartDrawerWidthPercent(1f - width_dif / (float) screenWidth);
+        drawerLayoutMain.addOnDrawerScrollListener(this);
+//        //  At this activity starting, none of the drawers of SlidingDrawerLayout are available
+//        // as in most cases their measurements are not yet started.
+//        mSlidingDrawerLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                mSlidingDrawerLayout.openDrawer(Gravity.START, true);
+//            }
+//        });
+
+        mHomeAsUpIndicator = new DrawerArrowDrawable(this);
+        mHomeAsUpIndicator.setGapSize(9f);
+        mHomeAsUpIndicator.setColor(Color.WHITE);
+
 //        Setting custom action bar....
         setSupportActionBar(toolbarMain);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setHomeButtonEnabled(false);
+            getSupportActionBar().setHomeAsUpIndicator(mHomeAsUpIndicator);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
         }
+
+//        toolbarMain.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                // This is a bit of a hack. Due to obsessive-compulsive disorder,
+//                // insert proper margin before the action bar's title.
+//                try {
+//                    Field field = toolbarMain.getClass().getDeclaredField("mNavButtonView");
+//                    field.setAccessible(true);
+//                    View button = (View) field.get(toolbarMain); // normally an ImageButton
+//
+//                    toolbarMain.setTitleMarginStart((int) (width_dif - button.getWidth() + 0.5f));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
 //        Setting custom font....
         setCustomFont();
 
 //        Setting drawer layout....
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayoutMain, toolbarMain, R.string.open, R.string.close);
-        drawerLayoutMain.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
+//        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayoutMain, toolbarMain, R.string.open, R.string.close);
+//        drawerLayoutMain.addDrawerListener(actionBarDrawerToggle);
+//        actionBarDrawerToggle.syncState();
 
 
         initializeFragments();
@@ -195,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         });
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
         AdRequest adRequestInterstitial = new AdRequest.Builder().build();
         mInterstitialAd.loadAd(adRequestInterstitial);
         mInterstitialAd.setAdListener(new AdListener() {
@@ -248,11 +307,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         fragmentTvShowsAiringToday = new FragmentTvShowsAiringToday();
         fragmentMoviesGenre = new FragmentMoviesGenre();
         fragmentTvShowsGenre = new FragmentTvShowsGenre();
+//        fragmentOffline = new OfflineFragment();
     }
 
     private void createStacks() {
-
-
         stacks = new LinkedHashMap<>();
 //        stacks.put(EndpointKeys.DISCOVER, new Stack<Fragment>());
         stacks.put(EndpointKeys.TRENDING, new Stack<Fragment>());
@@ -267,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         stacks.put(EndpointKeys.TOP_RATED_CELEBRITIES, new Stack<Fragment>());
         stacks.put(EndpointKeys.MOVIES, new Stack<>());
         stacks.put(EndpointKeys.TV_SHOWS, new Stack<>());
+//        stacks.put(EndpointKeys.OFFLINE, new Stack<>());
 
         menuStacks = new ArrayList<>();
         menuStacks.add(EndpointKeys.TRENDING);
@@ -285,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         stackList.add(EndpointKeys.TOP_RATED_CELEBRITIES);
         stackList.add(EndpointKeys.MOVIES);
         stackList.add(EndpointKeys.TV_SHOWS);
+//        stackList.add(EndpointKeys.OFFLINE);
 
         setAppBarTitle(getResources().getString(R.string.trending));
         selectedTab(EndpointKeys.TRENDING);
@@ -366,6 +426,11 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                     resolveStackLists(tabId);
                     assignCurrentFragment(fragmentTvShowsGenre);
                     break;
+//                case EndpointKeys.OFFLINE:
+//                    addAdditionalTabFragment(getSupportFragmentManager(), stacks, EndpointKeys.OFFLINE, fragmentOffline, currentFragment, R.id.frameLayoutFragmentContainer, true);
+//                    resolveStackLists(tabId);
+//                    assignCurrentFragment(fragmentOffline);
+//                    break;
             }
         } else {
             /*
@@ -508,6 +573,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 setAppBarTitle(getResources().getString(R.string.tv_shows));
                 index = 11;
                 break;
+//            case EndpointKeys.OFFLINE:
+//                setAppBarTitle(getResources().getString(R.string.offline));
+//                index = 12;
+//                break;
         }
 //        if (index == 2) {
 //            textViewAppBarTitle.setVisibility(View.GONE);
@@ -522,9 +591,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     }
 
     private void showAdOnListClick() {
-        if (interstitialAddCounter <= 2) {
+        if (interstitialAddCounter <= 1) {
             mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+            mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
             AdRequest adRequestInterstitial = new AdRequest.Builder().build();
             mInterstitialAd.loadAd(adRequestInterstitial);
             mInterstitialAd.setAdListener(new AdListener() {
@@ -612,14 +681,20 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
             case R.id.menuRateUs:
                 startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                 return true;
+            case android.R.id.home:
+                if (drawerLayoutMain.hasOpenedDrawer())
+                    drawerLayoutMain.closeDrawer(true);
+                else
+                    drawerLayoutMain.openDrawer(Gravity.START, true);
+                return true;
         }
         return false;
     }
 
     @Override
     public void onBackPressed() {
-        if (drawerLayoutMain.isDrawerOpen(GravityCompat.START)) {
-            drawerLayoutMain.closeDrawer(GravityCompat.START);
+        if (drawerLayoutMain.hasOpenedDrawer()) {
+            drawerLayoutMain.closeDrawer(true);
         } else {
             resolveBackPressed();
         }
@@ -627,7 +702,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSelectedItem(EventBusSelectedItem eventBusSelectedItem) {
-        drawerLayoutMain.closeDrawer(GravityCompat.START);
+        drawerLayoutMain.closeDrawer(true);
         setAppBarTitle(eventBusSelectedItem.getTitle());
         interstitialAddCounter++;
         showAdOnListClick();
@@ -684,6 +759,11 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 index = 11;
                 selectedTab(EndpointKeys.TV_SHOWS);
                 break;
+            case EndpointKeys.OFFLINE:
+                startActivity(new Intent(this, OfflineActivity.class));
+//                index = 12;
+//                selectedTab(EndpointKeys.OFFLINE);
+                break;
         }
     }
 
@@ -692,4 +772,52 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     }
 
+    @Override
+    public void onDrawerOpened(@NonNull SlidingDrawerLayout parent, @NonNull View drawer) {
+
+    }
+
+    @Override
+    public void onDrawerClosed(@NonNull SlidingDrawerLayout parent, @NonNull View drawer) {
+
+    }
+
+    @Override
+    public void onScrollPercentChange(@NonNull SlidingDrawerLayout parent, @NonNull View drawer, float percent) {
+        mHomeAsUpIndicator.setProgress(percent);
+
+//        final boolean light = percent >= 0.5f;
+//        final int alpha = (int) (0x7F + 0xFF * Math.abs(0.5f - percent) + 0.5f) << 24;
+//
+//        if (sColorPrimary == -1)
+//            sColorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+//        final int background = (light ? Color.WHITE : sColorPrimary) & 0x00FFFFFF | alpha;
+//        toolbarMain.setBackgroundColor(background);
+//
+//        final int foreground = (light ? Color.BLACK : Color.WHITE) & 0x00FFFFFF | alpha;
+//        mHomeAsUpIndicator.setColor(foreground);
+//        toolbarMain.setTitleTextColor(foreground);
+    }
+
+    @Override
+    public void onScrollStateChange(@NonNull SlidingDrawerLayout parent, @NonNull View drawer, int state) {
+        switch (state) {
+            case SlidingDrawerLayout.SCROLL_STATE_TOUCH_SCROLL:
+            case SlidingDrawerLayout.SCROLL_STATE_AUTO_SCROLL:
+                // android:background attr set with a vector drawable resource id is not supported
+                // on platforms prior to Lollipop
+//                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP &&
+//                        drawer.getBackground() == null &&
+//                        (((SlidingDrawerLayout.LayoutParams) drawer.getLayoutParams()).gravity
+//                                & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK) == Gravity.END) {
+//                    ViewCompat.setBackground(drawer,
+//                            ContextCompat.getDrawable(this, R.drawable.ic_launcher_background));
+//                }
+
+                break;
+            case SlidingDrawerLayout.SCROLL_STATE_IDLE:
+
+                break;
+        }
+    }
 }

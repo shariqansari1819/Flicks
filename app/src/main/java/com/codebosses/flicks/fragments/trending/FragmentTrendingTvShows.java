@@ -167,7 +167,7 @@ public class FragmentTrendingTvShows extends Fragment {
                         }
                     }
                 } else {
-                    if (pageNumber == 1) {
+                    if (pageNumber == 1 && getActivity() != null) {
                         textViewError.setVisibility(View.VISIBLE);
                         imageViewTrending.setVisibility(View.VISIBLE);
                         textViewError.setText(couldNotGetTvShows);
@@ -181,22 +181,23 @@ public class FragmentTrendingTvShows extends Fragment {
                 if (call.isCanceled() || "Canceled".equals(error.getMessage())) {
                     return;
                 }
-                progressBarTrending.setVisibility(View.GONE);
-                if (pageNumber == 1) {
+                if (getActivity() != null)
+                    progressBarTrending.setVisibility(View.GONE);
+                if (pageNumber == 1 && getActivity() != null) {
                     textViewError.setVisibility(View.VISIBLE);
                     imageViewTrending.setVisibility(View.VISIBLE);
                     textViewRetry.setVisibility(View.VISIBLE);
                 }
                 if (error != null) {
                     if (error.getMessage().contains("No address associated with hostname")) {
-                        if (pageNumber == 1)
+                        if (pageNumber == 1 && getActivity() != null)
                             textViewError.setText(internetProblem);
                     } else {
-                        if (pageNumber == 1)
+                        if (pageNumber == 1 && getActivity() != null)
                             textViewError.setText(couldNotGetTvShows);
                     }
                 } else {
-                    if (pageNumber == 1)
+                    if (pageNumber == 1 && getActivity() != null)
                         textViewError.setText(couldNotGetTvShows);
                 }
             }

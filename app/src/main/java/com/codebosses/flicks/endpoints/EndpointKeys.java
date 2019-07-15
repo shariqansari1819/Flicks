@@ -34,6 +34,7 @@ public interface EndpointKeys {
     String SIMILAR_TV_SHOWS_DETAIL = "Similar Tv Shows Detail";
     String SUGGESTED_TV_SHOWS_DETAIL = "Suggested Tv Shows Detail";
     String TRENDING = "Trending";
+    String OFFLINE = "Offline";
     String SEASON = "Season";
     String TRENDING_MOVIES = "Trending Movies";
     String TRENDING_TV_SHOWS = "Trending Tv Shows";
@@ -52,6 +53,7 @@ public interface EndpointKeys {
     String HORROR_MOVIES = "horror_movies";
     String THRILLER_MOVIES = "thriller_movies";
     String COMEDY_MOVIES = "comedy_movies";
+    String FAMILY_MOVIES = "family_movies";
     String ACTION_TV_SHOWS = "action_tv_shows";
     String ADVENTURE_TV_SHOWS = "adventure_tv_shows";
     String ANIMATED_TV_SHOWS = "animated_tv_shows";

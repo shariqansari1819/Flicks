@@ -24,6 +24,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -59,15 +60,20 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
     public void onBindViewHolder(@NonNull CelebritiesHolder holder, int position) {
         CelebritiesResult celebritiesResult = celebritiesResultArrayList.get(position);
         if (celebritiesResult != null) {
-            if (celebritiesResult.getProfile_path() != null && !celebritiesResult.getProfile_path().equals(""))
+            String profilePath = celebritiesResult.getProfile_path();
+            String name = celebritiesResult.getName();
+            double popularity = celebritiesResult.getPopularity();
+            if (profilePath != null && !profilePath.equals(""))
                 Glide.with(context)
-                        .load(EndpointUrl.PROFILE_BASE_URL + "/" + celebritiesResult.getProfile_path())
+                        .load(EndpointUrl.PROFILE_BASE_URL + "/" + profilePath)
                         .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
-            String name = celebritiesResult.getName();
-            holder.textViewMovieTitle.setText(name);
-            holder.textViewRatingCount.setText(String.valueOf(celebritiesResult.getPopularity()));
+            if (name != null && !name.isEmpty())
+                holder.textViewMovieTitle.setText(name);
+            else
+                holder.textViewMovieTitle.setText("No Name Found");
+            holder.textViewRatingCount.setText(String.valueOf(popularity));
         }
     }
 

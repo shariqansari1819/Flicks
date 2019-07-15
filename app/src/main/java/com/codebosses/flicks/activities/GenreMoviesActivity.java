@@ -101,11 +101,9 @@ public class GenreMoviesActivity extends AppCompatActivity {
 
         if (ValidUtils.isNetworkAvailable(this)) {
 
-
             linearLayoutManager = new LinearLayoutManager(this);
             recyclerViewGenreMovies.setLayoutManager(linearLayoutManager);
             recyclerViewGenreMovies.setItemAnimator(new DefaultItemAnimator());
-
 
             if (getIntent() != null) {
                 genreType = getIntent().getStringExtra(EndpointKeys.GENRE_TYPE);
@@ -144,6 +142,9 @@ public class GenreMoviesActivity extends AppCompatActivity {
                                 break;
                             case EndpointKeys.COMEDY_MOVIES:
                                 textViewAppBarTitle.setText(getResources().getString(R.string.comedy_movies));
+                                break;
+                            case EndpointKeys.FAMILY_MOVIES:
+                                textViewAppBarTitle.setText(getResources().getString(R.string.family_movies));
                                 break;
                         }
                         getGenreMovies("en-US", pageNumber, genreId, sortType);

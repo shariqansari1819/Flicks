@@ -15,7 +15,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageViewCloseTrailer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewCloseTrailer"
-        app:srcCompat="@drawable/ic_action_download" />
+        app:srcCompat="@drawable/ic_download"
+        app:tint="@color/colorWhite"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageViewCloseTrailer"

@@ -30,7 +30,7 @@ public class FlicksApplication extends Application {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(flicksApplication);
         editor = sharedPreferences.edit();
-        MobileAds.initialize(this, getResources().getString(R.string.admob_id));
+        MobileAds.initialize(this, getResources().getString(R.string.testing_admob_id));
 
     }
 

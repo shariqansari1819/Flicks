@@ -3,6 +3,8 @@ package com.codebosses.flicks.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import butterknife.BindView;
@@ -13,13 +15,16 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -60,7 +65,7 @@ public class TrailerActivity extends AppCompatActivity {
     AppCompatImageView imageViewDownload;
 
     //    Instance fields....
-    private String youtubeKey;
+    private String youtubeKey, name;
     private YouTubeExtractor youTubeExtractor;
 
     @Override
@@ -71,6 +76,7 @@ public class TrailerActivity extends AppCompatActivity {
 
         if (getIntent() != null) {
             youtubeKey = getIntent().getStringExtra(EndpointKeys.YOUTUBE_KEY);
+            name = getIntent().getStringExtra("name");
 
             youTubePlayerView.initialize(new YouTubePlayerInitListener() {
                 @Override
@@ -138,6 +144,37 @@ public class TrailerActivity extends AppCompatActivity {
     @SuppressLint("CheckResult")
     @OnClick(R.id.imageViewDownloadTrailer)
     public void onDownloadClick(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
+                    (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+                if (createDirectory()) {
+                    extractYoutubeDownloadUrl();
+                }
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+            }
+        } else {
+            extractYoutubeDownloadUrl();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 2) {
+            int counter = 0;
+            for (int permission : grantResults) {
+                if (permission == PackageManager.PERMISSION_GRANTED) {
+                    counter++;
+                }
+            }
+            if (counter == grantResults.length) {
+                extractYoutubeDownloadUrl();
+            }
+        }
+    }
+
+    private void extractYoutubeDownloadUrl() {
         Toast.makeText(this, "Downloading...", Toast.LENGTH_SHORT).show();
         youTubeExtractor.extract(youtubeKey)
                 .subscribeOn(Schedulers.io())
@@ -148,6 +185,7 @@ public class TrailerActivity extends AppCompatActivity {
     private void downloadImage(String path) {
         Intent intent = new Intent(this, BackgroundNotificationService.class);
         intent.putExtra("path", path);
+        intent.putExtra("name", name);
         startService(intent);
     }
 
@@ -171,5 +209,14 @@ public class TrailerActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         youTubePlayerView.release();
+    }
+
+    private boolean createDirectory() {
+        File folder = new File(Environment.getExternalStorageDirectory(), "Flicks");
+        boolean success = true;
+        if (!folder.exists()) {
+            success = folder.mkdir();
+        }
+        return success;
     }
 }
