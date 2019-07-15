@@ -43,36 +43,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.dd.ShadowLayout
-            android:id="@+id/shadowPlayButtonTvEpisode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imageButtonPlayTvEpisode"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/bg_white_circle"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewCoverTvEpisode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:sl_cornerRadius="56dp"
-            app:sl_dx="0dp"
-            app:sl_dy="0dp"
-            app:sl_shadowColor="@color/colorPrimary"
-            app:sl_shadowRadius="3dp">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/imageButtonPlayTvEpisode"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:background="@drawable/bg_white_circle"
-                app:srcCompat="@drawable/ic_action_circle_play" />
-
-        </com.dd.ShadowLayout>
+            app:srcCompat="@drawable/ic_action_circle_play" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewThumbnailContainerEpisodeDetail"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_110sdp"
             android:visibility="invisible"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="13dp"
             app:cardElevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintCircle="@+id/imageViewCoverTvEpisode"
@@ -156,17 +144,18 @@
             app:layout_constraintStart_toStartOf="@+id/ratingBarTvEpisodeDetail"
             app:layout_constraintTop_toTopOf="@+id/textViewAudienceTvEpisodeDetail" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/textViewWatchFullMovie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/bg_watch_movie"
-            android:padding="@dimen/_8sdp"
-            android:text="@string/watch_full_episode"
+            android:paddingStart="@dimen/_12sdp"
+            android:paddingEnd="@dimen/_12sdp"
+            android:text="@string/watch_full_movie"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_14ssp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnailContainerEpisodeDetail" />
@@ -268,6 +257,18 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerEpisodeDetail"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewVideosTvEpisodeDetail" />
+
+        <TextView
+            android:id="@+id/textViewImagesCountEpisodeDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewPhotosHeader"
+            app:layout_constraintStart_toEndOf="@+id/textViewPhotosHeader"
+            app:layout_constraintTop_toTopOf="@+id/textViewPhotosHeader" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPhotosEpisodeDetail"

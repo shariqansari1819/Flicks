@@ -13,32 +13,68 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayoutLogoNavigation"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_150sdp"
+        android:layout_height="@dimen/_160sdp"
         android:background="@color/colorPrimary"
+        android:paddingStart="@dimen/_12sdp"
+        android:paddingEnd="@dimen/_12sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageViewAvatarNavigation"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:src="@drawable/boy_avatar"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewLogoNavigation"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/buttonSignUpNavigation"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_sign_up_sidebar_button"
+            android:text="@string/sign_up"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewLogoNavigation" />
+
         <TextView
-            android:id="@+id/textViewNameNavigation"
-            android:layout_width="0dp"
+            android:id="@+id/textViewSignUpHeadingNavigation"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="@string/guest_user"
+            android:text="@string/sign_up_now_heading"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_17ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/imageViewAvatarNavigation"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewAvatarNavigation" />
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSignUpNavigation" />
+
+        <TextView
+            android:id="@+id/textViewAlreadyHaveAccountNavigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@string/already_have_account"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintStart_toStartOf="@+id/buttonSignUpNavigation"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSignUpHeadingNavigation" />
+
+        <TextView
+            android:id="@+id/textViewLogIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:text="@string/login"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_11ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewAlreadyHaveAccountNavigation"
+            app:layout_constraintStart_toEndOf="@+id/textViewAlreadyHaveAccountNavigation"
+            app:layout_constraintTop_toTopOf="@+id/textViewAlreadyHaveAccountNavigation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

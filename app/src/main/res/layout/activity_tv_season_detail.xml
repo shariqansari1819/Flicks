@@ -33,7 +33,6 @@
         <!--android:visibility="invisible"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarTvSeason"
             android:layout_width="match_parent"
@@ -44,36 +43,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.dd.ShadowLayout
-            android:id="@+id/shadowPlayButtonTvSeason"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewFavoriteTvSeason"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_action_bordered_heart"
+            app:tint="@color/colorWhite" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imageButtonPlayTvSeason"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/bg_white_circle"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewCoverTvSeason"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:sl_cornerRadius="56dp"
-            app:sl_dx="0dp"
-            app:sl_dy="0dp"
-            app:sl_shadowColor="@color/colorPrimary"
-            app:sl_shadowRadius="3dp">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/imageButtonPlayTvSeason"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:background="@drawable/bg_white_circle"
-                app:srcCompat="@drawable/ic_action_circle_play" />
-
-        </com.dd.ShadowLayout>
+            app:srcCompat="@drawable/ic_action_circle_play" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewThumbnailContainerTvSeason"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_110sdp"
             android:visibility="invisible"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="13dp"
             app:cardElevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintCircle="@+id/imageViewCoverTvSeason"

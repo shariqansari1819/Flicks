@@ -772,7 +772,12 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 selectedTab(EndpointKeys.TV_SHOWS);
                 break;
             case EndpointKeys.OFFLINE:
-                startActivity(new Intent(this, OfflineActivity.class));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(MainActivity.this, OfflineActivity.class));
+                    }
+                }, 400);
 //                index = 12;
 //                selectedTab(EndpointKeys.OFFLINE);
                 break;

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.codebosses.flicks.R;
@@ -40,8 +41,14 @@ public class FragmentNavigationView extends Fragment {
     RecyclerView recyclerViewNavigation;
     @BindView(R.id.adView)
     AdView adView;
-    @BindView(R.id.textViewNameNavigation)
-    TextView textViewName;
+    @BindView(R.id.textViewSignUpHeadingNavigation)
+    TextView textViewHeading;
+    @BindView(R.id.buttonSignUpNavigation)
+    Button buttonSignUp;
+    @BindView(R.id.textViewAlreadyHaveAccountNavigation)
+    TextView textViewAlreadyHaveAccount;
+    @BindView(R.id.textViewLogIn)
+    TextView textViewLogIn;
 
     //    Adapter fields....
     CategoryAdapter adapter;
@@ -78,7 +85,11 @@ public class FragmentNavigationView extends Fragment {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-        FontUtils.getFontUtils(getActivity()).setTextViewRegularFont(textViewName);
+        FontUtils fontUtils = FontUtils.getFontUtils(getActivity());
+        fontUtils.setTextViewRegularFont(textViewHeading);
+        fontUtils.setTextViewRegularFont(textViewAlreadyHaveAccount);
+        fontUtils.setTextViewBoldFont(textViewLogIn);
+        fontUtils.setButtonRegularFont(buttonSignUp);
 
 //        Disabling default animation of recyclerview....
         RecyclerView.ItemAnimator animator = recyclerViewNavigation.getItemAnimator();

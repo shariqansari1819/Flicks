@@ -34,36 +34,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.dd.ShadowLayout
-            android:id="@+id/shadowPlayButtonTvShowsDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewFavoriteTvShowsDetail"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_action_bordered_heart"
+            app:tint="@color/colorWhite" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imageButtonPlayTvShowsDetail"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/bg_white_circle"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewCoverTvShowsDetail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
-            app:sl_cornerRadius="56dp"
-            app:sl_dx="0dp"
-            app:sl_dy="0dp"
-            app:sl_shadowColor="@color/colorPrimary"
-            app:sl_shadowRadius="3dp">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/imageButtonPlayTvShowsDetail"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:background="@drawable/bg_white_circle"
-                app:srcCompat="@drawable/ic_action_circle_play" />
-
-        </com.dd.ShadowLayout>
+            app:srcCompat="@drawable/ic_action_circle_play" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewThumbnailContainerTvShowsDetail"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_110sdp"
             android:visibility="invisible"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="13dp"
             app:cardElevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintCircle="@+id/imageViewCoverTvShowsDetail"
@@ -220,6 +219,29 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewGenreHeader" />
 
         <TextView
+            android:id="@+id/textViewCompaniesHeaderTvShowsDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/production_companies"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvShowsDetail"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewGenreTvShowsDetail" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCompaniesTvShowsDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewCompaniesHeaderTvShowsDetail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCompaniesHeaderTvShowsDetail" />
+
+        <TextView
             android:id="@+id/textViewVideosHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -230,7 +252,7 @@
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/cardViewThumbnailContainerTvShowsDetail"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewGenreTvShowsDetail" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCompaniesTvShowsDetail" />
 
         <TextView
             android:id="@+id/textViewVideosCountTvShowsDetail"
@@ -248,11 +270,11 @@
             android:id="@+id/recyclerViewVideosTvShowsDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:visibility="gone"
             android:layout_marginStart="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_2sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewVideosHeader" />
 

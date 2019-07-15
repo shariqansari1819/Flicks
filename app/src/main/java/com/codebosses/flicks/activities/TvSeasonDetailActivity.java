@@ -1,33 +1,21 @@
 package com.codebosses.flicks.activities;
 
-import androidx.annotation.NonNull;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
-import retrofit2.Call;
-import retrofit2.Callback;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.bumptech.glide.Glide;
@@ -35,8 +23,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.castandcrewadapter.CastAdapter;
 import com.codebosses.flicks.adapters.castandcrewadapter.CrewAdapter;
-import com.codebosses.flicks.adapters.moviesdetail.MoviesGenreAdapter;
-import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
 import com.codebosses.flicks.adapters.moviesdetail.VideosAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.EpisodePhotosAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.TvEpisodesAdapter;
@@ -55,21 +41,14 @@ import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
-import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.TvShowsDetailMainObject;
 import com.codebosses.flicks.pojo.tvseasons.Episode;
 import com.codebosses.flicks.pojo.tvseasons.TvSeasonsMainObject;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
-import com.dd.ShadowLayout;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
+import com.devs.readmoreoption.ReadMoreOption;
 import com.google.android.gms.ads.InterstitialAd;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -77,6 +56,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class TvSeasonDetailActivity extends AppCompatActivity {
 
@@ -91,8 +77,6 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
 //    View viewBlur;
     @BindView(R.id.imageViewCoverTvSeason)
     CrescentoImageView imageViewCover;
-    @BindView(R.id.shadowPlayButtonTvSeason)
-    ShadowLayout shadowLayoutPlayButton;
     @BindView(R.id.imageButtonPlayTvSeason)
     AppCompatImageButton imageButtonPlay;
     @BindView(R.id.cardViewThumbnailContainerTvSeason)
@@ -474,9 +458,8 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                         String tvShowPosterPath = tvSeasonsMainObject.getPoster_path();
 
 //                        viewBlur.setVisibility(View.VISIBLE);
-                        shadowLayoutPlayButton.setVisibility(View.VISIBLE);
+                        imageButtonPlay.setVisibility(View.VISIBLE);
                         cardViewTvSeasonThumbnail.setVisibility(View.VISIBLE);
-                        textViewReleaseDateHeader.setVisibility(View.VISIBLE);
                         ratingBar.setVisibility(View.VISIBLE);
                         textViewAudienceRating.setVisibility(View.VISIBLE);
                         textViewTvSeasonRating.setVisibility(View.VISIBLE);
@@ -484,11 +467,34 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                         textViewVoteCount.setVisibility(View.VISIBLE);
 
                         textViewEpisodesNumber.setText("(" + tvSeasonsMainObject.getEpisodes().size() + ")");
-                        textViewTitle.setText(originalName);
-                        textViewReleaseDate.setText(firstAirDate);
+                        if (originalName != null && !originalName.isEmpty())
+                            textViewTitle.setText(originalName);
+
+                        if (firstAirDate != null && !firstAirDate.isEmpty()) {
+                            textViewReleaseDateHeader.setVisibility(View.VISIBLE);
+                            textViewReleaseDate.setVisibility(View.VISIBLE);
+                            textViewReleaseDate.setText(firstAirDate);
+                        }
+
                         textViewTvSeasonRating.setText(String.valueOf(rating));
                         ratingBar.setRating((float) rating / 2);
-                        textViewOverview.setText(overview);
+
+                        if (overview != null && !overview.isEmpty()) {
+                            textViewOverViewHeader.setVisibility(View.VISIBLE);
+                            textViewOverview.setVisibility(View.VISIBLE);
+                            ReadMoreOption readMoreOption = new ReadMoreOption.Builder(TvSeasonDetailActivity.this)
+                                    .textLength(2, ReadMoreOption.TYPE_LINE) // OR
+                                    //.textLength(300, ReadMoreOption.TYPE_CHARACTER)
+                                    .moreLabel("MORE")
+                                    .lessLabel("LESS")
+                                    .moreLabelColor(Color.RED)
+                                    .lessLabelColor(getResources().getColor(R.color.colorAccent))
+                                    .labelUnderLine(true)
+                                    .expandAnimation(true)
+                                    .build();
+
+                            readMoreOption.addReadMoreTo(textViewOverview, overview);
+                        }
 
                         Glide.with(TvSeasonDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
@@ -518,10 +524,6 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
                                 episodesList.add(tvSeasonsMainObject.getEpisodes().get(i));
                                 tvEpisodesAdapter.notifyItemInserted(episodesList.size() - 1);
                             }
-                        }
-                        if (TextUtils.isEmpty(overview)) {
-                            textViewOverview.setVisibility(View.GONE);
-                            textViewOverViewHeader.setVisibility(View.GONE);
                         }
                     }
                 }

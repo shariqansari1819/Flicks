@@ -1,37 +1,25 @@
 package com.codebosses.flicks.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import dmax.dialog.SpotsDialog;
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
-import retrofit2.Call;
-import retrofit2.Callback;
-
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -42,10 +30,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.adapters.castandcrewadapter.CastAdapter;
 import com.codebosses.flicks.adapters.castandcrewadapter.CrewAdapter;
-
 import com.codebosses.flicks.adapters.moviesdetail.VideosAdapter;
 import com.codebosses.flicks.adapters.tvshowsdetail.EpisodePhotosAdapter;
-import com.codebosses.flicks.adapters.tvshowsdetail.TvEpisodesAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
@@ -60,20 +46,13 @@ import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
 import com.codebosses.flicks.pojo.moviespojo.ExternalId;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerResult;
-import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
-import com.codebosses.flicks.pojo.tvpojo.TvResult;
-
 import com.codebosses.flicks.pojo.tvseasons.Episode;
 import com.codebosses.flicks.utils.DateUtils;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
-import com.dd.ShadowLayout;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
+import com.devs.readmoreoption.ReadMoreOption;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -83,6 +62,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class EpisodeDetailActivity extends AppCompatActivity {
 
@@ -97,8 +84,6 @@ public class EpisodeDetailActivity extends AppCompatActivity {
 //    View viewBlur;
     @BindView(R.id.imageViewCoverTvEpisode)
     CrescentoImageView imageViewCover;
-    @BindView(R.id.shadowPlayButtonTvEpisode)
-    ShadowLayout shadowLayoutPlayButton;
     @BindView(R.id.imageButtonPlayTvEpisode)
     AppCompatImageButton imageButtonPlay;
     @BindView(R.id.textViewTitleTvEpisodeDetail)
@@ -142,7 +127,9 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     @BindView(R.id.textViewVideosCountTvEpisodeDetail)
     TextView textViewVideosCount;
     @BindView(R.id.textViewWatchFullMovie)
-    AppCompatTextView textViewWatchFullMovie;
+    AppCompatButton buttonWatchFullMovie;
+    @BindView(R.id.textViewImagesCountEpisodeDetail)
+    TextView textViewImagesCount;
     private AlertDialog alertDialog;
 
     //    Retrofit calls....
@@ -190,6 +177,8 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewRegularFont(textViewPhotos);
         fontUtils.setTextViewRegularFont(textViewVideosHeader);
         fontUtils.setTextViewRegularFont(textViewVideosCount);
+        fontUtils.setButtonRegularFont(buttonWatchFullMovie);
+        fontUtils.setTextViewRegularFont(textViewImagesCount);
 
         //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(EpisodeDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -322,6 +311,8 @@ public class EpisodeDetailActivity extends AppCompatActivity {
                         if (response.body().getStills().size() > 0) {
                             recyclerViewPhotos.setVisibility(View.VISIBLE);
                             textViewPhotos.setVisibility(View.VISIBLE);
+                            textViewImagesCount.setVisibility(View.GONE);
+                            textViewImagesCount.setText("(" + response.body().getStills().size() + ")");
                             for (int i = 0; i < response.body().getStills().size(); i++) {
                                 episodePhotosDataList.add(response.body().getStills().get(i));
                                 episodePhotosAdapter.notifyItemInserted(i);
@@ -329,6 +320,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
                         } else {
                             recyclerViewPhotos.setVisibility(View.GONE);
                             textViewPhotos.setVisibility(View.GONE);
+                            textViewImagesCount.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -368,22 +360,45 @@ public class EpisodeDetailActivity extends AppCompatActivity {
 //            }
 //        }
 //        viewBlur.setVisibility(View.VISIBLE);
-        shadowLayoutPlayButton.setVisibility(View.VISIBLE);
+        String name = episode.getName();
+        String releaseDate = episode.getAir_date();
+        double rating = episode.getVote_average();
+        String overview = episode.getOverview();
+
+        imageButtonPlay.setVisibility(View.VISIBLE);
         textViewTitle.setVisibility(View.VISIBLE);
         cardViewThumbnail.setVisibility(View.VISIBLE);
         ratingBar.setVisibility(View.VISIBLE);
         textViewAudienceRating.setVisibility(View.VISIBLE);
         textViewTvShowsRating.setVisibility(View.VISIBLE);
-        textViewOverViewHeader.setVisibility(View.VISIBLE);
         textViewVoteCount.setVisibility(View.VISIBLE);
-        textViewReleaseDateHeader.setVisibility(View.VISIBLE);
 
-        textViewTitle.setText(episode.getName());
-        textViewReleaseDate.setText(episode.getAir_date());
-        double rating = episode.getVote_average();
+        if (name != null && !name.isEmpty()) {
+            textViewTitle.setText(episode.getName());
+        }
+        if (releaseDate != null && !releaseDate.isEmpty()) {
+            textViewReleaseDate.setText(episode.getAir_date());
+            textViewReleaseDate.setVisibility(View.VISIBLE);
+            textViewReleaseDateHeader.setVisibility(View.VISIBLE);
+        }
         textViewTvShowsRating.setText(String.valueOf(rating));
         ratingBar.setRating((float) rating / 2);
-        textViewOverview.setText(episode.getOverview());
+        if (overview != null && !overview.isEmpty()) {
+            textViewOverViewHeader.setVisibility(View.VISIBLE);
+            textViewOverview.setVisibility(View.VISIBLE);
+            ReadMoreOption readMoreOption = new ReadMoreOption.Builder(EpisodeDetailActivity.this)
+                    .textLength(2, ReadMoreOption.TYPE_LINE) // OR
+                    //.textLength(300, ReadMoreOption.TYPE_CHARACTER)
+                    .moreLabel("MORE")
+                    .lessLabel("LESS")
+                    .moreLabelColor(Color.RED)
+                    .lessLabelColor(getResources().getColor(R.color.colorAccent))
+                    .labelUnderLine(true)
+                    .expandAnimation(true)
+                    .build();
+
+            readMoreOption.addReadMoreTo(textViewOverview, overview);
+        }
         Glide.with(EpisodeDetailActivity.this)
                 .load(EndpointUrl.POSTER_BASE_URL + "/" + episode.getStill_path())
                 .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
@@ -412,9 +427,9 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(episode.getAir_date());
             if (!DateUtils.isAfterToday(date.getTime())) {
-                textViewWatchFullMovie.setVisibility(View.VISIBLE);
+                buttonWatchFullMovie.setVisibility(View.VISIBLE);
             } else {
-                textViewWatchFullMovie.setVisibility(View.GONE);
+                buttonWatchFullMovie.setVisibility(View.GONE);
             }
         } catch (Exception e) {
 
@@ -448,6 +463,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
 
     private void getTvExternalId(String tvShowId) {
         alertDialog = new SpotsDialog.Builder().setContext(this).build();
+        alertDialog.setMessage("Extracting episode source...");
         alertDialog.show();
         externalIdCall = ApiClient.getClient().create(Api.class).getTvExternalId(tvShowId, EndpointKeys.THE_MOVIE_DB_API_KEY);
         externalIdCall.enqueue(new Callback<ExternalId>() {
@@ -470,6 +486,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     }
 
     private void generateTicket(String tvShowId, String seasonNumber) {
+        alertDialog.setMessage("Please wait...");
         AndroidNetworking.get("https://api6.ipify.org/")
                 .build()
                 .getAsString(new StringRequestListener() {
