@@ -3,6 +3,7 @@ package com.codebosses.flicks.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.view.View;
@@ -20,7 +21,13 @@ import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
+import static com.thefinestartist.utils.content.ContextUtil.getApplicationContext;
+import static com.thefinestartist.utils.content.ContextUtil.getResources;
 
 public class ValidUtils {
 
@@ -262,4 +269,5 @@ public class ValidUtils {
         }
         win.setAttributes(winParams);
     }
+
 }

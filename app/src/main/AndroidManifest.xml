@@ -21,10 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
+        <activity android:name=".activities.SignUpActivity"></activity>
+        <activity android:name=".activities.AddInfoActivity" />
+        <activity android:name=".activities.LoginActivity" />
         <activity
             android:name=".activities.OfflineMediaPlayerActivity"
-            android:parentActivityName=".activities.OfflineActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:parentActivityName=".activities.OfflineActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".activities.OfflineActivity"

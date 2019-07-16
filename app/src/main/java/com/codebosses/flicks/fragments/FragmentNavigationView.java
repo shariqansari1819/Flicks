@@ -1,5 +1,6 @@
 package com.codebosses.flicks.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.codebosses.flicks.R;
+import com.codebosses.flicks.activities.LoginActivity;
 import com.codebosses.flicks.adapters.exapndablerecyclerviewadapter.CategoryAdapter;
 import com.codebosses.flicks.pojo.eventbus.EventBusExpandItems;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
@@ -34,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FragmentNavigationView extends Fragment {
 
@@ -192,6 +195,12 @@ public class FragmentNavigationView extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusExpandItem(EventBusExpandItems eventBusExpandItems) {
         EventBus.getDefault().post(new EventBusSelectedItem(eventBusExpandItems.getTitle()));
+    }
+
+    @OnClick({R.id.textViewAlreadyHaveAccountNavigation, R.id.textViewLogIn})
+    public void onLogInClick(View view) {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
     }
 
 }

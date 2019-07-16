@@ -195,6 +195,13 @@
     <string name="thriller_tv_shows">Thrill Tv Shows</string>
     <string name="comedy_tv_shows">Comedy Tv Shows</string>
 
+    <!--Login activity strings-->
+    <string name="welcome">Welcome!</string>
+    <string name="login_your_account">Login to your account</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+
     <string name="view_all">View All</string>
     <string name="watch_full_episode">Watch Full Episode</string>
 

@@ -34,6 +34,7 @@ public class OfflineMediaPlayerActivity extends AppCompatActivity {
             betterVideoPlayer.setSource(Uri.parse(videoPath));
             betterVideoPlayer.enableSwipeGestures();
             betterVideoPlayer.setAutoPlay(true);
+            betterVideoPlayer.enableControls();
         }
 
     }
