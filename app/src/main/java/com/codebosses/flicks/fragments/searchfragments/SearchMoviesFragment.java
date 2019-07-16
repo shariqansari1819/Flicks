@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -183,8 +184,15 @@ public class SearchMoviesFragment extends Fragment {
                         if (moviesMainObject.getTotal_results() > 0) {
                             textViewError.setVisibility(View.GONE);
                             for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                searchMoviesResultList.add(moviesMainObject.getResults().get(i));
-                                moviesAdapter.notifyItemInserted(searchMoviesResultList.size() - 1);
+                                try {
+                                    if (!moviesMainObject.getResults().get(i).getTitle().equalsIgnoreCase("venom") &&
+                                            !moviesMainObject.getResults().get(i).getRelease_date().equalsIgnoreCase("2018-09-28")) {
+                                        searchMoviesResultList.add(moviesMainObject.getResults().get(i));
+                                        moviesAdapter.notifyItemInserted(searchMoviesResultList.size() - 1);
+                                    }
+                                }catch (Exception e){
+
+                                }
                             }
                         } else {
                             textViewError.setVisibility(View.VISIBLE);

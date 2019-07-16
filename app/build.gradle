@@ -69,6 +69,7 @@ dependencies {
     implementation 'com.github.devendroid:ReadMoreOption:1.0.2'
     implementation 'com.github.halilozercan:BetterVideoPlayer:kotlin-SNAPSHOT'
     implementation project(':sliding-drawer-layout')
+    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'

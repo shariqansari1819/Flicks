@@ -25,6 +25,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -58,21 +59,26 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
     public void onBindViewHolder(@NonNull CelebMoviesAdapter.CelebMoviesHolder holder, int position) {
         CelebMoviesData celebMoviesData = celebMoviesDataFilteredList.get(position);
         if (celebMoviesData != null) {
-            if (celebMoviesData.getPoster_path() != null && !celebMoviesData.getPoster_path().equals(""))
-                Glide.with(context)
-                        .load(EndpointUrl.POSTER_BASE_URL + "/" + celebMoviesData.getPoster_path())
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                        .thumbnail(0.1f)
-                        .into(holder.imageViewThumbnail);
-            String title = celebMoviesData.getTitle();
-            if (title != null) {
-//                if (title.length() > 17)
-//                    title = title.substring(0, 17) + "...";
-                holder.textViewMovieTitle.setText(title);
+            try {
+                if (!celebMoviesData.getTitle().equalsIgnoreCase("venom") &&
+                        !celebMoviesData.getRelease_date().equalsIgnoreCase("2018-09-28")) {
+                    if (celebMoviesData.getPoster_path() != null && !celebMoviesData.getPoster_path().equals(""))
+                        Glide.with(context)
+                                .load(EndpointUrl.POSTER_BASE_URL + "/" + celebMoviesData.getPoster_path())
+                                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                .thumbnail(0.1f)
+                                .into(holder.imageViewThumbnail);
+                    String title = celebMoviesData.getTitle();
+                    if (title != null) {
+                        holder.textViewMovieTitle.setText(title);
+                    }
+                    holder.textViewMovieYear.setText(celebMoviesData.getRelease_date());
+                    holder.textViewRatingCount.setText(String.valueOf(celebMoviesData.getVote_average()));
+                    holder.textViewVoteCount.setText(String.valueOf(celebMoviesData.getVote_count()));
+                }
+            }catch (Exception e){
+
             }
-            holder.textViewMovieYear.setText(celebMoviesData.getRelease_date());
-            holder.textViewRatingCount.setText(String.valueOf(celebMoviesData.getVote_average()));
-            holder.textViewVoteCount.setText(String.valueOf(celebMoviesData.getVote_count()));
         }
     }
 

@@ -44,6 +44,7 @@ import com.codebosses.flicks.pojo.eventbus.EventBusPagerImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
+import com.devs.readmoreoption.ReadMoreOption;
 import com.huanhailiuxin.coolviewpager.CoolViewPager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -350,9 +351,21 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                         if (!celebrityDetailMainObject.getBiography().isEmpty()) {
                             textViewStoryLineHeader.setVisibility(View.VISIBLE);
                             textViewStoryLineHeader.setText("About " + celebrityDetailMainObject.getName());
-                            textViewOverview.setText(celebrityDetailMainObject.getBiography());
+                            ReadMoreOption readMoreOption = new ReadMoreOption.Builder(CelebrityDetailActivity.this)
+                                    .textLength(2, ReadMoreOption.TYPE_LINE) // OR
+                                    //.textLength(300, ReadMoreOption.TYPE_CHARACTER)
+                                    .moreLabel("MORE")
+                                    .lessLabel("LESS")
+                                    .moreLabelColor(Color.RED)
+                                    .lessLabelColor(getResources().getColor(R.color.colorAccent))
+                                    .labelUnderLine(true)
+                                    .expandAnimation(true)
+                                    .build();
+
+                            readMoreOption.addReadMoreTo(textViewOverview, celebrityDetailMainObject.getBiography());
                         } else {
                             textViewStoryLineHeader.setVisibility(View.GONE);
+                            textViewOverview.setVisibility(View.GONE);
                         }
 
                     }

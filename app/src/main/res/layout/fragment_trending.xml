@@ -6,20 +6,29 @@
     android:layout_height="match_parent"
     tools:context="com.codebosses.flicks.fragments.trending.FragmentTrending">
 
-    <com.google.android.material.tabs.TabLayout
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
         android:id="@+id/tabLayoutTrending"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_48sdp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/_12sdp"
+        android:paddingRight="@dimen/_12sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabBackground="@android:color/transparent"
-        app:tabGravity="center"
-        app:tabTextColor="@color/colorWhiteTransparent"
-        app:tabIndicatorColor="@color/colorWhite"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/colorWhite" />
+        app:stl_defaultTabTextColor="@color/colorWhite"
+        app:stl_defaultTabTextHorizontalPadding="18dp"
+        app:stl_distributeEvenly="true"
+        app:stl_defaultTabTextSize="@dimen/_10ssp"
+        app:stl_dividerColor="@android:color/transparent"
+        app:stl_dividerThickness="0dp"
+        app:stl_indicatorColor="#26000000"
+        app:stl_indicatorCornerRadius="18dp"
+        app:stl_indicatorGravity="center"
+        app:stl_indicatorInterpolation="smart"
+        app:stl_indicatorThickness="36dp"
+        app:stl_underlineColor="@android:color/transparent"
+        app:stl_underlineThickness="0dp" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerTrending"

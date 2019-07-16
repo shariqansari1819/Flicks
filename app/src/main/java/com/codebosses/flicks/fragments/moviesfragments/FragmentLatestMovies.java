@@ -163,8 +163,15 @@ public class FragmentLatestMovies extends BaseFragment {
                         totalPages = moviesMainObject.getTotal_pages();
                         if (moviesMainObject.getTotal_results() > 0) {
                             for (int i = 0; i < moviesMainObject.getResults().size(); i++) {
-                                latestMoviesList.add(moviesMainObject.getResults().get(i));
-                                moviesAdapter.notifyItemInserted(latestMoviesList.size() - 1);
+                                try {
+                                    if (!moviesMainObject.getResults().get(i).getTitle().equalsIgnoreCase("venom") &&
+                                            !moviesMainObject.getResults().get(i).getRelease_date().equalsIgnoreCase("2018-09-28")) {
+                                        latestMoviesList.add(moviesMainObject.getResults().get(i));
+                                        moviesAdapter.notifyItemInserted(latestMoviesList.size() - 1);
+                                    }
+                                }catch (Exception e){
+
+                                }
                             }
                         }
                     }

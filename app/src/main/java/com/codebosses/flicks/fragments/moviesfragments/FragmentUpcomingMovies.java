@@ -162,8 +162,15 @@ public class FragmentUpcomingMovies extends BaseFragment {
                             List<MoviesResult> moviesResults = moviesMainObject.getResults();
                             SortingUtils.sortMovieByDate(moviesResults);
                             for (int i = 0; i < moviesResults.size(); i++) {
-                                upcomingMoviesList.add(moviesResults.get(i));
-                                moviesAdapter.notifyItemInserted(upcomingMoviesList.size() - 1);
+                                try {
+                                    if (!moviesMainObject.getResults().get(i).getTitle().equalsIgnoreCase("venom") &&
+                                            !moviesMainObject.getResults().get(i).getRelease_date().equalsIgnoreCase("2018-09-28")) {
+                                        upcomingMoviesList.add(moviesResults.get(i));
+                                        moviesAdapter.notifyItemInserted(upcomingMoviesList.size() - 1);
+                                    }
+                                }catch (Exception e){
+
+                                }
                             }
                         }
                     }

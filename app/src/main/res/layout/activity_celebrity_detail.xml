@@ -15,7 +15,7 @@
         <com.huanhailiuxin.coolviewpager.CoolViewPager
             android:id="@+id/coolViewPagerCelebrityDetail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_175sdp"
+            android:layout_height="@dimen/_190sdp"
             android:background="@color/colorBlack"
             android:visibility="invisible"
             app:cvp_autoscroll="true"
@@ -31,7 +31,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageVieCelebImageCelebrityDetail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_175sdp"
+            android:layout_height="@dimen/_190sdp"
             android:scaleType="centerCrop"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         <View
             android:id="@+id/viewBlurCelebrityDetail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_175sdp"
+            android:layout_height="@dimen/_190sdp"
             android:background="#33000000"
             android:visibility="invisible"
             app:layout_constraintTop_toTopOf="parent" />

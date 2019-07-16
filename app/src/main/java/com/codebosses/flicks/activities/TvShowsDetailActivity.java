@@ -841,12 +841,14 @@ public class TvShowsDetailActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusGenreClick(EventBusMovieDetailGenreClick eventBusMovieDetailGenreClick) {
-        Intent intent = new Intent(this, GenreMoviesActivity.class);
-        intent.putExtra(EndpointKeys.GENRE_TYPE, StringMethods.getTvShowGenreTypeById(genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId()));
-        intent.putExtra(EndpointKeys.GENRE_ID, genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId());
-        intent.putExtra(EndpointKeys.SORT_TYPE, Constants.POPULARITY_DESC);
-        intent.putExtra(EndpointKeys.TYPE, EndpointKeys.TV_SHOWS);
-        startActivity(intent);
+        if(!StringMethods.getTvShowGenreTypeById(genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId()).equals("")) {
+            Intent intent = new Intent(this, GenreMoviesActivity.class);
+            intent.putExtra(EndpointKeys.GENRE_TYPE, StringMethods.getTvShowGenreTypeById(genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId()));
+            intent.putExtra(EndpointKeys.GENRE_ID, genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId());
+            intent.putExtra(EndpointKeys.SORT_TYPE, Constants.POPULARITY_DESC);
+            intent.putExtra(EndpointKeys.TYPE, EndpointKeys.TV_SHOWS);
+            startActivity(intent);
+        }
     }
 
     private void startImageSliderActivity(int position) {
