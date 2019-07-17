@@ -1,0 +1,91 @@
+package com.codebosses.flicks.database.entities;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
+public class TvShowEntity {
+
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private int id;
+    @ColumnInfo(name = "name")
+    private String name;
+    @ColumnInfo(name = "first_air_date")
+    private String firstAirDate;
+    @ColumnInfo(name = "poster_path")
+    private String posterPath;
+    @ColumnInfo(name = "overview")
+    private String overview;
+    @ColumnInfo(name = "vote_average")
+    private double voteAverage;
+    @ColumnInfo(name = "vote_count")
+    private int voteCount;
+    @ColumnInfo(name = "popularity")
+    private double popularity;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFirstAirDate() {
+        return firstAirDate;
+    }
+
+    public void setFirstAirDate(String firstAirDate) {
+        this.firstAirDate = firstAirDate;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
+    }
+
+    public double getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(double popularity) {
+        this.popularity = popularity;
+    }
+}

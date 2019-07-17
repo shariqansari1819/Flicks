@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,8 @@ import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.common.StringMethods;
+import com.codebosses.flicks.database.DatabaseClient;
+import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
@@ -179,6 +182,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
     TextView textViewCompaniesHeader;
     @BindView(R.id.recyclerViewCompaniesMoviesDetail)
     RecyclerView recyclerViewCompanies;
+    @BindView(R.id.imageViewFavoriteMoviesDetail)
+    AppCompatImageView imageViewFavorite;
+    @BindView(R.id.imageViewUnFavoriteMoviesDetail)
+    AppCompatImageView imageViewUnFavorite;
     private AlertDialog alertDialog;
 
     //    Retrofit calls....
@@ -192,6 +199,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private Call<ExternalId> externalIdCall;
 
     //    Instance fields....
+    private MovieDetailMainObject movieDetailMainObject;
     private List<MoviesTrailerResult> moviesTrailerResultList = new ArrayList<>();
     private List<CastData> castDataList = new ArrayList<>();
     private List<CrewData> crewDataList = new ArrayList<>();
@@ -219,6 +227,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
     //    Ad mob fields....
     private InterstitialAd mInterstitialAd;
 
+    //    Room database fields....
+    private DatabaseClient databaseClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -226,6 +237,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
         ValidUtils.transparentStatusAndNavigation(this);
 //        MoviesDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
+
+//        Initialization of room database field....
+        databaseClient = DatabaseClient.getDatabaseClient(this);
 
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
@@ -523,7 +537,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
             public void onResponse(Call<MovieDetailMainObject> call, retrofit2.Response<MovieDetailMainObject> response) {
                 circularProgressBarMoviesDetail.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
-                    MovieDetailMainObject movieDetailMainObject = response.body();
+                    movieDetailMainObject = response.body();
                     if (movieDetailMainObject != null) {
 
                         String originalTitle = movieDetailMainObject.getOriginal_title();
@@ -534,6 +548,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         String backdropPath = movieDetailMainObject.getBackdrop_path();
                         Integer runtime = movieDetailMainObject.getRuntime();
                         genreList = movieDetailMainObject.getGenres();
+
+                        isMovieFavorite();
 
                         if (originalTitle != null && !originalTitle.isEmpty()) {
                             textViewTitle.setText(originalTitle);
@@ -862,6 +878,17 @@ public class MoviesDetailActivity extends AppCompatActivity {
         getMovieExternalId(movieId);
     }
 
+    @OnClick(R.id.imageViewFavoriteMoviesDetail)
+    public void onFavoriteClick(View view) {
+        new DeleteFromFavoriteTask().execute(Integer.parseInt(movieId));
+    }
+
+    @OnClick(R.id.imageViewUnFavoriteMoviesDetail)
+    public void onUnFavoriteClick(View view) {
+        MovieEntity movieEntity = new MovieEntity(Integer.parseInt(movieId), movieDetailMainObject.getPoster_path(), movieDetailMainObject.getTitle(), movieDetailMainObject.getOverview(), movieDetailMainObject.getRelease_date(), movieDetailMainObject.getPopularity(), movieDetailMainObject.getVote_average());
+        new AddToFavoriteListTask().execute(movieEntity);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusPlayVideo(EventBusPlayVideo eventBusPlayVideo) {
         if (moviesTrailerResultList.size() > 0)
@@ -1042,6 +1069,60 @@ public class MoviesDetailActivity extends AppCompatActivity {
         intent.putExtra(EndpointKeys.CELEB_NAME, name);
         intent.putExtra(EndpointKeys.CELEB_IMAGE, image);
         startActivity(intent);
+    }
+
+    private void isMovieFavorite() {
+        new GetMovieByIdTask().execute(Integer.parseInt(movieId));
+    }
+
+    class GetMovieByIdTask extends AsyncTask<Integer, Void, MovieEntity> {
+
+        @Override
+        protected MovieEntity doInBackground(Integer... integers) {
+            return databaseClient.getFlicksDatabase().getFlicksDao().getFavoriteMovieById(integers[0]);
+        }
+
+        @Override
+        protected void onPostExecute(MovieEntity aVoid) {
+            super.onPostExecute(aVoid);
+            if (aVoid != null) {
+                imageViewFavorite.setVisibility(View.VISIBLE);
+                imageViewUnFavorite.setVisibility(View.GONE);
+            } else {
+                imageViewFavorite.setVisibility(View.GONE);
+                imageViewUnFavorite.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    class AddToFavoriteListTask extends AsyncTask<MovieEntity, Void, Void> {
+
+        @Override
+        protected Void doInBackground(MovieEntity... movieEntities) {
+            databaseClient.getFlicksDatabase().getFlicksDao().insertMovie(movieEntities[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            isMovieFavorite();
+        }
+    }
+
+    class DeleteFromFavoriteTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteMovieById(integers[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            isMovieFavorite();
+        }
     }
 
 }
