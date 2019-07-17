@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:730943968736:android:3256e78b67ceaff6",
+        "mobilesdk_app_id": "1:730943968736:android:dd7407ec01f8804e",
         "android_client_info": {
-          "package_name": "com.codebosses.flicksapp"
+          "package_name": "com.dev.codebosses.flicksapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "730943968736-tg72muoh7i957047gqjmup0hs2avub2m.apps.googleusercontent.com",
+          "client_id": "730943968736-jr8qgqr08t6f07dt9o1pon6s6vpjo5jd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.codebosses.flicksapp",
+            "package_name": "com.dev.codebosses.flicksapp",
             "certificate_hash": "e03f499252104cc1927e3cb7b07470b383f8a9d8"
           }
         },
@@ -33,20 +33,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "730943968736-j8gqqreka9rd376o1sof89drqg8s68p7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

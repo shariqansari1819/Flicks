@@ -715,7 +715,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSelectedItem(EventBusSelectedItem eventBusSelectedItem) {
         drawerLayoutMain.closeDrawer(true);
-        setAppBarTitle(eventBusSelectedItem.getTitle());
+        if (!eventBusSelectedItem.getTitle().equalsIgnoreCase(EndpointKeys.OFFLINE))
+            setAppBarTitle(eventBusSelectedItem.getTitle());
 //        interstitialAddCounter++;
 //        showAdOnListClick();
         switch (eventBusSelectedItem.getTitle()) {
