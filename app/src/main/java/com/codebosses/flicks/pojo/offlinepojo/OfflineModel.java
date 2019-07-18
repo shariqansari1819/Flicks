@@ -2,14 +2,23 @@ package com.codebosses.flicks.pojo.offlinepojo;
 
 public class OfflineModel {
 
-    private String path, name, thumbnail;
+    private String path, name, thumbnail,date;
     private long duration;
 
-    public OfflineModel(String path, String name, long duration, String thumbnail) {
+    public OfflineModel(String path, String name, long duration, String thumbnail,String date) {
         this.path = path;
         this.name = name;
         this.duration = duration;
         this.thumbnail = thumbnail;
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getThumbnail() {

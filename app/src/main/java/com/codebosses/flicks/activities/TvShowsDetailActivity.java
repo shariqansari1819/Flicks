@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -33,6 +35,9 @@ import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.common.StringMethods;
+import com.codebosses.flicks.database.DatabaseClient;
+import com.codebosses.flicks.database.entities.MovieEntity;
+import com.codebosses.flicks.database.entities.TvShowEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.castandcrew.CastAndCrewMainObject;
@@ -161,6 +166,10 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     TextView textViewCompaniesHeader;
     @BindView(R.id.recyclerViewCompaniesTvShowsDetail)
     RecyclerView recyclerViewCompany;
+    @BindView(R.id.imageViewFavoriteTvShowsDetail)
+    AppCompatImageView imageViewFavorite;
+    @BindView(R.id.imageViewUnFavoriteTvShowsDetail)
+    AppCompatImageView imageViewUnFavorite;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -183,6 +192,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     private List<Genre> genreList = new ArrayList<>();
     private String tvShowId, tvShowTitle;
     private double rating;
+    private TvShowsDetailMainObject tvShowsDetailMainObject;
     private int scrollingCounter = 0;
 
     //    Adapter fields....
@@ -198,6 +208,9 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     //    Font fields....
     private FontUtils fontUtils;
 
+    //    Room database fields....
+    private DatabaseClient databaseClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,6 +218,9 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         ValidUtils.transparentStatusAndNavigation(this);
 //        TvShowsDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
+
+        //        Initialization of room database field....
+        databaseClient = DatabaseClient.getDatabaseClient(this);
 
 //        Setting custom fonts....
         fontUtils = FontUtils.getFontUtils(this);
@@ -515,7 +531,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
             public void onResponse(Call<TvShowsDetailMainObject> call, retrofit2.Response<TvShowsDetailMainObject> response) {
                 circularProgressBarMoviesDetail.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
-                    TvShowsDetailMainObject tvShowsDetailMainObject = response.body();
+                    tvShowsDetailMainObject = response.body();
                     if (tvShowsDetailMainObject != null) {
 
                         String originalName = tvShowsDetailMainObject.getOriginal_name();
@@ -524,6 +540,8 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         String tvShowPosterPath = tvShowsDetailMainObject.getPoster_path();
                         String backDropPath = tvShowsDetailMainObject.getBackdrop_path();
                         genreList = tvShowsDetailMainObject.getGenres();
+
+                        isTvShowFavorite();
 
                         if (originalName != null && !originalName.isEmpty()) {
                             textViewTitle.setText(originalName);
@@ -826,6 +844,17 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.imageViewFavoriteTvShowsDetail)
+    public void onFavoriteClick(View view) {
+        new DeleteFromFavoriteTask().execute(Integer.parseInt(tvShowId));
+    }
+
+    @OnClick(R.id.imageViewUnFavoriteTvShowsDetail)
+    public void onUnFavoriteClick(View view) {
+        TvShowEntity tvShowEntity = new TvShowEntity(Integer.parseInt(tvShowId), tvShowsDetailMainObject.getName(), tvShowsDetailMainObject.getFirst_air_date(), tvShowsDetailMainObject.getPoster_path(), tvShowsDetailMainObject.getOverview(), tvShowsDetailMainObject.getVote_average(), tvShowsDetailMainObject.getVote_count(), tvShowsDetailMainObject.getPopularity());
+        new AddToFavoriteListTask().execute(tvShowEntity);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusPlayVideo(EventBusPlayVideo eventBusPlayVideo) {
         if (moviesTrailerResultList.size() > 0)
@@ -841,7 +870,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusGenreClick(EventBusMovieDetailGenreClick eventBusMovieDetailGenreClick) {
-        if(!StringMethods.getTvShowGenreTypeById(genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId()).equals("")) {
+        if (!StringMethods.getTvShowGenreTypeById(genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId()).equals("")) {
             Intent intent = new Intent(this, GenreMoviesActivity.class);
             intent.putExtra(EndpointKeys.GENRE_TYPE, StringMethods.getTvShowGenreTypeById(genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId()));
             intent.putExtra(EndpointKeys.GENRE_ID, genreList.get(eventBusMovieDetailGenreClick.getPosition()).getId());
@@ -866,6 +895,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     private void startTrailerActivity(String key) {
         Intent intent = new Intent(this, TrailerActivity.class);
         intent.putExtra(EndpointKeys.YOUTUBE_KEY, key);
+        intent.putExtra("name", tvShowTitle);
         startActivity(intent);
     }
 
@@ -925,6 +955,60 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         intent.putExtra(EndpointKeys.CELEB_NAME, name);
         intent.putExtra(EndpointKeys.CELEB_IMAGE, image);
         startActivity(intent);
+    }
+
+    private void isTvShowFavorite() {
+        new GetTvShowByIdTask().execute(Integer.parseInt(tvShowId));
+    }
+
+    class GetTvShowByIdTask extends AsyncTask<Integer, Void, TvShowEntity> {
+
+        @Override
+        protected TvShowEntity doInBackground(Integer... integers) {
+            return databaseClient.getFlicksDatabase().getFlicksDao().getFavoriteTvShowById(integers[0]);
+        }
+
+        @Override
+        protected void onPostExecute(TvShowEntity aVoid) {
+            super.onPostExecute(aVoid);
+            if (aVoid != null) {
+                imageViewFavorite.setVisibility(View.VISIBLE);
+                imageViewUnFavorite.setVisibility(View.GONE);
+            } else {
+                imageViewFavorite.setVisibility(View.GONE);
+                imageViewUnFavorite.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    class AddToFavoriteListTask extends AsyncTask<TvShowEntity, Void, Void> {
+
+        @Override
+        protected Void doInBackground(TvShowEntity... tvShowEntities) {
+            databaseClient.getFlicksDatabase().getFlicksDao().insertTvShow(tvShowEntities[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            isTvShowFavorite();
+        }
+    }
+
+    class DeleteFromFavoriteTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteTvShowById(integers[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            isTvShowFavorite();
+        }
     }
 
 

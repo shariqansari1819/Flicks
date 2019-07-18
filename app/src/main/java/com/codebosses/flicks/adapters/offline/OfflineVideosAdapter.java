@@ -20,7 +20,9 @@ import com.codebosses.flicks.utils.FontUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -56,6 +58,14 @@ public class OfflineVideosAdapter extends RecyclerView.Adapter<OfflineVideosAdap
                     .into(holder.imageViewOfflineThubnail);
             holder.textViewDuration.setText(DateUtils.convertSecondsToHMmSs(offlineModel.getDuration()));
             holder.textViewTitle.setText(offlineModel.getName());
+            Date modifiedDate = null;
+            try {
+                modifiedDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy").parse(offlineModel.getDate());
+            } catch (Exception e) {
+
+            }
+            String lastDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(modifiedDate);
+            holder.textViewDate.setText(lastDate);
         }
     }
 
@@ -72,6 +82,8 @@ public class OfflineVideosAdapter extends RecyclerView.Adapter<OfflineVideosAdap
         TextView textViewDuration;
         @BindView(R.id.textViewTitleRowOffline)
         TextView textViewTitle;
+        @BindView(R.id.textViewDateRowOffline)
+        TextView textViewDate;
 
         public OfflineVideosHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +91,7 @@ public class OfflineVideosAdapter extends RecyclerView.Adapter<OfflineVideosAdap
 
             FontUtils.getFontUtils(context).setTextViewRegularFont(textViewTitle);
             FontUtils.getFontUtils(context).setTextViewRegularFont(textViewDuration);
+            FontUtils.getFontUtils(context).setTextViewRegularFont(textViewDate);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

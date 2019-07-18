@@ -25,6 +25,17 @@ public class TvShowEntity {
     @ColumnInfo(name = "popularity")
     private double popularity;
 
+    public TvShowEntity(int id, String name, String firstAirDate, String posterPath, String overview, double voteAverage, int voteCount, double popularity) {
+        this.id = id;
+        this.name = name;
+        this.firstAirDate = firstAirDate;
+        this.posterPath = posterPath;
+        this.overview = overview;
+        this.voteAverage = voteAverage;
+        this.voteCount = voteCount;
+        this.popularity = popularity;
+    }
+
     public int getId() {
         return id;
     }

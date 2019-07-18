@@ -32,7 +32,6 @@
         <!--android:visibility="invisible"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarTvEpisodeDetail"
             android:layout_width="match_parent"

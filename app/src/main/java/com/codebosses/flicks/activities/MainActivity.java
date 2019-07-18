@@ -778,7 +778,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                     public void run() {
                         startActivity(new Intent(MainActivity.this, OfflineActivity.class));
                     }
-                }, 400);
+                }, 300);
 //                index = 12;
 //                selectedTab(EndpointKeys.OFFLINE);
                 break;

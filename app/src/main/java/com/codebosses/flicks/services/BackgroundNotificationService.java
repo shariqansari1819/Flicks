@@ -10,6 +10,8 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,12 +31,15 @@ import com.downloader.PRDownloader;
 import com.downloader.Progress;
 
 import java.io.File;
+import java.util.Date;
 import java.util.UUID;
 
 public class BackgroundNotificationService extends IntentService {
 
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
+    long startTime;
+    long elapsedTime = 0L;
 
     public BackgroundNotificationService() {
         super("service");
@@ -43,6 +48,10 @@ public class BackgroundNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null) {
+
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                Toast.makeText(this, "Ui Thread", Toast.LENGTH_SHORT).show();
+            }
 
             notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -65,14 +74,14 @@ public class BackgroundNotificationService extends IntentService {
                     .setAutoCancel(false);
             notificationManager.notify(0, notificationBuilder.build());
 
-            downloadVideo(intent.getStringExtra("path"),intent.getStringExtra("name"));
+            downloadVideo(intent.getStringExtra("path"), intent.getStringExtra("name"));
         }
     }
 
-    private void downloadVideo(String path,String name) {
+    private void downloadVideo(String path, String name) {
 //        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String downloadPath = Environment.getExternalStorageDirectory() + File.separator + "Flicks/videos";
-        PRDownloader.download(path, downloadPath,name + ".mp4")
+        PRDownloader.download(path, downloadPath, name + ".mp4")
                 .build()
                 .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                     @Override
@@ -96,7 +105,19 @@ public class BackgroundNotificationService extends IntentService {
                     @Override
                     public void onProgress(Progress progress) {
                         int downloadProgress = (int) ((double) (progress.currentBytes * 100) / (double) progress.totalBytes);
-                        BackgroundNotificationService.this.updateNotification(downloadProgress);
+                        if (elapsedTime > 500) {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    BackgroundNotificationService.this.updateNotification(downloadProgress);
+                                    startTime = System.currentTimeMillis();
+                                    elapsedTime = 0;
+                                }
+                            });
+//                            Log.d("Andrognito", newValue + "Progress");
+                        } else
+                            elapsedTime = new Date().getTime() - startTime;
+
                     }
                 })
                 .start(new OnDownloadListener() {

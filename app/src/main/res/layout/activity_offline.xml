@@ -12,14 +12,25 @@
         android:id="@+id/appBarOffline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="2dp"
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.intrusoft.squint.DiagonalView
+        android:id="@+id/diagonalViewMain"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        android:visibility="gone"
+        app:angle="8"
+        app:layout_constraintTop_toBottomOf="@+id/appBarOffline"
+        app:solidColor="@color/colorPrimary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewOffline"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintTop_toBottomOf="@+id/appBarOffline" />
 

@@ -178,10 +178,10 @@ public class TrailerActivity extends AppCompatActivity {
     }
 
     private void extractYoutubeDownloadUrl() {
-        Toast.makeText(this, "Downloading...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Downloading video...", Toast.LENGTH_SHORT).show();
         youTubeExtractor.extract(youtubeKey)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe((youTubeExtraction, throwable) -> bindVideoResult(youTubeExtraction, throwable));
     }
 

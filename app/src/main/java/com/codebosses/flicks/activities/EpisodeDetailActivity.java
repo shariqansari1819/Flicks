@@ -210,7 +210,6 @@ public class EpisodeDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
         if (getIntent() != null) {
             tvShowId = getIntent().getStringExtra(EndpointKeys.TV_ID);
             seasonNumber = String.valueOf(getIntent().getIntExtra(EndpointKeys.SEASON_NUMBER, -1));
@@ -221,7 +220,6 @@ public class EpisodeDetailActivity extends AppCompatActivity {
             getTvEpisodeTrailer("en-US", tvShowId, seasonNumber, episodeNumber);
             getTvEpisodePhotos("en-US", tvShowId, seasonNumber, episodeNumber);
         }
-
     }
 
     @Override
@@ -562,6 +560,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     private void startTrailerActivity(String key) {
         Intent intent = new Intent(this, TrailerActivity.class);
         intent.putExtra(EndpointKeys.YOUTUBE_KEY, key);
+        intent.putExtra("name", title);
         startActivity(intent);
     }
 

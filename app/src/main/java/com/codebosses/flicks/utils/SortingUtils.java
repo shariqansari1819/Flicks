@@ -6,6 +6,7 @@ import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
+import com.codebosses.flicks.pojo.offlinepojo.OfflineModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,7 +56,25 @@ public class SortingUtils {
                     }
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static void sortOfflineVideosByDate(List<OfflineModel> offlineModelList) {
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+            Collections.sort(offlineModelList, new Comparator<OfflineModel>() {
+                @Override
+                public int compare(OfflineModel o1, OfflineModel o2) {
+                    try {
+                        return simpleDateFormat.parse(o2.getDate()).compareTo(simpleDateFormat.parse(o1.getDate()));
+                    } catch (Exception e) {
+                        return 0;
+                    }
+                }
+            });
+        } catch (Exception e) {
 
         }
     }

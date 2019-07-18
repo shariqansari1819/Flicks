@@ -23,6 +23,7 @@ import com.codebosses.flicks.adapters.offline.OfflineVideosAdapter;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusOfflineClick;
 import com.codebosses.flicks.pojo.offlinepojo.OfflineModel;
+import com.codebosses.flicks.utils.SortingUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -166,10 +167,11 @@ public class OfflineActivity extends AppCompatActivity {
                         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                         long timeInMillisec = Long.parseLong(time);
                         retriever.release();
-                        offlineModelList.add(new OfflineModel(fileUrl, fileName, timeInMillisec, fileUrl));
-                        offlineVideosAdapter.notifyItemInserted(offlineModelList.size() - 1);
+                        offlineModelList.add(new OfflineModel(fileUrl, fileName, timeInMillisec, fileUrl, date));
                     }
                 }
+                SortingUtils.sortOfflineVideosByDate(offlineModelList);
+                offlineVideosAdapter.notifyItemRangeInserted(0, offlineModelList.size());
             } else {
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(this, "Error", duration);

@@ -11,8 +11,9 @@
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_80sdp"
         android:layout_margin="@dimen/_3sdp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:cardElevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -58,13 +59,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
-        android:text="Behind the scene"
+        android:layout_marginEnd="@dimen/_3sdp"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/_13ssp"
-        android:layout_marginEnd="@dimen/_3sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardViewThumbnailContainerRowOffline"
+        app:layout_constraintBottom_toTopOf="@+id/textViewDateRowOffline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerRowOffline"
         app:layout_constraintTop_toTopOf="@+id/cardViewThumbnailContainerRowOffline" />
+
+    <TextView
+        android:id="@+id/textViewDateRowOffline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_3sdp"
+        android:textColor="@color/colorLightGrey"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardViewThumbnailContainerRowOffline"
+        app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerRowOffline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

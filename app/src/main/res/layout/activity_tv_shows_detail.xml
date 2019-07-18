@@ -35,6 +35,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewUnFavoriteTvShowsDetail"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_action_bordered_heart"
+            app:tint="@color/colorWhite" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewFavoriteTvShowsDetail"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
@@ -42,9 +54,9 @@
             android:layout_marginEnd="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_action_bordered_heart"
-            app:tint="@color/colorWhite" />
-
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_action_solid_heart"
+            app:tint="@android:color/holo_red_light" />
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/imageButtonPlayTvShowsDetail"
             android:layout_width="@dimen/_40sdp"
