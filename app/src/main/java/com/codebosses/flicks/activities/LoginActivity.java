@@ -19,20 +19,6 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity {
 
     //    Android fields....
-    @BindView(R.id.imageViewBackLogIn)
-    AppCompatImageView imageViewBack;
-    @BindView(R.id.textViewWelcomeLogIn)
-    TextView textViewWelcome;
-    @BindView(R.id.textViewLogInAccountLogIn)
-    TextView textViewLoginAccount;
-    @BindView(R.id.editTextEmailLogIn)
-    EditText editTextEmail;
-    @BindView(R.id.editTextPasswordLogIn)
-    EditText editTextPassword;
-    @BindView(R.id.textViewForgotPassword)
-    TextView textViewForgotPassword;
-    @BindView(R.id.buttonLogIn)
-    Button buttonLogIn;
 
     //    Font fields....
     private FontUtils fontUtils;
@@ -45,13 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         StatusBarUtil.setColor(this,getResources().getColor(R.color.colorWhite));
 
 //        Setting custom font....
-        fontUtils = FontUtils.getFontUtils(this);
-        fontUtils.setTextViewBoldFont(textViewWelcome);
-        fontUtils.setTextViewBoldFont(textViewLoginAccount);
-        fontUtils.setEditTextRegularFont(editTextEmail);
-        fontUtils.setEditTextRegularFont(editTextPassword);
-        fontUtils.setTextViewRegularFont(textViewForgotPassword);
-        fontUtils.setButtonRegularFont(buttonLogIn);
+
     }
 
 

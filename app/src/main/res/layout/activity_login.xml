@@ -1,122 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nestedScrollViewLogIn"
+    android:id="@+id/constraintLayoutLogIn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
     tools:context="com.codebosses.flicks.activities.LoginActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutLogIn"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageViewBackLogIn"
-            android:layout_width="@dimen/_18sdp"
-            android:layout_height="@dimen/_18sdp"
-            android:layout_margin="@dimen/_12sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_action_back" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageViewLogoLogIn"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:src="@drawable/logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewBackLogIn" />
-
-        <TextView
-            android:id="@+id/textViewWelcomeLogIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="@string/welcome"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_15ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewLogoLogIn" />
-
-        <TextView
-            android:id="@+id/textViewLogInAccountLogIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_14ssp"
-            android:text="@string/login_your_account"
-            android:textColor="@color/colorSecondaryText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeLogIn" />
-
-        <EditText
-            android:id="@+id/editTextEmailLogIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:background="@drawable/bg_login_edittext"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:paddingStart="@dimen/_12sdp"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_12sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorPrimaryText"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLogInAccountLogIn" />
-
-        <EditText
-            android:id="@+id/editTextPasswordLogIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:background="@drawable/bg_login_edittext"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:paddingStart="@dimen/_12sdp"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_12sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorPrimaryText"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEmailLogIn" />
-
-        <TextView
-            android:id="@+id/textViewForgotPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="@string/forgot_password"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/_11ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPasswordLogIn" />
-
-        <Button
-            android:id="@+id/buttonLogIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:background="@drawable/bg_login_button"
-            android:text="@string/login"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintTop_toBottomOf="@+id/textViewForgotPassword" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
