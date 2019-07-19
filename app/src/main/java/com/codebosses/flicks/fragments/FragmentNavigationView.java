@@ -8,9 +8,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.codebosses.flicks.FlicksApplication;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.LoginActivity;
+import com.codebosses.flicks.activities.MainActivity;
 import com.codebosses.flicks.adapters.exapndablerecyclerviewadapter.CategoryAdapter;
+import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusExpandItems;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
 import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryHeader;
@@ -18,6 +23,7 @@ import com.codebosses.flicks.pojo.expandrecyclerviewpojo.CategoryItem;
 import com.codebosses.flicks.utils.FontUtils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +44,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FragmentNavigationView extends Fragment {
 
@@ -52,6 +60,16 @@ public class FragmentNavigationView extends Fragment {
     TextView textViewAlreadyHaveAccount;
     @BindView(R.id.textViewLogIn)
     TextView textViewLogIn;
+    @BindView(R.id.constraintUserInfoNavigation)
+    ConstraintLayout constraintLayoutUserInfo;
+    @BindView(R.id.frameLayoutLogoNavigation)
+    ConstraintLayout constraintLayoutLogo;
+    @BindView(R.id.imageViewProfileNavigation)
+    CircleImageView imageViewProfile;
+    @BindView(R.id.textViewNameNavigation)
+    TextView textViewName;
+    @BindView(R.id.buttonLogOutNavigation)
+    Button buttonLogOut;
 
     //    Adapter fields....
     CategoryAdapter adapter;
@@ -93,6 +111,7 @@ public class FragmentNavigationView extends Fragment {
         fontUtils.setTextViewRegularFont(textViewAlreadyHaveAccount);
         fontUtils.setTextViewBoldFont(textViewLogIn);
         fontUtils.setButtonRegularFont(buttonSignUp);
+        fontUtils.setTextViewRegularFont(textViewName);
 
 //        Disabling default animation of recyclerview....
         RecyclerView.ItemAnimator animator = recyclerViewNavigation.getItemAnimator();
@@ -108,6 +127,20 @@ public class FragmentNavigationView extends Fragment {
         }
 
         EventBus.getDefault().register(this);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            constraintLayoutUserInfo.setVisibility(View.VISIBLE);
+            constraintLayoutLogo.setVisibility(View.INVISIBLE);
+            Glide.with(this)
+                    .load(FlicksApplication.getStringValue(EndpointKeys.USER_IMAGE))
+                    .apply(new RequestOptions().placeholder(R.drawable.avatar))
+                    .thumbnail(0.1f)
+                    .into(imageViewProfile);
+            textViewName.setText(FlicksApplication.getStringValue(EndpointKeys.USER_NAME));
+        } else {
+            constraintLayoutUserInfo.setVisibility(View.INVISIBLE);
+            constraintLayoutLogo.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -203,4 +236,11 @@ public class FragmentNavigationView extends Fragment {
         startActivity(intent);
     }
 
+    @OnClick(R.id.buttonLogOutNavigation)
+    public void onLogOutClick(View view) {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 }

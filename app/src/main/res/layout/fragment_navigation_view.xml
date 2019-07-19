@@ -17,6 +17,7 @@
         android:background="@color/colorPrimary"
         android:paddingStart="@dimen/_12sdp"
         android:paddingEnd="@dimen/_12sdp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -75,6 +76,52 @@
             app:layout_constraintBottom_toBottomOf="@+id/textViewAlreadyHaveAccountNavigation"
             app:layout_constraintStart_toEndOf="@+id/textViewAlreadyHaveAccountNavigation"
             app:layout_constraintTop_toTopOf="@+id/textViewAlreadyHaveAccountNavigation" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintUserInfoNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_160sdp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewProfileNavigation"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:src="@drawable/boy_avatar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewNameNavigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewProfileNavigation"
+            app:layout_constraintTop_toTopOf="@+id/imageViewProfileNavigation" />
+
+        <Button
+            android:id="@+id/buttonLogOutNavigation"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_sign_up_sidebar_button"
+            android:text="@string/sign_out"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="@+id/textViewNameNavigation"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNameNavigation" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

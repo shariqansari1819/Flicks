@@ -64,6 +64,7 @@ import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.devs.readmoreoption.ReadMoreOption;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -211,6 +212,9 @@ public class TvShowsDetailActivity extends AppCompatActivity {
     //    Room database fields....
     private DatabaseClient databaseClient;
 
+    //    Firebase fields....
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,6 +222,9 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         ValidUtils.transparentStatusAndNavigation(this);
 //        TvShowsDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
+
+//        Firebase fields initialization....
+        firebaseAuth = FirebaseAuth.getInstance();
 
         //        Initialization of room database field....
         databaseClient = DatabaseClient.getDatabaseClient(this);
@@ -851,8 +858,13 @@ public class TvShowsDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.imageViewUnFavoriteTvShowsDetail)
     public void onUnFavoriteClick(View view) {
-        TvShowEntity tvShowEntity = new TvShowEntity(Integer.parseInt(tvShowId), tvShowsDetailMainObject.getName(), tvShowsDetailMainObject.getFirst_air_date(), tvShowsDetailMainObject.getPoster_path(), tvShowsDetailMainObject.getOverview(), tvShowsDetailMainObject.getVote_average(), tvShowsDetailMainObject.getVote_count(), tvShowsDetailMainObject.getPopularity());
-        new AddToFavoriteListTask().execute(tvShowEntity);
+        if (firebaseAuth.getCurrentUser() != null) {
+            TvShowEntity tvShowEntity = new TvShowEntity(Integer.parseInt(tvShowId), tvShowsDetailMainObject.getName(), tvShowsDetailMainObject.getFirst_air_date(), tvShowsDetailMainObject.getPoster_path(), tvShowsDetailMainObject.getOverview(), tvShowsDetailMainObject.getVote_average(), tvShowsDetailMainObject.getVote_count(), tvShowsDetailMainObject.getPopularity());
+            new AddToFavoriteListTask().execute(tvShowEntity);
+        } else {
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

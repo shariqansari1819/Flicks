@@ -2,7 +2,12 @@ package com.codebosses.flicks.database.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
 
 @Entity
 public class MovieEntity {
@@ -22,6 +27,9 @@ public class MovieEntity {
     private double popularity;
     @ColumnInfo(name = "vote_average")
     private double voteAverage;
+    @Ignore
+    @ServerTimestamp
+    private Date date;
 
     public MovieEntity(int movieId, String posterPath, String title, String overview, String releaseDate, double popularity, double voteAverage) {
         this.movieId = movieId;
@@ -31,6 +39,14 @@ public class MovieEntity {
         this.releaseDate = releaseDate;
         this.popularity = popularity;
         this.voteAverage = voteAverage;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public int getMovieId() {

@@ -73,6 +73,10 @@ import com.devs.readmoreoption.ReadMoreOption;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -81,6 +85,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -230,6 +235,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
     //    Room database fields....
     private DatabaseClient databaseClient;
 
+    //    Firebase fields....
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,6 +246,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
         ValidUtils.transparentStatusAndNavigation(this);
 //        MoviesDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
+
+//        Firebase fields initialization....
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
 //        Initialization of room database field....
         databaseClient = DatabaseClient.getDatabaseClient(this);
@@ -880,13 +893,51 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.imageViewFavoriteMoviesDetail)
     public void onFavoriteClick(View view) {
-        new DeleteFromFavoriteTask().execute(Integer.parseInt(movieId));
+        if (firebaseAuth.getCurrentUser() != null) {
+            new DeleteFromFavoriteTask().execute(Integer.parseInt(movieId));
+            firebaseFirestore.collection("Favorites")
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .collection("Movies")
+                    .document(movieId)
+                    .delete();
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.imageViewUnFavoriteMoviesDetail)
     public void onUnFavoriteClick(View view) {
-        MovieEntity movieEntity = new MovieEntity(Integer.parseInt(movieId), movieDetailMainObject.getPoster_path(), movieDetailMainObject.getTitle(), movieDetailMainObject.getOverview(), movieDetailMainObject.getRelease_date(), movieDetailMainObject.getPopularity(), movieDetailMainObject.getVote_average());
-        new AddToFavoriteListTask().execute(movieEntity);
+        if (firebaseAuth.getCurrentUser() != null) {
+            MovieEntity movieEntity = new MovieEntity(Integer.parseInt(movieId), movieDetailMainObject.getPoster_path(), movieDetailMainObject.getTitle(), movieDetailMainObject.getOverview(), movieDetailMainObject.getRelease_date(), movieDetailMainObject.getPopularity(), movieDetailMainObject.getVote_average());
+            new AddToFavoriteListTask().execute(movieEntity);
+            firebaseFirestore.collection("Favorites")
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnSuccessListener(this, new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot != null && documentSnapshot.exists()) {
+                                saveFavoriteMovieToFirestore(movieEntity);
+                            } else {
+                                HashMap<String, String> hashMap = new HashMap<>();
+                                hashMap.put("userId", firebaseAuth.getCurrentUser().getUid());
+                                firebaseFirestore.collection("Favorites")
+                                        .document(firebaseAuth.getCurrentUser().getUid())
+                                        .set(hashMap)
+                                        .addOnSuccessListener(MoviesDetailActivity.this, new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                saveFavoriteMovieToFirestore(movieEntity);
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -910,6 +961,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
         intent.putExtra(EndpointKeys.SORT_TYPE, Constants.POPULARITY_DESC);
         intent.putExtra(EndpointKeys.TYPE, EndpointKeys.MOVIES);
         startActivity(intent);
+    }
+
+    private void saveFavoriteMovieToFirestore(MovieEntity movieEntity) {
+        firebaseFirestore.collection("Favorites")
+                .document(firebaseAuth.getCurrentUser().getUid())
+                .collection("Movies")
+                .document(String.valueOf(movieEntity.getMovieId()))
+                .set(movieEntity);
     }
 
     private void startImageSliderActivity(int position) {
@@ -1072,7 +1131,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void isMovieFavorite() {
-        new GetMovieByIdTask().execute(Integer.parseInt(movieId));
+        if (firebaseAuth.getCurrentUser() != null)
+            new GetMovieByIdTask().execute(Integer.parseInt(movieId));
     }
 
     class GetMovieByIdTask extends AsyncTask<Integer, Void, MovieEntity> {

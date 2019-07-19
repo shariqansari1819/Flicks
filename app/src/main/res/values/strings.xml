@@ -50,6 +50,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="already_have_account">Already have account?</string>
     <string name="login">Login</string>
+    <string name="sign_out">Sign Out</string>
 
     <!--Upcoming movies fragment strings-->
     <string name="could_not_get_upcoming_movies">Sorry, Could not get upcoming movies list.</string>
@@ -201,6 +202,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="trying_to_login">Trying to log in&#8230;</string>
 
     <string name="view_all">View All</string>
     <string name="watch_full_episode">Watch Full Episode</string>

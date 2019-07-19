@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "730943968736-h3c3jlvuk2a7j69eng4059cs5i8bu5he.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.codebosses.flicksapp",
+            "certificate_hash": "3720653b85a6cd1c6ede9f43d4dcf84bbca9a7c6"
+          }
+        },
+        {
           "client_id": "730943968736-jr8qgqr08t6f07dt9o1pon6s6vpjo5jd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -15,6 +15,9 @@ public interface Constants {
     String PERSON = "person";
     String WEEK = "week";
 
+    String GMAIL = "gmail";
+    String FACEBOOK = "facebook";
+
     int ACTION_ID = 28;
     int ADVENTURE_ID = 12;
     int ANIMATED_ID = 16;
@@ -40,5 +43,4 @@ public interface Constants {
     String VOTE_AVERAGE_DESC = "vote_average.desc";
     String VOTE_COUNT_ASC = "vote_count.asc";
     String VOTE_COUNT_DESC = "vote_count.desc";
-
 }

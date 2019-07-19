@@ -108,6 +108,12 @@ public interface EndpointKeys {
     String IMAGE_POSITION = "image_position";
     String GENRE_TV_SHOWS = "genre_tv_shows";
 
+    String USER_NAME = "user_name";
+    String USER_EMAIl = "user_email";
+    String USER_PHONE = "user_phone";
+    String USER_IMAGE = "user_image";
+    String USER_IMAGE_THUMB = "user_image_thumb";
+    String USER_ACCOUNT_TYPE = "user_account_type";
 
     String VIDEO_PATH = "video_path";
 }

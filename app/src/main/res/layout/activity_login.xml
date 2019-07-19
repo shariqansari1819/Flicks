@@ -7,6 +7,25 @@
     android:layout_height="match_parent"
     tools:context="com.codebosses.flicks.activities.LoginActivity">
 
-    
+    <Button
+        android:id="@+id/buttonGoogleLogIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign in with Google Plus"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonFacebookLogIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign in with Facebook"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGoogleLogIn" />
+
+    <Button
+        android:id="@+id/buttonTwitterLogIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign in with Twitter"
+        app:layout_constraintTop_toBottomOf="@+id/buttonFacebookLogIn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
