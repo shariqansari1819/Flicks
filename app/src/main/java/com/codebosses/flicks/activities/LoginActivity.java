@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import com.codebosses.flicks.FlicksApplication;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.common.Constants;
+import com.codebosses.flicks.database.DatabaseClient;
+import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.user.UserModel;
 import com.codebosses.flicks.utils.FontUtils;
@@ -38,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.jaeger.library.StatusBarUtil;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -66,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
 
+    private DatabaseClient databaseClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         ValidUtils.transparentStatusAndNavigation(this);
 
 //        Setting custom font....
+
+        databaseClient = DatabaseClient.getDatabaseClient(this);
 
 //        Firebase fields initialization....
         firebaseAuth = FirebaseAuth.getInstance();
@@ -221,20 +229,50 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveUserDataToPreference(UserModel userModel) {
-        sweetAlertDialog.dismiss();
-        FlicksApplication.putStringValue(EndpointKeys.USER_NAME, userModel.getUserName());
-        FlicksApplication.putStringValue(EndpointKeys.USER_EMAIl, userModel.getUserEmail());
-        FlicksApplication.putStringValue(EndpointKeys.USER_PHONE, userModel.getUserPhone());
-        FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE, userModel.getUserProfileImage());
-        FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE_THUMB, userModel.getUserProfileImageThumbnail());
-        FlicksApplication.putStringValue(EndpointKeys.USER_ACCOUNT_TYPE, userModel.getUserAccountType());
-        startMainActivity();
+        firebaseFirestore.collection("Favorites")
+                .document(firebaseAuth.getCurrentUser().getUid())
+                .collection("Movies")
+                .get()
+                .addOnSuccessListener(this, new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        sweetAlertDialog.dismiss();
+                        if(queryDocumentSnapshots != null && queryDocumentSnapshots.size() > 0){
+                            for(DocumentSnapshot snapshot: queryDocumentSnapshots){
+                                MovieEntity movieEntity = snapshot.toObject(MovieEntity.class);
+                                new AddToFavoriteListTask().execute(movieEntity);
+                            }
+                            FlicksApplication.putStringValue(EndpointKeys.USER_NAME, userModel.getUserName());
+                            FlicksApplication.putStringValue(EndpointKeys.USER_EMAIl, userModel.getUserEmail());
+                            FlicksApplication.putStringValue(EndpointKeys.USER_PHONE, userModel.getUserPhone());
+                            FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE, userModel.getUserProfileImage());
+                            FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE_THUMB, userModel.getUserProfileImageThumbnail());
+                            FlicksApplication.putStringValue(EndpointKeys.USER_ACCOUNT_TYPE, userModel.getUserAccountType());
+                            startMainActivity();
+                        }
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                sweetAlertDialog.dismiss();
+            }
+        });
     }
 
     private void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    class AddToFavoriteListTask extends AsyncTask<MovieEntity, Void, Void> {
+
+        @Override
+        protected Void doInBackground(MovieEntity... movieEntities) {
+            databaseClient.getFlicksDatabase().getFlicksDao().insertMovie(movieEntities[0]);
+            return null;
+        }
+
     }
 
 }

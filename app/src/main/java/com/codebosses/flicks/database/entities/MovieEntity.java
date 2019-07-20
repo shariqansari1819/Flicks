@@ -31,6 +31,9 @@ public class MovieEntity {
     @ServerTimestamp
     private Date date;
 
+    public MovieEntity() {
+    }
+
     public MovieEntity(int movieId, String posterPath, String title, String overview, String releaseDate, double popularity, double voteAverage) {
         this.movieId = movieId;
         this.posterPath = posterPath;

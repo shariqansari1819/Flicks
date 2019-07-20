@@ -1,6 +1,7 @@
 package com.codebosses.flicks.fragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.activities.LoginActivity;
 import com.codebosses.flicks.activities.MainActivity;
 import com.codebosses.flicks.adapters.exapndablerecyclerviewadapter.CategoryAdapter;
+import com.codebosses.flicks.database.DatabaseClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusExpandItems;
 import com.codebosses.flicks.pojo.eventbus.EventBusSelectedItem;
@@ -90,6 +92,9 @@ public class FragmentNavigationView extends Fragment {
     @BindString(R.string.offline)
     String offline;
 
+//    Database fields....
+    private DatabaseClient databaseClient;
+
     public FragmentNavigationView() {
         // Required empty public constructor
     }
@@ -105,6 +110,9 @@ public class FragmentNavigationView extends Fragment {
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+//        Database fields initialization....
+        databaseClient = DatabaseClient.getDatabaseClient(getActivity());
 
         FontUtils fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewRegularFont(textViewHeading);
@@ -239,8 +247,20 @@ public class FragmentNavigationView extends Fragment {
     @OnClick(R.id.buttonLogOutNavigation)
     public void onLogOutClick(View view) {
         FirebaseAuth.getInstance().signOut();
+        new DeleteAllMoviesTask().execute();
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    class DeleteAllMoviesTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllMovies();
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllTvShows();
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllCelebrities();
+            return null;
+        }
     }
 }

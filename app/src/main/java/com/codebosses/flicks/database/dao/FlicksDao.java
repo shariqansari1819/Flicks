@@ -50,4 +50,13 @@ public interface FlicksDao {
     @Query("DELETE FROM celebrityentity WHERE id = :celebId")
     void deleteCelebById(int celebId);
 
+    @Query("DELETE FROM movieentity")
+    void deleteAllMovies();
+
+    @Query("DELETE FROM tvshowentity")
+    void deleteAllTvShows();
+
+    @Query("DELETE FROM celebrityentity")
+    void deleteAllCelebrities();
+
 }
