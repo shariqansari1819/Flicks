@@ -62,22 +62,21 @@ dependencies {
     implementation "android.arch.work:work-runtime:1.0.0"
     implementation 'com.android.support:palette-v7:28.0.0'
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
-    implementation 'com.github.d-max:spots-dialog:1.1@aar'
-    implementation 'com.thefinestartist:finestwebview:1.2.7'
     implementation 'com.github.HuanHaiLiuXin:CoolViewPager:v1.0.0'
-    implementation 'com.github.chrisbanes:PhotoView:1.2.6'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.mindorks.android:prdownloader:0.5.0'
     implementation 'com.github.Commit451:YouTubeExtractor:4.2.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'com.github.devendroid:ReadMoreOption:1.0.2'
     implementation 'com.github.halilozercan:BetterVideoPlayer:kotlin-SNAPSHOT'
     implementation project(':sliding-drawer-layout')
-    implementation project(':sweet-alert-dialog')
+    implementation project(':progressdialog')
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
     implementation 'com.google.firebase:firebase-auth:18.1.0'
     implementation 'com.google.firebase:firebase-firestore:20.1.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.github.KhunHtetzNaing:xGetter:1.9.2'
 
     //room
     implementation "android.arch.persistence.room:runtime:$room_version"

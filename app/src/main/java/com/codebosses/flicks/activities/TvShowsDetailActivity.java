@@ -64,13 +64,17 @@ import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.devs.readmoreoption.ReadMoreOption;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -214,6 +218,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
 
     //    Firebase fields....
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,6 +230,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
 
 //        Firebase fields initialization....
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         //        Initialization of room database field....
         databaseClient = DatabaseClient.getDatabaseClient(this);
@@ -853,7 +859,17 @@ public class TvShowsDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.imageViewFavoriteTvShowsDetail)
     public void onFavoriteClick(View view) {
-        new DeleteFromFavoriteTask().execute(Integer.parseInt(tvShowId));
+        if (firebaseAuth.getCurrentUser() != null) {
+            new DeleteFromFavoriteTask().execute(Integer.parseInt(tvShowId));
+            firebaseFirestore.collection("Favorites")
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .collection("TvShows")
+                    .document(tvShowId)
+                    .delete();
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.imageViewUnFavoriteTvShowsDetail)
@@ -861,8 +877,31 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             TvShowEntity tvShowEntity = new TvShowEntity(Integer.parseInt(tvShowId), tvShowsDetailMainObject.getName(), tvShowsDetailMainObject.getFirst_air_date(), tvShowsDetailMainObject.getPoster_path(), tvShowsDetailMainObject.getOverview(), tvShowsDetailMainObject.getVote_average(), tvShowsDetailMainObject.getVote_count(), tvShowsDetailMainObject.getPopularity());
             new AddToFavoriteListTask().execute(tvShowEntity);
+            firebaseFirestore.collection("Favorites")
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnSuccessListener(this, new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot != null && documentSnapshot.exists()) {
+                                saveFavoriteTvShowToFirestore(tvShowEntity);
+                            } else {
+                                HashMap<String, String> hashMap = new HashMap<>();
+                                hashMap.put("userId", firebaseAuth.getCurrentUser().getUid());
+                                firebaseFirestore.collection("Favorites")
+                                        .document(firebaseAuth.getCurrentUser().getUid())
+                                        .set(hashMap)
+                                        .addOnSuccessListener(TvShowsDetailActivity.this, new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                saveFavoriteTvShowToFirestore(tvShowEntity);
+                                            }
+                                        });
+                            }
+                        }
+                    });
         } else {
-            Intent intent = new Intent(this,LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }
@@ -969,8 +1008,19 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void saveFavoriteTvShowToFirestore(TvShowEntity tvShowEntity) {
+        firebaseFirestore.collection("Favorites")
+                .document(firebaseAuth.getCurrentUser().getUid())
+                .collection("TvShows")
+                .document(String.valueOf(tvShowEntity.getId()))
+                .set(tvShowEntity);
+    }
+
     private void isTvShowFavorite() {
-        new GetTvShowByIdTask().execute(Integer.parseInt(tvShowId));
+        if (firebaseAuth.getCurrentUser() != null)
+            new GetTvShowByIdTask().execute(Integer.parseInt(tvShowId));
+        else
+            imageViewUnFavorite.setVisibility(View.VISIBLE);
     }
 
     class GetTvShowByIdTask extends AsyncTask<Integer, Void, TvShowEntity> {

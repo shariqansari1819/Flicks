@@ -3,7 +3,6 @@ package com.codebosses.flicks.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,8 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codebosses.flicks.FlicksApplication;
@@ -21,9 +18,9 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.database.DatabaseClient;
 import com.codebosses.flicks.database.entities.MovieEntity;
+import com.codebosses.flicks.database.entities.TvShowEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.user.UserModel;
-import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -42,7 +39,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.jaeger.library.StatusBarUtil;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import butterknife.BindView;
@@ -194,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (documentSnapshot != null && documentSnapshot.exists()) {
                             UserModel userModel = documentSnapshot.toObject(UserModel.class);
                             if (userModel != null) {
-                                saveUserDataToPreference(userModel);
+                                saveFavoriteToDatabase(userModel);
                             }
                         } else {
                             UserModel userModel = new UserModel(userId, name, email, phoneNumber, "", profileImage, profileImageThumbnail, loginType);
@@ -217,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        saveUserDataToPreference(userModel);
+                        saveFavoriteToDatabase(userModel);
                     }
                 }).addOnFailureListener(this, new OnFailureListener() {
             @Override
@@ -228,7 +224,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void saveUserDataToPreference(UserModel userModel) {
+    private void saveFavoriteToDatabase(UserModel userModel) {
         firebaseFirestore.collection("Favorites")
                 .document(firebaseAuth.getCurrentUser().getUid())
                 .collection("Movies")
@@ -236,27 +232,53 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(this, new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        sweetAlertDialog.dismiss();
-                        if(queryDocumentSnapshots != null && queryDocumentSnapshots.size() > 0){
-                            for(DocumentSnapshot snapshot: queryDocumentSnapshots){
+                        if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() > 0) {
+                            for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                                 MovieEntity movieEntity = snapshot.toObject(MovieEntity.class);
                                 new AddToFavoriteListTask().execute(movieEntity);
                             }
-                            FlicksApplication.putStringValue(EndpointKeys.USER_NAME, userModel.getUserName());
-                            FlicksApplication.putStringValue(EndpointKeys.USER_EMAIl, userModel.getUserEmail());
-                            FlicksApplication.putStringValue(EndpointKeys.USER_PHONE, userModel.getUserPhone());
-                            FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE, userModel.getUserProfileImage());
-                            FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE_THUMB, userModel.getUserProfileImageThumbnail());
-                            FlicksApplication.putStringValue(EndpointKeys.USER_ACCOUNT_TYPE, userModel.getUserAccountType());
-                            startMainActivity();
                         }
+                        firebaseFirestore.collection("Favorites")
+                                .document(firebaseAuth.getCurrentUser().getUid())
+                                .collection("TvShows")
+                                .get()
+                                .addOnSuccessListener(LoginActivity.this, new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        sweetAlertDialog.dismiss();
+                                        if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() > 0) {
+                                            for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                                TvShowEntity tvShowEntity = snapshot.toObject(TvShowEntity.class);
+                                                new AddToFavoriteTvShowTask().execute(tvShowEntity);
+                                            }
+                                        }
+                                        saveUserDataToPreference(userModel);
+                                    }
+                                }).addOnFailureListener(LoginActivity.this, new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                sweetAlertDialog.dismiss();
+                                saveUserDataToPreference(userModel);
+                            }
+                        });
                     }
                 }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 sweetAlertDialog.dismiss();
+                saveUserDataToPreference(userModel);
             }
         });
+    }
+
+    private void saveUserDataToPreference(UserModel userModel) {
+        FlicksApplication.putStringValue(EndpointKeys.USER_NAME, userModel.getUserName());
+        FlicksApplication.putStringValue(EndpointKeys.USER_EMAIl, userModel.getUserEmail());
+        FlicksApplication.putStringValue(EndpointKeys.USER_PHONE, userModel.getUserPhone());
+        FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE, userModel.getUserProfileImage());
+        FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE_THUMB, userModel.getUserProfileImageThumbnail());
+        FlicksApplication.putStringValue(EndpointKeys.USER_ACCOUNT_TYPE, userModel.getUserAccountType());
+        startMainActivity();
     }
 
     private void startMainActivity() {
@@ -273,6 +295,15 @@ public class LoginActivity extends AppCompatActivity {
             return null;
         }
 
+    }
+
+    class AddToFavoriteTvShowTask extends AsyncTask<TvShowEntity, Void, Void> {
+
+        @Override
+        protected Void doInBackground(TvShowEntity... tvShowEntities) {
+            databaseClient.getFlicksDatabase().getFlicksDao().insertTvShow(tvShowEntities[0]);
+            return null;
+        }
     }
 
 }

@@ -151,7 +151,7 @@
             android:background="@drawable/bg_watch_movie"
             android:paddingStart="@dimen/_12sdp"
             android:paddingEnd="@dimen/_12sdp"
-            android:text="@string/watch_full_movie"
+            android:text="@string/watch_full_episode"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_14ssp"

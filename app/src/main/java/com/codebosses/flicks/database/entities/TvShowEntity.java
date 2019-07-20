@@ -2,7 +2,12 @@ package com.codebosses.flicks.database.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
 
 @Entity
 public class TvShowEntity {
@@ -24,6 +29,13 @@ public class TvShowEntity {
     private int voteCount;
     @ColumnInfo(name = "popularity")
     private double popularity;
+    @Ignore
+    @ServerTimestamp
+    private Date date;
+
+    @Ignore
+    public TvShowEntity() {
+    }
 
     public TvShowEntity(int id, String name, String firstAirDate, String posterPath, String overview, double voteAverage, int voteCount, double popularity) {
         this.id = id;
@@ -34,6 +46,14 @@ public class TvShowEntity {
         this.voteAverage = voteAverage;
         this.voteCount = voteCount;
         this.popularity = popularity;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public int getId() {

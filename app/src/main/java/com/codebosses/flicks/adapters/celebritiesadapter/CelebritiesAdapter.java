@@ -62,7 +62,10 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
         if (celebritiesResult != null) {
             String profilePath = celebritiesResult.getProfile_path();
             String name = celebritiesResult.getName();
-            double popularity = celebritiesResult.getPopularity();
+            double popularity = 0.0;
+            if (celebritiesResult.getPopularity() != null) {
+                popularity = celebritiesResult.getPopularity();
+            }
             if (profilePath != null && !profilePath.equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.PROFILE_BASE_URL + "/" + profilePath)

@@ -1,24 +1,44 @@
 package com.codebosses.flicks.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointKeys;
+import com.htetznaing.xgetter.Model.XModel;
+import com.htetznaing.xgetter.XGetter;
+
+import java.net.URL;
+import java.util.ArrayList;
 
 public class FullMovieActivity extends AppCompatActivity {
 
     //    Android fields....
     @BindView(R.id.webViewFullMovie)
     WebView webView;
+    @BindView(R.id.imageViewCloseFullMovie)
+    ImageView imageViewClose;
+    @BindView(R.id.circularProgressBarFullMovie)
+    CircularProgressBar circularProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,23 +52,55 @@ public class FullMovieActivity extends AppCompatActivity {
                 webView.getSettings().setJavaScriptEnabled(true);
                 webView.getSettings().setLoadWithOverviewMode(true);
                 webView.getSettings().setUseWideViewPort(true);
-                webView.getSettings().setBuiltInZoomControls(true);
+                webView.getSettings().setBuiltInZoomControls(false);
                 webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+                webView.setWebChromeClient(new WebChromeClient() {
+                    @Override
+                    public void onProgressChanged(WebView view, int newProgress) {
+                        super.onProgressChanged(view, newProgress);
+//                        Log.d("VideoUrl", view.getUrl());
+                    }
+                });
+
                 webView.setWebViewClient(new WebViewClient() {
                     @Override
                     public void onPageStarted(WebView view, String url, Bitmap favicon) {
                         super.onPageStarted(view, url, favicon);
-//                        if (!mPb.isShown()) {
-//                            mPb.setVisibility(View.VISIBLE);
-//                        }
+                        if (circularProgressBar.getVisibility() == View.GONE)
+                            circularProgressBar.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onPageFinished(WebView view, String url) {
                         super.onPageFinished(view, url);
-//                        if (mPb.isShown()) {
-//                            mPb.setVisibility(View.GONE);
-//                        }
+                        if (circularProgressBar.getVisibility() == View.VISIBLE)
+                            circularProgressBar.setVisibility(View.GONE);
+                        webView.setVisibility(View.VISIBLE);
+                    }
+
+                    @SuppressWarnings("deprecation")
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+                        return shouldOverrideUrlLoading(url);
+                    }
+
+                    @TargetApi(Build.VERSION_CODES.N)
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request) {
+                        Uri uri = request.getUrl();
+                        return shouldOverrideUrlLoading(uri.toString());
+                    }
+
+                    private boolean shouldOverrideUrlLoading(final String myUrl) {
+                        try {
+                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + myUrl + " Host: " + new URL(myUrl).getHost());
+                            if (new URL(myUrl).getHost().equalsIgnoreCase("oload.party")) {
+                                webView.loadUrl(myUrl);
+                            }
+                        } catch (Exception e) {
+
+                        }
+                        return true; // Returning True means that application wants to leave the current WebView and handle the url itself, otherwise return false.
                     }
                 });
                 webView.loadUrl(url);
@@ -56,4 +108,19 @@ public class FullMovieActivity extends AppCompatActivity {
         }
 
     }
+
+    @OnClick(R.id.imageViewCloseFullMovie)
+    public void onCloseClick(View view) {
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }

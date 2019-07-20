@@ -59,7 +59,7 @@ public class CategoryAdapter extends ExpandableRecyclerViewAdapter<CategoryHeade
                 EventBus.getDefault().post(new EventBusExpandItems(flatPosition, group.getTitle()));
             });
         }
-        if (group.getTitle().equals(EndpointKeys.OFFLINE)) {
+        if (group.getTitle().equals(EndpointKeys.ACCOUNT)) {
             holder.viewDivider.setVisibility(View.VISIBLE);
         } else {
             holder.viewDivider.setVisibility(View.GONE);

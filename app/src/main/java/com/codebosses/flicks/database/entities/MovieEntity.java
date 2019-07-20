@@ -31,6 +31,7 @@ public class MovieEntity {
     @ServerTimestamp
     private Date date;
 
+    @Ignore
     public MovieEntity() {
     }
 

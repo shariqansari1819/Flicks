@@ -1,13 +1,12 @@
 package com.codebosses.flicks.activities;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +52,7 @@ import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.devs.readmoreoption.ReadMoreOption;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,7 +66,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dmax.dialog.SpotsDialog;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -130,7 +129,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     AppCompatButton buttonWatchFullMovie;
     @BindView(R.id.textViewImagesCountEpisodeDetail)
     TextView textViewImagesCount;
-    private AlertDialog alertDialog;
+    private SweetAlertDialog sweetAlertDialog;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -179,6 +178,11 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         fontUtils.setTextViewRegularFont(textViewVideosCount);
         fontUtils.setButtonRegularFont(buttonWatchFullMovie);
         fontUtils.setTextViewRegularFont(textViewImagesCount);
+
+        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#03a9f4"));
+        sweetAlertDialog.setCancelable(false);
 
         //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(EpisodeDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -460,9 +464,8 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     }
 
     private void getTvExternalId(String tvShowId) {
-        alertDialog = new SpotsDialog.Builder().setContext(this).build();
-        alertDialog.setMessage("Extracting episode source...");
-        alertDialog.show();
+        sweetAlertDialog.setTitleText("Extracting episode source...");
+        sweetAlertDialog.show();
         externalIdCall = ApiClient.getClient().create(Api.class).getTvExternalId(tvShowId, EndpointKeys.THE_MOVIE_DB_API_KEY);
         externalIdCall.enqueue(new Callback<ExternalId>() {
             @Override
@@ -477,14 +480,14 @@ public class EpisodeDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ExternalId> call, Throwable error) {
-                alertDialog.dismiss();
+                sweetAlertDialog.dismiss();
                 Toast.makeText(EpisodeDetailActivity.this, "Could not get episode.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void generateTicket(String tvShowId, String seasonNumber) {
-        alertDialog.setMessage("Please wait...");
+        sweetAlertDialog.setTitleText("Loading episode...");
         AndroidNetworking.get("https://api6.ipify.org/")
                 .build()
                 .getAsString(new StringRequestListener() {
@@ -500,11 +503,34 @@ public class EpisodeDetailActivity extends AppCompatActivity {
                                 .getAsString(new StringRequestListener() {
                                     @Override
                                     public void onResponse(String response) {
-                                        alertDialog.dismiss();
+                                        sweetAlertDialog.dismiss();
                                         String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + tvShowId + "&tv=1&s=" + seasonNumber + "&e=" + episodeNumber + "&ticket=" + response;
-//                                        Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
-//                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
-//                                        startActivity(intent);
+//                                        Handler handler = new Handler();
+//                                        new Thread(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                try {
+//                                                    URL myUrl = new URL(url);
+//                                                    HttpURLConnection ucon = (HttpURLConnection) myUrl.openConnection();
+//                                                    ucon.setInstanceFollowRedirects(false);
+//                                                    URL secondURL = new URL(ucon.getHeaderField("Location"));
+//                                                    URLConnection conn = secondURL.openConnection();
+//                                                    handler.post(new Runnable() {
+//                                                        @Override
+//                                                        public void run() {
+//                                                            Toast.makeText(EpisodeDetailActivity.this, secondURL.toString(), Toast.LENGTH_SHORT).show();
+//                                                        }
+//                                                    });
+//                                                } catch (MalformedURLException e) {
+//
+//                                                } catch (IOException e) {
+//
+//                                                }
+//                                            }
+//                                        }).start();
+                                        Intent intent = new Intent(EpisodeDetailActivity.this, FullMovieActivity.class);
+                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
+                                        startActivity(intent);
 //                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
 //                                                .titleDefault(textViewTitle.getText().toString())
 //                                                .showUrl(false)
@@ -526,13 +552,13 @@ public class EpisodeDetailActivity extends AppCompatActivity {
 //                                                })
 //                                                .show(url);
 //                                        AdBlocksWebViewActivity.startWebView(MoviesDetailActivity.this, url, getResources().getColor(R.color.colorWhite));
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                        startActivity(Intent.createChooser(browserIntent, "Watch using"));
+//                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                                        startActivity(Intent.createChooser(browserIntent, "Watch using"));
                                     }
 
                                     @Override
                                     public void onError(ANError anError) {
-                                        alertDialog.dismiss();
+                                        sweetAlertDialog.dismiss();
                                         Toast.makeText(EpisodeDetailActivity.this, anError.toString(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -540,7 +566,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(ANError anError) {
-                        alertDialog.dismiss();
+                        sweetAlertDialog.dismiss();
                     }
                 });
     }

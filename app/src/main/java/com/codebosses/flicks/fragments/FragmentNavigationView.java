@@ -31,6 +31,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,9 +92,8 @@ public class FragmentNavigationView extends Fragment {
     String discover;
     @BindString(R.string.offline)
     String offline;
-
-//    Database fields....
-    private DatabaseClient databaseClient;
+    @BindString(R.string.account)
+    String account;
 
     public FragmentNavigationView() {
         // Required empty public constructor
@@ -110,9 +110,6 @@ public class FragmentNavigationView extends Fragment {
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-
-//        Database fields initialization....
-        databaseClient = DatabaseClient.getDatabaseClient(getActivity());
 
         FontUtils fontUtils = FontUtils.getFontUtils(getActivity());
         fontUtils.setTextViewRegularFont(textViewHeading);
@@ -166,14 +163,26 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private List<CategoryHeader> makeCategories() {
-        return Arrays.asList(
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            return Arrays.asList(
 //                makeDiscoverHeader(),
-                makeTrendingHeader(),
-                makeMovieHeader(),
-                makeTvHeader(),
-                makeCelebriyHeader(),
-                makeGenreHeader(),
-                makeOfflineHeader());
+                    makeTrendingHeader(),
+                    makeMovieHeader(),
+                    makeTvHeader(),
+                    makeCelebriyHeader(),
+                    makeGenreHeader(),
+                    makeAccountHeader(),
+                    makeOfflineHeader());
+        } else {
+            return Arrays.asList(
+//                makeDiscoverHeader(),
+                    makeTrendingHeader(),
+                    makeMovieHeader(),
+                    makeTvHeader(),
+                    makeCelebriyHeader(),
+                    makeGenreHeader(),
+                    makeOfflineHeader());
+        }
     }
 
 //    private CategoryHeader makeDiscoverHeader() {
@@ -227,10 +236,22 @@ public class FragmentNavigationView extends Fragment {
         return new CategoryHeader(genre, makeGenreItems(), R.drawable.ic_action_genre);
     }
 
+    private CategoryHeader makeAccountHeader() {
+        return new CategoryHeader(account, makeAccountItems(), R.drawable.ic_vector_person);
+    }
+
     private List<CategoryItem> makeGenreItems() {
         CategoryItem topRatedTvShows = new CategoryItem(getResources().getString(R.string.movies), false);
         CategoryItem latestTvShows = new CategoryItem(getResources().getString(R.string.tv_shows), false);
         return Arrays.asList(topRatedTvShows, latestTvShows);
+    }
+
+    private List<CategoryItem> makeAccountItems() {
+        CategoryItem profile = new CategoryItem(getResources().getString(R.string.my_profile), false);
+        CategoryItem settings = new CategoryItem(getResources().getString(R.string.setting), false);
+        CategoryItem favoriteList = new CategoryItem(getResources().getString(R.string.favorite_list), false);
+        CategoryItem signOutItem = new CategoryItem(getResources().getString(R.string.sign_out), false);
+        return Arrays.asList(profile, settings, favoriteList, signOutItem);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -246,21 +267,7 @@ public class FragmentNavigationView extends Fragment {
 
     @OnClick(R.id.buttonLogOutNavigation)
     public void onLogOutClick(View view) {
-        FirebaseAuth.getInstance().signOut();
-        new DeleteAllMoviesTask().execute();
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        ((MainActivity) getActivity()).logOut();
     }
 
-    class DeleteAllMoviesTask extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllMovies();
-            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllTvShows();
-            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllCelebrities();
-            return null;
-        }
-    }
 }

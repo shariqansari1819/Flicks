@@ -4,11 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlack"
     tools:context="com.codebosses.flicks.activities.FullMovieActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewCloseFullMovie"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_vector_close_white" />
 
     <WebView
         android:id="@+id/webViewFullMovie"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCloseFullMovie" />
+
+    <com.budiyev.android.circularprogressbar.CircularProgressBar
+        android:id="@+id/circularProgressBarFullMovie"
+        android:layout_width="@dimen/_44sdp"
+        android:layout_height="@dimen/_44sdp"
+        android:visibility="gone"
+        app:animateProgress="true"
+        app:foregroundStrokeCap="round"
+        app:foregroundStrokeColor="@color/colorAccent"
+        app:foregroundStrokeWidth="@dimen/_3sdp"
+        app:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:progressAnimationDuration="200"
+        app:startAngle="45" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

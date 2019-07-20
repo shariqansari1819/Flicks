@@ -21,7 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".activities.SignUpActivity"></activity>
+        <activity android:name=".activities.FavoritesListActivity"></activity>
+        <activity android:name=".activities.SettingActivity" />
+        <activity android:name=".activities.ProfileActivity" />
+        <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".activities.AddInfoActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity
@@ -47,7 +50,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.FullMovieActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:parentActivityName=".activities.MoviesDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".activities.TrailerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
@@ -115,12 +120,6 @@
         <service
             android:name=".services.BackgroundNotificationService"
             android:enabled="true" />
-
-        <activity
-            android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="sensor"
-            android:theme="@style/FinestWebViewTheme.Light" />
 
         <meta-data
             android:name="com.codewaves.youtubethumbnailview.ApiKey"

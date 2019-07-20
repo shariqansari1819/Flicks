@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,8 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.codebosses.flicks.FlicksApplication;
 import com.codebosses.flicks.R;
+import com.codebosses.flicks.database.DatabaseClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
+import com.codebosses.flicks.fragments.FragmentNavigationView;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.fragments.celebritiesfragments.FragmentTopRatedCelebrities;
 import com.codebosses.flicks.fragments.discoverfragments.DiscoverFragment;
@@ -44,6 +48,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.auth.FirebaseAuth;
 import com.intrusoft.squint.DiagonalView;
 import com.liuzhenlin.slidingdrawerlayout.SlidingDrawerLayout;
 
@@ -145,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     private InterstitialAd mInterstitialAd;
 
+    //    Database fields....
+    private DatabaseClient databaseClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +180,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 //                .setConstraints(constraints)
 //                .build();
 //        WorkManager.getInstance().enqueue(periodicWorkRequest);
+
+        //        Database fields initialization....
+        databaseClient = DatabaseClient.getDatabaseClient(this);
 
         AppUpdaterUtils appUpdaterUtils = new AppUpdaterUtils(this);
         appUpdaterUtils.setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
@@ -530,6 +541,31 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         assignCurrentFragment(fragmentToAdd);
     }
 
+    public void logOut() {
+        FirebaseAuth.getInstance().signOut();
+        new DeleteAllMoviesTask().execute();
+        FlicksApplication.putStringValue(EndpointKeys.USER_NAME, "");
+        FlicksApplication.putStringValue(EndpointKeys.USER_EMAIl, "");
+        FlicksApplication.putStringValue(EndpointKeys.USER_PHONE, "");
+        FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE, "");
+        FlicksApplication.putStringValue(EndpointKeys.USER_IMAGE_THUMB, "");
+        FlicksApplication.putStringValue(EndpointKeys.USER_ACCOUNT_TYPE, "");
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    class DeleteAllMoviesTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllMovies();
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllTvShows();
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteAllCelebrities();
+            return null;
+        }
+    }
+
     private int resolveTabPositions(String currentTab) {
         switch (currentTab) {
 //            case EndpointKeys.DISCOVER:
@@ -714,9 +750,14 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusSelectedItem(EventBusSelectedItem eventBusSelectedItem) {
-        drawerLayoutMain.closeDrawer(true);
-        if (!eventBusSelectedItem.getTitle().equalsIgnoreCase(EndpointKeys.OFFLINE))
+        if (!eventBusSelectedItem.getTitle().equalsIgnoreCase(EndpointKeys.OFFLINE) &&
+                !eventBusSelectedItem.getTitle().equalsIgnoreCase(EndpointKeys.SIGN_OUT) &&
+                !eventBusSelectedItem.getTitle().equalsIgnoreCase(EndpointKeys.SETTING) &&
+                !eventBusSelectedItem.getTitle().equalsIgnoreCase(EndpointKeys.FAVORITES_LIST) &&
+                !eventBusSelectedItem.getTitle().equalsIgnoreCase(EndpointKeys.MY_PROFILE)) {
             setAppBarTitle(eventBusSelectedItem.getTitle());
+            drawerLayoutMain.closeDrawer(true);
+        }
 //        interstitialAddCounter++;
 //        showAdOnListClick();
         switch (eventBusSelectedItem.getTitle()) {
@@ -772,15 +813,20 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 index = 11;
                 selectedTab(EndpointKeys.TV_SHOWS);
                 break;
+            case EndpointKeys.SIGN_OUT:
+                logOut();
+                break;
+            case EndpointKeys.MY_PROFILE:
+                startActivity(new Intent(this, ProfileActivity.class));
+                break;
+            case EndpointKeys.SETTING:
+                startActivity(new Intent(this, SettingActivity.class));
+                break;
+            case EndpointKeys.FAVORITES_LIST:
+                startActivity(new Intent(this, FavoritesListActivity.class));
+                break;
             case EndpointKeys.OFFLINE:
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(MainActivity.this, OfflineActivity.class));
-                    }
-                }, 300);
-//                index = 12;
-//                selectedTab(EndpointKeys.OFFLINE);
+                startActivity(new Intent(MainActivity.this, OfflineActivity.class));
                 break;
         }
     }

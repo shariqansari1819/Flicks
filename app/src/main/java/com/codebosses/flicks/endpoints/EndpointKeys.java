@@ -35,6 +35,7 @@ public interface EndpointKeys {
     String SUGGESTED_TV_SHOWS_DETAIL = "Suggested Tv Shows Detail";
     String TRENDING = "Trending";
     String OFFLINE = "Offline";
+    String ACCOUNT = "Account";
     String SEASON = "Season";
     String TRENDING_MOVIES = "Trending Movies";
     String TRENDING_TV_SHOWS = "Trending Tv Shows";
@@ -66,6 +67,10 @@ public interface EndpointKeys {
     String SORT_TYPE = "sort_type";
     String MOVIES = "Movies";
     String TV_SHOWS = "Tv Shows";
+    String SIGN_OUT = "Sign Out";
+    String MY_PROFILE = "My Profile";
+    String SETTING = "Setting";
+    String FAVORITES_LIST = "Favorites List";
 
     String API_KEY = "api_key";
     String LANGUAGE = "language";

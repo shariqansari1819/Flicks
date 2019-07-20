@@ -1,13 +1,12 @@
 package com.codebosses.flicks.activities;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +76,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -91,7 +91,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dmax.dialog.SpotsDialog;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -191,7 +190,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     AppCompatImageView imageViewFavorite;
     @BindView(R.id.imageViewUnFavoriteMoviesDetail)
     AppCompatImageView imageViewUnFavorite;
-    private AlertDialog alertDialog;
+    private SweetAlertDialog sweetAlertDialog;
 
     //    Retrofit calls....
     private Call<MoviesTrailerMainObject> moviesTrailerMainObjectCall;
@@ -304,6 +303,11 @@ public class MoviesDetailActivity extends AppCompatActivity {
         fontUtils.setButtonRegularFont(buttonWatchFullMovie);
         fontUtils.setTextViewRegularFont(textViewRuntime);
         fontUtils.setTextViewRegularFont(textViewCompaniesHeader);
+
+        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#03a9f4"));
+        sweetAlertDialog.setCancelable(false);
 
 //        Setting layout managers for recycler view....
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(MoviesDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -1001,9 +1005,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void getMovieExternalId(String movieId) {
-        alertDialog = new SpotsDialog.Builder().setContext(this).build();
-        alertDialog.setMessage("Extracting video source...");
-        alertDialog.show();
+        sweetAlertDialog.setTitleText("Extracting video source...");
+        sweetAlertDialog.show();
         externalIdCall = ApiClient.getClient().create(Api.class).getMovieExternalId(movieId, EndpointKeys.THE_MOVIE_DB_API_KEY);
         externalIdCall.enqueue(new Callback<ExternalId>() {
             @Override
@@ -1018,14 +1021,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ExternalId> call, Throwable error) {
-                alertDialog.dismiss();
+                sweetAlertDialog.dismiss();
                 Toast.makeText(MoviesDetailActivity.this, "Could not get movie.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void generateTicket(String videoId) {
-        alertDialog.setMessage("Please wait...");
+        sweetAlertDialog.setTitleText("Loading movie...");
         AndroidNetworking.get("https://api6.ipify.org/")
                 .build()
                 .getAsString(new StringRequestListener() {
@@ -1041,11 +1044,11 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                 .getAsString(new StringRequestListener() {
                                     @Override
                                     public void onResponse(String response) {
-                                        alertDialog.dismiss();
+                                        sweetAlertDialog.dismiss();
                                         String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + videoId + "&ticket=" + response + "";
-//                                        Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
-//                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
-//                                        startActivity(intent);
+                                        Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
+                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
+                                        startActivity(intent);
 //                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
 //                                                .titleDefault(textViewTitle.getText().toString())
 //                                                .showUrl(false)
@@ -1061,19 +1064,52 @@ public class MoviesDetailActivity extends AppCompatActivity {
 //                                                .addWebViewListener(new WebViewListener() {
 //                                                    @Override
 //                                                    public void onReceivedTouchIconUrl(String url, boolean precomposed) {
-//                                                        super.onReceivedTouchIconUrl(url, precomposed);
-//                                                        Toast.makeText(MoviesDetailActivity.this, url, Toast.LENGTH_SHORT).show();
+//                                                        try {
+//                                                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + url + " Host: " + new URL(url).getHost());
+//
+//                                                            // Here put your code
+//                                                            if (new URL(url).getHost().equalsIgnoreCase("oload.party"))
+//                                                                super.onReceivedTouchIconUrl(url, precomposed);
+//                                                        } catch (Exception e) {
+//
+//                                                        }
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onLoadResource(String url) {
+//                                                        try {
+//                                                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + url + " Host: " + new URL(url).getHost());
+//
+//                                                            // Here put your code
+//                                                            if (new URL(url).getHost().equalsIgnoreCase("oload.party"))
+//                                                                super.onLoadResource(url);
+//                                                        } catch (Exception e) {
+//
+//                                                        }
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onPageStarted(String url) {
+//                                                        try {
+//                                                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + url + " Host: " + new URL(url).getHost());
+//
+//                                                            // Here put your code
+//                                                            if (new URL(url).getHost().equalsIgnoreCase("oload.party"))
+//                                                                super.onPageStarted(url);
+//                                                        } catch (Exception e) {
+//
+//                                                        }
 //                                                    }
 //                                                })
 //                                                .show(url);
 //                                        AdBlocksWebViewActivity.startWebView(MoviesDetailActivity.this, url, getResources().getColor(R.color.colorWhite));
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                        startActivity(Intent.createChooser(browserIntent, "Watch movie using"));
+//                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                                        startActivity(Intent.createChooser(browserIntent, "Watch movie using"));
                                     }
 
                                     @Override
                                     public void onError(ANError anError) {
-                                        alertDialog.dismiss();
+                                        sweetAlertDialog.dismiss();
                                         Toast.makeText(MoviesDetailActivity.this, anError.toString(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -1081,7 +1117,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(ANError anError) {
-                        alertDialog.dismiss();
+                        sweetAlertDialog.dismiss();
                     }
                 });
     }
@@ -1133,6 +1169,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private void isMovieFavorite() {
         if (firebaseAuth.getCurrentUser() != null)
             new GetMovieByIdTask().execute(Integer.parseInt(movieId));
+        else
+            imageViewUnFavorite.setVisibility(View.VISIBLE);
     }
 
     class GetMovieByIdTask extends AsyncTask<Integer, Void, MovieEntity> {
