@@ -247,11 +247,11 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private List<CategoryItem> makeAccountItems() {
-        CategoryItem profile = new CategoryItem(getResources().getString(R.string.my_profile), false);
-        CategoryItem settings = new CategoryItem(getResources().getString(R.string.setting), false);
-        CategoryItem favoriteList = new CategoryItem(getResources().getString(R.string.favorite_list), false);
+//        CategoryItem profile = new CategoryItem(getResources().getString(R.string.my_profile), false);
+//        CategoryItem settings = new CategoryItem(getResources().getString(R.string.setting), false);
+//        CategoryItem favoriteList = new CategoryItem(getResources().getString(R.string.favorite_list), false);
         CategoryItem signOutItem = new CategoryItem(getResources().getString(R.string.sign_out), false);
-        return Arrays.asList(profile, settings, favoriteList, signOutItem);
+        return Arrays.asList(signOutItem);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -259,7 +259,7 @@ public class FragmentNavigationView extends Fragment {
         EventBus.getDefault().post(new EventBusSelectedItem(eventBusExpandItems.getTitle()));
     }
 
-    @OnClick({R.id.textViewAlreadyHaveAccountNavigation, R.id.textViewLogIn})
+    @OnClick({R.id.textViewAlreadyHaveAccountNavigation, R.id.textViewLogIn, R.id.buttonSignUpNavigation})
     public void onLogInClick(View view) {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);

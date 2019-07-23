@@ -167,7 +167,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
 //        TvSeasonDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 //        mInterstitialAd = new InterstitialAd(this);
-//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
 //        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
 //        mInterstitialAd.loadAd(adRequestInterstitial);
 //        mInterstitialAd.setAdListener(new AdListener() {

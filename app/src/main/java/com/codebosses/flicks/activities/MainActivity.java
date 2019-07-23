@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         startTimer();
 
 //        mInterstitialAd = new InterstitialAd(this);
-//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
 //        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
 //        mInterstitialAd.loadAd(adRequestInterstitial);
 //        mInterstitialAd.setAdListener(new AdListener() {
@@ -639,7 +639,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     private void showAdOnListClick() {
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
         AdRequest adRequestInterstitial = new AdRequest.Builder().build();
         mInterstitialAd.loadAd(adRequestInterstitial);
         mInterstitialAd.setAdListener(new AdListener() {
@@ -907,10 +907,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                     public void run() {
                         adShowCounter++;
                         Log.i("MainActivity", "run: " + adShowCounter);
-                        if (interstitialAddCounter < 4) {
+                        if (interstitialAddCounter < 5) {
                             if (adShowCounter == maxTimeToLoadAd) {
                                 interstitialAddCounter++;
-                                maxTimeToLoadAd += 250;
+                                maxTimeToLoadAd += 350;
                                 adShowCounter = 0;
                                 showAdOnListClick();
                             }

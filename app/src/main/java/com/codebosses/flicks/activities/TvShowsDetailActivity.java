@@ -430,6 +430,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                             recyclerViewVideos.setVisibility(View.VISIBLE);
                             textViewVideosHeader.setVisibility(View.VISIBLE);
                             textViewVideosCount.setVisibility(View.VISIBLE);
+                            imageButtonPlay.setVisibility(View.VISIBLE);
                             Glide.with(TvShowsDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/hqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
@@ -584,7 +585,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                         }
 
 //                        viewBlur.setVisibility(View.VISIBLE);
-                        imageButtonPlay.setVisibility(View.VISIBLE);
+//                        imageButtonPlay.setVisibility(View.VISIBLE);
                         cardViewThumbnail.setVisibility(View.VISIBLE);
                         ratingBar.setVisibility(View.VISIBLE);
                         textViewAudienceRating.setVisibility(View.VISIBLE);

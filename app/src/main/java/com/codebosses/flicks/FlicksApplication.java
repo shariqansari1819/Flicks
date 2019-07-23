@@ -27,7 +27,7 @@ public class FlicksApplication extends Application {
         PRDownloader.initialize(getApplicationContext());
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(flicksApplication);
-        MobileAds.initialize(this, getResources().getString(R.string.testing_admob_id));
+        MobileAds.initialize(this, getResources().getString(R.string.admob_id));
 
     }
 

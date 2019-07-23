@@ -120,6 +120,9 @@ public interface EndpointKeys {
     String USER_IMAGE_THUMB = "user_image_thumb";
     String USER_ACCOUNT_TYPE = "user_account_type";
 
+    String EMAIL = "email";
+    String PUBLIC_PROFILE = "public_profile";
+
     String VIDEO_PATH = "video_path";
 }
 

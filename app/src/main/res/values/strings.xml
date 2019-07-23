@@ -1,16 +1,19 @@
 <resources>
     <string name="app_name">Flicks</string>
 
+    <string name="facebook_app_id">356147598404031</string>
+    <string name="fb_login_protocol_scheme">fb356147598404031</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="admob_id">ca-app-pub-6469792959930420~4310653327</string>
+    <string name="admob_id">ca-app-pub-3681093234891935~4759305888</string>
     <!--<string name="testing_admob_id">ca-app-pub-2437026319136761~4737487139</string>-->
     <string name="testing_admob_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="banner_admob_id">ca-app-pub-6469792959930420/9726631533</string>
-    <!--<string name="testing_banner_admob_id">ca-app-pub-2437026319136761/2551319251</string>-->
+    <string name="banner_admob_id">ca-app-pub-3681093234891935/5520464032</string>
+    <!--<string name="banner_admob_id">ca-app-pub-2437026319136761/2551319251</string>-->
     <string name="testing_banner_admob_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_admob_id">ca-app-pub-6469792959930420/3899589782</string>
-    <!--<string name="testing_interstitial_admob_id">ca-app-pub-2437026319136761/6817867327</string>-->
+    <string name="interstitial_admob_id">ca-app-pub-3681093234891935/1389647339</string>
+    <!--<string name="interstitial_admob_id">ca-app-pub-2437026319136761/6817867327</string>-->
     <string name="testing_interstitial_admob_id">ca-app-pub-3940256099942544/1033173712</string>
 
     <!--Main activity screen strings-->
@@ -206,6 +209,7 @@
     <string name="password">Password</string>
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="trying_to_login">Trying to log in&#8230;</string>
+    <string name="terms_services">By proceeding, you agree to our <u>Terms of Uses</u> &amp; <u>Privacy Policy</u></string>
 
     <string name="view_all">View All</string>
     <string name="watch_full_episode">Watch Full Episode</string>

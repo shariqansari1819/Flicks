@@ -10,5 +10,7 @@ public interface EndpointUrl {
     String SLIDER_IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w1280/";
     String PROFILE_BASE_URL = "http://image.tmdb.org/t/p/h632";
     String VIDEO_SPIDER_BASE_URL = "https://videospider.in/getticket.php";
+    String FACEBOOK_GRAPH_BASE_URL = "https://graph.facebook.com/";
+    String FACEBOOK_GRAPH_QUALITY_URL = "/picture?height=500";
 
 }

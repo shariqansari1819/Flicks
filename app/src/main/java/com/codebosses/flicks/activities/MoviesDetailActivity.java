@@ -253,27 +253,27 @@ public class MoviesDetailActivity extends AppCompatActivity {
 //        Initialization of room database field....
         databaseClient = DatabaseClient.getDatabaseClient(this);
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.testing_interstitial_admob_id));
-        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequestInterstitial);
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                showInterstitial();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-            }
-        });
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+//        mInterstitialAd.loadAd(adRequestInterstitial);
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//            }
+//
+//            @Override
+//            public void onAdLoaded() {
+//                super.onAdLoaded();
+//                showInterstitial();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//                super.onAdFailedToLoad(i);
+//            }
+//        });
 
 //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(this);
@@ -419,7 +419,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        showInterstitial();
+//        showInterstitial();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -463,6 +463,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                             textViewVideosHeader.setVisibility(View.VISIBLE);
                             textViewVideosCount.setVisibility(View.VISIBLE);
                             recyclerViewVideos.setVisibility(View.VISIBLE);
+                            imageButtonPlay.setVisibility(View.VISIBLE);
                             Glide.with(MoviesDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/hqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
@@ -610,7 +611,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                         }
 
 //                        viewBlur.setVisibility(View.VISIBLE);
-                        imageButtonPlay.setVisibility(View.VISIBLE);
+//                        imageButtonPlay.setVisibility(View.VISIBLE);
                         cardViewThumbnail.setVisibility(View.VISIBLE);
                         ratingBar.setVisibility(View.VISIBLE);
                         textViewAudienceRating.setVisibility(View.VISIBLE);

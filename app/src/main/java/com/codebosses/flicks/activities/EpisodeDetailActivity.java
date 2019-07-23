@@ -367,7 +367,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         double rating = episode.getVote_average();
         String overview = episode.getOverview();
 
-        imageButtonPlay.setVisibility(View.VISIBLE);
+//        imageButtonPlay.setVisibility(View.VISIBLE);
         textViewTitle.setVisibility(View.VISIBLE);
         cardViewThumbnail.setVisibility(View.VISIBLE);
         ratingBar.setVisibility(View.VISIBLE);

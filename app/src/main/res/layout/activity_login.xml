@@ -5,27 +5,117 @@
     android:id="@+id/constraintLayoutLogIn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_background"
     tools:context="com.codebosses.flicks.activities.LoginActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewBackLogIn"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:padding="5dp"
+        app:srcCompat="@drawable/ic_action_left"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/colorWhite"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_20sdp"/>
+
+    <FrameLayout
+        android:id="@+id/frameLayoutLogoLogIn"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_60sdp"
+        android:background="@drawable/bg_login_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewLogoLogIn"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/logo" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textViewLogoLogIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/app_name"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_18ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayoutLogoLogIn" />
+
+    <TextView
+        android:id="@+id/textViewLoginDescriptionLogIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All Your Movies In One Place"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_17ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogoLogIn" />
 
     <Button
         android:id="@+id/buttonGoogleLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign in with Google Plus"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_70sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:background="@drawable/bg_btn_google"
+        android:text="Sign in with Google"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLoginDescriptionLogIn" />
 
     <Button
         android:id="@+id/buttonFacebookLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:background="@drawable/bg_btn_facebook"
         android:text="Sign in with Facebook"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_14ssp"
         app:layout_constraintTop_toBottomOf="@+id/buttonGoogleLogIn" />
 
     <Button
         android:id="@+id/buttonTwitterLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:visibility="gone"
+        android:background="@drawable/bg_btn_twitter"
         android:text="Sign in with Twitter"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_14ssp"
         app:layout_constraintTop_toBottomOf="@+id/buttonFacebookLogIn" />
+
+    <TextView
+        android:id="@+id/textViewTermsServices"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTwitterLogIn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_8ssp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/terms_services" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
