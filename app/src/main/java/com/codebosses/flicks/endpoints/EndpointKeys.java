@@ -10,7 +10,7 @@ public interface EndpointKeys {
     String UPCOMING_MOVIES = "Upcoming Movies";
     String TOP_RATED_MOVIES = "Top Rated Movies";
     String LATEST_MOVIES = "Latest Movies";
-    String IN_THEATER = "In Theater";
+    String IN_THEATER = "Movies In Theater";
     String TOP_RATED_TV_SHOWS = "Top Rated Tv Shows";
     String LATEST_TV_SHOWS = "Latest Tv Shows";
     String TV_SHOWS_ON_THE_AIR = "Tv Shows On Air";
