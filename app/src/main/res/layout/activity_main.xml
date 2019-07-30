@@ -35,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintTop_toBottomOf="@+id/appBarMain" />
 

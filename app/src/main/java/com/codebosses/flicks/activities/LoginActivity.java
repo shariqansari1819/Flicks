@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -147,6 +148,14 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         registerCallback();
+    }
+
+    @OnClick(R.id.textViewTermsServices)
+    public void onTermsClick(View view){
+        String url = "https://codebosses.blogspot.com/p/privacy-policy.html";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(Intent.createChooser(i, "Open using"));
     }
 
     @OnClick(R.id.buttonTwitterLogIn)
