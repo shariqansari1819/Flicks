@@ -1,12 +1,9 @@
 package com.codebosses.flicks.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -19,16 +16,19 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointKeys;
-import com.htetznaing.xgetter.Model.XModel;
-import com.htetznaing.xgetter.XGetter;
+import com.codebosses.flicks.endpoints.EndpointUrl;
 
 import java.net.URL;
-import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FullMovieActivity extends AppCompatActivity {
 
@@ -40,6 +40,9 @@ public class FullMovieActivity extends AppCompatActivity {
     @BindView(R.id.circularProgressBarFullMovie)
     CircularProgressBar circularProgressBar;
 
+    private String videoUrl = "";
+
+    @SuppressLint("JavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,8 @@ public class FullMovieActivity extends AppCompatActivity {
 
         if (getIntent() != null) {
             String url = getIntent().getStringExtra(EndpointKeys.MOVIE_URL);
+            String movieName = getIntent().getStringExtra(EndpointKeys.MOVIE_TITLE);
+            String moviePosterPath = getIntent().getStringExtra(EndpointKeys.MOVIES_IMAGES);
             if (!url.isEmpty()) {
                 webView.getSettings().setJavaScriptEnabled(true);
                 webView.getSettings().setLoadWithOverviewMode(true);
@@ -58,7 +63,6 @@ public class FullMovieActivity extends AppCompatActivity {
                     @Override
                     public void onProgressChanged(WebView view, int newProgress) {
                         super.onProgressChanged(view, newProgress);
-//                        Log.d("VideoUrl", view.getUrl());
                     }
                 });
 
@@ -78,6 +82,21 @@ public class FullMovieActivity extends AppCompatActivity {
                         webView.setVisibility(View.VISIBLE);
                     }
 
+                    @Override
+                    public void onLoadResource(WebView view, String url) {
+                        super.onLoadResource(view, url);
+                        if (url.contains(".mp4") && videoUrl.isEmpty()) {
+                            videoUrl = url;
+                            Intent intent = new Intent(FullMovieActivity.this, FullMoviePlayerActivity.class);
+                            intent.putExtra(EndpointKeys.MOVIE_URL, videoUrl);
+                            intent.putExtra(EndpointKeys.MOVIE_TITLE, movieName);
+                            intent.putExtra(EndpointKeys.MOVIES_IMAGES, moviePosterPath);
+                            startActivity(intent);
+                            finish();
+//                            Log.d("FullMovie", url);
+                        }
+                    }
+
                     @SuppressWarnings("deprecation")
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
@@ -93,7 +112,7 @@ public class FullMovieActivity extends AppCompatActivity {
 
                     private boolean shouldOverrideUrlLoading(final String myUrl) {
                         try {
-                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + myUrl + " Host: " + new URL(myUrl).getHost());
+//                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + myUrl + " Host: " + new URL(myUrl).getHost());
                             if (new URL(myUrl).getHost().equalsIgnoreCase("oload.party")) {
                                 webView.loadUrl(myUrl);
                             }

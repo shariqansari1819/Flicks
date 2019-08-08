@@ -1049,6 +1049,8 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                         String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + videoId + "&ticket=" + response + "";
                                         Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
                                         intent.putExtra(EndpointKeys.MOVIE_URL, url);
+                                        intent.putExtra(EndpointKeys.MOVIE_TITLE, movieDetailMainObject.getTitle());
+                                        intent.putExtra(EndpointKeys.MOVIES_IMAGES, EndpointUrl.POSTER_BASE_URL + "/" + movieDetailMainObject.getPoster_path());
                                         startActivity(intent);
 //                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
 //                                                .titleDefault(textViewTitle.getText().toString())
