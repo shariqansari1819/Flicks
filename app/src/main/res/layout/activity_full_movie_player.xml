@@ -4,16 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     tools:context="com.codebosses.flicks.activities.FullMoviePlayerActivity">
 
-    <!--<com.halilibo.bvpkotlin.BetterVideoPlayer-->
-        <!--android:id="@+id/player"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-
-    <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
-        android:id="@+id/videoplayer"
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/exoPlayerFullMovie"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,19 +3,19 @@ apply plugin: 'io.fabric'
 android {
     signingConfigs {
         release {
-            storeFile file('/Volumes/Work/AndroidWork/ShariqAndroidProjects/FlicksData/Jks/NewFlicksKeyStore')
+            storeFile file('/Volumes/Work/AndroidWork/ShariqAndroidProjects/Flicks/FlicksData/Jks/FinalFlicksKeystore')
             storePassword 'shariq18111997'
-            keyAlias = 'FlicksAlias'
+            keyAlias = 'Flicks'
             keyPassword 'shariq18111997'
         }
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.dev.codebosses.flicksapp"
+        applicationId "com.devs.codebosses.flicksapp"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1   //  21 July 2019
-        versionName "1.0"
+        versionCode 3   //  21 July 2019
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.github.devendroid:ReadMoreOption:1.0.2'
     implementation 'com.github.halilozercan:BetterVideoPlayer:kotlin-SNAPSHOT'
     implementation project(':sliding-drawer-layout')
-    implementation project(':progressdialog')
+    implementation project(':sweet-alert-dialog')
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
     implementation 'com.google.firebase:firebase-auth:18.1.0'
@@ -87,7 +87,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.github.KhunHtetzNaing:xGetter:1.9.2'
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
-    implementation 'fm.jiecao:jiecaovideoplayer:5.7'
+    implementation 'com.google.android.exoplayer:exoplayer:2.10.4'
+    implementation 'com.google.firebase:firebase-analytics:17.0.1'
 
     //room
     implementation "android.arch.persistence.room:runtime:$room_version"

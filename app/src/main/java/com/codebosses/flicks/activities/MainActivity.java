@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
             }
         });
 
-        startTimer();
+//        startTimer();
 
 //        mInterstitialAd = new InterstitialAd(this);
 //        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));

@@ -426,16 +426,16 @@ public class EpisodeDetailActivity extends AppCompatActivity {
             textViewOverViewHeader.setVisibility(View.GONE);
         }
 
-        try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(episode.getAir_date());
-            if (!DateUtils.isAfterToday(date.getTime())) {
-                buttonWatchFullMovie.setVisibility(View.VISIBLE);
-            } else {
-                buttonWatchFullMovie.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
-
-        }
+//        try {
+//            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(episode.getAir_date());
+//            if (!DateUtils.isAfterToday(date.getTime())) {
+//                buttonWatchFullMovie.setVisibility(View.VISIBLE);
+//            } else {
+//                buttonWatchFullMovie.setVisibility(View.GONE);
+//            }
+//        } catch (Exception e) {
+//
+//        }
     }
 
     @OnClick({R.id.imageButtonPlayTvEpisode, R.id.imageViewCoverTvEpisode})
