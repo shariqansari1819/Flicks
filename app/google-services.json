@@ -8,57 +8,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:730943968736:android:dd7407ec01f8804e",
-        "android_client_info": {
-          "package_name": "com.dev.codebosses.flicksapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "730943968736-q9bebk7k7a191p5cs6f9ic2nfvcehkci.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.dev.codebosses.flicksapp",
-            "certificate_hash": "1bed4d0bcfb3c7729b4a2ae67f54b3deef5655de"
-          }
-        },
-        {
-          "client_id": "730943968736-phadcudv37kc06fepfid74imq4fusjnm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.dev.codebosses.flicksapp",
-            "certificate_hash": "e03f499252104cc1927e3cb7b07470b383f8a9d8"
-          }
-        },
-        {
-          "client_id": "730943968736-j8gqqreka9rd376o1sof89drqg8s68p7.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDkzdVDbaG26uEMVS_BhNifXCk0K6klt5w"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "730943968736-j8gqqreka9rd376o1sof89drqg8s68p7.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:730943968736:android:fb5006490ae1685c",
         "android_client_info": {
           "package_name": "com.devs.codebosses.flicksapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "730943968736-hb0hm17tt2emb8i48q0rcgk4j0nbp20f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devs.codebosses.flicksapp",
+            "certificate_hash": "925db0baefc7961a0ab6875f36f2e8cddf42cc4c"
+          }
+        },
+        {
+          "client_id": "730943968736-g7ipitn787npgam1i3dahm879n15d1bq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devs.codebosses.flicksapp",
+            "certificate_hash": "a9de6a3e2ee102327b47490262b98063ab9539e1"
+          }
+        },
         {
           "client_id": "730943968736-c2b8dg27sijgr522fjghm3cal49unaig.apps.googleusercontent.com",
           "client_type": 1,
