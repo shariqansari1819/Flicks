@@ -214,4 +214,10 @@
     <string name="view_all">View All</string>
     <string name="watch_full_episode">Watch Full Episode</string>
 
+    <!--Favorite activity strings-->
+    <string-array name="favorite_string_array">
+        <item>Movies</item>
+        <item>Tv Shows</item>
+    </string-array>
+
 </resources>

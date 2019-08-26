@@ -53,7 +53,6 @@ public class FragmentTrending extends BaseFragment {
             @Override
             public View createTabView(ViewGroup container, int position, PagerAdapter adapter) {
                 LayoutInflater inflater = LayoutInflater.from(container.getContext());
-                Resources res = container.getContext().getResources();
                 View tab = inflater.inflate(R.layout.layout_custom_tab, container, false);
                 TextView customText = tab.findViewById(R.id.textViewCustomTab);
                 FontUtils.getFontUtils(getActivity()).setTextViewRegularFont(customText);

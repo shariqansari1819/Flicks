@@ -124,5 +124,10 @@ public interface EndpointKeys {
     String PUBLIC_PROFILE = "public_profile";
 
     String VIDEO_PATH = "video_path";
+
+    String FAVORITE_MOVIE = "favorite_movie";
+    String FAVORITE_TV_SHOW = "favorite_tv_show";
 }
+
+
 

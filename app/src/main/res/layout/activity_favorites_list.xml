@@ -2,8 +2,58 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutFavoritesList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.codebosses.flicks.activities.FavoritesListActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/appBarFavoritesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.intrusoft.squint.DiagonalView
+        android:id="@+id/diagonalViewFavoritesList"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        app:angle="8"
+        app:layout_constraintTop_toBottomOf="@+id/appBarFavoritesList"
+        app:solidColor="@color/colorPrimary" />
+
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/tabLayoutFavoritesList"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_48sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/_12sdp"
+        android:paddingRight="@dimen/_12sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarFavoritesList"
+        app:stl_defaultTabTextColor="@color/colorWhite"
+        app:stl_defaultTabTextHorizontalPadding="18dp"
+        app:stl_defaultTabTextSize="@dimen/_10ssp"
+        app:stl_distributeEvenly="true"
+        app:stl_dividerColor="@android:color/transparent"
+        app:stl_dividerThickness="0dp"
+        app:stl_indicatorColor="#26000000"
+        app:stl_indicatorCornerRadius="18dp"
+        app:stl_indicatorGravity="center"
+        app:stl_indicatorInterpolation="smart"
+        app:stl_indicatorThickness="36dp"
+        app:stl_underlineColor="@android:color/transparent"
+        app:stl_underlineThickness="0dp" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPagerFavoritesList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutFavoritesList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
