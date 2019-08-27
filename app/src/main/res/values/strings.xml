@@ -220,4 +220,6 @@
         <item>Tv Shows</item>
     </string-array>
 
+    <string name="delete">Delete</string>
+
 </resources>

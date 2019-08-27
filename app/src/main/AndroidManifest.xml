@@ -23,7 +23,8 @@
         tools:targetApi="n">
         <activity
             android:name=".activities.FullMoviePlayerActivity"
-            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
+            android:screenOrientation="landscape" />
         <activity android:name=".activities.FavoritesListActivity" />
         <activity android:name=".activities.SettingActivity" />
         <activity android:name=".activities.ProfileActivity" />

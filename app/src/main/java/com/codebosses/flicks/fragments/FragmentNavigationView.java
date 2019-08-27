@@ -247,11 +247,11 @@ public class FragmentNavigationView extends Fragment {
     }
 
     private List<CategoryItem> makeAccountItems() {
-//        CategoryItem profile = new CategoryItem(getResources().getString(R.string.my_profile), false);
-//        CategoryItem settings = new CategoryItem(getResources().getString(R.string.setting), false);
+        CategoryItem profile = new CategoryItem(getResources().getString(R.string.my_profile), false);
+        CategoryItem settings = new CategoryItem(getResources().getString(R.string.setting), false);
         CategoryItem favoriteList = new CategoryItem(getResources().getString(R.string.favorite_list), false);
         CategoryItem signOutItem = new CategoryItem(getResources().getString(R.string.sign_out), false);
-        return Arrays.asList(signOutItem, favoriteList);
+        return Arrays.asList(profile,settings,favoriteList,signOutItem);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

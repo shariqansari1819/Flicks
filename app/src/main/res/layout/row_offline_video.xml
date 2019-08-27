@@ -54,6 +54,16 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewMenuOfflineRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
+        app:srcCompat="@drawable/ic_action_dot_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorSecondaryText"/>
+
     <TextView
         android:id="@+id/textViewTitleRowOffline"
         android:layout_width="0dp"
@@ -63,7 +73,7 @@
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/_13ssp"
         app:layout_constraintBottom_toTopOf="@+id/textViewDateRowOffline"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewMenuOfflineRow"
         app:layout_constraintStart_toEndOf="@+id/cardViewThumbnailContainerRowOffline"
         app:layout_constraintTop_toTopOf="@+id/cardViewThumbnailContainerRowOffline" />
 

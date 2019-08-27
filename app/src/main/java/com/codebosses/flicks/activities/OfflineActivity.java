@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -113,9 +114,31 @@ public class OfflineActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void eventBusOfflineVideoClick(EventBusOfflineClick eventBusOfflineClick) {
-        Intent intent = new Intent(this, OfflineMediaPlayerActivity.class);
-        intent.putExtra(EndpointKeys.VIDEO_PATH, offlineModelList.get(eventBusOfflineClick.getPosition()).getPath());
-        startActivity(intent);
+        if (eventBusOfflineClick.getType().equals("offline")) {
+            Intent intent = new Intent(this, OfflineMediaPlayerActivity.class);
+            intent.putExtra(EndpointKeys.VIDEO_PATH, offlineModelList.get(eventBusOfflineClick.getPosition()).getPath());
+            startActivity(intent);
+        } else if (eventBusOfflineClick.getType().equals("menu")) {
+            PopupMenu popup = new PopupMenu(OfflineActivity.this, eventBusOfflineClick.getView());
+            popup.getMenuInflater().inflate(R.menu.menu_offline_delete, popup.getMenu());
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.menuDelete:
+                            File file = new File(offlineModelList.get(eventBusOfflineClick.getPosition()).getPath());
+                            boolean isDeleted = file.delete();
+                            if (isDeleted) {
+                                offlineVideosAdapter.notifyItemRemoved(eventBusOfflineClick.getPosition());
+                                offlineModelList.remove(eventBusOfflineClick.getPosition());
+                            }
+                            return true;
+                    }
+                    return true;
+                }
+            });
+
+            popup.show();
+        }
     }
 
     @Override

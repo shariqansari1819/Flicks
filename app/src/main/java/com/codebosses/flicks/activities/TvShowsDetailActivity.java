@@ -49,6 +49,7 @@ import com.codebosses.flicks.pojo.eventbus.EventBusCastAndCrewClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieDetailGenreClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
+import com.codebosses.flicks.pojo.eventbus.EventBusRefreshFavoriteList;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.pojo.moviespojo.moviedetail.Genre;
 import com.codebosses.flicks.pojo.moviespojo.moviestrailer.MoviesTrailerMainObject;
@@ -867,6 +868,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                     .collection("TvShows")
                     .document(tvShowId)
                     .delete();
+            EventBus.getDefault().post(new EventBusRefreshFavoriteList());
         } else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -878,6 +880,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             TvShowEntity tvShowEntity = new TvShowEntity(Integer.parseInt(tvShowId), tvShowsDetailMainObject.getName(), tvShowsDetailMainObject.getFirst_air_date(), tvShowsDetailMainObject.getPoster_path(), tvShowsDetailMainObject.getOverview(), tvShowsDetailMainObject.getVote_average(), tvShowsDetailMainObject.getVote_count(), tvShowsDetailMainObject.getPopularity());
             new AddToFavoriteListTask().execute(tvShowEntity);
+            EventBus.getDefault().post(new EventBusRefreshFavoriteList());
             firebaseFirestore.collection("Favorites")
                     .document(firebaseAuth.getCurrentUser().getUid())
                     .get()

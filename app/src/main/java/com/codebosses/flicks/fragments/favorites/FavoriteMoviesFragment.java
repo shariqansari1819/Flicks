@@ -2,17 +2,15 @@ package com.codebosses.flicks.fragments.favorites;
 
 
 import android.content.Intent;
-import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
@@ -22,6 +20,7 @@ import com.codebosses.flicks.database.DatabaseClient;
 import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusRefreshFavoriteList;
 import com.codebosses.flicks.utils.ValidUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,6 +56,10 @@ public class FavoriteMoviesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorite_movies, container, false);
         ButterKnife.bind(this, view);
 
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
         recyclerViewFavoriteMovies.setLayoutManager(new LinearLayoutManager(getActivity()));
         favoriteMoviesAdapter = new FavoriteMoviesAdapter(getActivity(), movieEntityList, EndpointKeys.FAVORITE_MOVIE);
         recyclerViewFavoriteMovies.setAdapter(favoriteMoviesAdapter);
@@ -69,19 +72,18 @@ public class FavoriteMoviesFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroyView() {
+        super.onDestroyView();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusRefreshMovies(EventBusRefreshFavoriteList eventBusRefreshFavoriteList) {
+        favoriteMoviesAdapter.notifyItemRangeRemoved(0, movieEntityList.size());
+        movieEntityList.clear();
+        new GetAllMoviesTask().execute();
     }
 
     private void loadFavoriteMovies() {

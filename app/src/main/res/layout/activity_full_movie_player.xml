@@ -4,12 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlack"
     android:keepScreenOn="true"
     tools:context="com.codebosses.flicks.activities.FullMoviePlayerActivity">
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/exoPlayerFullMovie"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.budiyev.android.circularprogressbar.CircularProgressBar
+        android:id="@+id/circularProgressBarFullMovie"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:visibility="gone"
+        app:animateProgress="true"
+        app:foregroundStrokeCap="round"
+        app:foregroundStrokeColor="@color/colorAccent"
+        app:foregroundStrokeWidth="@dimen/_3sdp"
+        app:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:progressAnimationDuration="200"
+        app:startAngle="45" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

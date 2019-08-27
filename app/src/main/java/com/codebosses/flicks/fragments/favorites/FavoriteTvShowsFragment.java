@@ -3,26 +3,22 @@ package com.codebosses.flicks.fragments.favorites;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
-import com.codebosses.flicks.activities.MoviesDetailActivity;
 import com.codebosses.flicks.activities.TvShowsDetailActivity;
-import com.codebosses.flicks.adapters.favorite.FavoriteMoviesAdapter;
 import com.codebosses.flicks.adapters.favorite.FavoriteTvShowsAdapter;
 import com.codebosses.flicks.database.DatabaseClient;
-import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.database.entities.TvShowEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
-import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusRefreshFavoriteList;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.utils.ValidUtils;
 
@@ -59,6 +55,10 @@ public class FavoriteTvShowsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorite_tv_shows, container, false);
         ButterKnife.bind(this, view);
 
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
         recyclerViewFavoriteTvShows.setLayoutManager(new LinearLayoutManager(getActivity()));
         favoriteTvShowsAdapter = new FavoriteTvShowsAdapter(getActivity(), tvShowEntityArrayList, EndpointKeys.FAVORITE_TV_SHOW);
         recyclerViewFavoriteTvShows.setAdapter(favoriteTvShowsAdapter);
@@ -71,19 +71,18 @@ public class FavoriteTvShowsFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroyView() {
+        super.onDestroyView();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eventBusRefreshTvShow(EventBusRefreshFavoriteList eventBusRefreshFavoriteList) {
+        favoriteTvShowsAdapter.notifyItemRangeRemoved(0, tvShowEntityArrayList.size());
+        tvShowEntityArrayList.clear();
+        loadFavoriteTvShow();
     }
 
     private void loadFavoriteTvShow() {

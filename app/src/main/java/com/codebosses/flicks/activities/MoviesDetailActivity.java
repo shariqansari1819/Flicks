@@ -54,6 +54,7 @@ import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieDetailGenreClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusPlayVideo;
+import com.codebosses.flicks.pojo.eventbus.EventBusRefreshFavoriteList;
 import com.codebosses.flicks.pojo.moviespojo.ExternalId;
 import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
@@ -620,16 +621,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
                         textViewMovieRating.setText(String.valueOf(rating));
 
-//                        try {
-//                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
-//                            if (!DateUtils.isAfterToday(date.getTime())) {
-//                                buttonWatchFullMovie.setVisibility(View.VISIBLE);
-//                            } else {
-//                                buttonWatchFullMovie.setVisibility(View.GONE);
-//                            }
-//                        } catch (Exception e) {
-//
-//                        }
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
+                            if (!DateUtils.isAfterToday(date.getTime())) {
+                                buttonWatchFullMovie.setVisibility(View.VISIBLE);
+                            } else {
+                                buttonWatchFullMovie.setVisibility(View.GONE);
+                            }
+                        } catch (Exception e) {
+
+                        }
 
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
@@ -905,6 +906,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                     .collection("Movies")
                     .document(movieId)
                     .delete();
+            EventBus.getDefault().post(new EventBusRefreshFavoriteList());
         } else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -916,6 +918,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             MovieEntity movieEntity = new MovieEntity(Integer.parseInt(movieId), movieDetailMainObject.getPoster_path(), movieDetailMainObject.getTitle(), movieDetailMainObject.getOverview(), movieDetailMainObject.getRelease_date(), movieDetailMainObject.getPopularity(), movieDetailMainObject.getVote_average());
             new AddToFavoriteListTask().execute(movieEntity);
+            EventBus.getDefault().post(new EventBusRefreshFavoriteList());
             firebaseFirestore.collection("Favorites")
                     .document(firebaseAuth.getCurrentUser().getUid())
                     .get()

@@ -84,6 +84,8 @@ public class OfflineVideosAdapter extends RecyclerView.Adapter<OfflineVideosAdap
         TextView textViewTitle;
         @BindView(R.id.textViewDateRowOffline)
         TextView textViewDate;
+        @BindView(R.id.imageViewMenuOfflineRow)
+        ImageView imageViewDots;
 
         public OfflineVideosHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,7 +98,13 @@ public class OfflineVideosAdapter extends RecyclerView.Adapter<OfflineVideosAdap
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(new EventBusOfflineClick(getAdapterPosition()));
+                    EventBus.getDefault().post(new EventBusOfflineClick(getAdapterPosition(),"offline",v));
+                }
+            });
+            imageViewDots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new EventBusOfflineClick(getAdapterPosition(),"menu",v));
                 }
             });
         }

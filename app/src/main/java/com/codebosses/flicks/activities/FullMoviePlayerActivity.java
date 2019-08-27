@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -28,9 +29,17 @@ import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FullMoviePlayerActivity extends AppCompatActivity {
 
-    private SimpleExoPlayerView simpleExoPlayerView;
+    //    Android fields....
+    @BindView(R.id.exoPlayerFullMovie)
+    SimpleExoPlayerView simpleExoPlayerView;
+    @BindView(R.id.circularProgressBarFullMovie)
+    CircularProgressBar circularProgressBarFullMovie;
+
     private SimpleExoPlayer player;
     private long playbackPosition;
     private int currentWindow;
@@ -41,15 +50,16 @@ public class FullMoviePlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_movie_player);
+        ButterKnife.bind(this);
 
-        simpleExoPlayerView = findViewById(R.id.exoPlayerFullMovie);
 
         if (getIntent() != null) {
             movieUrl = getIntent().getStringExtra(EndpointKeys.MOVIE_URL);
             String movieName = getIntent().getStringExtra(EndpointKeys.MOVIE_TITLE);
             String moviePosterPath = getIntent().getStringExtra(EndpointKeys.MOVIES_IMAGES);
             if (!movieUrl.isEmpty()) {
-
+                circularProgressBarFullMovie.setVisibility(View.VISIBLE);
+                hideSystemUi();
             }
         }
     }
@@ -83,21 +93,25 @@ public class FullMoviePlayerActivity extends AppCompatActivity {
 
                     case Player.STATE_BUFFERING:
                         status = "Loading";
+                        circularProgressBarFullMovie.setVisibility(View.VISIBLE);
                         break;
                     case Player.STATE_ENDED:
                         status = "End";
+                        circularProgressBarFullMovie.setVisibility(View.GONE);
                         break;
                     case Player.STATE_IDLE:
                         status = "Idle";
+//                        circularProgressBarFullMovie.setVisibility(View.VISIBLE);
                         break;
                     case Player.STATE_READY:
                         status = playWhenReady ? "Playing" : "Paused";
+                        circularProgressBarFullMovie.setVisibility(View.GONE);
                         break;
                     default:
                         status = "Idle";
                         break;
                 }
-                Toast.makeText(FullMoviePlayerActivity.this, status, Toast.LENGTH_SHORT).show();
+
             }
         });
     }
