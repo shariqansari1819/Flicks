@@ -20,6 +20,7 @@ import com.codebosses.flicks.FlicksApplication;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.database.DatabaseClient;
+import com.codebosses.flicks.database.entities.CelebrityEntity;
 import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.database.entities.TvShowEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
@@ -151,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.textViewTermsServices)
-    public void onTermsClick(View view){
+    public void onTermsClick(View view) {
         String url = "https://codebosses.blogspot.com/p/privacy-policy.html";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
@@ -180,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             facebookManager.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -295,14 +296,29 @@ public class LoginActivity extends AppCompatActivity {
                                 .addOnSuccessListener(LoginActivity.this, new OnSuccessListener<QuerySnapshot>() {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        sweetAlertDialog.dismiss();
                                         if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() > 0) {
                                             for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                                                 TvShowEntity tvShowEntity = snapshot.toObject(TvShowEntity.class);
                                                 new AddToFavoriteTvShowTask().execute(tvShowEntity);
                                             }
                                         }
-                                        saveUserDataToPreference(userModel);
+                                        firebaseFirestore.collection("Favorites")
+                                                .document(firebaseAuth.getCurrentUser().getUid())
+                                                .collection("Celebrities")
+                                                .get()
+                                                .addOnSuccessListener(LoginActivity.this, new OnSuccessListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                        sweetAlertDialog.dismiss();
+                                                        if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() > 0) {
+                                                            for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                                                CelebrityEntity celebrityEntity = snapshot.toObject(CelebrityEntity.class);
+                                                                new AddToFavoriteCelebTask().execute(celebrityEntity);
+                                                            }
+                                                        }
+                                                        saveUserDataToPreference(userModel);
+                                                    }
+                                                });
                                     }
                                 }).addOnFailureListener(LoginActivity.this, new OnFailureListener() {
                             @Override
@@ -371,10 +387,10 @@ public class LoginActivity extends AppCompatActivity {
                                 userId = currentUser.getUid();
                                 email = currentUser.getEmail();
                                 name = currentUser.getDisplayName();
-                                if(email == null){
+                                if (email == null) {
                                     email = "";
                                 }
-                                if(currentUser.getPhoneNumber() != null){
+                                if (currentUser.getPhoneNumber() != null) {
                                     phoneNumber = currentUser.getPhoneNumber();
                                 }
 
@@ -387,7 +403,7 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                                checkUserAlreadyExist(userId, email, name,phoneNumber , profileImage, profileImageThumbnail, Constants.FACEBOOK);
+                                checkUserAlreadyExist(userId, email, name, phoneNumber, profileImage, profileImageThumbnail, Constants.FACEBOOK);
                             }
                         } else {
                             if (task.getException() != null) {
@@ -431,6 +447,15 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(TvShowEntity... tvShowEntities) {
             databaseClient.getFlicksDatabase().getFlicksDao().insertTvShow(tvShowEntities[0]);
+            return null;
+        }
+    }
+
+    class AddToFavoriteCelebTask extends AsyncTask<CelebrityEntity, Void, Void> {
+
+        @Override
+        protected Void doInBackground(CelebrityEntity... celebrityEntities) {
+            databaseClient.getFlicksDatabase().getFlicksDao().insertCelebrity(celebrityEntities[0]);
             return null;
         }
     }

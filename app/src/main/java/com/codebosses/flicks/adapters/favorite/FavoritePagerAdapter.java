@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.codebosses.flicks.R;
+import com.codebosses.flicks.fragments.favorites.FavoriteCelebritiesFragment;
 import com.codebosses.flicks.fragments.favorites.FavoriteMoviesFragment;
 import com.codebosses.flicks.fragments.favorites.FavoriteTvShowsFragment;
 import com.codebosses.flicks.fragments.trending.FragmentTrendingCelebrities;
@@ -32,6 +33,8 @@ public class FavoritePagerAdapter extends FragmentStatePagerAdapter {
                 return new FavoriteMoviesFragment();
             case 1:
                 return new FavoriteTvShowsFragment();
+            case 2:
+                return new FavoriteCelebritiesFragment();
             default:
                 return null;
         }
@@ -39,7 +42,7 @@ public class FavoritePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Nullable

@@ -218,6 +218,7 @@
     <string-array name="favorite_string_array">
         <item>Movies</item>
         <item>Tv Shows</item>
+        <item>Celebrities</item>
     </string-array>
 
     <string name="delete">Delete</string>

@@ -50,7 +50,7 @@ public class FavoritesListActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Favorite List");
-            ValidUtils.changeToolbarFont(toolbarFavoritesList,this);
+            ValidUtils.changeToolbarFont(toolbarFavoritesList, this);
         }
 
         //        Setting pager adapter....
@@ -71,6 +71,9 @@ public class FavoritesListActivity extends AppCompatActivity {
                     case 1:
                         customText.setText(adapter.getPageTitle(position));
                         break;
+                    case 2:
+                        customText.setText(adapter.getPageTitle(position));
+                        break;
                     default:
                         throw new IllegalStateException("Invalid position: " + position);
                 }
@@ -78,9 +81,7 @@ public class FavoritesListActivity extends AppCompatActivity {
             }
         });
         smartTabLayoutFavoritesList.setViewPager(viewPagerFavoritesList);
-
-        viewPagerFavoritesList.setOffscreenPageLimit(1);
-
+        viewPagerFavoritesList.setOffscreenPageLimit(2);
     }
 
     @Override

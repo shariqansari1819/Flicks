@@ -17,6 +17,16 @@ public class CelebrityEntity {
     @ColumnInfo(name = "profile_path")
     private String profilePath;
 
+    public CelebrityEntity() {
+    }
+
+    public CelebrityEntity(int id, double popularity, String name, String profilePath) {
+        this.id = id;
+        this.popularity = popularity;
+        this.name = name;
+        this.profilePath = profilePath;
+    }
+
     public int getId() {
         return id;
     }

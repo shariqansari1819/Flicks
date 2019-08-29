@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -29,6 +30,9 @@ import com.codebosses.flicks.adapters.celebrity_detail.CelebrityImagesPagerAdapt
 import com.codebosses.flicks.adapters.tvshowsdetail.EpisodePhotosAdapter;
 import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
+import com.codebosses.flicks.database.DatabaseClient;
+import com.codebosses.flicks.database.entities.CelebrityEntity;
+import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
@@ -41,10 +45,15 @@ import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosMainObject;
 import com.codebosses.flicks.pojo.eventbus.EventBusImageClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusPagerImageClick;
+import com.codebosses.flicks.pojo.eventbus.EventBusRefreshFavoriteList;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
 import com.devs.readmoreoption.ReadMoreOption;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.huanhailiuxin.coolviewpager.CoolViewPager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,6 +61,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -113,6 +123,10 @@ public class CelebrityDetailActivity extends AppCompatActivity {
     TextView textViewMoviesCount;
     @BindView(R.id.textViewTvShowsCountCelebrityDetail)
     TextView textViewTvShowsCount;
+    @BindView(R.id.imageViewFavoriteCelebrityDetail)
+    AppCompatImageView imageViewFavorite;
+    @BindView(R.id.imageViewUnFavoriteCelebrityDetail)
+    AppCompatImageView imageViewUnFavorite;
 
     //    Retrofit fields....
     private Call<EpisodePhotosMainObject> celebImagesCall;
@@ -125,6 +139,7 @@ public class CelebrityDetailActivity extends AppCompatActivity {
     private List<CelebMoviesData> celebMoviesDataArrayList = new ArrayList<>();
     private List<CelebTvShowsData> celebTvShowsDataList = new ArrayList<>();
     private String celebId, celebName, celebImage;
+    private CelebrityDetailMainObject celebrityDetailMainObject;
 
     //    Adapter fields....
     private CelebrityImagesPagerAdapter celebrityImagesPagerAdapter;
@@ -135,6 +150,13 @@ public class CelebrityDetailActivity extends AppCompatActivity {
     //    Font fields....
     private FontUtils fontUtils;
 
+    //    Firebase fields....
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+
+    //    Room database fields....
+    private DatabaseClient databaseClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,6 +164,13 @@ public class CelebrityDetailActivity extends AppCompatActivity {
         transparentStatusAndNavigation(this);
 //        CelebrityDetailActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
+
+//        Firebase fields initialization....
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+//        Initialization of room database field....
+        databaseClient = DatabaseClient.getDatabaseClient(this);
 
         if (getIntent() != null) {
             celebId = String.valueOf(getIntent().getIntExtra(EndpointKeys.CELEBRITY_ID, -1));
@@ -328,11 +357,13 @@ public class CelebrityDetailActivity extends AppCompatActivity {
             public void onResponse(Call<CelebrityDetailMainObject> call, retrofit2.Response<CelebrityDetailMainObject> response) {
                 circularProgressBar.setVisibility(View.GONE);
                 if (response != null && response.isSuccessful()) {
-                    CelebrityDetailMainObject celebrityDetailMainObject = response.body();
+                    celebrityDetailMainObject = response.body();
                     if (celebrityDetailMainObject != null) {
                         textViewKnownFor.setText(celebrityDetailMainObject.getKnownForDepartment());
                         textViewName.setText(celebrityDetailMainObject.getName());
                         textViewBornPlace.setText(celebrityDetailMainObject.getPlaceOfBirth());
+
+                        isCelebrityFavorite();
 
                         if (celebrityDetailMainObject.getProfilePath() != null && !celebrityDetailMainObject.getProfilePath().isEmpty()) {
                             cardViewThumbnail.setVisibility(View.VISIBLE);
@@ -342,10 +373,10 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                                     .thumbnail(0.1f)
                                     .into(imageViewThumbnail);
                         }
-                        if(celebrityDetailMainObject.getBirthday() != null && !celebrityDetailMainObject.getBirthday().isEmpty()){
+                        if (celebrityDetailMainObject.getBirthday() != null && !celebrityDetailMainObject.getBirthday().isEmpty()) {
                             textViewBorn.setText("Born: " + celebrityDetailMainObject.getBirthday());
                             textViewBorn.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             textViewBorn.setVisibility(View.GONE);
                         }
                         if (!celebrityDetailMainObject.getBiography().isEmpty()) {
@@ -481,6 +512,122 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void isCelebrityFavorite() {
+        if (firebaseAuth.getCurrentUser() != null)
+            new GetCelebByIdTask().execute(Integer.parseInt(celebId));
+        else
+            imageViewUnFavorite.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.imageViewFavoriteCelebrityDetail)
+    public void onFavoriteClick(View view) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            new DeleteFromFavoriteTask().execute(Integer.parseInt(celebId));
+            firebaseFirestore.collection("Favorites")
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .collection("Celebrities")
+                    .document(celebId)
+                    .delete();
+            EventBus.getDefault().post(new EventBusRefreshFavoriteList());
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @OnClick(R.id.imageViewUnFavoriteCelebrityDetail)
+    public void onUnFavoriteClick(View view) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            CelebrityEntity celebrityEntity = new CelebrityEntity(Integer.parseInt(celebId), celebrityDetailMainObject.getPopularity(), celebrityDetailMainObject.getName(), celebrityDetailMainObject.getProfilePath());
+            new AddFavoriteListTask().execute(celebrityEntity);
+            EventBus.getDefault().post(new EventBusRefreshFavoriteList());
+            firebaseFirestore.collection("Favorites")
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnSuccessListener(this, new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot != null && documentSnapshot.exists()) {
+                                saveFavoriteCelebToFirestore(celebrityEntity);
+                            } else {
+                                HashMap<String, String> hashMap = new HashMap<>();
+                                hashMap.put("userId", firebaseAuth.getCurrentUser().getUid());
+                                firebaseFirestore.collection("Favorites")
+                                        .document(firebaseAuth.getCurrentUser().getUid())
+                                        .set(hashMap)
+                                        .addOnSuccessListener(CelebrityDetailActivity.this, new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                saveFavoriteCelebToFirestore(celebrityEntity);
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void saveFavoriteCelebToFirestore(CelebrityEntity celebrityEntity) {
+        firebaseFirestore.collection("Favorites")
+                .document(firebaseAuth.getCurrentUser().getUid())
+                .collection("Celebrities")
+                .document(celebId)
+                .set(celebrityEntity);
+    }
+
+    class AddFavoriteListTask extends AsyncTask<CelebrityEntity, Void, Void> {
+
+        @Override
+        protected Void doInBackground(CelebrityEntity... celebrityEntities) {
+            databaseClient.getFlicksDatabase().getFlicksDao().insertCelebrity(celebrityEntities[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            isCelebrityFavorite();
+        }
+    }
+
+    class GetCelebByIdTask extends AsyncTask<Integer, Void, CelebrityEntity> {
+
+        @Override
+        protected CelebrityEntity doInBackground(Integer... integers) {
+            return databaseClient.getFlicksDatabase().getFlicksDao().getFavoriteCelebById(integers[0]);
+        }
+
+        @Override
+        protected void onPostExecute(CelebrityEntity celebrityEntity) {
+            super.onPostExecute(celebrityEntity);
+            if (celebrityEntity != null) {
+                imageViewFavorite.setVisibility(View.VISIBLE);
+                imageViewUnFavorite.setVisibility(View.GONE);
+            } else {
+                imageViewFavorite.setVisibility(View.GONE);
+                imageViewUnFavorite.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    class DeleteFromFavoriteTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            databaseClient.getFlicksDatabase().getFlicksDao().deleteCelebById(integers[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            isCelebrityFavorite();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
