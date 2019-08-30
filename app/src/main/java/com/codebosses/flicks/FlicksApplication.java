@@ -3,6 +3,7 @@ package com.codebosses.flicks;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
 import com.androidnetworking.AndroidNetworking;
@@ -70,6 +71,13 @@ public class FlicksApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+//        super.attachBaseContext(LocalManagerUtils.setLocale(base));
         MultiDex.install(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+//        LocalManagerUtils.setLocale(this);
     }
 }

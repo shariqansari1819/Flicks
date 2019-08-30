@@ -2,13 +2,10 @@ package com.codebosses.flicks.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -20,7 +17,6 @@ import com.codebosses.flicks.FlicksApplication;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.database.DatabaseClient;
 import com.codebosses.flicks.endpoints.EndpointKeys;
-import com.codebosses.flicks.fragments.FragmentNavigationView;
 import com.codebosses.flicks.fragments.base.BaseFragment;
 import com.codebosses.flicks.fragments.celebritiesfragments.FragmentTopRatedCelebrities;
 import com.codebosses.flicks.fragments.discoverfragments.DiscoverFragment;
@@ -30,7 +26,6 @@ import com.codebosses.flicks.fragments.moviesfragments.FragmentInTheater;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentLatestMovies;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentTopRatedMovies;
 import com.codebosses.flicks.fragments.moviesfragments.FragmentUpcomingMovies;
-import com.codebosses.flicks.fragments.offline.OfflineFragment;
 import com.codebosses.flicks.fragments.trending.FragmentTrending;
 import com.codebosses.flicks.fragments.tvfragments.FragmentLatestTvShows;
 import com.codebosses.flicks.fragments.tvfragments.FragmentTopRatedTvShows;
@@ -56,7 +51,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -72,10 +66,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import butterknife.BindView;
@@ -300,6 +290,11 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 //        Event listeners....
         EventBus.getDefault().register(this);
     }
+
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocalManagerUtils.setLocale(newBase));
+//    }
 
     @Override
     protected void onStart() {

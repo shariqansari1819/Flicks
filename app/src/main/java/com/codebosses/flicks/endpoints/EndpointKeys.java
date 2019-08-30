@@ -128,6 +128,8 @@ public interface EndpointKeys {
     String FAVORITE_MOVIE = "favorite_movie";
     String FAVORITE_TV_SHOW = "favorite_tv_show";
     String FAVORITE_CELEB = "favorite_celeb";
+
+    String DEFAULT_LANGUAGE = "default_language";
 }
 
 

@@ -15,11 +15,13 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
+    <com.intrusoft.squint.DiagonalView
+        android:id="@+id/diagonalViewMain"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/_190sdp"
+        app:angle="8"
         app:layout_constraintTop_toBottomOf="@+id/appBarProfile"
-        android:layout_height="@dimen/_200sdp"
-        android:background="@color/colorPrimary"/>
+        app:solidColor="@color/colorPrimary" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewProfile"

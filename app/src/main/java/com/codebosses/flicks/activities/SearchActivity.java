@@ -77,27 +77,27 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
         viewPagerSearch.setOffscreenPageLimit(2);
         changeTabsFont();
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
-        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequestInterstitial);
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                showInterstitial();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-            }
-        });
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+//        mInterstitialAd.loadAd(adRequestInterstitial);
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//            }
+//
+//            @Override
+//            public void onAdLoaded() {
+//                super.onAdLoaded();
+//                showInterstitial();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//                super.onAdFailedToLoad(i);
+//            }
+//        });
     }
 
     private void showInterstitial() {
@@ -111,7 +111,7 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
     @Override
     protected void onStart() {
         super.onStart();
-        showInterstitial();
+//        showInterstitial();
     }
 
     @Override

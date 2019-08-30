@@ -19,6 +19,10 @@ import com.codebosses.flicks.adapters.favorite.FavoritePagerAdapter;
 import com.codebosses.flicks.adapters.trending.TrendingPagerAdapter;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import butterknife.BindView;
@@ -35,9 +39,13 @@ public class FavoritesListActivity extends AppCompatActivity {
     ViewPager viewPagerFavoritesList;
     @BindView(R.id.appBarFavoritesList)
     Toolbar toolbarFavoritesList;
+    @BindView(R.id.adView)
+    AdView adView;
 
     //    Instance fields....
     private FavoritePagerAdapter favoritePagerAdapter;
+
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +61,40 @@ public class FavoritesListActivity extends AppCompatActivity {
             ValidUtils.changeToolbarFont(toolbarFavoritesList, this);
         }
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
+
         //        Setting pager adapter....
         favoritePagerAdapter = new FavoritePagerAdapter(getSupportFragmentManager(), this);
         viewPagerFavoritesList.setAdapter(favoritePagerAdapter);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
 
         smartTabLayoutFavoritesList.setCustomTabView(new SmartTabLayout.TabProvider() {
             @Override
@@ -82,6 +121,20 @@ public class FavoritesListActivity extends AppCompatActivity {
         });
         smartTabLayoutFavoritesList.setViewPager(viewPagerFavoritesList);
         viewPagerFavoritesList.setOffscreenPageLimit(2);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showInterstitial();
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
     }
 
     @Override

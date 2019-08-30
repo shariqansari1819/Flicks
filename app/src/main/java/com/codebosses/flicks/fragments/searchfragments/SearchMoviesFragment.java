@@ -61,7 +61,6 @@ public class SearchMoviesFragment extends Fragment {
     AppCompatImageView imageViewNotFound;
     private LinearLayoutManager linearLayoutManager;
 
-
     //    Resource fields....
     @BindString(R.string.could_not_search_movies)
     String couldNotGetMovies;
@@ -97,7 +96,6 @@ public class SearchMoviesFragment extends Fragment {
                 super.onAdOpened();
             }
         });
-
 
         //        Setting custom font....
         fontUtils = FontUtils.getFontUtils(getActivity());

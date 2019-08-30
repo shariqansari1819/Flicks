@@ -221,6 +221,9 @@
         <item>Celebrities</item>
     </string-array>
 
+    <!--Setting activity strings-->
+    <string name="change_language">Change Language</string>
+
     <string name="delete">Delete</string>
 
 </resources>

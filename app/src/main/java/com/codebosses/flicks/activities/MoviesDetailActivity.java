@@ -70,7 +70,6 @@ import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.devs.readmoreoption.ReadMoreOption;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -400,6 +399,11 @@ public class MoviesDetailActivity extends AppCompatActivity {
 //        }
 
     }
+
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocalManagerUtils.setLocale(newBase));
+//    }
 
     private void showInterstitial() {
         if (mInterstitialAd.isLoaded()) {

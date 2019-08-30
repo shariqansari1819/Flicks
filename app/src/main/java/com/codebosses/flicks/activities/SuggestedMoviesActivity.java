@@ -29,6 +29,9 @@ import com.codebosses.flicks.pojo.moviespojo.MoviesMainObject;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,6 +54,8 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
     Toolbar toolbarSuggestedMovies;
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
+    @BindView(R.id.adView)
+    AdView adView;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_suggested_movies)
@@ -92,6 +97,15 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
         fontUtils.setTextViewRegularFont(textViewAppBarTitle);
 
         if (ValidUtils.isNetworkAvailable(this)) {
+
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                }
+            });
 
             moviesAdapter = new MoviesAdapter(this, suggestedMoviesList, EndpointKeys.SUGGESTED_MOVIES);
             linearLayoutManager = new LinearLayoutManager(this);

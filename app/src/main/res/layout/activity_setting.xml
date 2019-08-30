@@ -2,8 +2,29 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutSetting"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context="com.codebosses.flicks.activities.SettingActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/appBarSetting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewChangeLanguage"
+        android:layout_width="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="@dimen/_15ssp"
+        android:padding="@dimen/_12sdp"
+        android:text="@string/change_language"
+        app:layout_constraintTop_toBottomOf="@+id/appBarSetting" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +34,9 @@ import com.codebosses.flicks.pojo.tvpojo.TvMainObject;
 import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.utils.FontUtils;
 import com.codebosses.flicks.utils.ValidUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,7 +59,8 @@ public class SuggestedTvShowsActivity extends AppCompatActivity {
     Toolbar toolbarSuggestedTvShows;
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
-
+    @BindView(R.id.adView)
+    AdView adView;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_suggested_tv_shows)
@@ -95,6 +100,15 @@ public class SuggestedTvShowsActivity extends AppCompatActivity {
         fontUtils.setTextViewRegularFont(textViewAppBarTitle);
 
         if (ValidUtils.isNetworkAvailable(this)) {
+
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                }
+            });
 
             tvShowsAdapter = new TvShowsAdapter(this, suggestedTvShowsList, EndpointKeys.SUGGESTED_TV_SHOWS);
             linearLayoutManager = new LinearLayoutManager(this);
