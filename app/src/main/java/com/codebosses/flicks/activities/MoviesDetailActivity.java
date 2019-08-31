@@ -625,16 +625,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
                         textViewMovieRating.setText(String.valueOf(rating));
 
-                        try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
-                            if (!DateUtils.isAfterToday(date.getTime())) {
-                                buttonWatchFullMovie.setVisibility(View.VISIBLE);
-                            } else {
-                                buttonWatchFullMovie.setVisibility(View.GONE);
-                            }
-                        } catch (Exception e) {
-
-                        }
+//                        try {
+//                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
+//                            if (!DateUtils.isAfterToday(date.getTime())) {
+//                                buttonWatchFullMovie.setVisibility(View.VISIBLE);
+//                            } else {
+//                                buttonWatchFullMovie.setVisibility(View.GONE);
+//                            }
+//                        } catch (Exception e) {
+//
+//                        }
 
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
