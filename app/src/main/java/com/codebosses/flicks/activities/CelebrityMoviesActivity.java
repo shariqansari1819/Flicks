@@ -86,7 +86,7 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     private Call<CelebMoviesMainObject> celebMoviesMainObjectCall;
 
     //    Ad mob fields....
-    private InterstitialAd mInterstitialAd;
+//    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,27 +94,27 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_celebrity_movies);
         ButterKnife.bind(this);
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
-        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequestInterstitial);
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                showInterstitial();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-            }
-        });
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+//        mInterstitialAd.loadAd(adRequestInterstitial);
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//            }
+//
+//            @Override
+//            public void onAdLoaded() {
+//                super.onAdLoaded();
+//                showInterstitial();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//                super.onAdFailedToLoad(i);
+//            }
+//        });
 
         if (getIntent() != null) {
             celebId = String.valueOf(getIntent().getIntExtra(EndpointKeys.CELEBRITY_ID, -1));
@@ -176,13 +176,13 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
         });
     }
 
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequest);
-        }
-    }
+//    private void showInterstitial() {
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            mInterstitialAd.loadAd(adRequest);
+//        }
+//    }
 
     public static void changeToolbarFont(Toolbar toolbar, Activity context) {
         for (int i = 0; i < toolbar.getChildCount(); i++) {

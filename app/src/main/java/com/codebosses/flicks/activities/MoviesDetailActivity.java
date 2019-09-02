@@ -229,7 +229,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private FontUtils fontUtils;
 
     //    Ad mob fields....
-    private InterstitialAd mInterstitialAd;
+//    private InterstitialAd mInterstitialAd;
 
     //    Room database fields....
     private DatabaseClient databaseClient;
@@ -405,13 +405,13 @@ public class MoviesDetailActivity extends AppCompatActivity {
 //        super.attachBaseContext(LocalManagerUtils.setLocale(newBase));
 //    }
 
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequest);
-        }
-    }
+//    private void showInterstitial() {
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            mInterstitialAd.loadAd(adRequest);
+//        }
+//    }
 
     @Override
     protected void onStop() {

@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     private List<String> stackList;
     private List<String> menuStacks;
 
-    private InterstitialAd mInterstitialAd;
+//    private InterstitialAd mInterstitialAd;
 
     //    Database fields....
     private DatabaseClient databaseClient;
@@ -302,13 +302,13 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 //        showInterstitial();
     }
 
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequest);
-        }
-    }
+//    private void showInterstitial() {
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            mInterstitialAd.loadAd(adRequest);
+//        }
+//    }
 
     private void initializeFragments() {
         discoverFragment = new DiscoverFragment();
@@ -632,30 +632,30 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         return index;
     }
 
-    private void showAdOnListClick() {
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
-        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequestInterstitial);
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                showInterstitial();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-            }
-        });
-        showInterstitial();
-    }
+//    private void showAdOnListClick() {
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+//        mInterstitialAd.loadAd(adRequestInterstitial);
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//            }
+//
+//            @Override
+//            public void onAdLoaded() {
+//                super.onAdLoaded();
+//                showInterstitial();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//                super.onAdFailedToLoad(i);
+//            }
+//        });
+//        showInterstitial();
+//    }
 
     private void resolveStackLists(String tabId) {
         updateStackIndex(stackList, tabId);
@@ -681,7 +681,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         adShowCounter = 0;
         interstitialAddCounter = 0;
         maxTimeToLoadAd = 0;
-        stopTimer();
+//        stopTimer();
     }
 
     private void setCustomFont() {
@@ -880,44 +880,44 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         }
     }
 
-    private void startTimer() {
-        timer = new Timer();
-        initializeTimerTask();
-        timer.schedule(timerTask, 1000, 1000);
-    }
-
-    private void stopTimer() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-    }
-
-    private void initializeTimerTask() {
-        timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adShowCounter++;
-                        Log.i("MainActivity", "run: " + adShowCounter);
-                        if (interstitialAddCounter < 5) {
-                            if (adShowCounter == maxTimeToLoadAd) {
-                                interstitialAddCounter++;
-                                maxTimeToLoadAd += 350;
-                                adShowCounter = 0;
-                                showAdOnListClick();
-                            }
-                        } else {
-                            adShowCounter = 0;
-                            interstitialAddCounter = 0;
-                            maxTimeToLoadAd = 0;
-                            stopTimer();
-                        }
-                    }
-                });
-            }
-        };
-    }
+//    private void startTimer() {
+//        timer = new Timer();
+//        initializeTimerTask();
+//        timer.schedule(timerTask, 1000, 1000);
+//    }
+//
+//    private void stopTimer() {
+//        if (timer != null) {
+//            timer.cancel();
+//            timer = null;
+//        }
+//    }
+//
+//    private void initializeTimerTask() {
+//        timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        adShowCounter++;
+//                        Log.i("MainActivity", "run: " + adShowCounter);
+//                        if (interstitialAddCounter < 5) {
+//                            if (adShowCounter == maxTimeToLoadAd) {
+//                                interstitialAddCounter++;
+//                                maxTimeToLoadAd += 350;
+//                                adShowCounter = 0;
+//                                showAdOnListClick();
+//                            }
+//                        } else {
+//                            adShowCounter = 0;
+//                            interstitialAddCounter = 0;
+//                            maxTimeToLoadAd = 0;
+//                            stopTimer();
+//                        }
+//                    }
+//                });
+//            }
+//        };
+//    }
 }

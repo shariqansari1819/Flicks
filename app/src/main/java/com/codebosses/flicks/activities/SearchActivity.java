@@ -52,7 +52,7 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
     long last_text_edit = 0;
     Handler handler = new Handler();
 
-    private InterstitialAd mInterstitialAd;
+//    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +100,13 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
 //        });
     }
 
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequest);
-        }
-    }
+//    private void showInterstitial() {
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            mInterstitialAd.loadAd(adRequest);
+//        }
+//    }
 
     @Override
     protected void onStart() {

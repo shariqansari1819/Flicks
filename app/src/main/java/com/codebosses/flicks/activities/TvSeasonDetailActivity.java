@@ -156,7 +156,7 @@ public class TvSeasonDetailActivity extends AppCompatActivity {
     private EpisodePhotosAdapter imagesAdapter;
 
     //    Ad mob fields....
-    private InterstitialAd mInterstitialAd;
+//    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

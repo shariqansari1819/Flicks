@@ -77,7 +77,7 @@ public class SimilarMoviesActivity extends AppCompatActivity {
     private int pageNumber = 1, totalPages = 0;
     private String movieId;
 
-    private InterstitialAd mInterstitialAd;
+//    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,27 +100,27 @@ public class SimilarMoviesActivity extends AppCompatActivity {
 
         if (ValidUtils.isNetworkAvailable(this)) {
 
-            mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
-            AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequestInterstitial);
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    super.onAdClosed();
-                }
-
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-                    showInterstitial();
-                }
-
-                @Override
-                public void onAdFailedToLoad(int i) {
-                    super.onAdFailedToLoad(i);
-                }
-            });
+//            mInterstitialAd = new InterstitialAd(this);
+//            mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+//            AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+//            mInterstitialAd.loadAd(adRequestInterstitial);
+//            mInterstitialAd.setAdListener(new AdListener() {
+//                @Override
+//                public void onAdClosed() {
+//                    super.onAdClosed();
+//                }
+//
+//                @Override
+//                public void onAdLoaded() {
+//                    super.onAdLoaded();
+//                    showInterstitial();
+//                }
+//
+//                @Override
+//                public void onAdFailedToLoad(int i) {
+//                    super.onAdFailedToLoad(i);
+//                }
+//            });
 
             AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
@@ -166,13 +166,13 @@ public class SimilarMoviesActivity extends AppCompatActivity {
 
     }
 
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequest);
-        }
-    }
+//    private void showInterstitial() {
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            mInterstitialAd.loadAd(adRequest);
+//        }
+//    }
 
     @Override
     public void onDestroy() {
@@ -185,7 +185,7 @@ public class SimilarMoviesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        showInterstitial();
+//        showInterstitial();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
