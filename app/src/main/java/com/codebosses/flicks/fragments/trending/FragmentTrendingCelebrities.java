@@ -232,7 +232,6 @@ public class FragmentTrendingCelebrities extends Fragment {
         if (eventBusCelebrityClick.getCelebType().equals(EndpointKeys.TRENDING_CELEBRITIES)) {
             Intent intent = new Intent(getActivity(), CelebrityDetailActivity.class);
             intent.putExtra(EndpointKeys.CELEBRITY_ID, celebritiesResultList.get(eventBusCelebrityClick.getPosition()).getId());
-            intent.putParcelableArrayListExtra(EndpointKeys.CELEB_MOVIES, celebritiesResultList.get(eventBusCelebrityClick.getPosition()).getKnown_for());
             intent.putExtra(EndpointKeys.CELEB_NAME, celebritiesResultList.get(eventBusCelebrityClick.getPosition()).getName());
             intent.putExtra(EndpointKeys.CELEB_IMAGE, celebritiesResultList.get(eventBusCelebrityClick.getPosition()).getProfile_path());
             startActivity(intent);

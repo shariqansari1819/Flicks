@@ -12,7 +12,6 @@ public class CelebritiesResult {
     private Integer id;
     private String profile_path;
     private String name;
-    private ArrayList<KnownFor> known_for = new ArrayList<>();
     private Boolean adult;
 
     public Double getPopularity() {
@@ -45,14 +44,6 @@ public class CelebritiesResult {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ArrayList<KnownFor> getKnown_for() {
-        return known_for;
-    }
-
-    public void setKnown_for(ArrayList<KnownFor> known_for) {
-        this.known_for = known_for;
     }
 
     public Boolean getAdult() {
