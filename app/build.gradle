@@ -1,21 +1,22 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 android {
+
     signingConfigs {
         release {
-            storeFile file('/Volumes/Work/AndroidWork/ShariqAndroidProjects/Flicks/FlicksData/Jks/FinalFlicksKeystore')
+            storeFile file('/Volumes/Work/AndroidWork/ShariqAndroidProjects/Flicks/FlicksData/Jks/FlicksKeystore')
             storePassword 'shariq18111997'
-            keyAlias = 'Flicks'
+            keyAlias = 'FlicksAlias'
             keyPassword 'shariq18111997'
         }
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.devs.codebosses.flicksapp"
+        applicationId "com.codebosses.devs.flicksapp"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 6   //  3 September 2019
-        versionName "1.0.6"
+        versionCode 1   //  7 September 2019
+        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
