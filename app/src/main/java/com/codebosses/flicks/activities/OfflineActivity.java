@@ -49,8 +49,8 @@ public class OfflineActivity extends AppCompatActivity {
     RecyclerView recyclerViewOffline;
     @BindView(R.id.appBarOffline)
     Toolbar toolbarOffline;
-    @BindView(R.id.adView)
-    AdView adView;
+//    @BindView(R.id.adView)
+//    AdView adView;
 
     //    Adapter fields...
     private OfflineVideosAdapter offlineVideosAdapter;
@@ -62,14 +62,14 @@ public class OfflineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_offline);
         ButterKnife.bind(this);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
+//        adView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
 
 //        Setting custom action bar....
         setSupportActionBar(toolbarOffline);

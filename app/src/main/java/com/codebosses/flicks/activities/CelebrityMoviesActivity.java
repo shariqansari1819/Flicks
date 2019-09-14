@@ -63,8 +63,8 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
     @BindView(R.id.editTextSearchCelebrityMovies)
     AppCompatEditText editTextSearch;
     private LinearLayoutManager linearLayoutManager;
-    @BindView(R.id.adView)
-    AdView adView;
+//    @BindView(R.id.adView)
+//    AdView adView;
     @BindView(R.id.circularProgressBarCelebrityMovies)
     CircularProgressBar circularProgressBar;
 
@@ -148,14 +148,14 @@ public class CelebrityMoviesActivity extends AppCompatActivity {
             textViewError.setText(internetProblem);
         }
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
+//        adView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
 
 //        All event listeners....
         editTextSearch.addTextChangedListener(new TextWatcher() {

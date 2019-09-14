@@ -56,8 +56,8 @@ public class SimilarMoviesActivity extends AppCompatActivity {
     Toolbar toolbarSimilarMovies;
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
-    @BindView(R.id.adView)
-    AdView adView;
+//    @BindView(R.id.adView)
+//    AdView adView;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_similar_movies)
@@ -122,14 +122,14 @@ public class SimilarMoviesActivity extends AppCompatActivity {
 //                }
 //            });
 
-            AdRequest adRequest = new AdRequest.Builder().build();
-            adView.loadAd(adRequest);
-            adView.setAdListener(new AdListener() {
-                @Override
-                public void onAdOpened() {
-                    super.onAdOpened();
-                }
-            });
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            adView.loadAd(adRequest);
+//            adView.setAdListener(new AdListener() {
+//                @Override
+//                public void onAdOpened() {
+//                    super.onAdOpened();
+//                }
+//            });
 
             moviesAdapter = new MoviesAdapter(this, similarMoviesList, EndpointKeys.SIMILAR_MOVIES);
             linearLayoutManager = new LinearLayoutManager(this);

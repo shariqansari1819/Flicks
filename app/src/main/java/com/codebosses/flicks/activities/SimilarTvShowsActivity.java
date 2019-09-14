@@ -60,8 +60,8 @@ public class SimilarTvShowsActivity extends AppCompatActivity {
     Toolbar toolbarSimilarMovies;
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
-    @BindView(R.id.adView)
-    AdView adView;
+//    @BindView(R.id.adView)
+//    AdView adView;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_similar_tv_shows)
@@ -126,14 +126,14 @@ public class SimilarTvShowsActivity extends AppCompatActivity {
 //                }
 //            });
 
-            AdRequest adRequest = new AdRequest.Builder().build();
-            adView.loadAd(adRequest);
-            adView.setAdListener(new AdListener() {
-                @Override
-                public void onAdOpened() {
-                    super.onAdOpened();
-                }
-            });
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            adView.loadAd(adRequest);
+//            adView.setAdListener(new AdListener() {
+//                @Override
+//                public void onAdOpened() {
+//                    super.onAdOpened();
+//                }
+//            });
 
             tvShowsAdapter = new TvShowsAdapter(this, similarTvResultList, EndpointKeys.SIMILAR_TV_SHOWS);
             linearLayoutManager = new LinearLayoutManager(this);

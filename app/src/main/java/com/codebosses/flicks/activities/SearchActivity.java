@@ -52,7 +52,7 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
     long last_text_edit = 0;
     Handler handler = new Handler();
 
-//    private InterstitialAd mInterstitialAd;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,41 +77,41 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher {
         viewPagerSearch.setOffscreenPageLimit(2);
         changeTabsFont();
 
-//        mInterstitialAd = new InterstitialAd(this);
-//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
-//        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
-//        mInterstitialAd.loadAd(adRequestInterstitial);
-//        mInterstitialAd.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdClosed() {
-//                super.onAdClosed();
-//            }
-//
-//            @Override
-//            public void onAdLoaded() {
-//                super.onAdLoaded();
-//                showInterstitial();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int i) {
-//                super.onAdFailedToLoad(i);
-//            }
-//        });
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_admob_id));
+        AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
     }
 
-//    private void showInterstitial() {
-//        if (mInterstitialAd.isLoaded()) {
-//            mInterstitialAd.show();
-//            AdRequest adRequest = new AdRequest.Builder().build();
-//            mInterstitialAd.loadAd(adRequest);
-//        }
-//    }
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+        }
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        showInterstitial();
+        showInterstitial();
     }
 
     @Override
