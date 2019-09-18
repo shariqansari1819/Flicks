@@ -54,8 +54,8 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
     Toolbar toolbarSuggestedMovies;
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
-//    @BindView(R.id.adView)
-//    AdView adView;
+    @BindView(R.id.adView)
+    AdView adView;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_suggested_movies)
@@ -98,14 +98,14 @@ public class SuggestedMoviesActivity extends AppCompatActivity {
 
         if (ValidUtils.isNetworkAvailable(this)) {
 
-//            AdRequest adRequest = new AdRequest.Builder().build();
-//            adView.loadAd(adRequest);
-//            adView.setAdListener(new AdListener() {
-//                @Override
-//                public void onAdOpened() {
-//                    super.onAdOpened();
-//                }
-//            });
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                }
+            });
 
             moviesAdapter = new MoviesAdapter(this, suggestedMoviesList, EndpointKeys.SUGGESTED_MOVIES);
             linearLayoutManager = new LinearLayoutManager(this);

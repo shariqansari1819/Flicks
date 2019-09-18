@@ -16,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -94,6 +95,8 @@ public class FullMovieActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
 //                            Log.d("FullMovie", url);
+                        }else{
+//                            Toast.makeText(FullMovieActivity.this, "Press play button once again.", Toast.LENGTH_SHORT).show();
                         }
                     }
 

@@ -59,8 +59,8 @@ public class SuggestedTvShowsActivity extends AppCompatActivity {
     Toolbar toolbarSuggestedTvShows;
     @BindView(R.id.textViewAppBarMainTitle)
     TextView textViewAppBarTitle;
-//    @BindView(R.id.adView)
-//    AdView adView;
+    @BindView(R.id.adView)
+    AdView adView;
 
     //    Resource fields....
     @BindString(R.string.could_not_get_suggested_tv_shows)
@@ -101,14 +101,14 @@ public class SuggestedTvShowsActivity extends AppCompatActivity {
 
         if (ValidUtils.isNetworkAvailable(this)) {
 
-//            AdRequest adRequest = new AdRequest.Builder().build();
-//            adView.loadAd(adRequest);
-//            adView.setAdListener(new AdListener() {
-//                @Override
-//                public void onAdOpened() {
-//                    super.onAdOpened();
-//                }
-//            });
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                }
+            });
 
             tvShowsAdapter = new TvShowsAdapter(this, suggestedTvShowsList, EndpointKeys.SUGGESTED_TV_SHOWS);
             linearLayoutManager = new LinearLayoutManager(this);

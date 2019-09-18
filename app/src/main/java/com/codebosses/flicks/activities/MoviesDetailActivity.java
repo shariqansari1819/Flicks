@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -82,6 +83,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -625,16 +629,16 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
                         textViewMovieRating.setText(String.valueOf(rating));
 
-//                        try {
-//                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
-//                            if (!DateUtils.isAfterToday(date.getTime())) {
-//                                buttonWatchFullMovie.setVisibility(View.VISIBLE);
-//                            } else {
-//                                buttonWatchFullMovie.setVisibility(View.GONE);
-//                            }
-//                        } catch (Exception e) {
-//
-//                        }
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
+                            if (!DateUtils.isAfterToday(date.getTime())) {
+                                buttonWatchFullMovie.setVisibility(View.VISIBLE);
+                            } else {
+                                buttonWatchFullMovie.setVisibility(View.GONE);
+                            }
+                        } catch (Exception e) {
+
+                        }
 
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
@@ -1059,62 +1063,6 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                         intent.putExtra(EndpointKeys.MOVIE_TITLE, movieDetailMainObject.getTitle());
                                         intent.putExtra(EndpointKeys.MOVIES_IMAGES, EndpointUrl.POSTER_BASE_URL + "/" + movieDetailMainObject.getPoster_path());
                                         startActivity(intent);
-//                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
-//                                                .titleDefault(textViewTitle.getText().toString())
-//                                                .showUrl(false)
-//                                                .webViewBuiltInZoomControls(true)
-//                                                .webViewDisplayZoomControls(true)
-//                                                .showSwipeRefreshLayout(true)
-//                                                .menuSelector(R.drawable.selector_light_theme)
-//                                                .menuTextGravity(Gravity.CENTER)
-//                                                .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
-//                                                .dividerHeight(0)
-//                                                .gradientDivider(false)
-//                                                .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
-//                                                .addWebViewListener(new WebViewListener() {
-//                                                    @Override
-//                                                    public void onReceivedTouchIconUrl(String url, boolean precomposed) {
-//                                                        try {
-//                                                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + url + " Host: " + new URL(url).getHost());
-//
-//                                                            // Here put your code
-//                                                            if (new URL(url).getHost().equalsIgnoreCase("oload.party"))
-//                                                                super.onReceivedTouchIconUrl(url, precomposed);
-//                                                        } catch (Exception e) {
-//
-//                                                        }
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onLoadResource(String url) {
-//                                                        try {
-//                                                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + url + " Host: " + new URL(url).getHost());
-//
-//                                                            // Here put your code
-//                                                            if (new URL(url).getHost().equalsIgnoreCase("oload.party"))
-//                                                                super.onLoadResource(url);
-//                                                        } catch (Exception e) {
-//
-//                                                        }
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onPageStarted(String url) {
-//                                                        try {
-//                                                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + url + " Host: " + new URL(url).getHost());
-//
-//                                                            // Here put your code
-//                                                            if (new URL(url).getHost().equalsIgnoreCase("oload.party"))
-//                                                                super.onPageStarted(url);
-//                                                        } catch (Exception e) {
-//
-//                                                        }
-//                                                    }
-//                                                })
-//                                                .show(url);
-//                                        AdBlocksWebViewActivity.startWebView(MoviesDetailActivity.this, url, getResources().getColor(R.color.colorWhite));
-//                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                                        startActivity(Intent.createChooser(browserIntent, "Watch movie using"));
                                     }
 
                                     @Override
