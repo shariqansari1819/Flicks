@@ -2,7 +2,6 @@ package com.codebosses.flicks.activities;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -23,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointKeys;
-import com.codebosses.flicks.endpoints.EndpointUrl;
 
 import java.net.URL;
 
@@ -86,6 +84,7 @@ public class FullMovieActivity extends AppCompatActivity {
                     @Override
                     public void onLoadResource(WebView view, String url) {
                         super.onLoadResource(view, url);
+                        Log.d("FullMovie",url);
                         if (url.contains(".mp4") && videoUrl.isEmpty()) {
                             videoUrl = url;
                             Intent intent = new Intent(FullMovieActivity.this, FullMoviePlayerActivity.class);
@@ -94,9 +93,8 @@ public class FullMovieActivity extends AppCompatActivity {
                             intent.putExtra(EndpointKeys.MOVIES_IMAGES, moviePosterPath);
                             startActivity(intent);
                             finish();
-//                            Log.d("FullMovie", url);
-                        }else{
-//                            Toast.makeText(FullMovieActivity.this, "Press play button once again.", Toast.LENGTH_SHORT).show();
+                        }else if(url.equals("https://oload.party/favicon.ico")){
+                            Toast.makeText(FullMovieActivity.this, "Please keep pressing play button until video gets played.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -115,7 +113,6 @@ public class FullMovieActivity extends AppCompatActivity {
 
                     private boolean shouldOverrideUrlLoading(final String myUrl) {
                         try {
-//                            Log.i("WebView", "shouldOverrideUrlLoading() URL : " + myUrl + " Host: " + new URL(myUrl).getHost());
                             if (new URL(myUrl).getHost().equalsIgnoreCase("oload.party")) {
                                 webView.loadUrl(myUrl);
                             }

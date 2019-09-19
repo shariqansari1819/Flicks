@@ -43,7 +43,10 @@ public class ApiClient {
                     response.header("Accept", APPLICATION_JSON_CHARSET_UTF_8);
                     return response;
                 }
-            }).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).readTimeout(120, TimeUnit.SECONDS).connectTimeout(120, TimeUnit.SECONDS).retryOnConnectionFailure(true);
+            }).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .connectTimeout(120, TimeUnit.SECONDS)
+                    .retryOnConnectionFailure(true);
             OkHttpClient client = httpClient.build();
 
 

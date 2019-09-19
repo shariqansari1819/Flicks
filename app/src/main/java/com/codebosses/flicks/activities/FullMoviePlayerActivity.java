@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class FullMoviePlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_full_movie_player);
         ButterKnife.bind(this);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (getIntent() != null) {
             movieUrl = getIntent().getStringExtra(EndpointKeys.MOVIE_URL);
