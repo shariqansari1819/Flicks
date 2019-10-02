@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -542,6 +543,8 @@ public class EpisodeDetailActivity extends AppCompatActivity {
                                     public void onResponse(String response) {
                                         sweetAlertDialog.dismiss();
                                         String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + tvShowId + "&tv=1&s=" + seasonNumber + "&e=" + episodeNumber + "&ticket=" + response;
+                                        Intent browserIntent = Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(url)), "Open using");
+                                        startActivity(browserIntent);
 //                                        Handler handler = new Handler();
 //                                        new Thread(new Runnable() {
 //                                            @Override
@@ -565,9 +568,9 @@ public class EpisodeDetailActivity extends AppCompatActivity {
 //                                                }
 //                                            }
 //                                        }).start();
-                                        Intent intent = new Intent(EpisodeDetailActivity.this, FullMovieActivity.class);
-                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
-                                        startActivity(intent);
+//                                        Intent intent = new Intent(EpisodeDetailActivity.this, FullMovieActivity.class);
+//                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
+//                                        startActivity(intent);
 //                                        new FinestWebView.Builder(MoviesDetailActivity.this).theme(R.style.FinestWebViewTheme)
 //                                                .titleDefault(textViewTitle.getText().toString())
 //                                                .showUrl(false)

@@ -2,6 +2,7 @@ package com.codebosses.flicks.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -1058,11 +1059,13 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                     public void onResponse(String response) {
                                         sweetAlertDialog.dismiss();
                                         String url = "https://videospider.stream/getvideo?key=" + EndpointKeys.VIDEO_SPIDER_KEY + "&video_id=" + videoId + "&ticket=" + response + "";
-                                        Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
-                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
-                                        intent.putExtra(EndpointKeys.MOVIE_TITLE, movieDetailMainObject.getTitle());
-                                        intent.putExtra(EndpointKeys.MOVIES_IMAGES, EndpointUrl.POSTER_BASE_URL + "/" + movieDetailMainObject.getPoster_path());
-                                        startActivity(intent);
+                                        Intent browserIntent = Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(url)), "Open using");
+                                        startActivity(browserIntent);
+//                                        Intent intent = new Intent(MoviesDetailActivity.this, FullMovieActivity.class);
+//                                        intent.putExtra(EndpointKeys.MOVIE_URL, url);
+//                                        intent.putExtra(EndpointKeys.MOVIE_TITLE, movieDetailMainObject.getTitle());
+//                                        intent.putExtra(EndpointKeys.MOVIES_IMAGES, EndpointUrl.POSTER_BASE_URL + "/" + movieDetailMainObject.getPoster_path());
+//                                        startActivity(intent);
                                     }
 
                                     @Override

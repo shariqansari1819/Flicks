@@ -1,1 +1,1 @@
-include ':app', ':sliding-drawer-layout', ':sweet-alert-dialog'
+include ':app', ':sliding-drawer-layout', ':progress-dialog'
