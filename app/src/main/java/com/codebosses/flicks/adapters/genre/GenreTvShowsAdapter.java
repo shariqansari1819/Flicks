@@ -14,9 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
-import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.utils.FontUtils;
 
@@ -64,7 +62,7 @@ public class GenreTvShowsAdapter extends RecyclerView.Adapter<GenreTvShowsAdapte
             if (tvResult.getPoster_path() != null && !tvResult.getPoster_path().equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + tvResult.getPoster_path())
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = tvResult.getOriginal_name();

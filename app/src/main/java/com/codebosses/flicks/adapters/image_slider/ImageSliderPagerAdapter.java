@@ -2,7 +2,6 @@ package com.codebosses.flicks.adapters.image_slider;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +61,7 @@ public class ImageSliderPagerAdapter extends PagerAdapter {
 
         Glide.with(context)
                 .load(images.get(position))
-                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .apply(new RequestOptions().fitCenter())
                 .into(imageView);
 

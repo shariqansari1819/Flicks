@@ -16,9 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
-import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.celebritiespojo.celebtvshows.CelebTvShowsData;
-import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityTvShowsClick;
 import com.codebosses.flicks.utils.FontUtils;
 
@@ -62,7 +60,7 @@ public class CelebTvShowsAdapter extends RecyclerView.Adapter<CelebTvShowsAdapte
             if (celebTvShowsData.getPosterPath() != null && !celebTvShowsData.getPosterPath().equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + celebTvShowsData.getPosterPath())
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = celebTvShowsData.getOriginalName();

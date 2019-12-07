@@ -10,11 +10,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
-import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,7 +62,7 @@ public class CelebMoviesDetailAdapter extends RecyclerView.Adapter<CelebMoviesDe
             if (moviesResult.getPoster_path() != null && !moviesResult.getPoster_path().equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();

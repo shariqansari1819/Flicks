@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.database.entities.CelebrityEntity;
 import com.codebosses.flicks.endpoints.EndpointUrl;
-import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityClick;
 import com.codebosses.flicks.utils.FontUtils;
 
@@ -66,7 +65,7 @@ public class FavoriteCelebritiesAdapter extends RecyclerView.Adapter<FavoriteCel
             if (profilePath != null && !profilePath.equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.PROFILE_BASE_URL + "/" + profilePath)
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             if (name != null && !name.isEmpty())

@@ -15,7 +15,6 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityMovieClick;
-import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.utils.FontUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,7 +64,7 @@ public class CelebMoviesAdapter extends RecyclerView.Adapter<CelebMoviesAdapter.
                     if (celebMoviesData.getPoster_path() != null && !celebMoviesData.getPoster_path().equals(""))
                         Glide.with(context)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + celebMoviesData.getPoster_path())
-                                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                 .thumbnail(0.1f)
                                 .into(holder.imageViewThumbnail);
                     String title = celebMoviesData.getTitle();

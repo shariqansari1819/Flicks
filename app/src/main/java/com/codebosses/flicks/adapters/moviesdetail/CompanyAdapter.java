@@ -48,7 +48,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.CompanyH
             Glide.with(context)
                     .load(EndpointUrl.POSTER_BASE_URL + productionCompany.getLogo_path())
                     .thumbnail(0.1f)
-                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                     .into(holder.imageViewLogo);
             holder.textViewName.setText(productionCompany.getName());
         }

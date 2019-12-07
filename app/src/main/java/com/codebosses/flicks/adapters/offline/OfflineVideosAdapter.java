@@ -52,8 +52,8 @@ public class OfflineVideosAdapter extends RecyclerView.Adapter<OfflineVideosAdap
         if (offlineModel != null) {
             Glide.with(context)
                     .load(offlineModel.getThumbnail())
-                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
-                    .apply(new RequestOptions().error(R.drawable.zootopia_thumbnail))
+                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
+                    .apply(new RequestOptions().error(R.drawable.placeholder))
                     .thumbnail(0.f)
                     .into(holder.imageViewOfflineThubnail);
             holder.textViewDuration.setText(DateUtils.convertSecondsToHMmSs(offlineModel.getDuration()));

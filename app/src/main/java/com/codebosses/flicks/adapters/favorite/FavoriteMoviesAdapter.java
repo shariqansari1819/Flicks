@@ -16,7 +16,6 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -67,7 +66,7 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
             if (posterPath != null && !posterPath.equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + posterPath)
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             if (title != null && !title.isEmpty()) {

@@ -53,9 +53,6 @@ import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.devs.readmoreoption.ReadMoreOption;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -305,7 +302,7 @@ public class EpisodeDetailActivity extends AppCompatActivity {
                             Glide.with(EpisodeDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/mqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .thumbnail(0.1f)
                                     .into(imageViewCover);
                             for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
@@ -441,20 +438,20 @@ public class EpisodeDetailActivity extends AppCompatActivity {
         }
         Glide.with(EpisodeDetailActivity.this)
                 .load(EndpointUrl.POSTER_BASE_URL + "/" + episode.getStill_path())
-                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .thumbnail(0.1f)
                 .into(imageViewThumbnail);
         if (moviesTrailerResultList.size() > 0) {
             Glide.with(EpisodeDetailActivity.this)
                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/hqdefault.jpg")
                     .apply(new RequestOptions().centerCrop())
-                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                     .thumbnail(0.1f)
                     .into(imageViewCover);
         } else {
             Glide.with(EpisodeDetailActivity.this)
                     .load(EndpointUrl.POSTER_BASE_URL + episode.getStill_path())
-                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                     .apply(new RequestOptions().fitCenter())
                     .thumbnail(0.1f)
                     .into(imageViewCover);

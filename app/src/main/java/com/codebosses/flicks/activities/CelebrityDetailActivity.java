@@ -3,12 +3,9 @@ package com.codebosses.flicks.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +29,6 @@ import com.codebosses.flicks.api.Api;
 import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.database.DatabaseClient;
 import com.codebosses.flicks.database.entities.CelebrityEntity;
-import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.celebmovies.CelebMoviesData;
@@ -319,7 +315,7 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                             imageViewCelebrity.setVisibility(View.VISIBLE);
                             Glide.with(CelebrityDetailActivity.this)
                                     .load(EndpointUrl.PROFILE_BASE_URL + celebImage)
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .thumbnail(0.1f)
                                     .into(imageViewCelebrity);
                             coolViewPagerCelebrityDetail.setVisibility(View.INVISIBLE);
@@ -369,7 +365,7 @@ public class CelebrityDetailActivity extends AppCompatActivity {
                             cardViewThumbnail.setVisibility(View.VISIBLE);
                             Glide.with(CelebrityDetailActivity.this)
                                     .load(EndpointUrl.PROFILE_BASE_URL + celebrityDetailMainObject.getProfilePath())
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .thumbnail(0.1f)
                                     .into(imageViewThumbnail);
                         }

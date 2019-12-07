@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster_thumbnail"
                 android:scaleType="centerCrop"
-                android:src="@drawable/zootopia_thumbnail" />
+                android:src="@drawable/placeholder" />
 
         </androidx.cardview.widget.CardView>
 

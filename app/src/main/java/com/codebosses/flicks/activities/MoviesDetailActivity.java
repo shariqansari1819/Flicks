@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -72,8 +71,6 @@ import com.codebosses.flicks.utils.ValidUtils;
 import com.codebosses.flicks.utils.customviews.CustomNestedScrollView;
 import com.codebosses.flicks.utils.customviews.curve_image_view.CrescentoImageView;
 import com.devs.readmoreoption.ReadMoreOption;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -84,9 +81,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -477,7 +471,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                             Glide.with(MoviesDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/hqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .thumbnail(0.1f)
                                     .into(imageViewCover);
                             for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
@@ -643,14 +637,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
                         Glide.with(MoviesDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + moviePosterPath)
-                                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                 .thumbnail(0.1f)
                                 .into(imageViewThumbnail);
                         if (moviesTrailerResultList.size() > 0) {
                             Glide.with(MoviesDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/mqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .thumbnail(0.1f)
                                     .into(imageViewCover);
                         } else {
@@ -658,7 +652,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                                 backdropPath = moviePosterPath;
                             Glide.with(MoviesDetailActivity.this)
                                     .load(EndpointUrl.POSTER_BASE_URL + "/" + backdropPath)
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .apply(new RequestOptions().fitCenter())
                                     .thumbnail(0.1f)
                                     .into(imageViewCover);

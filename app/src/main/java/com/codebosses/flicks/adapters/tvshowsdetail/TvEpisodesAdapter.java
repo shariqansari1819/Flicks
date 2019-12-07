@@ -13,7 +13,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
-import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.Season;
 import com.codebosses.flicks.pojo.tvseasons.Episode;
 import com.codebosses.flicks.utils.FontUtils;
 
@@ -27,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class TvEpisodesAdapter extends RecyclerView.Adapter<TvEpisodesAdapter.TvShowEpisodesHolder> {
 
@@ -59,7 +57,7 @@ public class TvEpisodesAdapter extends RecyclerView.Adapter<TvEpisodesAdapter.Tv
             if (episode.getStill_path() != null && !episode.getStill_path().equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + episode.getStill_path())
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = episode.getName();

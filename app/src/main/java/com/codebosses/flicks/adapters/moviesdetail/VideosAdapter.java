@@ -52,7 +52,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosHold
         Glide.with(context)
                 .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResult.getKey() + "/hqdefault.jpg")
                 .apply(new RequestOptions().centerCrop())
-                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .thumbnail(0.1f)
                 .into(holder.imageViewThumbnail);
     }

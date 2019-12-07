@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
-import com.codebosses.flicks.adapters.moviesdetail.SimilarMoviesAdapter;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
@@ -62,7 +61,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreHolder>
             if (moviesResult.getPoster_path() != null && !moviesResult.getPoster_path().equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();

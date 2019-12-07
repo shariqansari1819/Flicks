@@ -13,8 +13,6 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.celebritiespojo.CelebritiesResult;
 import com.codebosses.flicks.pojo.eventbus.EventBusCelebrityClick;
-import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
-import com.codebosses.flicks.pojo.moviespojo.MoviesResult;
 import com.codebosses.flicks.utils.FontUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,7 +67,7 @@ public class CelebritiesAdapter extends RecyclerView.Adapter<CelebritiesAdapter.
             if (profilePath != null && !profilePath.equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.PROFILE_BASE_URL + "/" + profilePath)
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             if (name != null && !name.isEmpty())

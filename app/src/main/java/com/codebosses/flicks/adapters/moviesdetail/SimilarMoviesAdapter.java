@@ -62,7 +62,7 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdap
             if (moviesResult.getPoster_path() != null && !moviesResult.getPoster_path().equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + moviesResult.getPoster_path())
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = moviesResult.getTitle();

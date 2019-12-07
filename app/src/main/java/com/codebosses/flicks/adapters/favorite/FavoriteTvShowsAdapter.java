@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
-import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.database.entities.TvShowEntity;
 import com.codebosses.flicks.endpoints.EndpointUrl;
-import com.codebosses.flicks.pojo.eventbus.EventBusMovieClick;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
 import com.codebosses.flicks.utils.FontUtils;
 
@@ -68,7 +66,7 @@ public class FavoriteTvShowsAdapter extends RecyclerView.Adapter<FavoriteTvShows
             if (posterPath != null && !posterPath.equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + posterPath)
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                         .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             if (title != null && !title.isEmpty()) {

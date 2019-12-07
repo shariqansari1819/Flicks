@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
-import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.episodephotos.EpisodePhotosData;
 import com.codebosses.flicks.pojo.eventbus.EventBusPagerImageClick;
@@ -52,7 +51,7 @@ public class CelebrityImagesPagerAdapter extends PagerAdapter {
 
         Glide.with(context)
                 .load(EndpointUrl.PROFILE_BASE_URL + celebImagesList.get(position).getFile_path())
-                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .into(imageView);
 
         imageView.setOnClickListener(new View.OnClickListener() {

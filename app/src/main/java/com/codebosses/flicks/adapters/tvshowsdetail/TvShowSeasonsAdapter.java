@@ -12,7 +12,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.pojo.eventbus.EventBusTvShowsClick;
-import com.codebosses.flicks.pojo.tvpojo.TvResult;
 import com.codebosses.flicks.pojo.tvpojo.tvshowsdetail.Season;
 import com.codebosses.flicks.utils.FontUtils;
 
@@ -57,7 +56,7 @@ public class TvShowSeasonsAdapter extends RecyclerView.Adapter<TvShowSeasonsAdap
             if (season.getPoster_path() != null && !season.getPoster_path().equals(""))
                 Glide.with(context)
                         .load(EndpointUrl.POSTER_BASE_URL + "/" + season.getPoster_path())
-                        .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                        .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .thumbnail(0.1f)
                         .into(holder.imageViewThumbnail);
             String title = season.getName();

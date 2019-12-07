@@ -15,8 +15,8 @@ android {
         applicationId "com.codebosses.devs.flicksapp"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 4   //  14 September 2019
-        versionName "1.0.4"
+        versionCode 10   //  7 December 2019
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -80,7 +80,7 @@ dependencies {
     implementation 'com.github.devendroid:ReadMoreOption:1.0.2'
     implementation 'com.github.halilozercan:BetterVideoPlayer:kotlin-SNAPSHOT'
     implementation project(':sliding-drawer-layout')
-    implementation project(':progress-dialog')
+    implementation project(':sweet-alert-dialog')
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
     implementation 'com.google.firebase:firebase-auth:18.1.0'

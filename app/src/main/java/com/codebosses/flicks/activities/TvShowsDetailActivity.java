@@ -36,7 +36,6 @@ import com.codebosses.flicks.api.ApiClient;
 import com.codebosses.flicks.common.Constants;
 import com.codebosses.flicks.common.StringMethods;
 import com.codebosses.flicks.database.DatabaseClient;
-import com.codebosses.flicks.database.entities.MovieEntity;
 import com.codebosses.flicks.database.entities.TvShowEntity;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
@@ -435,7 +434,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                             Glide.with(TvShowsDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + response.body().getResults().get(0).getKey() + "/hqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .thumbnail(0.1f)
                                     .into(imageViewCover);
                             for (int i = 0; i < moviesTrailerMainObject.getResults().size(); i++) {
@@ -598,7 +597,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
 
                         Glide.with(TvShowsDetailActivity.this)
                                 .load(EndpointUrl.POSTER_BASE_URL + "/" + tvShowPosterPath)
-                                .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                 .thumbnail(0.1f)
                                 .into(imageViewThumbnail);
 
@@ -606,7 +605,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                             Glide.with(TvShowsDetailActivity.this)
                                     .load(EndpointUrl.YOUTUBE_THUMBNAIL_BASE_URL + moviesTrailerResultList.get(0).getKey() + "/mqdefault.jpg")
                                     .apply(new RequestOptions().centerCrop())
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .thumbnail(0.1f)
                                     .into(imageViewCover);
                         } else {
@@ -614,7 +613,7 @@ public class TvShowsDetailActivity extends AppCompatActivity {
                                 backDropPath = tvShowPosterPath;
                             Glide.with(TvShowsDetailActivity.this)
                                     .load(EndpointUrl.POSTER_BASE_URL + "/" + backDropPath)
-                                    .apply(new RequestOptions().placeholder(R.drawable.zootopia_thumbnail))
+                                    .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                                     .apply(new RequestOptions().fitCenter())
                                     .thumbnail(0.1f)
                                     .into(imageViewCover);
