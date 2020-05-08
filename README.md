@@ -36,7 +36,7 @@ API key of videospider to play full movie
 
 ## Authors
 
-* **Shariq Ansari** - *Initial work* - [ShariqAnsari](https://github.com/shariqansari1819)
+* **Shariq Ansari** - *Initial work* - [Shariq Ansari](https://github.com/shariqansari1819)
 
 ## License
 
