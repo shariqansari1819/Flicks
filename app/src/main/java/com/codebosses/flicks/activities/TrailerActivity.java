@@ -7,6 +7,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.Toast;
 
@@ -35,8 +39,6 @@ import com.codebosses.flicks.R;
 import com.codebosses.flicks.endpoints.EndpointKeys;
 import com.codebosses.flicks.endpoints.EndpointUrl;
 import com.codebosses.flicks.services.BackgroundNotificationService;
-import com.commit451.youtubeextractor.YouTubeExtraction;
-import com.commit451.youtubeextractor.YouTubeExtractor;
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
@@ -66,7 +68,7 @@ public class TrailerActivity extends AppCompatActivity {
 
     //    Instance fields....
     private String youtubeKey, name;
-    private YouTubeExtractor youTubeExtractor;
+//    private YouTubeExtractor youTubeExtractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,7 @@ public class TrailerActivity extends AppCompatActivity {
                     });
                 }
             }, true);
-            youTubeExtractor = new YouTubeExtractor.Builder().build();
+//            youTubeExtractor = new YouTubeExtractor.Builder().build();
             registerReceiver();
         }
     }
@@ -126,15 +128,15 @@ public class TrailerActivity extends AppCompatActivity {
     };
 
 
-    private void bindVideoResult(YouTubeExtraction result, Throwable throwable) {
-        String videoUrl = result.getVideoStreams().get(0).getUrl();
-        downloadImage(videoUrl);
-//        Log.d("OnSuccess", "Got a result with the best url: $videoUrl")
-//        Glide.with(this)
-//                .load(result.thumbnails.first().url)
-//                .into(imageView)
-//        videoView.setVideoURI(Uri.parse(videoUrl))
-    }
+//    private void bindVideoResult(YouTubeExtraction result, Throwable throwable) {
+//        String videoUrl = result.getVideoStreams().get(0).getUrl();
+//        downloadImage(videoUrl);
+////        Log.d("OnSuccess", "Got a result with the best url: $videoUrl")
+////        Glide.with(this)
+////                .load(result.thumbnails.first().url)
+////                .into(imageView)
+////        videoView.setVideoURI(Uri.parse(videoUrl))
+//    }
 
     @OnClick(R.id.imageViewCloseTrailer)
     public void onCloseClick(View view) {
@@ -179,10 +181,18 @@ public class TrailerActivity extends AppCompatActivity {
 
     private void extractYoutubeDownloadUrl() {
         Toast.makeText(this, "Downloading video...", Toast.LENGTH_SHORT).show();
-        youTubeExtractor.extract(youtubeKey)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe((youTubeExtraction, throwable) -> bindVideoResult(youTubeExtraction, throwable));
+        new YouTubeExtractor(this) {
+
+            @Override
+            protected void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta videoMeta) {
+                if (ytFiles != null)
+                    downloadImage(ytFiles.get(22).getUrl());
+            }
+        }.extract(youtubeKey, true, true);
+//        youTubeExtractor.extract(youtubeKey)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+//                .subscribe((youTubeExtraction, throwable) -> bindVideoResult(youTubeExtraction, throwable));
     }
 
     private void downloadImage(String path) {

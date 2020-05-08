@@ -2,10 +2,10 @@ package com.codebosses.flicks.endpoints;
 
 public interface EndpointKeys {
 
-    String THE_MOVIE_DB_API_KEY = "0021549a1c767c99bc531d078d1cda1a";
-    String GOOGLE_API_KEY = "AIzaSyCC_bwgm7pwXmBe6AobsaZIxSPCpknFJSo";
-    String VIDEO_SPIDER_KEY = "SDpxVZhrUXd8zzxu";
-    String VIDEO_SPIDER_SECRET_KEY = "njbu872wom79c60l3c3q6cojavt3qy";
+    String THE_MOVIE_DB_API_KEY = "YOUR_TMDB_API_KEY";
+    String GOOGLE_API_KEY = "YOUR_GOOGLE_CONSOLE_API_KEY";
+    String VIDEO_SPIDER_KEY = "YOUR_VIDEO_SPIDER_API_KEY";
+    String VIDEO_SPIDER_SECRET_KEY = "YOUR_VIDEO_SECRET_KEY";
 
     String UPCOMING_MOVIES = "Upcoming Movies";
     String TOP_RATED_MOVIES = "Top Rated Movies";

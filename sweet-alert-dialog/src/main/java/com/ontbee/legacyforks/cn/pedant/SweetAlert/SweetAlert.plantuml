@@ -1,0 +1,211 @@
+@startuml
+
+title __SWEETALERT's Class Diagram__\n
+
+  package com.ontbee.legacyforks.cn.pedant.SweetAlert {
+    class OptAnimationLoader {
+        {static} + loadAnimation()
+        {static} - createAnimationFromXml()
+        {static} - createAnimationFromXml()
+    }
+  }
+  
+
+  package com.ontbee.legacyforks.cn.pedant.SweetAlert {
+    class ProgressHelper {
+        - mProgressWheel : ProgressWheel
+        - mToSpin : boolean
+        - mSpinSpeed : float
+        - mBarWidth : int
+        - mBarColor : int
+        - mRimWidth : int
+        - mRimColor : int
+        - mIsInstantProgress : boolean
+        - mProgressVal : float
+        - mCircleRadius : int
+        + ProgressHelper()
+        + getProgressWheel()
+        + setProgressWheel()
+        - updatePropsIfNeed()
+        + resetCount()
+        + isSpinning()
+        + spin()
+        + stopSpinning()
+        + getProgress()
+        + setProgress()
+        + setInstantProgress()
+        + getCircleRadius()
+        + setCircleRadius()
+        + getBarWidth()
+        + setBarWidth()
+        + getBarColor()
+        + setBarColor()
+        + getRimWidth()
+        + setRimWidth()
+        + getRimColor()
+        + setRimColor()
+        + getSpinSpeed()
+        + setSpinSpeed()
+    }
+  }
+  
+
+  package com.ontbee.legacyforks.cn.pedant.SweetAlert {
+    class Rotate3dAnimation {
+        - mPivotXType : int
+        - mPivotYType : int
+        - mPivotXValue : float
+        - mPivotYValue : float
+        - mFromDegrees : float
+        - mToDegrees : float
+        - mPivotX : float
+        - mPivotY : float
+        - mCamera : Camera
+        - mRollType : int
+        {static} + ROLL_BY_X : int
+        {static} + ROLL_BY_Y : int
+        {static} + ROLL_BY_Z : int
+        ~ parseValue()
+        + Rotate3dAnimation()
+        + Rotate3dAnimation()
+        + Rotate3dAnimation()
+        + Rotate3dAnimation()
+        - initializePivotPoint()
+        + initialize()
+        # applyTransformation()
+    }
+  }
+  
+
+  package com.ontbee.legacyforks.cn.pedant.SweetAlert {
+    class Description {
+        + type : int
+        + value : float
+    }
+  }
+  
+
+  package com.ontbee.legacyforks.cn.pedant.SweetAlert {
+    class SuccessTickView {
+        - mDensity : float
+        - mPaint : Paint
+        - CONST_RADIUS : float
+        - CONST_RECT_WEIGHT : float
+        - CONST_LEFT_RECT_W : float
+        - CONST_RIGHT_RECT_W : float
+        - MIN_LEFT_RECT_W : float
+        - MAX_RIGHT_RECT_W : float
+        - mMaxLeftRectWidth : float
+        - mLeftRectWidth : float
+        - mRightRectWidth : float
+        - mLeftRectGrowMode : boolean
+        + SuccessTickView()
+        + SuccessTickView()
+        - init()
+        + draw()
+        + dip2px()
+        + startTickAnim()
+    }
+  }
+  
+
+  package com.ontbee.legacyforks.cn.pedant.SweetAlert {
+    class SweetAlertDialog {
+        - mDialogView : View
+        - mModalInAnim : AnimationSet
+        - mModalOutAnim : AnimationSet
+        - mOverlayOutAnim : Animation
+        - mErrorInAnim : Animation
+        - mErrorXInAnim : AnimationSet
+        - mSuccessLayoutAnimSet : AnimationSet
+        - mSuccessBowAnim : Animation
+        - mTitleTextView : TextView
+        - mContentTextView : TextView
+        - mTitleText : String
+        - mContentText : String
+        - mShowCancel : boolean
+        - mShowContent : boolean
+        - mCancelText : String
+        - mConfirmText : String
+        - mAlertType : int
+        - mErrorFrame : FrameLayout
+        - mSuccessFrame : FrameLayout
+        - mProgressFrame : FrameLayout
+        - mErrorX : ImageView
+        - mSuccessLeftMask : View
+        - mSuccessRightMask : View
+        - mCustomImgDrawable : Drawable
+        - mCustomImage : ImageView
+        - mConfirmButton : Button
+        - mCancelButton : Button
+        - mWarningFrame : FrameLayout
+        - mCloseFromCancel : boolean
+        {static} + NORMAL_TYPE : int
+        {static} + ERROR_TYPE : int
+        {static} + SUCCESS_TYPE : int
+        {static} + WARNING_TYPE : int
+        {static} + CUSTOM_IMAGE_TYPE : int
+        {static} + PROGRESS_TYPE : int
+        + SweetAlertDialog()
+        + SweetAlertDialog()
+        # onCreate()
+        - restore()
+        + hideConfirmButton()
+        - playAnimation()
+        - changeAlertType()
+        + getAlerType()
+        + changeAlertType()
+        + getTitleText()
+        + setTitleText()
+        + setCustomImage()
+        + setCustomImage()
+        + getContentText()
+        + setContentText()
+        + isShowCancelButton()
+        + showCancelButton()
+        + isShowContentText()
+        + showContentText()
+        + getCancelText()
+        + setCancelText()
+        + getConfirmText()
+        + setConfirmText()
+        + setCancelClickListener()
+        + setConfirmClickListener()
+        # onStart()
+        + cancel()
+        + dismissWithAnimation()
+        - dismissWithAnimation()
+        + onClick()
+        + getProgressHelper()
+    }
+  }
+  
+
+  package com.ontbee.legacyforks.cn.pedant.SweetAlert {
+    interface OnSweetClickListener {
+        {abstract} + onClick()
+    }
+  }
+  
+
+  Rotate3dAnimation -up-|> Animation
+  Rotate3dAnimation +-down- Description
+  SuccessTickView -up-|> View
+  BaseSavedState -up-|> AbsSavedState
+  SweetAlertDialog -up-|> OnClickListener
+  SweetAlertDialog -up-|> Dialog
+  SweetAlertDialog o-- SuccessTickView : mSuccessTick
+  SweetAlertDialog o-- ProgressHelper : mProgressHelper
+  SweetAlertDialog o-- OnSweetClickListener : mCancelClickListener
+  SweetAlertDialog o-- OnSweetClickListener : mConfirmClickListener
+  SweetAlertDialog +-down- OnSweetClickListener
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

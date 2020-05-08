@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/src/main/res"/><source path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/build/generated/res/rs/release"/><source path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/build/generated/res/resValues/release"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/src/main/res"><file path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/src/main/res/values/attrs.xml" qualifiers=""><declare-styleable name="SlidingDrawerLayout">
+        <attr format="float" name="widthPercent_leftDrawer">
+            <enum name="unspecified" value="0"/>
+        </attr>
+        <attr format="float" name="widthPercent_rightDrawer">
+            <enum name="unspecified" value="0"/>
+        </attr>
+        <attr format="float" name="widthPercent_startDrawer">
+            <enum name="unspecified" value="0"/>
+        </attr>
+        <attr format="float" name="widthPercent_endDrawer">
+            <enum name="unspecified" value="0"/>
+        </attr>
+
+        <attr format="boolean" name="enabledInTouch_leftDrawer"/>
+        <attr format="boolean" name="enabledInTouch_rightDrawer"/>
+        <attr format="boolean" name="enabledInTouch_startDrawer"/>
+        <attr format="boolean" name="enabledInTouch_endDrawer"/>
+
+        <attr format="dimension" name="contentSensitiveEdgeSize"/>
+
+        <attr format="color" name="contentFadeColor"/>
+
+        <attr format="integer" name="duration"/>
+
+        
+    </declare-styleable><declare-styleable name="SlidingDrawerLayout_Layout">
+        <attr name="android:layout_gravity"/>
+    </declare-styleable></file></source><source path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/build/generated/res/rs/release"/><source path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/build/generated/res/resValues/release"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="release$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/src/release/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="release" generated-set="release$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Volumes/Work/Android Work/MyAndroidProjects/FlicksApp/FlicksCode/sliding-drawer-layout/src/release/res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="SlidingDrawerLayout">
+        <attr format="float" name="widthPercent_leftDrawer">
+            <enum name="unspecified" value="0"/>
+        </attr>
+        <attr format="float" name="widthPercent_rightDrawer">
+            <enum name="unspecified" value="0"/>
+        </attr>
+        <attr format="float" name="widthPercent_startDrawer">
+            <enum name="unspecified" value="0"/>
+        </attr>
+        <attr format="float" name="widthPercent_endDrawer">
+            <enum name="unspecified" value="0"/>
+        </attr>
+
+        <attr format="boolean" name="enabledInTouch_leftDrawer"/>
+        <attr format="boolean" name="enabledInTouch_rightDrawer"/>
+        <attr format="boolean" name="enabledInTouch_startDrawer"/>
+        <attr format="boolean" name="enabledInTouch_endDrawer"/>
+
+        <attr format="dimension" name="contentSensitiveEdgeSize"/>
+
+        <attr format="color" name="contentFadeColor"/>
+
+        <attr format="integer" name="duration"/>
+
+        
+    </declare-styleable><declare-styleable name="SlidingDrawerLayout_Layout">
+        <attr name="android:layout_gravity"/>
+    </declare-styleable></configuration></mergedItems></merger>
