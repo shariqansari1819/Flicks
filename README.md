@@ -12,7 +12,7 @@ Flicks is most beautiful and fastest source for movies, TV shows and celebrities
 
 ## Getting Started
 
-You can download or clone this project and use it but don't forget to change yout tmdb API key.
+You can download or clone this project and use it but don't forget to change yout tmdb API key, video spider API key and firebase google-services.json file.
 
 ### Prerequisites
 
@@ -20,7 +20,11 @@ What things you need to use this project
 
 ```
 http://www.themoviedb.org acnount
-API key of tmdb
+API key of tmdb to retrieve movies data
+```
+```
+https://videospider.in/ acnount
+API key of videospider to play full movie
 ```
 
 ## Built With
